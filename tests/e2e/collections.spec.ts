@@ -107,17 +107,21 @@ test.describe('Collections Grid', () => {
     // Créer plusieurs collections
     const collections = ['Anglais', 'Espagnol', 'Mathématiques']
     
-    await Promise.all(collections.map(async (name) => {
+    /* eslint-disable no-restricted-syntax, no-await-in-loop */
+    for (const name of collections) {
       await page.getByTestId('create-card').click()
       await page.getByPlaceholder('Ex: Vocabulaire anglais').fill(name)
       await page.getByRole('button', { name: 'Créer' }).click()
       await page.waitForURL('/')
-    }))
+    }
+    /* eslint-enable no-restricted-syntax, no-await-in-loop */
     
     // Vérifier que toutes les collections sont affichées
-    await Promise.all(collections.map(async (name) => {
+    /* eslint-disable no-restricted-syntax, no-await-in-loop */
+    for (const name of collections) {
       await expect(page.getByText(name)).toBeVisible()
-    }))
+    }
+    /* eslint-enable no-restricted-syntax, no-await-in-loop */
     
     // Vérifier qu'il n'y a pas d'état vide
     await expect(page.getByText('Aucune collection')).not.toBeVisible()
