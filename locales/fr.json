@@ -33,7 +33,8 @@
     "add": "Ajouter",
     "delete": "Supprimer",
     "loading": "Chargement...",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "back": "Retour"
   },
   "collections": {
     "collection": "Collection",
@@ -67,5 +68,19 @@
     "deleteMessage": "Êtes-vous sûr de vouloir supprimer cette carte ?",
     "deletedSuccess": "Carte supprimée avec succès",
     "deletedError": "Erreur lors de la suppression de la carte"
+  },
+  "stats": {
+    "streakTitle": "Calendrier de streak (90 jours)",
+    "streakWeekTitle": "Streak de la semaine",
+    "currentStreak": "Série actuelle : {count} jour | Série actuelle : {count} jours",
+    "noStreak": "Aucune série en cours",
+    "progressionTitle": "Progression par collection",
+    "collection": "Collection",
+    "totalCards": "Total cartes",
+    "compartment": "Compartiment {n}",
+    "successRateTitle": "Taux de réussite global",
+    "successRate": "{value} de bonnes réponses",
+    "todayTitle": "Cartes révisées aujourd'hui",
+    "cardsReviewedToday": "{count} carte révisée aujourd'hui | {count} cartes révisées aujourd'hui"
   }
 }

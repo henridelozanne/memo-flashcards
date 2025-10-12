@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold" data-testid="heading-collections">Collections</h1>
       <div class="flex gap-2">
-        <button class="bg-blue-100 text-blue-700 rounded px-3 py-1 text-sm">Stats</button>
+  <button class="bg-blue-100 text-blue-700 rounded px-3 py-1 text-sm" @click="$router.push('/stats')">Stats</button>
         <button class="bg-yellow-100 text-yellow-700 rounded px-3 py-1 text-sm">Premium</button>
         <button class="bg-gray-200 text-gray-700 rounded px-3 py-1 text-sm">Aide</button>
       </div>

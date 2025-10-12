@@ -188,6 +188,15 @@ export const useCards = () => {
     isLoading.value = false
   }
 
+  /**
+   * Compte le nombre de cartes dans un compartiment donné pour une collection.
+   * @param collectionId string
+   * @param compartment number (1-6)
+   */
+  const countCardsPerCompartment = (collectionId: string, compartment: number): number => {
+    return mockCards.filter(c => c.collection_id === collectionId && !c.deleted_at && (c.compartment ?? 1) === compartment).length
+  }
+
   return {
     cards: readonly(cards),
     isLoading: readonly(isLoading),
@@ -202,6 +211,7 @@ export const useCards = () => {
     resetCards,
     getDueCards,
     getCardsDueToday,
-    applyAnswer
+    applyAnswer,
+    countCardsPerCompartment
   }
 }

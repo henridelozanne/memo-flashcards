@@ -32,15 +32,15 @@ test.describe('Collections Grid', () => {
       await page.getByTestId('create-card').click()
     
     // Remplir le formulaire
-    await page.getByPlaceholder('Ex: Vocabulaire anglais').fill('Ma première collection')
-    await page.getByRole('button', { name: 'Créer' }).click()
+  await page.getByPlaceholder('Ex: Vocabulaire anglais').fill('Ma première collection')
+  await page.getByTestId('create-btn').click()
     
   // Attendre la redirection automatique
   await expect(page).toHaveURL('/')
     
     // Vérifier que la collection apparaît dans la grille
-    await expect(page.getByText('Ma première collection')).toBeVisible()
-    await expect(page.getByText('0 cartes')).toBeVisible()
+  await expect(page.getByText('Ma première collection')).toBeVisible()
+  await expect(page.getByText(/0 carte/)).toBeVisible()
   })
 
   test('should edit an existing collection', async ({ page }) => {

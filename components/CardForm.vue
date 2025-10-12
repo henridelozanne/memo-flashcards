@@ -13,6 +13,7 @@
         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         :class="{ 'border-red-500': frontError }"
         :placeholder="$t('cards.frontPlaceholder')"
+        data-testid="front-input"
       />
       <p v-if="frontError" class="mt-1 text-sm text-red-600">{{ frontError }}</p>
       <p class="mt-1 text-sm text-gray-500">{{ localFront.length }}/500 caractères</p>
@@ -31,6 +32,7 @@
         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         :class="{ 'border-red-500': backError }"
         :placeholder="$t('cards.backPlaceholder')"
+        data-testid="back-input"
       ></textarea>
       <p v-if="backError" class="mt-1 text-sm text-red-600">{{ backError }}</p>
       <p class="mt-1 text-sm text-gray-500">{{ localBack.length }}/2000 caractères</p>
@@ -45,11 +47,12 @@
         {{ $t('common.cancel') }}
       </button>
       <button
-        v-if="showAddAnother"
-        type="button"
-        :disabled="isSubmitting || !isFormValid"
-        class="flex-1 px-4 py-2 text-blue-700 bg-blue-100 rounded-md hover:bg-blue-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed transition"
-        @click="handleAddAnother"
+  v-if="showAddAnother"
+  type="button"
+  :disabled="isSubmitting || !isFormValid"
+  class="flex-1 px-4 py-2 text-blue-700 bg-blue-100 rounded-md hover:bg-blue-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed transition"
+  data-testid="add-card-another"
+  @click="handleAddAnother"
       >
         {{ isSubmitting ? $t('common.loading') : $t('cards.addAnother') }}
       </button>
@@ -57,6 +60,7 @@
         type="submit"
         :disabled="isSubmitting || !isFormValid"
         class="flex-1 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+        data-testid="add-card-submit"
       >
         {{ isSubmitting ? $t('common.loading') : submitLabel }}
       </button>

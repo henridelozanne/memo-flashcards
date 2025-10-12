@@ -33,7 +33,8 @@
     "add": "Add",
     "delete": "Delete",
     "loading": "Loading...",
-    "retry": "Retry"
+    "retry": "Retry",
+    "back": "Back"
   },
   "collections": {
     "collection": "Collection",
@@ -67,5 +68,19 @@
     "deleteMessage": "Are you sure you want to delete this card?",
     "deletedSuccess": "Card deleted successfully",
     "deletedError": "Error while deleting the card"
+  },
+  "stats": {
+    "streakTitle": "Streak calendar (90 days)",
+    "streakWeekTitle": "Weekly streak",
+    "currentStreak": "Current streak: {count} day | Current streak: {count} days",
+    "noStreak": "No current streak",
+    "progressionTitle": "Progress by collection",
+    "collection": "Collection",
+    "totalCards": "Total cards",
+    "compartment": "Compartment {n}",
+    "successRateTitle": "Global success rate",
+    "successRate": "{value} correct answers",
+    "todayTitle": "Cards reviewed today",
+    "cardsReviewedToday": "{count} card reviewed today | {count} cards reviewed today"
   }
 }
