@@ -20,8 +20,8 @@
     <div class="flex gap-3">
       <button
         type="button"
-        @click="$emit('cancel')"
         class="flex-1 px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition"
+        @click="$emit('cancel')"
       >
         Annuler
       </button>
@@ -39,11 +39,15 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   name?: string
   isSubmitting?: boolean
   submitLabel?: string
-}>()
+}>(), {
+  name: '',
+  isSubmitting: false,
+  submitLabel: 'Enregistrer'
+})
 const emit = defineEmits<{
   (e: 'submit', name: string): void
   (e: 'cancel'): void
@@ -52,9 +56,7 @@ const emit = defineEmits<{
 const localName = ref(props.name ?? '')
 const error = ref<string | null>(null)
 
-const isFormValid = computed(() => {
-  return localName.value.trim().length > 0 && !error.value
-})
+const isFormValid = computed(() => localName.value.trim().length > 0 && !error.value)
 
 function validateName() {
   const name = localName.value.trim()

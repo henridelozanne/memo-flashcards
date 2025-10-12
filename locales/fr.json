@@ -3,6 +3,17 @@
   "common": {
     "ok": "OK",
     "cancel": "Annuler",
-    "save": "Enregistrer"
+    "save": "Enregistrer",
+    "loading": "Chargement...",
+    "retry": "Réessayer"
+  },
+  "collections": {
+    "editTitle": "Modifier la collection",
+    "notFound": "Collection introuvable",
+    "updatedSuccess": "Collection mise à jour avec succès",
+    "updatedError": "Erreur lors de la mise à jour de la collection",
+    "createTitle": "Créer une collection",
+    "createdSuccess": "Collection créée avec succès !",
+    "createdError": "Erreur lors de la création de la collection"
   }
 }

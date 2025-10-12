@@ -3,6 +3,17 @@
   "common": {
     "ok": "OK",
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "loading": "Loading...",
+    "retry": "Retry"
+  },
+  "collections": {
+    "editTitle": "Edit collection",
+    "notFound": "Collection not found",
+    "updatedSuccess": "Collection updated successfully",
+    "updatedError": "Error while updating collection",
+    "createTitle": "Create a collection",
+    "createdSuccess": "Collection created successfully!",
+    "createdError": "Error while creating the collection"
   }
 }

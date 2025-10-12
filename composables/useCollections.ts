@@ -6,7 +6,7 @@ import type { Collection } from '~/lib/types'
 let mockCollections: Collection[] = []
 
 const collections = ref<Collection[]>([])
-const isLoading = ref(false)
+const isLoading = ref(true)
 const error = ref<string | null>(null)
 
 export const useCollections = () => {
@@ -15,9 +15,13 @@ export const useCollections = () => {
     error.value = null
     // Simule un chargement réseau
     await new Promise((resolve) => setTimeout(resolve, 200))
-    collections.value = [...mockCollections].sort((a, b) => b.updated_at - a.updated_at)
+    collections.value = [...mockCollections].filter(c => !c.deleted_at).sort((a, b) => b.updated_at - a.updated_at)
     isLoading.value = false
   }
+
+  const getCollection = (id: string): Collection | null => (
+    collections.value.find(c => c.id === id && !c.deleted_at) ?? null
+  )
 
   const createCollection = async (name: string): Promise<Collection> => {
     error.value = null
@@ -34,7 +38,7 @@ export const useCollections = () => {
       updated_at: now
     }
     mockCollections.unshift(newCollection)
-    collections.value = [...mockCollections].sort((a, b) => b.updated_at - a.updated_at)
+    collections.value = [...mockCollections].filter(c => !c.deleted_at).sort((a, b) => b.updated_at - a.updated_at)
     return newCollection
   }
 
@@ -47,7 +51,7 @@ export const useCollections = () => {
     }
     mockCollections[idx].name = name.trim()
     mockCollections[idx].updated_at = Date.now()
-    collections.value = [...mockCollections].sort((a, b) => b.updated_at - a.updated_at)
+    collections.value = [...mockCollections].filter(c => !c.deleted_at).sort((a, b) => b.updated_at - a.updated_at)
   }
 
   const deleteCollection = async (id: string): Promise<void> => {
@@ -58,13 +62,23 @@ export const useCollections = () => {
     collections.value = [...mockCollections].filter(c => !c.deleted_at).sort((a, b) => b.updated_at - a.updated_at)
   }
 
+  // Reset function for testing
+  const resetCollections = () => {
+    mockCollections = []
+    collections.value = []
+    error.value = null
+    isLoading.value = false
+  }
+
   return {
     collections: readonly(collections),
     isLoading: readonly(isLoading),
     error: readonly(error),
     loadCollections,
+    getCollection,
     createCollection,
     updateCollection,
-    deleteCollection
+    deleteCollection,
+    resetCollections
   }
 }
