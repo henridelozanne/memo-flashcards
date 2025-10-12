@@ -1,6 +1,34 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { useCollections } from '~/composables/useCollections'
 
+// Mock Capacitor to simulate web environment
+vi.mock('@capacitor/core', () => ({
+  Capacitor: {
+    isNativePlatform: () => false
+  }
+}))
+
+// Mock localStorage
+const mockLocalStorage = (() => {
+  let store: Record<string, string> = {}
+  return {
+    getItem: vi.fn((key: string) => store[key] || null),
+    setItem: vi.fn((key: string, value: string) => {
+      store[key] = value
+    }),
+    removeItem: vi.fn((key: string) => {
+      delete store[key]
+    }),
+    clear: vi.fn(() => {
+      store = {}
+    })
+  }
+})()
+
+Object.defineProperty(window, 'localStorage', {
+  value: mockLocalStorage
+})
+
 // Mock UUID pour des tests déterministes
 vi.mock('uuid', () => ({
   v4: vi.fn(() => `mock-uuid-${Date.now()}`)
@@ -14,6 +42,9 @@ describe('useCollections', () => {
     composable = useCollections()
     // Reset les données mockées
     composable.resetCollections()
+    // Clear localStorage
+    mockLocalStorage.clear()
+    vi.clearAllMocks()
   })
 
   describe('createCollection', () => {
@@ -22,7 +53,7 @@ describe('useCollections', () => {
 
       expect(collection).toEqual({
         id: expect.stringMatching(/^mock-uuid-/),
-        user_id: 'mock-user',
+        user_id: 'default-user',
         name: 'Test Collection',
         created_at: expect.any(Number),
         updated_at: expect.any(Number)
@@ -35,7 +66,7 @@ describe('useCollections', () => {
       await composable.createCollection('Duplicate')
       
       await expect(composable.createCollection('Duplicate')).rejects.toThrow(
-        'Collection with this name already exists'
+        'Collection "Duplicate" already exists'
       )
     })
   })

@@ -14,6 +14,16 @@ export default defineNuxtConfig({
     '@': __dirname
   },
   css: ['~/assets/css/main.css'],
+  app: {
+    head: {
+      meta: [
+        { 
+          name: 'viewport', 
+          content: 'width=device-width, initial-scale=1.0, viewport-fit=cover' 
+        }
+      ]
+    }
+  },
   postcss: {
     plugins: {
       tailwindcss: {},

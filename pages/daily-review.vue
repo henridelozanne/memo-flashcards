@@ -83,11 +83,11 @@ const successRate = computed(() =>
 const streakValidated = ref(false)
 const currentStreak = ref(0)
 
-function answer(resp: 'true' | 'almost' | 'false') {
+async function answer(resp: 'true' | 'almost' | 'false') {
   if (!currentCard.value) return
   
   // Appliquer la réponse Leitner
-  applyAnswer(currentCard.value, resp)
+  await applyAnswer(currentCard.value, resp)
   
   // Compter les statistiques
   cardsReviewed.value += 1
@@ -111,7 +111,7 @@ onMounted(async () => {
   await loadCollections()
   
   // Récupérer les cartes dues aujourd'hui
-  dueCards.value = getCardsDueToday()
+  dueCards.value = await getCardsDueToday()
   
   // Si aucune carte, retourner à l'accueil
   if (dueCards.value.length === 0) {

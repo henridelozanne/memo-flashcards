@@ -1,13 +1,57 @@
 import { ref, readonly } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
+import { Capacitor } from '@capacitor/core'
 import type { Card } from '~/lib/types'
 
-// Mock in-memory DB for cards
+// Mock in-memory DB for web fallback
 let mockCards: Card[] = []
 
 const cards = ref<Card[]>([])
 const isLoading = ref(false)
 const error = ref<string | null>(null)
+
+// Shared database connection for mobile
+let dbConnection: any = null
+
+// Conditional import for uuid to avoid Node.js dependencies on mobile
+const generateId = (): string => {
+  if (typeof process === 'undefined') {
+    // In browser/mobile, use a simple UUID alternative
+    return 'card-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+  } else {
+    // In Node.js environment, we'll import uuid dynamically when needed
+    return 'card-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+  }
+};
+
+// Helper function to get DB connection (only on native platform)
+async function getDbConnection() {
+  if (!Capacitor.isNativePlatform()) {
+    throw new Error('Database only available on native platform')
+  }
+  
+  // For critical operations, always get a fresh connection
+  const { default: openDatabase } = await import('~/lib/sqlite')
+  const db = await openDatabase('memoflash')
+  
+  // Initialize tables if needed
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS cards (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL DEFAULT 'default-user',
+      collection_id TEXT NOT NULL,
+      question TEXT NOT NULL,
+      answer TEXT NOT NULL,
+      compartment INTEGER NOT NULL DEFAULT 1,
+      next_review_at INTEGER NOT NULL,
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL,
+      deleted_at INTEGER,
+      archived INTEGER DEFAULT 0
+    )
+  `)
+  
+  return db
+}
 
 // Intervalles Leitner en jours (compartiment 1 à 6)
 const LEITNER_INTERVALS: Record<number, number> = {
@@ -41,10 +85,38 @@ const LEITNER_INTERVALS: Record<number, number> = {
   /**
    * Retourne toutes les cartes dues aujourd'hui (toutes collections confondues).
    */
-  const getCardsDueToday = () => {
-    // TODO: Migrer vers SQLite/Capacitor comme useCollections
-    // Pour l'instant, retourner un tableau vide pour éviter l'erreur process
-    return []
+  const getCardsDueToday = async () => {
+    const now = Date.now()
+    
+    if (Capacitor.isNativePlatform()) {
+      // Mode natif - utiliser SQLite
+      try {
+        const db = await getDbConnection()
+        const result = await db.all<Card>(`
+          SELECT * FROM cards 
+          WHERE deleted_at IS NULL 
+          AND next_review_at <= ? 
+          AND compartment < 6
+          AND archived = 0
+          ORDER BY next_review_at ASC, created_at ASC
+        `, [now])
+        return result
+      } catch (e: any) {
+        console.error('Erreur lors du chargement des cartes:', e)
+        return []
+      }
+    } else {
+      // Mode web - utiliser localStorage comme fallback temporaire
+      return mockCards.filter(card => 
+        !card.deleted_at &&
+        card.next_review_at <= now &&
+        (card.compartment ?? 1) < 6 &&
+        !card.archived
+      ).sort((a, b) => {
+        if (a.next_review_at !== b.next_review_at) return a.next_review_at - b.next_review_at
+        return a.created_at - b.created_at
+      })
+    }
   }
 
   /**
@@ -52,40 +124,86 @@ const LEITNER_INTERVALS: Record<number, number> = {
    * @param card Card
    * @param response 'false' | 'almost' | 'true'
    */
-  const applyAnswer = (card: Card, response: 'false' | 'almost' | 'true') => {
-    const idx = mockCards.findIndex(c => c.id === card.id && !c.deleted_at)
-    if (idx === -1) throw new Error('Carte introuvable')
-    let compartment = mockCards[idx].compartment ?? 1
-    if (response === 'false') {
-      compartment = 1
-    } else if (response === 'almost') {
-      compartment = Math.min(compartment + 1, 6)
-    } else if (response === 'true') {
-      compartment = Math.min(compartment + 1, 6)
+  const applyAnswer = async (card: Card, response: 'false' | 'almost' | 'true') => {
+    if (Capacitor.isNativePlatform()) {
+      // Mode natif - utiliser SQLite
+      const db = await getDbConnection()
+      
+      // Calculer le nouveau compartiment
+      let compartment = card.compartment ?? 1
+      if (response === 'false') {
+        compartment = 1
+      } else if (response === 'almost') {
+        compartment = Math.min(compartment + 1, 6)
+      } else if (response === 'true') {
+        compartment = Math.min(compartment + 1, 6)
+      }
+      
+      // Calculer la prochaine révision
+      const now = Date.now()
+      const intervalDays = LEITNER_INTERVALS[compartment] ?? 0
+      const nextReviewAt = now + intervalDays * 24 * 60 * 60 * 1000
+      
+      // Mettre à jour en base
+      await db.run(`
+        UPDATE cards 
+        SET compartment = ?, next_review_at = ?, updated_at = ?
+        WHERE id = ? AND deleted_at IS NULL
+      `, [compartment, nextReviewAt, now, card.id])
+      
+    } else {
+      // Mode web - utiliser localStorage comme fallback
+      const idx = mockCards.findIndex(c => c.id === card.id && !c.deleted_at)
+      if (idx === -1) throw new Error('Carte introuvable')
+      let compartment = mockCards[idx].compartment ?? 1
+      if (response === 'false') {
+        compartment = 1
+      } else if (response === 'almost') {
+        compartment = Math.min(compartment + 1, 6)
+      } else if (response === 'true') {
+        compartment = Math.min(compartment + 1, 6)
+      }
+      mockCards[idx].compartment = compartment
+      // next_review_at = now + interval[compartment] (en jours)
+      const now = Date.now()
+      const intervalDays = LEITNER_INTERVALS[compartment] ?? 0
+      mockCards[idx].next_review_at = now + intervalDays * 24 * 60 * 60 * 1000
+      mockCards[idx].updated_at = now
+      // Met à jour la liste réactive
+      const collectionId = mockCards[idx].collection_id
+      cards.value = [...mockCards]
+        .filter(c => c.collection_id === collectionId && !c.deleted_at)
+        .sort((a, b) => b.created_at - a.created_at)
     }
-    mockCards[idx].compartment = compartment
-    // next_review_at = now + interval[compartment] (en jours)
-    const now = Date.now()
-    const intervalDays = LEITNER_INTERVALS[compartment] ?? 0
-    mockCards[idx].next_review_at = now + intervalDays * 24 * 60 * 60 * 1000
-    mockCards[idx].updated_at = now
-    // Met à jour la liste réactive
-    const collectionId = mockCards[idx].collection_id
-    cards.value = [...mockCards]
-      .filter(c => c.collection_id === collectionId && !c.deleted_at)
-      .sort((a, b) => b.created_at - a.created_at)
   }
 
 export const useCards = () => {
   const loadCards = async (collectionId: string) => {
     isLoading.value = true
     error.value = null
-    // Simule un chargement réseau
-    await new Promise((resolve) => setTimeout(resolve, 100))
-    cards.value = [...mockCards]
-      .filter(c => c.collection_id === collectionId && !c.deleted_at)
-      .sort((a, b) => b.created_at - a.created_at)
-    isLoading.value = false
+    
+    try {
+      if (Capacitor.isNativePlatform()) {
+        // Mode natif - utiliser SQLite
+        const db = await getDbConnection()
+        const result = await db.all<Card>(`
+          SELECT * FROM cards 
+          WHERE collection_id = ? AND deleted_at IS NULL 
+          ORDER BY created_at DESC
+        `, [collectionId])
+        cards.value = result
+      } else {
+        // Mode web - utiliser localStorage comme fallback temporaire
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        cards.value = [...mockCards]
+          .filter(c => c.collection_id === collectionId && !c.deleted_at)
+          .sort((a, b) => b.created_at - a.created_at)
+      }
+    } catch (e: any) {
+      error.value = e.message || 'Erreur lors du chargement des cartes'
+    } finally {
+      isLoading.value = false
+    }
   }
 
   const getCard = (id: string): Card | null => (
@@ -104,12 +222,12 @@ export const useCards = () => {
     }
     
     const now = Date.now()
-    const newCard: Card = {
-      id: uuidv4(),
+    const card: Card = {
+      id: generateId(),
       question: front.trim(), // front -> question pour compatibilité
       answer: back.trim(), // back -> answer pour compatibilité
       collection_id: collectionId,
-      user_id: 'mock-user',
+      user_id: 'default-user',
       created_at: now,
       updated_at: now,
       compartment: 1,
@@ -117,12 +235,30 @@ export const useCards = () => {
       archived: false
     }
     
-    mockCards.unshift(newCard)
-    cards.value = [...mockCards]
-      .filter(c => c.collection_id === collectionId && !c.deleted_at)
-      .sort((a, b) => b.created_at - a.created_at)
+    if (Capacitor.isNativePlatform()) {
+      // Mode natif - utiliser SQLite
+      const db = await getDbConnection()
+      await db.run(`
+        INSERT INTO cards (id, user_id, collection_id, question, answer, compartment, next_review_at, created_at, updated_at, archived)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [card.id, card.user_id, card.collection_id, card.question, card.answer, card.compartment, card.next_review_at, card.created_at, card.updated_at, card.archived ? 1 : 0])
+      
+      // Recharger les cartes depuis la base pour mettre à jour la liste réactive
+      const result = await db.all<Card>(`
+        SELECT * FROM cards 
+        WHERE collection_id = ? AND deleted_at IS NULL 
+        ORDER BY created_at DESC
+      `, [collectionId])
+      cards.value = result
+    } else {
+      // Mode web - utiliser localStorage comme fallback
+      mockCards.unshift(card)
+      cards.value = [...mockCards]
+        .filter(c => c.collection_id === collectionId && !c.deleted_at)
+        .sort((a, b) => b.created_at - a.created_at)
+    }
     
-    return newCard
+    return card
   }
 
   const updateCard = async (id: string, front: string, back: string): Promise<void> => {
@@ -136,33 +272,129 @@ export const useCards = () => {
       throw new Error('Le verso de la carte est obligatoire')
     }
     
-    const idx = mockCards.findIndex(c => c.id === id && !c.deleted_at)
-    if (idx === -1) throw new Error('Carte introuvable')
-    
-    mockCards[idx].question = front.trim() // front -> question pour compatibilité
-    mockCards[idx].answer = back.trim() // back -> answer pour compatibilité
-    mockCards[idx].updated_at = Date.now()
-    
-    const collectionId = mockCards[idx].collection_id
-    cards.value = [...mockCards]
-      .filter(c => c.collection_id === collectionId && !c.deleted_at)
-      .sort((a, b) => b.created_at - a.created_at)
+    if (Capacitor.isNativePlatform()) {
+      // Mode natif - utiliser SQLite
+      let db = await getDbConnection()
+      
+      // Vérifier que la carte existe
+      const existing = await db.get<Card>(
+        'SELECT * FROM cards WHERE id = ? AND deleted_at IS NULL',
+        [id]
+      )
+      if (!existing) throw new Error('Carte introuvable')
+      
+      // Fermer et rouvrir la connexion pour éviter les conflits
+      await db.close()
+      db = await getDbConnection()
+      
+      // Mettre à jour la carte
+      await db.run(`
+        UPDATE cards 
+        SET question = ?, answer = ?, updated_at = ?
+        WHERE id = ? AND deleted_at IS NULL
+      `, [front.trim(), back.trim(), Date.now(), id])
+      
+      // Fermer et rouvrir encore pour le rechargement
+      await db.close()
+      db = await getDbConnection()
+      
+      // Recharger les cartes pour la collection
+      const result = await db.all<Card>(`
+        SELECT * FROM cards 
+        WHERE collection_id = ? AND deleted_at IS NULL 
+        ORDER BY created_at DESC
+      `, [existing.collection_id])
+      cards.value = result
+      
+      // Fermer la connexion finale
+      await db.close()
+    } else {
+      // Mode web - utiliser localStorage comme fallback
+      const idx = mockCards.findIndex(c => c.id === id && !c.deleted_at)
+      if (idx === -1) throw new Error('Carte introuvable')
+      
+      mockCards[idx].question = front.trim()
+      mockCards[idx].answer = back.trim()
+      mockCards[idx].updated_at = Date.now()
+      
+      const collectionId = mockCards[idx].collection_id
+      cards.value = [...mockCards]
+        .filter(c => c.collection_id === collectionId && !c.deleted_at)
+        .sort((a, b) => b.created_at - a.created_at)
+    }
   }
 
   const deleteCard = async (id: string): Promise<void> => {
     error.value = null
-    const idx = mockCards.findIndex(c => c.id === id && !c.deleted_at)
-    if (idx === -1) throw new Error('Carte introuvable')
     
-    mockCards[idx].deleted_at = Date.now()
-    const collectionId = mockCards[idx].collection_id
-    cards.value = [...mockCards]
-      .filter(c => c.collection_id === collectionId && !c.deleted_at)
-      .sort((a, b) => b.created_at - a.created_at)
+    if (Capacitor.isNativePlatform()) {
+      // Mode natif - utiliser SQLite
+      let db = await getDbConnection()
+      
+      // Vérifier que la carte existe et récupérer la collection_id
+      const existing = await db.get<Card>(
+        'SELECT * FROM cards WHERE id = ? AND deleted_at IS NULL',
+        [id]
+      )
+      if (!existing) throw new Error('Carte introuvable')
+      
+      // Fermer et rouvrir la connexion
+      await db.close()
+      db = await getDbConnection()
+      
+      // Marquer comme supprimée (soft delete)
+      await db.run(`
+        UPDATE cards 
+        SET deleted_at = ?
+        WHERE id = ? AND deleted_at IS NULL
+      `, [Date.now(), id])
+      
+      // Fermer et rouvrir pour le rechargement
+      await db.close()
+      db = await getDbConnection()
+      
+      // Recharger les cartes pour la collection
+      const result = await db.all<Card>(`
+        SELECT * FROM cards 
+        WHERE collection_id = ? AND deleted_at IS NULL 
+        ORDER BY created_at DESC
+      `, [existing.collection_id])
+      cards.value = result
+      
+      // Fermer la connexion finale
+      await db.close()
+    } else {
+      // Mode web - utiliser localStorage comme fallback
+      const idx = mockCards.findIndex(c => c.id === id && !c.deleted_at)
+      if (idx === -1) throw new Error('Carte introuvable')
+      
+      mockCards[idx].deleted_at = Date.now()
+      const collectionId = mockCards[idx].collection_id
+      cards.value = [...mockCards]
+        .filter(c => c.collection_id === collectionId && !c.deleted_at)
+        .sort((a, b) => b.created_at - a.created_at)
+    }
   }
 
-  const getCardsCount = (collectionId: string): number =>
-    mockCards.filter(c => c.collection_id === collectionId && !c.deleted_at).length
+  const getCardsCount = async (collectionId: string): Promise<number> => {
+    if (Capacitor.isNativePlatform()) {
+      // Mode natif - utiliser SQLite
+      try {
+        const db = await getDbConnection()
+        const result = await db.get<{ count: number }>(
+          'SELECT COUNT(*) as count FROM cards WHERE collection_id = ? AND deleted_at IS NULL',
+          [collectionId]
+        )
+        return result?.count || 0
+      } catch (e) {
+        console.error('Erreur lors du comptage des cartes:', e)
+        return 0
+      }
+    } else {
+      // Mode web - utiliser localStorage comme fallback
+      return mockCards.filter(c => c.collection_id === collectionId && !c.deleted_at).length
+    }
+  }
 
   const getLastCardDate = (collectionId: string): Date | null => {
     const collectionCards = mockCards

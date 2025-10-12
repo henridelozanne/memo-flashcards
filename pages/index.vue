@@ -29,7 +29,7 @@
         :disabled="dailyCardsCount === 0"
         @click="$router.push('/daily-review')"
       >
-        {{ dailyCardsCount > 0 ? $t('dailyReview.reviewToday', dailyCardsCount, { count: dailyCardsCount }) : $t('dailyReview.noCardsToday') }}
+        {{ dailyCardsCount > 0 ? $t('dailyReview.reviewToday', { count: dailyCardsCount }) : $t('dailyReview.noCardsToday') }}
       </button>
     </div>
 
@@ -51,7 +51,7 @@
         :on-click="goToCards"
       >
         <template #info>
-          {{ getCardsCount(collection.id) }} {{ getCardsCount(collection.id) <= 1 ? 'carte' : 'cartes' }}
+          {{ getCollectionCardCount(collection.id) }} {{ getCollectionCardCount(collection.id) <= 1 ? 'carte' : 'cartes' }}
         </template>
       </CollectionCard>
     </div>
@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
@@ -86,13 +86,39 @@ const { getCardsDueToday, getCardsCount } = useCards()
 
 const collectionToDelete = ref<Collection | null>(null)
 const isDeleting = ref(false)
+const dailyCardsCount = ref(0)
+const cardsCounts = ref<Record<string, number>>({})
 
-// Calcul du nombre de cartes à réviser aujourd'hui
-const dailyCardsCount = computed(() => getCardsDueToday().length)
+// Fonction pour charger le nombre de cartes d'une collection
+const loadCardCount = async (collectionId: string) => {
+  try {
+    const count = await getCardsCount(collectionId)
+    cardsCounts.value[collectionId] = count
+  } catch (e) {
+    console.error('Erreur lors du chargement du compteur de cartes:', e)
+    cardsCounts.value[collectionId] = 0
+  }
+}
 
-// Charger les collections au montage
-onMounted(() => {
-  loadCollections()
+// Fonction pour obtenir le compteur de cartes (avec fallback)
+const getCollectionCardCount = (collectionId: string) => cardsCounts.value[collectionId] ?? 0
+
+// Charger les cartes dues et le nombre de collections au montage
+onMounted(async () => {
+  // Attendre que les collections soient chargées
+  await loadCollections()
+  
+  // Charger le nombre de cartes dues aujourd'hui
+  try {
+    const dueCards = await getCardsDueToday()
+    dailyCardsCount.value = dueCards.length
+  } catch (e) {
+    console.error('Erreur lors du chargement des cartes dues:', e)
+    dailyCardsCount.value = 0
+  }
+  
+  // Charger les compteurs de cartes pour toutes les collections
+  await Promise.all(collections.value.map(collection => loadCardCount(collection.id)))
 })
 
 // Navigation vers l'édition

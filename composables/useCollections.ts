@@ -7,17 +7,25 @@ const collections = ref<Collection[]>([])
 const isLoading = ref(true)
 const error = ref<string | null>(null)
 
+// Shared database connection for mobile
+let dbConnection: any = null
+
 // Helper function to get DB connection (only on native platform)
 async function getDbConnection() {
   if (!Capacitor.isNativePlatform()) {
     throw new Error('Database only available on native platform')
   }
   
+  // Use existing connection if available
+  if (dbConnection) {
+    return dbConnection
+  }
+  
   const { default: openDatabase } = await import('~/lib/sqlite')
-  const db = await openDatabase('memoflash')
+  dbConnection = await openDatabase('memoflash')
   
   // Initialize tables if needed
-  await db.exec(`
+  await dbConnection.exec(`
     CREATE TABLE IF NOT EXISTS collections (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL DEFAULT 'default-user',
@@ -28,7 +36,7 @@ async function getDbConnection() {
     )
   `)
   
-  return db
+  return dbConnection
 }
 
 export const useCollections = () => {
@@ -44,7 +52,9 @@ export const useCollections = () => {
       } else {
         // Mode web - utiliser localStorage comme fallback temporaire
         const stored = localStorage.getItem('memo_collections')
-        collections.value = stored ? JSON.parse(stored) : []
+        const allCollections = stored ? JSON.parse(stored) : []
+        // Filtrer les collections supprimées comme en SQLite
+        collections.value = allCollections.filter((c: Collection) => !c.deleted_at)
       }
     } catch (e: any) {
       error.value = e.message || 'Erreur lors du chargement des collections'
@@ -73,10 +83,10 @@ export const useCollections = () => {
         const db = await getDbConnection()
         
         // Check if collection already exists
-        const existing = await db.get<{ count: number }>(
+        const existing = await db.get(
           'SELECT COUNT(*) as count FROM collections WHERE name = ? AND deleted_at IS NULL', 
           [name.trim()]
-        )
+        ) as { count: number } | undefined
         if (existing && existing.count > 0) {
           throw new Error(`Collection "${name}" already exists`)
         }
@@ -115,10 +125,10 @@ export const useCollections = () => {
         const db = await getDbConnection()
         
         // Check if another collection with this name exists
-        const existing = await db.get<{ count: number }>(
+        const existing = await db.get(
           'SELECT COUNT(*) as count FROM collections WHERE name = ? AND id != ? AND deleted_at IS NULL', 
           [name.trim(), id]
-        )
+        ) as { count: number } | undefined
         if (existing && existing.count > 0) {
           throw new Error(`Collection "${name}" already exists`)
         }

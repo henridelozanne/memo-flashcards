@@ -1,9 +1,6 @@
 import { CapacitorSQLite, SQLiteConnection } from '@capacitor-community/sqlite'
 import { Capacitor } from '@capacitor/core'
-import { open } from 'sqlite'
-import sqlite3 from 'sqlite3'
 import CapacitorSqliteConnection from './capacitor'
-import Sqlite3Connection from './sqlite3'
 import type { SqliteConnection } from './types'
 
 // Re-export types
@@ -22,14 +19,22 @@ export default async function openDatabase(name: string): Promise<SqliteConnecti
     }
     await sqlite.createConnection(name, false, 'no-encryption', 1, false)
     const db = await sqlite.retrieveConnection(name, false)
+    
+    // Important: Open the database before using it
+    await db.open()
+    
     return new CapacitorSqliteConnection(db)
   }
   
-  // Dev/Test: use sqlite3
+  // Dev/Test: use sqlite3 (dynamic import to avoid Node.js dependencies on mobile)
+  const { open } = await import('sqlite')
+  const sqlite3 = await import('sqlite3')
+  const Sqlite3Connection = (await import('./sqlite3')).default
+  
   const db = await open({
     filename: `${name}.sqlite`, 
-    driver: sqlite3.Database,
-    mode: sqlite3.OPEN_READWRITE + sqlite3.OPEN_CREATE
+    driver: sqlite3.default.Database,
+    mode: sqlite3.default.OPEN_READWRITE + sqlite3.default.OPEN_CREATE
   })
   return new Sqlite3Connection(db)
 }
