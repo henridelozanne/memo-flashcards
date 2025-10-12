@@ -2,7 +2,7 @@
 
 import { describe, it, expect, afterEach } from 'vitest'
 import fs from 'fs'
-import openDatabase from '../lib/sqlite'
+import openDatabase from '../../lib/sqlite'
 
 describe('SQLite abstraction', () => {
   const DB_FILE = 'test.sqlite'
