@@ -1,3 +1,60 @@
+  // Intervalles Leitner en jours (compartiment 1 à 6)
+  const LEITNER_INTERVALS: Record<number, number> = {
+    1: 0,
+    2: 1,
+    3: 3,
+    4: 7,
+    5: 14,
+    6: 30,
+  }
+
+  /**
+   * Retourne les cartes à réviser aujourd'hui pour une collection donnée (compartment < 6).
+   * @param collectionId string
+   */
+  const getDueCards = (collectionId: string) => {
+    const now = Date.now()
+    return [...mockCards]
+      .filter(card =>
+        card.collection_id === collectionId &&
+        !card.deleted_at &&
+        card.next_review_at <= now &&
+        (card.compartment ?? 1) < 6
+      )
+      .sort((a, b) => {
+        if (a.next_review_at !== b.next_review_at) return a.next_review_at - b.next_review_at
+        return a.created_at - b.created_at
+      })
+  }
+
+  /**
+   * Applique la réponse Leitner à une carte et met à jour son état.
+   * @param card Card
+   * @param response 'false' | 'almost' | 'true'
+   */
+  const applyAnswer = (card: Card, response: 'false' | 'almost' | 'true') => {
+    const idx = mockCards.findIndex(c => c.id === card.id && !c.deleted_at)
+    if (idx === -1) throw new Error('Carte introuvable')
+    let compartment = mockCards[idx].compartment ?? 1
+    if (response === 'false') {
+      compartment = 1
+    } else if (response === 'almost') {
+      compartment = Math.min(compartment + 1, 6)
+    } else if (response === 'true') {
+      compartment = Math.min(compartment + 1, 6)
+    }
+    mockCards[idx].compartment = compartment
+    // next_review_at = now + interval[compartment] (en jours)
+    const now = Date.now()
+    const intervalDays = LEITNER_INTERVALS[compartment] ?? 0
+    mockCards[idx].next_review_at = now + intervalDays * 24 * 60 * 60 * 1000
+    mockCards[idx].updated_at = now
+    // Met à jour la liste réactive
+    const collectionId = mockCards[idx].collection_id
+    cards.value = [...mockCards]
+      .filter(c => c.collection_id === collectionId && !c.deleted_at)
+      .sort((a, b) => b.created_at - a.created_at)
+  }
 import { ref, readonly } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import type { Card } from '~/lib/types'
@@ -125,6 +182,8 @@ export const useCards = () => {
     deleteCard,
     getCardsCount,
     getLastCardDate,
-    resetCards
+    resetCards,
+    getDueCards,
+    applyAnswer
   }
 }

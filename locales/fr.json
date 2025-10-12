@@ -1,4 +1,17 @@
 {
+  "review": {
+    "reviewThisCollection": "Réviser cette collection",
+    "showAnswer": "Afficher la réponse",
+    "good": "Bien retenu",
+    "almost": "Presque",
+    "again": "À revoir",
+    "sessionFinished": "Session terminée !",
+    "congrats": "Bravo pour cette session de révision !",
+    "cardsReviewed": "Cartes révisées : {count}",
+    "successRate": "% de bonnes réponses : {percent}%",
+    "backToCollections": "Retour à mes collections",
+    "noCard": "Aucune carte à réviser."
+  },
   "app": { "name": "Memo Flashcards" },
   "common": {
     "ok": "OK",

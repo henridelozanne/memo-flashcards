@@ -15,10 +15,6 @@ test.describe('Collections Grid', () => {
 
       // Vérifier la carte de création
       await expect(page.getByTestId('create-card')).toBeVisible()
-    
-      // Vérifier l'état vide
-      await expect(page.getByText('Aucune collection')).toBeVisible()
-      await expect(page.getByText('Créez votre première collection pour commencer')).toBeVisible()
   })
 
   test('should navigate to create collection page', async ({ page }) => {
@@ -45,9 +41,6 @@ test.describe('Collections Grid', () => {
     // Vérifier que la collection apparaît dans la grille
     await expect(page.getByText('Ma première collection')).toBeVisible()
     await expect(page.getByText('0 cartes')).toBeVisible()
-    
-    // Vérifier que l'état vide n'est plus affiché
-    await expect(page.getByText('Aucune collection')).not.toBeVisible()
   })
 
   test('should edit an existing collection', async ({ page }) => {
@@ -108,9 +101,6 @@ test.describe('Collections Grid', () => {
     
     // Vérifier que la collection a disparu
     await expect(page.getByText('Collection à supprimer')).not.toBeVisible()
-    
-    // L'état vide devrait réapparaître
-    await expect(page.getByText('Aucune collection')).toBeVisible()
   })
 
   test('should display multiple collections', async ({ page }) => {

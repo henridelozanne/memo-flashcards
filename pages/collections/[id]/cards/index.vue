@@ -3,7 +3,7 @@
     <div class="max-w-2xl mx-auto">
       <!-- Header avec retour et titre -->
       <div class="flex items-center mb-6">
-        <button class="mr-4 text-gray-600 hover:text-gray-800" aria-label="Retour" @click="$router.back()">
+  <button class="mr-4 text-gray-600 hover:text-gray-800" aria-label="Retour" @click="$router.push('/')">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
           </svg>
@@ -32,7 +32,7 @@
       <div v-else>
         <!-- Résumé -->
         <div class="bg-white rounded-lg shadow p-6 mb-6">
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
             <div>
               <p class="text-lg font-medium">{{ cards.length }} {{ cards.length <= 1 ? $t('cards.card') : $t('cards.cards') }}</p>
               <p v-if="lastCardDate" class="text-sm text-gray-500">
@@ -40,14 +40,24 @@
               </p>
               <p v-else class="text-sm text-gray-500">{{ $t('cards.noCards') }}</p>
             </div>
-            <button 
-              class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition flex items-center gap-2"
-              data-testid="add-card-btn"
-              @click="$router.push(`/collections/${collectionId}/cards/create`)"
-            >
-              <span class="text-xl">+</span>
-              {{ $t('cards.addCard') }}
-            </button>
+            <div class="flex gap-2 flex-wrap">
+              <button 
+                class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition flex items-center gap-2"
+                data-testid="add-card-btn"
+                @click="$router.push(`/collections/${collectionId}/cards/create`)"
+              >
+                <span class="text-xl">+</span>
+                {{ $t('cards.addCard') }}
+              </button>
+              <button
+                class="bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                data-testid="review-collection-btn"
+                :disabled="cards.length === 0"
+                @click="$router.push(`/collections/${collectionId}/review`)"
+              >
+                {{ $t('review.reviewThisCollection') }}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -87,7 +97,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
 import type { Collection } from '~/lib/types'
@@ -96,7 +105,6 @@ defineOptions({ name: 'CollectionCardsPage' })
 
 const route = useRoute()
 const router = useRouter()
-const { t } = useI18n()
 const { collections, isLoading: isLoadingCollection, error: collectionError, loadCollections, getCollection } = useCollections()
 const { cards, isLoading: isLoadingCards, error: cardsError, loadCards, getLastCardDate } = useCards()
 

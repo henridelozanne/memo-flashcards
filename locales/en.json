@@ -1,4 +1,17 @@
 {
+  "review": {
+    "reviewThisCollection": "Review this collection",
+    "showAnswer": "Show answer",
+    "good": "Well remembered",
+    "almost": "Almost",
+    "again": "Review again",
+    "sessionFinished": "Session finished!",
+    "congrats": "Congrats on your review session!",
+    "cardsReviewed": "Cards reviewed: {count}",
+    "successRate": "Success rate: {percent}%",
+    "backToCollections": "Back to my collections",
+    "noCard": "No card to review."
+  },
   "app": { "name": "Memo Flashcards" },
   "common": {
     "ok": "OK",
