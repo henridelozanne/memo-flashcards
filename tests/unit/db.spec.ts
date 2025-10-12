@@ -2,10 +2,11 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import fs from 'fs'
 import createDb from '../../lib/db'
 
-const dbPath = 'memoflash.sqlite'
+const dbName = 'memoflash-tests'
+const dbPath = `${dbName}.sqlite`
 
 describe('Database', () => {
-  const db = createDb()
+  const db = createDb(dbName)
 
   beforeEach(async () => {
     // Clean up test database before each test

@@ -5,7 +5,7 @@ import openDatabase from './sqlite'
 import type { SqliteConnection } from './sqlite'
 import type { Collection, Card, ReviewSession, Meta } from '~/types'
 
-const DB_NAME = 'memoflash'
+const DEFAULT_DB_NAME = 'memoflash'
 const MIGRATIONS_DIR = path.resolve(process.cwd(), 'migrations')
 
 function ensureDb(db: SqliteConnection | null): asserts db is SqliteConnection {
@@ -15,7 +15,7 @@ function ensureDb(db: SqliteConnection | null): asserts db is SqliteConnection {
 }
 
 // Default export for simpler imports
-export default function createDb() {
+export default function createDb(dbName: string = DEFAULT_DB_NAME) {
   let db: SqliteConnection | null = null
 
   async function initDb(): Promise<void> {
@@ -30,7 +30,7 @@ export default function createDb() {
     }
 
     // Open fresh DB connection
-    db = await openDatabase(DB_NAME)
+  db = await openDatabase(dbName)
 
     // Run migrations if they exist (with tracking to avoid reapplying)
     if (fs.existsSync(MIGRATIONS_DIR)) {
@@ -126,6 +126,7 @@ export default function createDb() {
     const now = Date.now()
     const sets: string[] = []
     const params: (string | number)[] = []
+    const currentUserId = (await getMeta('user_id')) as string | null
 
     if (data.name) {
       sets.push('name = ?')
@@ -135,25 +136,46 @@ export default function createDb() {
     sets.push('updated_at = ?')
     params.push(now)
     params.push(id)
-
-    await db.run(
-      `UPDATE Collection SET ${sets.join(', ')} WHERE id = ?`,
-      params
-    )
+    if (currentUserId) {
+      await db.run(
+        `UPDATE Collection SET ${sets.join(', ')} WHERE id = ? AND user_id = ?`,
+        [...params, currentUserId]
+      )
+    } else {
+      await db.run(
+        `UPDATE Collection SET ${sets.join(', ')} WHERE id = ?`,
+        params
+      )
+    }
   }
 
   async function softDeleteCollection(id: string): Promise<void> {
     ensureDb(db)
     const now = Date.now()
-    await db.run(
-      'UPDATE Collection SET deleted_at = ? WHERE id = ?',
-      [now, id]
-    )
+    const currentUserId = (await getMeta('user_id')) as string | null
+    if (currentUserId) {
+      await db.run(
+        'UPDATE Collection SET deleted_at = ? WHERE id = ? AND user_id = ?',
+        [now, id, currentUserId]
+      )
+    } else {
+      await db.run(
+        'UPDATE Collection SET deleted_at = ? WHERE id = ?',
+        [now, id]
+      )
+    }
     // Soft-delete associated cards
-    await db.run(
-      'UPDATE Card SET deleted_at = ? WHERE collection_id = ?',
-      [now, id]
-    )
+    if (currentUserId) {
+      await db.run(
+        'UPDATE Card SET deleted_at = ? WHERE collection_id = ? AND user_id = ?',
+        [now, id, currentUserId]
+      )
+    } else {
+      await db.run(
+        'UPDATE Card SET deleted_at = ? WHERE collection_id = ?',
+        [now, id]
+      )
+    }
   }
 
   // Cards
@@ -197,6 +219,7 @@ export default function createDb() {
     const now = Date.now()
     const sets: string[] = []
     const params: (string | number)[] = []
+    const currentUserId = (await getMeta('user_id')) as string | null
 
     if (data.question !== undefined) {
       sets.push('question = ?')
@@ -214,20 +237,34 @@ export default function createDb() {
     sets.push('updated_at = ?')
     params.push(now)
     params.push(id)
-
-    await db.run(
-      `UPDATE Card SET ${sets.join(', ')} WHERE id = ?`,
-      params
-    )
+    if (currentUserId) {
+      await db.run(
+        `UPDATE Card SET ${sets.join(', ')} WHERE id = ? AND user_id = ?`,
+        [...params, currentUserId]
+      )
+    } else {
+      await db.run(
+        `UPDATE Card SET ${sets.join(', ')} WHERE id = ?`,
+        params
+      )
+    }
   }
 
   async function softDeleteCard(id: string): Promise<void> {
     ensureDb(db)
     const now = Date.now()
-    await db.run(
-      'UPDATE Card SET deleted_at = ? WHERE id = ?',
-      [now, id]
-    )
+    const currentUserId = (await getMeta('user_id')) as string | null
+    if (currentUserId) {
+      await db.run(
+        'UPDATE Card SET deleted_at = ? WHERE id = ? AND user_id = ?',
+        [now, id, currentUserId]
+      )
+    } else {
+      await db.run(
+        'UPDATE Card SET deleted_at = ? WHERE id = ?',
+        [now, id]
+      )
+    }
   }
 
   // Review sessions
@@ -256,10 +293,18 @@ export default function createDb() {
   ): Promise<void> {
     ensureDb(db)
     const now = Date.now()
-    await db.run(
-      'UPDATE ReviewSession SET ended_at = ?, cards_reviewed = ?, correct_count = ?, wrong_count = ? WHERE id = ?',
-      [now, stats.total, stats.correct, stats.wrong, id]
-    )
+    const currentUserId = (await getMeta('user_id')) as string | null
+    if (currentUserId) {
+      await db.run(
+        'UPDATE ReviewSession SET ended_at = ?, cards_reviewed = ?, correct_count = ?, wrong_count = ? WHERE id = ? AND user_id = ?',
+        [now, stats.total, stats.correct, stats.wrong, id, currentUserId]
+      )
+    } else {
+      await db.run(
+        'UPDATE ReviewSession SET ended_at = ?, cards_reviewed = ?, correct_count = ?, wrong_count = ? WHERE id = ?',
+        [now, stats.total, stats.correct, stats.wrong, id]
+      )
+    }
   }
 
   // Logs

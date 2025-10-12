@@ -76,6 +76,18 @@ Authentication is handled by the `useSupabaseAuth()` composable, which:
 - Stores the user ID in the local SQLite Meta table
 - Provides a fallback to local UUID if auth fails
 
+
 All data entities (collections, cards, sessions, logs) include a `user_id` field, preparing for future multi-user sync capabilities while maintaining strict data isolation even in offline mode.
+
+## Synchronisation (préparation)
+
+Le code prépare la synchronisation future avec Supabase :
+
+- Toutes les entités sont scindées par `user_id` (données isolées par utilisateur, même en local)
+- Les fonctions de synchronisation sont prêtes dans `lib/sync.ts` : `syncLocalToRemote`, `syncRemoteToLocal`, `isSyncNeeded` (stubs, à implémenter)
+- Les migrations et le data layer sont prêts pour supporter la sync multi-utilisateur
+- Les tests valident la structure et l’isolation des données
+
+La synchronisation effective (push/pull, gestion des conflits) sera ajoutée dans un prompt ultérieur.
 
 ```
