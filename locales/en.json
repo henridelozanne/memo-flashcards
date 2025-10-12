@@ -1,0 +1,8 @@
+{
+  "app": { "name": "Memo Flashcards" },
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "save": "Save"
+  }
+}
