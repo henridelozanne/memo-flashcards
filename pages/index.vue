@@ -24,9 +24,9 @@
     <!-- Collections grid -->
   <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
       <!-- Carte +Créer une collection -->
-  <div data-testid="create-card" class="flex flex-col items-center justify-center border-2 border-dashed border-blue-300 rounded-lg p-6 bg-white cursor-pointer hover:bg-blue-50 transition" @click="$router.push('/collections/create')">
+  <div data-testid="create-card" class="flex flex-col items-center justify-center border-2 border-dashed border-blue-300 rounded-lg p-6 bg-white cursor-pointer hover:bg-blue-50 transition order-last" @click="$router.push('/collections/create')">
         <span class="text-4xl text-blue-400 mb-2">+</span>
-        <span class="font-medium text-blue-700">Créer une collection</span>
+        <span class="font-medium text-blue-700 text-center">Créer une collection</span>
       </div>
 
       <!-- Collections existantes -->
@@ -42,12 +42,6 @@
           0 cartes
         </template>
       </CollectionCard>
-
-      <!-- Empty state -->
-      <div v-if="collections.length === 0" class="col-span-full text-center py-12" data-testid="empty-state">
-        <div class="text-gray-400 text-lg mb-2">Aucune collection</div>
-        <div class="text-gray-500 text-sm">Créez votre première collection pour commencer</div>
-      </div>
     </div>
 
     <!-- Modal de confirmation de suppression (factorisé) -->

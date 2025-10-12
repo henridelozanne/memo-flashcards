@@ -57,33 +57,26 @@
           <div class="text-gray-500 text-sm">{{ $t('cards.addFirstCard') }}</div>
         </div>
 
-        <div v-else class="flex flex-wrap gap-6 justify-center">
+        <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 justify-items-center">
           <div 
             v-for="card in cards" 
             :key="card.id"
-            class="bg-white rounded-2xl shadow-lg transition cursor-pointer flex flex-col items-center justify-center aspect-[3/4] w-56 h-72 p-6 border border-gray-200 relative"
+            class="bg-white rounded-2xl shadow-lg transition cursor-pointer flex flex-col items-center justify-center aspect-[3/4] w-full max-w-56 h-72 p-4 border border-gray-200 relative"
             data-testid="card-item"
             @click="editCard(card.id)"
           >
-            <div class="w-full flex-1 flex flex-col items-center justify-center text-center">
+            <div class="w-full flex-1 flex flex-col items-center justify-center text-center overflow-hidden">
               <!-- Front (question) -->
-              <div class="font-semibold text-lg text-gray-900 mb-3 break-words line-clamp-4">
+              <div class="font-medium text-sm text-gray-900 mb-2 break-words line-clamp-3 leading-tight">
                 {{ card.question }}
               </div>
+              <!-- Divider -->
+              <div class="w-8 h-px bg-gray-300 my-2 opacity-50"></div>
               <!-- Back (answer) -->
-              <div class="text-base text-gray-500 mt-2 break-words line-clamp-5">
+              <div class="text-xs text-gray-500 break-words line-clamp-4 leading-tight">
                 {{ card.answer }}
               </div>
             </div>
-            <button 
-              class="absolute top-2 right-2 p-2 text-gray-400 transition opacity-100"
-              data-testid="edit-card-btn"
-              @click.stop="editCard(card.id)"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-              </svg>
-            </button>
           </div>
         </div>
       </div>
