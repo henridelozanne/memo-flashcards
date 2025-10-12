@@ -1,6 +1,6 @@
 export default {
   appId: 'com.memoflashcards.app',
   appName: 'Memo Flashcards',
-  webDir: 'dist',
+  webDir: '.output/public',
   server: { cleartext: true }
 }

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@capacitor-community/sqlite": "^7.0.1",
+    "@capacitor/ios": "^7.4.3",
     "@pinia/nuxt": "^0.4.0",
     "@supabase/supabase-js": "^2.75.0",
     "nuxt": "^3.8.0",

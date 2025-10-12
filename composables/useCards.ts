@@ -42,17 +42,9 @@ const LEITNER_INTERVALS: Record<number, number> = {
    * Retourne toutes les cartes dues aujourd'hui (toutes collections confondues).
    */
   const getCardsDueToday = () => {
-    const now = Date.now()
-    return [...mockCards]
-      .filter(card =>
-        !card.deleted_at &&
-        card.next_review_at <= now &&
-        (card.compartment ?? 1) < 6
-      )
-      .sort((a, b) => {
-        if (a.next_review_at !== b.next_review_at) return a.next_review_at - b.next_review_at
-        return a.created_at - b.created_at
-      })
+    // TODO: Migrer vers SQLite/Capacitor comme useCollections
+    // Pour l'instant, retourner un tableau vide pour éviter l'erreur process
+    return []
   }
 
   /**
