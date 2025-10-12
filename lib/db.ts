@@ -3,7 +3,7 @@ import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 import openDatabase from './sqlite'
 import type { SqliteConnection } from './sqlite'
-import type { Collection, Card, ReviewSession, Meta } from '~/types'
+import type { Collection, Card, ReviewSession, Meta } from '~/lib/types'
 
 const DEFAULT_DB_NAME = 'memoflash'
 const MIGRATIONS_DIR = path.resolve(process.cwd(), 'migrations')
@@ -66,7 +66,10 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
   async function getMeta(key: string): Promise<unknown> {
     ensureDb(db)
     const row = await db.get<Meta>('SELECT value FROM Meta WHERE key = ?', [key])
-    return row ? JSON.parse(row.value) : null
+    if (!row) return null
+    const raw = row.value as unknown
+    const str = typeof raw === 'string' ? raw : String(raw)
+    return JSON.parse(str)
   }
 
   async function setMeta(key: string, value: unknown): Promise<void> {
@@ -99,7 +102,7 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
       [id, name, now, now, currentUserId ?? null]
     )
 
-    return { id, name, created_at: now, updated_at: now }
+  return { id, name, created_at: now, updated_at: now, user_id: currentUserId ?? '' }
   }
 
   async function getCollections(includeDeleted = false): Promise<Collection[]> {

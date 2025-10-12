@@ -2,10 +2,10 @@ import { open } from 'sqlite'
 import sqlite3 from 'sqlite3'
 
 type SqlDb = {
-  run: (...args: any[]) => Promise<any>
-  get: <T = unknown>(...args: any[]) => Promise<T | undefined>
-  all: <T = unknown>(...args: any[]) => Promise<T[]>
-  exec: (...args: any[]) => Promise<any>
+  run: (...args: unknown[]) => Promise<unknown>
+  get: <T = unknown>(...args: unknown[]) => Promise<T | undefined>
+  all: <T = unknown>(...args: unknown[]) => Promise<T[]>
+  exec: (...args: unknown[]) => Promise<unknown>
   close: () => Promise<void>
 }
 

@@ -169,9 +169,8 @@ export const useCards = () => {
       .sort((a, b) => b.created_at - a.created_at)
   }
 
-  const getCardsCount = (collectionId: string): number => {
-    return mockCards.filter(c => c.collection_id === collectionId && !c.deleted_at).length
-  }
+  const getCardsCount = (collectionId: string): number =>
+    mockCards.filter(c => c.collection_id === collectionId && !c.deleted_at).length
 
   const getLastCardDate = (collectionId: string): Date | null => {
     const collectionCards = mockCards
@@ -194,9 +193,8 @@ export const useCards = () => {
    * @param collectionId string
    * @param compartment number (1-6)
    */
-  const countCardsPerCompartment = (collectionId: string, compartment: number): number => {
-    return mockCards.filter(c => c.collection_id === collectionId && !c.deleted_at && (c.compartment ?? 1) === compartment).length
-  }
+  const countCardsPerCompartment = (collectionId: string, compartment: number): number =>
+    mockCards.filter(c => c.collection_id === collectionId && !c.deleted_at && (c.compartment ?? 1) === compartment).length
 
   return {
     cards: readonly(cards),

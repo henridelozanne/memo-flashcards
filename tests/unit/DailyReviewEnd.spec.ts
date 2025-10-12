@@ -17,7 +17,7 @@ const mockT = (key: string, params?: TParams) => {
   }
   
   if (params && typeof translations[key] === 'string') {
-    let result = translations[key]
+  const result = translations[key]
     
     // Gestion spéciale pour la pluralisation (pipe syntax)
     if (key === 'dailyReview.currentStreak' && params.days !== undefined) {

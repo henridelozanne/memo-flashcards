@@ -16,9 +16,9 @@ describe('Statistiques utilisateur', () => {
     const { countCardsPerCompartment, createCard, cards, applyAnswer, resetCards } = useCards()
     resetCards()
     // Ajoute 5 cartes dans le compartiment 1
-    for (let i = 0; i < 5; i++) createCard('Q', 'A', 'col1')
+  for (let i = 0; i < 5; i += 1) createCard('Q', 'A', 'col1')
     // Passe 2 cartes au compartiment 2 via applyAnswer('almost')
-    for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 2; i += 1) {
       applyAnswer(cards.value[i], 'almost')
     }
     expect(countCardsPerCompartment('col1', 1)).toBe(3)

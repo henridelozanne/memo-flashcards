@@ -37,7 +37,7 @@ describe('Daily Review Functions', () => {
       
       // Faire passer une carte au compartiment 6
       const cardToPromote = cards[0]
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 6; i += 1) {
         applyAnswer(cardToPromote, 'true')
       }
       

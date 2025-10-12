@@ -16,6 +16,16 @@ const todayCardsCount = ref(0)
 
 export const useStreak = () => {
   /**
+   * Nettoie l'historique des jours trop anciens (> 90 jours)
+   */
+  const cleanOldHistory = () => {
+    const today = new Date()
+    const cutoffDate = new Date(today.getTime() - MAX_STREAK_HISTORY * 24 * 60 * 60 * 1000)
+    const cutoffString = cutoffDate.toISOString().split('T')[0]
+    streakHistory.value = streakHistory.value.filter(day => day.date >= cutoffString)
+  }
+
+  /**
    * Charge l'historique du streak depuis localStorage
    */
   const loadStreak = () => {
@@ -49,29 +59,18 @@ export const useStreak = () => {
     }
   }
 
-  /**
-   * Nettoie l'historique des jours trop anciens (> 90 jours)
-   */
-  const cleanOldHistory = () => {
-    const today = new Date()
-    const cutoffDate = new Date(today.getTime() - MAX_STREAK_HISTORY * 24 * 60 * 60 * 1000)
-    const cutoffString = cutoffDate.toISOString().split('T')[0]
-    
-    streakHistory.value = streakHistory.value.filter(day => day.date >= cutoffString)
-  }
+  
 
   /**
    * Retourne la date d'aujourd'hui au format YYYY-MM-DD
    */
-  const getTodayString = () => {
-    return new Date().toISOString().split('T')[0]
-  }
+  const getTodayString = () => new Date().toISOString().split('T')[0]
 
   /**
    * Incrémente le compteur de cartes révisées aujourd'hui
    */
   const incrementTodayCards = () => {
-    todayCardsCount.value++
+    todayCardsCount.value += 1
     saveStreak()
   }
 
@@ -110,27 +109,22 @@ export const useStreak = () => {
   const getCurrentStreakLength = () => {
     const today = new Date()
     let streakLength = 0
-    
-    for (let i = 0; i < MAX_STREAK_HISTORY; i++) {
+    for (let i = 0; i < MAX_STREAK_HISTORY; i += 1) {
       const checkDate = new Date(today.getTime() - i * 24 * 60 * 60 * 1000)
       const dateString = checkDate.toISOString().split('T')[0]
-      
       if (streakHistory.value.some(day => day.date === dateString)) {
-        streakLength++
+        streakLength += 1
       } else {
         break
       }
     }
-    
     return streakLength
   }
 
   /**
    * Vérifie si l'utilisateur doit réviser pour maintenir son streak
    */
-  const shouldValidateStreak = () => {
-    return todayCardsCount.value >= MIN_CARDS_FOR_STREAK
-  }
+  const shouldValidateStreak = () => todayCardsCount.value >= MIN_CARDS_FOR_STREAK
 
   /**
    * Remet à zéro le compteur quotidien (pour les tests)
