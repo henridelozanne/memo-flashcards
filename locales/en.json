@@ -12,6 +12,19 @@
     "backToCollections": "Back to my collections",
     "noCard": "No card to review."
   },
+  "dailyReview": {
+    "reviewToday": "Review today {count} card | Review today {count} cards",
+    "noCardsToday": "No cards to review today",
+    "sessionFinished": "Daily session completed!",
+    "finishSession": "Finish",
+    "cardsReviewed": "Cards reviewed: {count}",
+    "successRate": "Success rate: {percent}%",
+    "streakValidated": "Streak validated!",
+    "streakNotValidated": "Streak not validated",
+    "currentStreak": "Current streak: {days} day | Current streak: {days} days",
+    "needMoreCards": "Review at least 10 cards to validate your streak",
+    "backToCollections": "Back to collections"
+  },
   "app": { "name": "Memo Flashcards" },
   "common": {
     "ok": "OK",

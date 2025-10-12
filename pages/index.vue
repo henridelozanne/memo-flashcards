@@ -21,8 +21,20 @@
       <button class="ml-2 underline" @click="loadCollections">Réessayer</button>
     </div>
 
+    <!-- Daily review button -->
+    <div class="mb-6">
+      <button 
+        class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4 rounded-xl font-semibold text-lg shadow-lg hover:from-blue-600 hover:to-blue-700 transition flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:from-blue-500 disabled:hover:to-blue-600"
+        data-testid="daily-review-btn"
+        :disabled="dailyCardsCount === 0"
+        @click="$router.push('/daily-review')"
+      >
+        {{ dailyCardsCount > 0 ? $t('dailyReview.reviewToday', dailyCardsCount, { count: dailyCardsCount }) : $t('dailyReview.noCardsToday') }}
+      </button>
+    </div>
+
     <!-- Collections grid -->
-  <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+  <div v-if="!isLoading && !error" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
       <!-- Carte +Créer une collection -->
   <div data-testid="create-card" class="flex flex-col items-center justify-center border-2 border-dashed border-blue-300 rounded-lg p-6 bg-white cursor-pointer hover:bg-blue-50 transition order-last" @click="$router.push('/collections/create')">
         <span class="text-4xl text-blue-400 mb-2">+</span>
@@ -39,7 +51,7 @@
         :on-click="goToCards"
       >
         <template #info>
-          0 cartes
+          {{ getCardsCount(collection.id) }} {{ getCardsCount(collection.id) <= 1 ? 'carte' : 'cartes' }}
         </template>
       </CollectionCard>
     </div>
@@ -62,16 +74,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
+import { useCards } from '~/composables/useCards'
 import type { Collection } from '~/lib/types'
 
 const router = useRouter()
 const { collections, isLoading, error, loadCollections, deleteCollection } = useCollections()
+const { getCardsDueToday, getCardsCount } = useCards()
 
 const collectionToDelete = ref<Collection | null>(null)
 const isDeleting = ref(false)
+
+// Calcul du nombre de cartes à réviser aujourd'hui
+const dailyCardsCount = computed(() => getCardsDueToday().length)
 
 // Charger les collections au montage
 onMounted(() => {

@@ -1,5 +1,10 @@
 <template>
   <div class="w-full max-w-md mx-auto">
+    <!-- Collection name in italics -->
+    <div v-if="collectionName" class="text-center text-sm text-gray-500 italic mb-4">
+      {{ collectionName }}
+    </div>
+    
     <div class="relative w-full aspect-[3/4] flex items-center justify-center select-none" style="perspective: 1000px;">
       <div class="flip-card w-full h-full">
         <div class="flip-card-inner w-full h-full" :class="{ 'show-back': showBack }">
@@ -42,7 +47,8 @@
 defineProps({
   currentCard: { type: Object, default: null },
   showBack: { type: Boolean, default: false },
-  responses: { type: Array, default: () => [] }
+  responses: { type: Array, default: () => [] },
+  collectionName: { type: String, default: '' }
 })
 defineEmits(['show-back', 'answer'])
 </script>

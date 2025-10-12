@@ -28,6 +28,23 @@
   }
 
   /**
+   * Retourne toutes les cartes dues aujourd'hui (toutes collections confondues).
+   */
+  const getCardsDueToday = () => {
+    const now = Date.now()
+    return [...mockCards]
+      .filter(card =>
+        !card.deleted_at &&
+        card.next_review_at <= now &&
+        (card.compartment ?? 1) < 6
+      )
+      .sort((a, b) => {
+        if (a.next_review_at !== b.next_review_at) return a.next_review_at - b.next_review_at
+        return a.created_at - b.created_at
+      })
+  }
+
+  /**
    * Applique la réponse Leitner à une carte et met à jour son état.
    * @param card Card
    * @param response 'false' | 'almost' | 'true'
@@ -184,6 +201,7 @@ export const useCards = () => {
     getLastCardDate,
     resetCards,
     getDueCards,
+    getCardsDueToday,
     applyAnswer
   }
 }
