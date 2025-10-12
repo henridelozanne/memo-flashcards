@@ -71,7 +71,7 @@ function validateName() {
   }
 }
 
-watch(() => localName.value, validateName, { immediate: true })
+watch(() => localName.value, validateName)
 
 function handleSubmit() {
   validateName()

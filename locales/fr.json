@@ -4,10 +4,13 @@
     "ok": "OK",
     "cancel": "Annuler",
     "save": "Enregistrer",
+    "add": "Ajouter",
+    "delete": "Supprimer",
     "loading": "Chargement...",
     "retry": "Réessayer"
   },
   "collections": {
+    "collection": "Collection",
     "editTitle": "Modifier la collection",
     "notFound": "Collection introuvable",
     "updatedSuccess": "Collection mise à jour avec succès",
@@ -15,5 +18,28 @@
     "createTitle": "Créer une collection",
     "createdSuccess": "Collection créée avec succès !",
     "createdError": "Erreur lors de la création de la collection"
+  },
+  "cards": {
+    "card": "carte",
+    "cards": "cartes",
+    "lastAdded": "Dernière ajoutée le",
+    "noCards": "Aucune carte",
+    "addCard": "Ajouter une carte",
+    "addFirstCard": "Ajoutez votre première carte pour commencer",
+    "createTitle": "Ajouter une carte",
+    "editTitle": "Modifier la carte",
+    "front": "Recto",
+    "back": "Verso",
+    "frontPlaceholder": "Question ou terme à retenir",
+    "backPlaceholder": "Réponse ou définition",
+    "addAnother": "Ajouter une autre",
+    "createdSuccess": "Carte ajoutée avec succès !",
+    "createdError": "Erreur lors de l'ajout de la carte",
+    "updatedSuccess": "Carte modifiée avec succès",
+    "updatedError": "Erreur lors de la modification de la carte",
+    "deleteConfirm": "Supprimer cette carte",
+    "deleteMessage": "Êtes-vous sûr de vouloir supprimer cette carte ?",
+    "deletedSuccess": "Carte supprimée avec succès",
+    "deletedError": "Erreur lors de la suppression de la carte"
   }
 }

@@ -4,10 +4,13 @@
     "ok": "OK",
     "cancel": "Cancel",
     "save": "Save",
+    "add": "Add",
+    "delete": "Delete",
     "loading": "Loading...",
     "retry": "Retry"
   },
   "collections": {
+    "collection": "Collection",
     "editTitle": "Edit collection",
     "notFound": "Collection not found",
     "updatedSuccess": "Collection updated successfully",
@@ -15,5 +18,28 @@
     "createTitle": "Create a collection",
     "createdSuccess": "Collection created successfully!",
     "createdError": "Error while creating the collection"
+  },
+  "cards": {
+    "card": "card",
+    "cards": "cards",
+    "lastAdded": "Last added on",
+    "noCards": "No cards",
+    "addCard": "Add a card",
+    "addFirstCard": "Add your first card to get started",
+    "createTitle": "Add a card",
+    "editTitle": "Edit card",
+    "front": "Front",
+    "back": "Back",
+    "frontPlaceholder": "Question or term to remember",
+    "backPlaceholder": "Answer or definition",
+    "addAnother": "Add another",
+    "createdSuccess": "Card added successfully!",
+    "createdError": "Error while adding the card",
+    "updatedSuccess": "Card updated successfully",
+    "updatedError": "Error while updating the card",
+    "deleteConfirm": "Delete this card",
+    "deleteMessage": "Are you sure you want to delete this card?",
+    "deletedSuccess": "Card deleted successfully",
+    "deletedError": "Error while deleting the card"
   }
 }

@@ -36,6 +36,7 @@
         :collection="collection"
         :on-edit="editCollection"
         :on-delete="confirmDelete"
+        :on-click="goToCards"
       >
         <template #info>
           0 cartes
@@ -107,5 +108,10 @@ async function handleDelete() {
   } finally {
     isDeleting.value = false
   }
+}
+
+// Navigation vers la liste des cartes
+function goToCards(id: string) {
+  router.push(`/collections/${id}/cards`)
 }
 </script>

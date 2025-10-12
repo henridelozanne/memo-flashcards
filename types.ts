@@ -1,5 +1,6 @@
 export interface Collection {
   id: string
+  user_id: string
   name: string
   created_at: number
   updated_at: number
@@ -8,14 +9,17 @@ export interface Collection {
 
 export interface Card {
   id: string
+  front: string
+  back: string
   collection_id: string
-  question: string
-  answer: string
-  format: string
-  compartment: number
-  next_review_at: number
+  user_id: string
   created_at: number
   updated_at: number
+  format: 'text'
+  compartment: number
+  due_at: number
+  ease: number
+  interval: number
   deleted_at?: number | null
 }
 
