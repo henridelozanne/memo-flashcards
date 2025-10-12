@@ -32,18 +32,33 @@ export default function createDb() {
     // Open fresh DB connection
     db = await openDatabase(DB_NAME)
 
-    // Run migrations if they exist
+    // Run migrations if they exist (with tracking to avoid reapplying)
     if (fs.existsSync(MIGRATIONS_DIR)) {
       ensureDb(db)
-      // Load and run migrations in order
       const migrationDb = db
-      await Promise.all(
-        fs.readdirSync(MIGRATIONS_DIR)
-          .filter((f) => f.endsWith('.sql'))
-          .sort()
-          .map(f => fs.readFileSync(path.join(MIGRATIONS_DIR, f), 'utf-8'))
-          .map(sql => migrationDb.exec(sql))
+      await migrationDb.run(
+        'CREATE TABLE IF NOT EXISTS Migrations (file TEXT PRIMARY KEY, applied_at INTEGER NOT NULL)'
       )
+
+      const files = fs
+        .readdirSync(MIGRATIONS_DIR)
+        .filter((f) => f.endsWith('.sql'))
+        .sort()
+
+      for (const file of files) {
+        const applied = await migrationDb.get<{ file: string }>(
+          'SELECT file FROM Migrations WHERE file = ? LIMIT 1',
+          [file]
+        )
+        if (!applied) {
+          const sql = fs.readFileSync(path.join(MIGRATIONS_DIR, file), 'utf-8')
+          await migrationDb.exec(sql)
+          await migrationDb.run(
+            'INSERT INTO Migrations (file, applied_at) VALUES (?, ?)',
+            [file, Date.now()]
+          )
+        }
+      }
     }
   }
 
@@ -66,6 +81,8 @@ export default function createDb() {
   // Collections
   async function createCollection(name: string): Promise<Collection> {
     ensureDb(db)
+    // Get current user id if present in Meta (fallback to null)
+    const currentUserId = (await getMeta('user_id')) as string | null
     
     // Check unique
     const exist = await db.get<Collection>(
@@ -77,8 +94,9 @@ export default function createDb() {
     const now = Date.now()
     const id = uuidv4()
     await db.run(
-      'INSERT INTO Collection (id, name, created_at, updated_at) VALUES (?, ?, ?, ?)',
-      [id, name, now, now]
+      // user_id column may not exist on older DBs; use a flexible insert
+      'INSERT INTO Collection (id, name, created_at, updated_at, user_id) VALUES (?, ?, ?, ?, ?)',
+      [id, name, now, now, currentUserId ?? null]
     )
 
     return { id, name, created_at: now, updated_at: now }
@@ -86,8 +104,18 @@ export default function createDb() {
 
   async function getCollections(includeDeleted = false): Promise<Collection[]> {
     ensureDb(db)
+    const currentUserId = (await getMeta('user_id')) as string | null
+    if (currentUserId) {
+      return db.all<Collection>(
+        includeDeleted
+          ? 'SELECT * FROM Collection WHERE user_id = ? ORDER BY updated_at DESC'
+          : 'SELECT * FROM Collection WHERE user_id = ? AND deleted_at IS NULL ORDER BY updated_at DESC',
+        [currentUserId]
+      )
+    }
+    // Fallback if user_id not set (pre-auth dbs)
     return db.all<Collection>(
-      includeDeleted 
+      includeDeleted
         ? 'SELECT * FROM Collection ORDER BY updated_at DESC'
         : 'SELECT * FROM Collection WHERE deleted_at IS NULL ORDER BY updated_at DESC'
     )
@@ -137,10 +165,11 @@ export default function createDb() {
     ensureDb(db)
     const now = Date.now()
     const id = uuidv4()
+    const currentUserId = (await getMeta('user_id')) as string | null
     
     await db.run(
-      'INSERT INTO Card (id, collection_id, question, answer, format, compartment, next_review_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [id, collectionId, question, answer, 'text', 1, now, now, now]
+      'INSERT INTO Card (id, collection_id, question, answer, format, compartment, next_review_at, created_at, updated_at, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [id, collectionId, question, answer, 'text', 1, now, now, now, currentUserId ?? null]
     )
 
     const row = await db.get<Card>('SELECT * FROM Card WHERE id = ?', [id])
@@ -150,6 +179,13 @@ export default function createDb() {
 
   async function getCardsByCollection(collectionId: string): Promise<Card[]> {
     ensureDb(db)
+    const currentUserId = (await getMeta('user_id')) as string | null
+    if (currentUserId) {
+      return db.all<Card>(
+        'SELECT * FROM Card WHERE collection_id = ? AND user_id = ? AND deleted_at IS NULL ORDER BY updated_at DESC',
+        [collectionId, currentUserId]
+      )
+    }
     return db.all<Card>(
       'SELECT * FROM Card WHERE collection_id = ? AND deleted_at IS NULL ORDER BY updated_at DESC',
       [collectionId]
@@ -199,10 +235,11 @@ export default function createDb() {
     ensureDb(db)
     const now = Date.now()
     const id = uuidv4()
+    const currentUserId = (await getMeta('user_id')) as string | null
     
     await db.run(
-      'INSERT INTO ReviewSession (id, started_at) VALUES (?, ?)',
-      [id, now]
+      'INSERT INTO ReviewSession (id, started_at, user_id) VALUES (?, ?, ?)',
+      [id, now, currentUserId ?? null]
     )
 
     const row = await db.get<ReviewSession>(
@@ -234,9 +271,10 @@ export default function createDb() {
     ensureDb(db)
     const now = Date.now()
     const id = uuidv4()
+    const currentUserId = (await getMeta('user_id')) as string | null
     await db.run(
-      'INSERT INTO ReviewLog (id, card_id, session_id, result, reviewed_at) VALUES (?, ?, ?, ?, ?)',
-      [id, cardId, sessionId, result, now]
+      'INSERT INTO ReviewLog (id, card_id, session_id, result, reviewed_at, user_id) VALUES (?, ?, ?, ?, ?, ?)',
+      [id, cardId, sessionId, result, now, currentUserId ?? null]
     )
   }
 
