@@ -3,7 +3,8 @@ import { mount } from '@vue/test-utils'
 import DailyReviewEnd from '~/components/DailyReviewEnd.vue'
 
 // Mock de vue-i18n
-const mockT = (key: string, params?: any) => {
+type TParams = Record<string, string | number>
+const mockT = (key: string, params?: TParams) => {
   const translations: Record<string, string> = {
     'dailyReview.sessionFinished': 'Session quotidienne terminée !',
     'dailyReview.cardsReviewed': 'Cartes révisées : {count}',
@@ -22,12 +23,15 @@ const mockT = (key: string, params?: any) => {
     if (key === 'dailyReview.currentStreak' && params.days !== undefined) {
       const forms = result.split(' | ')
       return params.days === 1 ? 
-        forms[0].replace('{days}', params.days) : 
-        forms[1].replace('{days}', params.days)
+        forms[0].replace('{days}', String(params.days)) : 
+        forms[1].replace('{days}', String(params.days))
     }
     
     // Remplacement normal des paramètres
-    return result.replace(/\{(\w+)\}/g, (match, param) => params[param] || match)
+    return result.replace(/\{(\w+)\}/g, (match, param) => {
+      const val = params[param]
+      return val !== undefined ? String(val) : match
+    })
   }
   return translations[key] || key
 }

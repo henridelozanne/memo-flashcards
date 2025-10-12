@@ -27,21 +27,21 @@ describe('Statistiques utilisateur', () => {
 
   it('calcule le taux de réussite global', async () => {
     // Simule 8 bonnes réponses, 2 mauvaises
-    (getReviewLogs as unknown as { mockResolvedValue: (v: any) => void }).mockResolvedValue([
+  (getReviewLogs as unknown as { mockResolvedValue: (v: Array<{ response: 'true' | 'false' | 'almost' }>) => void }).mockResolvedValue([
       { response: 'true' }, { response: 'true' }, { response: 'true' },
       { response: 'true' }, { response: 'true' }, { response: 'true' },
       { response: 'true' }, { response: 'true' },
       { response: 'false' }, { response: 'false' }
     ])
-    const logs = await getReviewLogs()
+    const logs = await getReviewLogs() as Array<{ response: 'true' | 'false' | 'almost' }>
     const total = logs.length
-  const good = logs.filter((l: any) => l.response === 'true').length
+    const good = logs.filter((l) => l.response === 'true').length
     const rate = total > 0 ? Math.round((good / total) * 100) : 0
     expect(rate).toBe(80)
   })
 
   it('récupère les sessions de révision pour le calendrier', async () => {
-    (getReviewSessions as unknown as { mockResolvedValue: (v: any) => void }).mockResolvedValue([
+    (getReviewSessions as unknown as { mockResolvedValue: (v: Array<{ date: string; cardsReviewed: number }>) => void }).mockResolvedValue([
       { date: '2025-10-10', cardsReviewed: 12 },
       { date: '2025-10-11', cardsReviewed: 15 }
     ])

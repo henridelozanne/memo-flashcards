@@ -60,12 +60,14 @@ describe('Daily Review Functions', () => {
       expect(dueCards).toHaveLength(2)
       
       // Faire une mauvaise réponse sur Q1 pour la remettre en compartiment 1 (due immédiatement)
-      const q1Card = dueCards.find(c => c.question === 'Q1')!
-      applyAnswer(q1Card, 'false')
+  const q1Card = dueCards.find(c => c.question === 'Q1')
+  if (!q1Card) throw new Error('Q1 introuvable')
+  applyAnswer(q1Card, 'false')
       
       // Faire une bonne réponse sur Q2 pour la retarder
-      const q2Card = dueCards.find(c => c.question === 'Q2')!
-      applyAnswer(q2Card, 'true')
+  const q2Card = dueCards.find(c => c.question === 'Q2')
+  if (!q2Card) throw new Error('Q2 introuvable')
+  applyAnswer(q2Card, 'true')
       
       // Maintenant seule Q1 devrait être due (compartiment 1)
       dueCards = getCardsDueToday()

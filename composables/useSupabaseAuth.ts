@@ -46,7 +46,10 @@ export default function useSupabaseAuth() {
     
     // Initialize auth if no stored ID
     await initAuth();
-    return userId.value!;
+    if (!userId.value) {
+      throw new Error('Unable to resolve user id after initAuth')
+    }
+    return userId.value;
   }
 
   return {

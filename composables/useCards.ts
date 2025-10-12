@@ -1,12 +1,23 @@
-  // Intervalles Leitner en jours (compartiment 1 à 6)
-  const LEITNER_INTERVALS: Record<number, number> = {
-    1: 0,
-    2: 1,
-    3: 3,
-    4: 7,
-    5: 14,
-    6: 30,
-  }
+import { ref, readonly } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
+import type { Card } from '~/lib/types'
+
+// Mock in-memory DB for cards
+let mockCards: Card[] = []
+
+const cards = ref<Card[]>([])
+const isLoading = ref(false)
+const error = ref<string | null>(null)
+
+// Intervalles Leitner en jours (compartiment 1 à 6)
+const LEITNER_INTERVALS: Record<number, number> = {
+  1: 0,
+  2: 1,
+  3: 3,
+  4: 7,
+  5: 14,
+  6: 30,
+}
 
   /**
    * Retourne les cartes à réviser aujourd'hui pour une collection donnée (compartment < 6).
@@ -72,16 +83,6 @@
       .filter(c => c.collection_id === collectionId && !c.deleted_at)
       .sort((a, b) => b.created_at - a.created_at)
   }
-import { ref, readonly } from 'vue'
-import { v4 as uuidv4 } from 'uuid'
-import type { Card } from '~/lib/types'
-
-// Mock in-memory DB for cards
-let mockCards: Card[] = []
-
-const cards = ref<Card[]>([])
-const isLoading = ref(false)
-const error = ref<string | null>(null)
 
 export const useCards = () => {
   const loadCards = async (collectionId: string) => {

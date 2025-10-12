@@ -1,14 +1,23 @@
 import { open } from 'sqlite'
 import sqlite3 from 'sqlite3'
 
-let db: any = null
+type SqlDb = {
+  run: (...args: any[]) => Promise<any>
+  get: <T = unknown>(...args: any[]) => Promise<T | undefined>
+  all: <T = unknown>(...args: any[]) => Promise<T[]>
+  exec: (...args: any[]) => Promise<any>
+  close: () => Promise<void>
+}
 
-export async function useSqliteDb() {
+let db: SqlDb | null = null
+
+export async function useSqliteDb(): Promise<SqlDb> {
   if (!db) {
-    db = await open({
+    const opened = await open({
       filename: './memo-flashcards.sqlite',
       driver: sqlite3.Database
     })
+    db = opened as unknown as SqlDb
   }
   return db
 }

@@ -19,8 +19,8 @@ describe('Database multi-user scoping', () => {
   })
 
   it('isolates collections by user_id', async () => {
-    await setUser(db, 'userA')
-    const colA = await db.createCollection('A')
+  await setUser(db, 'userA')
+  await db.createCollection('A')
 
     await setUser(db, 'userB')
     await db.createCollection('B')
@@ -51,11 +51,11 @@ describe('Database multi-user scoping', () => {
     const colB = await db.createCollection('C_B')
     await db.createCard(colB.id, 'Q2', 'A2')
 
-    const cardsB = await db.getCardsByCollection(colB.id)
-    expect(cardsB.map(c => c.question)).toEqual(['Q2'])
+  const cardsB = await db.getCardsByCollection(colB.id)
+  expect(cardsB.map((c) => (c as unknown as { question: string }).question)).toEqual(['Q2'])
 
     await setUser(db, 'userA')
-    const cardsA = await db.getCardsByCollection(colA.id)
-    expect(cardsA.map(c => c.question)).toEqual(['Q1'])
+  const cardsA = await db.getCardsByCollection(colA.id)
+  expect(cardsA.map((c) => (c as unknown as { question: string }).question)).toEqual(['Q1'])
   })
 })

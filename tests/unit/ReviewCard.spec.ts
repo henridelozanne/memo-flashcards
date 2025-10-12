@@ -3,7 +3,8 @@ import { mount } from '@vue/test-utils'
 import ReviewCard from '~/components/ReviewCard.vue'
 
 // Mock de vue-i18n
-const mockT = (key: string, params?: any) => {
+type TParams = Record<string, string | number>
+const mockT = (key: string, params?: TParams) => {
   const translations: Record<string, string> = {
     'review.noCard': 'Aucune carte',
     'review.showAnswer': 'Voir la réponse',
@@ -13,7 +14,10 @@ const mockT = (key: string, params?: any) => {
   }
   
   if (params && typeof translations[key] === 'string') {
-    return translations[key].replace(/\{(\w+)\}/g, (match, param) => params[param] || match)
+    return translations[key].replace(/\{(\w+)\}/g, (match, param) => {
+      const val = params[param]
+      return val !== undefined ? String(val) : match
+    })
   }
   return translations[key] || key
 }
@@ -27,7 +31,7 @@ const globalMountOptions = {
 }
 
 describe('ReviewCard', () => {
-  const mockCard = {
+  const mockCard: { id: string; question: string; answer: string; collection_id: string } = {
     id: '1',
     question: 'Quelle est la capitale de la France ?',
     answer: 'Paris',
