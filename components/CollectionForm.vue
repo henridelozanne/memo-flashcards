@@ -2,7 +2,7 @@
   <form @submit.prevent="handleSubmit">
     <div class="mb-6">
       <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-        Nom de la collection *
+        {{ $t('collections.nameLabel') }} *
       </label>
       <input
         id="name"
@@ -12,10 +12,9 @@
         maxlength="100"
         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         :class="{ 'border-red-500': error }"
-        placeholder="Ex: Vocabulaire anglais"
+        :placeholder="$t('collections.namePlaceholder')"
       />
       <p v-if="error" class="mt-1 text-sm text-red-600">{{ error }}</p>
-      <p class="mt-1 text-sm text-gray-500">{{ localName.length }}/100 caractères</p>
     </div>
     <div class="flex gap-3">
       <button
@@ -23,7 +22,7 @@
         class="flex-1 px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition"
         @click="$emit('cancel')"
       >
-        Annuler
+        {{ $t('common.cancel') }}
       </button>
       <button
         type="submit"
@@ -31,7 +30,7 @@
         class="flex-1 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
         data-testid="create-btn"
       >
-        {{ isSubmitting ? 'En cours...' : submitLabel }}
+        {{ isSubmitting ? $t('collections.submitting') : submitLabel }}
       </button>
     </div>
   </form>

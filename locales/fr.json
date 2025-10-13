@@ -34,17 +34,32 @@
     "delete": "Supprimer",
     "loading": "Chargement...",
     "retry": "Réessayer",
-    "back": "Retour"
+    "back": "Retour",
+    "backButton": "Retour",
+    "premium": "Premium",
+    "help": "Aide",
+    "loadingCollections": "Chargement des collections...",
+    "createCollection": "Créer une collection",
+    "confirm": "Confirmer",
+    "processing": "En cours..."
   },
   "collections": {
     "collection": "Collection",
+    "collections": "Collections",
     "editTitle": "Modifier la collection",
     "notFound": "Collection introuvable",
     "updatedSuccess": "Collection mise à jour avec succès",
     "updatedError": "Erreur lors de la mise à jour de la collection",
     "createTitle": "Créer une collection",
     "createdSuccess": "Collection créée avec succès !",
-    "createdError": "Erreur lors de la création de la collection"
+    "createdError": "Erreur lors de la création de la collection",
+    "deleteTitle": "Supprimer la collection",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer la collection \"{name}\" ?",
+    "deleteWarning": "Cette action est irréversible.",
+    "nameLabel": "Nom de la collection",
+    "namePlaceholder": "Ex: Vocabulaire anglais",
+    "submitting": "En cours...",
+    "edit": "Modifier"
   },
   "cards": {
     "card": "carte",

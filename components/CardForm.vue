@@ -16,7 +16,6 @@
         data-testid="front-input"
       />
       <p v-if="frontError" class="mt-1 text-sm text-red-600">{{ frontError }}</p>
-      <p class="mt-1 text-sm text-gray-500">{{ localFront.length }}/500 caractères</p>
     </div>
 
     <div class="mb-6">
@@ -35,7 +34,6 @@
         data-testid="back-input"
       ></textarea>
       <p v-if="backError" class="mt-1 text-sm text-red-600">{{ backError }}</p>
-      <p class="mt-1 text-sm text-gray-500">{{ localBack.length }}/2000 caractères</p>
     </div>
 
     <div class="flex gap-3">
@@ -70,9 +68,6 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 
 const props = withDefaults(defineProps<{
   front?: string

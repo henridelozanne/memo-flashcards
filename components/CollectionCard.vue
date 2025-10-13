@@ -6,8 +6,8 @@
       <slot name="info">0 cartes</slot>
     </div>
     <div class="flex gap-2 mt-auto">
-      <button v-if="onEdit" class="text-xs text-blue-600 hover:underline" @click.stop="onEdit(collection.id)">Modifier</button>
-      <button v-if="onDelete" class="text-xs text-red-500 hover:underline" @click.stop="onDelete(collection)">Supprimer</button>
+      <button v-if="onEdit" class="text-xs text-blue-600 hover:underline" @click.stop="onEdit(collection.id)">{{ $t('collections.edit') }}</button>
+      <button v-if="onDelete" class="text-xs text-red-500 hover:underline" @click.stop="onDelete(collection)">{{ $t('common.delete') }}</button>
     </div>
   </div>
 </template>

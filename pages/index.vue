@@ -1,23 +1,23 @@
 <template>
   <div class="min-h-screen bg-gray-50 p-6">
     <div class="flex items-center justify-between mb-6">
-      <h1 class="text-2xl font-bold" data-testid="heading-collections">Collections</h1>
+      <h1 class="text-2xl font-bold" data-testid="heading-collections">{{ $t('collections.collections') }}</h1>
       <div class="flex gap-2">
-        <button class="bg-yellow-100 text-yellow-700 rounded px-3 py-1 text-sm">Premium</button>
-        <button class="bg-gray-200 text-gray-700 rounded px-3 py-1 text-sm">Aide</button>
+        <button class="bg-yellow-100 text-yellow-700 rounded px-3 py-1 text-sm">{{ $t('common.premium') }}</button>
+        <button class="bg-gray-200 text-gray-700 rounded px-3 py-1 text-sm">{{ $t('common.help') }}</button>
       </div>
     </div>
 
     <!-- Loading state -->
   <div v-if="isLoading" class="flex justify-center items-center py-12" data-testid="loading">
       <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      <span class="ml-2 text-gray-600">Chargement des collections...</span>
+      <span class="ml-2 text-gray-600">{{ $t('common.loadingCollections') }}</span>
     </div>
 
     <!-- Error state -->
     <div v-else-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
       {{ error }}
-      <button class="ml-2 underline" @click="loadCollections">Réessayer</button>
+      <button class="ml-2 underline" @click="loadCollections">{{ $t('common.retry') }}</button>
     </div>
 
     <!-- Daily review button -->
@@ -37,7 +37,7 @@
       <!-- Carte +Créer une collection -->
   <div data-testid="create-card" class="flex flex-col items-center justify-center border-2 border-dashed border-blue-300 rounded-lg p-6 bg-white cursor-pointer hover:bg-blue-50 transition order-last" @click="$router.push('/collections/create')">
         <span class="text-4xl text-blue-400 mb-2">+</span>
-        <span class="font-medium text-blue-700 text-center">Créer une collection</span>
+        <span class="font-medium text-blue-700 text-center">{{ $t('common.createCollection') }}</span>
       </div>
 
       <!-- Collections existantes -->
@@ -59,15 +59,15 @@
     <ConfirmModal
       v-if="collectionToDelete"
       :open="!!collectionToDelete"
-      title="Supprimer la collection"
-      confirm-label="Supprimer"
+      :title="$t('collections.deleteTitle')"
+      :confirm-label="$t('common.delete')"
       :loading="isDeleting"
       @cancel="collectionToDelete = null"
       @confirm="handleDelete"
     >
-      Êtes-vous sûr de vouloir supprimer la collection "{{ collectionToDelete?.name }}" ?
+      {{ $t('collections.deleteConfirm', { name: collectionToDelete?.name }) }}
       <br />
-      <span class="text-sm text-gray-500">Cette action est irréversible.</span>
+      <span class="text-sm text-gray-500">{{ $t('collections.deleteWarning') }}</span>
     </ConfirmModal>
   </div>
 </template>

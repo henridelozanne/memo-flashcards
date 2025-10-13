@@ -10,7 +10,7 @@
           {{ cancelLabel }}
         </button>
         <button :disabled="loading" class="flex-1 px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700 disabled:bg-gray-400 transition" @click="$emit('confirm')">
-          <slot name="confirmLabel">{{ loading ? 'En cours...' : confirmLabel }}</slot>
+          <slot name="confirmLabel">{{ loading ? $t('common.processing') : confirmLabel }}</slot>
         </button>
       </div>
     </div>

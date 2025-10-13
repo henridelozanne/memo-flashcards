@@ -34,17 +34,32 @@
     "delete": "Delete",
     "loading": "Loading...",
     "retry": "Retry",
-    "back": "Back"
+    "back": "Back",
+    "premium": "Premium",
+    "help": "Help",
+    "loadingCollections": "Loading collections...",
+    "createCollection": "Create a collection",
+    "confirm": "Confirm",
+    "processing": "Processing...",
+    "backButton": "Back"
   },
   "collections": {
     "collection": "Collection",
+    "collections": "Collections",
     "editTitle": "Edit collection",
     "notFound": "Collection not found",
     "updatedSuccess": "Collection updated successfully",
     "updatedError": "Error while updating collection",
     "createTitle": "Create a collection",
     "createdSuccess": "Collection created successfully!",
-    "createdError": "Error while creating the collection"
+    "createdError": "Error while creating the collection",
+    "deleteTitle": "Delete collection",
+    "deleteConfirm": "Are you sure you want to delete the collection \"{name}\"?",
+    "deleteWarning": "This action is irreversible.",
+    "nameLabel": "Collection name",
+    "namePlaceholder": "e.g. English vocabulary",
+    "submitting": "Processing...",
+    "edit": "Edit"
   },
   "cards": {
     "card": "card",

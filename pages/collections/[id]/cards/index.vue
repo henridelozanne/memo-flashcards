@@ -3,7 +3,7 @@
     <div class="max-w-2xl mx-auto">
       <!-- Header avec retour et titre -->
       <div class="flex items-center mb-6">
-  <button class="mr-4 text-gray-600 hover:text-gray-800" aria-label="Retour" @click="$router.push('/')">
+  <button class="mr-4 text-gray-600 hover:text-gray-800" :aria-label="$t('common.backButton')" @click="$router.push('/')">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
           </svg>
