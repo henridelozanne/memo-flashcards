@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
@@ -115,15 +115,6 @@ const loadDailyCardsCount = async () => {
 
 // Fonction pour obtenir le compteur de cartes (avec fallback)
 const getCollectionCardCount = (collectionId: string) => cardsCounts.value[collectionId] ?? 0
-
-// Watch pour recharger automatiquement les cartes dues quand les collections changent
-watch(collections, async (newCollections) => {
-  if (newCollections.length > 0) {
-    await loadDailyCardsCount()
-  } else {
-    dailyCardsCount.value = 0
-  }
-}, { deep: true })
 
 // Charger les cartes dues et le nombre de collections au montage
 onMounted(async () => {
