@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { useCards } from '~/composables/useCards'
-import { useStreak } from '~/composables/useStreak'
 
 // Mock the SQLite connection for testing
 const mockSqliteConnection = {
@@ -24,26 +23,7 @@ vi.mock('uuid', () => ({
   }
 }))
 
-// Mock localStorage for streak functionality
-const mockLocalStorage = (() => {
-  let store: Record<string, string> = {}
-  return {
-    getItem: vi.fn((key: string) => store[key] || null),
-    setItem: vi.fn((key: string, value: string) => {
-      store[key] = value
-    }),
-    removeItem: vi.fn((key: string) => {
-      delete store[key]
-    }),
-    clear: vi.fn(() => {
-      store = {}
-    })
-  }
-})()
 
-Object.defineProperty(window, 'localStorage', {
-  value: mockLocalStorage
-})
 
 describe('Daily Review Functions', () => {
   let createdCards: any[] = []
@@ -54,12 +34,9 @@ describe('Daily Review Functions', () => {
     createdCards = []
     
     const { resetCards } = useCards()
-    const { resetStreak } = useStreak()
     resetCards()
-    resetStreak()
     
-    // Clear localStorage
-    mockLocalStorage.clear()
+
     
     // Setup SQLite mocks
     vi.clearAllMocks()
@@ -208,118 +185,5 @@ describe('Daily Review Functions', () => {
     })
   })
 
-  describe('Streak System', () => {
-    it('valide le streak automatiquement à la fin de session', () => {
-      const { validateTodayStreak } = useStreak()
-      
-      // Terminer la session quotidienne valide automatiquement le streak
-      expect(validateTodayStreak()).toBe(true)
-    })
 
-    it('track le streak actuel', () => {
-      const { validateTodayStreak, getCurrentStreakLength } = useStreak()
-      
-      expect(getCurrentStreakLength()).toBe(0)
-      
-      // Simuler une validation aujourd'hui
-      validateTodayStreak()
-      
-      expect(getCurrentStreakLength()).toBe(1)
-    })
-
-    it('sauvegarde et charge depuis localStorage', () => {
-      const { loadStreak, validateTodayStreak, isTodayStreakValidated } = useStreak()
-      
-      // Valider le streak d'aujourd'hui
-      validateTodayStreak()
-      expect(isTodayStreakValidated()).toBe(true)
-      
-      // Simuler un rechargement
-      loadStreak()
-      expect(isTodayStreakValidated()).toBe(true)
-    })
-
-    it('détecte si le streak est déjà validé aujourd\'hui', () => {
-      const { validateTodayStreak, isTodayStreakValidated } = useStreak()
-      
-      expect(isTodayStreakValidated()).toBe(false)
-      
-      validateTodayStreak()
-      
-      expect(isTodayStreakValidated()).toBe(true)
-    })
-  })
-
-  describe('Daily Review Integration', () => {
-    it('termine la session et valide le streak automatiquement', async () => {
-      const { getCardsDueToday } = useCards()
-      const { validateTodayStreak, isTodayStreakValidated } = useStreak()
-      
-      // Mock quelques cartes dues
-      const now = Date.now()
-      const mockCards = [
-        {
-          id: 'mock-uuid-1',
-          question: 'Q1',
-          answer: 'A1',
-          collection_id: 'collection1',
-          compartment: 1,
-          next_review_at: now,
-          created_at: now,
-          deleted_at: null,
-          archived: 0
-        },
-        {
-          id: 'mock-uuid-2',
-          question: 'Q2',
-          answer: 'A2',
-          collection_id: 'collection1',
-          compartment: 1,
-          next_review_at: now,
-          created_at: now,
-          deleted_at: null,
-          archived: 0
-        }
-      ]
-      
-      mockSqliteConnection.all.mockResolvedValue(mockCards)
-      
-      const dueCards = await getCardsDueToday()
-      expect(dueCards).toHaveLength(2)
-      expect(isTodayStreakValidated()).toBe(false)
-      
-      // Terminer la session (peu importe le nombre de cartes) valide le streak
-      const streakValidated = validateTodayStreak()
-      expect(streakValidated).toBe(true)
-      expect(isTodayStreakValidated()).toBe(true)
-    })
-
-    it('fonctionne même avec une seule carte due', async () => {
-      const { getCardsDueToday } = useCards()
-      const { validateTodayStreak } = useStreak()
-      
-      // Mock une seule carte due
-      const now = Date.now()
-      const mockCard = [{
-        id: 'mock-uuid-1',
-        question: 'Q1',
-        answer: 'A1',
-        collection_id: 'collection1',
-        compartment: 1,
-        next_review_at: now,
-        created_at: now,
-        deleted_at: null,
-        archived: 0
-      }]
-      
-      mockSqliteConnection.all.mockResolvedValue(mockCard)
-      
-      const dueCards = await getCardsDueToday()
-      expect(dueCards).toHaveLength(1)
-      
-      // Le streak est validé en terminant la session (peu importe le nombre de cartes)
-      const streakValidated = validateTodayStreak()
-      expect(streakValidated).toBe(true)
-    })
-  })
 })

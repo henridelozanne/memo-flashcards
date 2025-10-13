@@ -29,8 +29,6 @@
           key="end"
           :cards-reviewed="cardsReviewed"
           :success-rate="successRate"
-          :streak-validated="streakValidated"
-          :current-streak="currentStreak"
           @back="$router.push('/')"
         />
       </transition>
@@ -42,13 +40,11 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCards } from '~/composables/useCards'
-import { useStreak } from '~/composables/useStreak'
 import { useCollections } from '~/composables/useCollections'
 import type { Card } from '~/lib/types'
 
 const router = useRouter()
 const { getCardsDueToday, applyAnswer } = useCards()
-const { validateTodayStreak, getCurrentStreakLength } = useStreak()
 const { collections, loadCollections } = useCollections()
 
 const dueCards = ref<Card[]>([])
@@ -80,8 +76,6 @@ const totalCards = computed(() => dueCards.value.length)
 const successRate = computed(() => 
   cardsReviewed.value > 0 ? Math.round((goodCount.value / cardsReviewed.value) * 100) : 0
 )
-const streakValidated = ref(false)
-const currentStreak = ref(0)
 
 async function answer(resp: 'true' | 'almost' | 'false') {
   if (!currentCard.value) return
@@ -98,9 +92,7 @@ async function answer(resp: 'true' | 'almost' | 'false') {
   if (currentIndex.value < dueCards.value.length - 1) {
     currentIndex.value += 1
   } else {
-    // Fin de session - streak validé car toutes les cartes ont été faites
-    streakValidated.value = validateTodayStreak()
-    currentStreak.value = getCurrentStreakLength()
+    // Fin de session
     sessionFinished.value = true
   }
 }

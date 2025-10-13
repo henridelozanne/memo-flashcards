@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
-    "build:ios": "npm run build && npx @capacitor/cli sync ios",
+    "go": "npm run build && npx @capacitor/cli sync ios",
     "preview": "nuxi preview",
-    "test:unit": "vitest run",
+    "test": "vitest run",
     "verify": "eslint . && tsc --noEmit && vitest run"
   },
   "dependencies": {
