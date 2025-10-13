@@ -72,9 +72,9 @@ function goToCollections() {
   router.push('/')
 }
 
-function answer(resp: 'true' | 'almost' | 'false') {
+async function answer(resp: 'true' | 'almost' | 'false') {
   if (!currentCard.value) return
-  applyAnswer(currentCard.value, resp)
+  await applyAnswer(currentCard.value, resp)
   if (resp === 'true') goodCount.value += 1
   // Animation/transition vers la carte suivante
   showBack.value = false
@@ -85,9 +85,9 @@ function answer(resp: 'true' | 'almost' | 'false') {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   collection.value = getCollection(collectionId)
-  dueCards.value = getDueCards(collectionId)
+  dueCards.value = await getDueCards(collectionId)
   total.value = dueCards.value.length
 })
 defineOptions({ name: 'ReviewSessionPage' })

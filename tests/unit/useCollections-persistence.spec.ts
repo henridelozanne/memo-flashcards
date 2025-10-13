@@ -2,13 +2,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { useCollections } from '~/composables/useCollections'
 
-// Mock Capacitor to simulate native environment
-vi.mock('@capacitor/core', () => ({
-  Capacitor: {
-    isNativePlatform: () => true
-  }
-}))
-
 // Mock the SQLite connection for testing
 const mockSqliteConnection = {
   exec: vi.fn(),

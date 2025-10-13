@@ -1,21 +1,16 @@
 import { ref, readonly } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import { Capacitor } from '@capacitor/core'
 import type { Collection } from '~/lib/types'
 
 const collections = ref<Collection[]>([])
 const isLoading = ref(true)
 const error = ref<string | null>(null)
 
-// Shared database connection for mobile
+// Shared database connection
 let dbConnection: any = null
 
-// Helper function to get DB connection (only on native platform)
+// Helper function to get DB connection
 async function getDbConnection() {
-  if (!Capacitor.isNativePlatform()) {
-    throw new Error('Database only available on native platform')
-  }
-  
   // Use existing connection if available
   if (dbConnection) {
     return dbConnection
@@ -44,18 +39,9 @@ export const useCollections = () => {
     isLoading.value = true
     error.value = null
     try {
-      if (Capacitor.isNativePlatform()) {
-        // Mode natif - utiliser SQLite
-        const db = await getDbConnection()
-        const result = await db.all('SELECT * FROM collections WHERE deleted_at IS NULL ORDER BY updated_at DESC') as Collection[]
-        collections.value = result
-      } else {
-        // Mode web - utiliser localStorage comme fallback temporaire
-        const stored = localStorage.getItem('memo_collections')
-        const allCollections = stored ? JSON.parse(stored) : []
-        // Filtrer les collections supprimées comme en SQLite
-        collections.value = allCollections.filter((c: Collection) => !c.deleted_at)
-      }
+      const db = await getDbConnection()
+      const result = await db.all('SELECT * FROM collections WHERE deleted_at IS NULL ORDER BY updated_at DESC') as Collection[]
+      collections.value = result
     } catch (e: any) {
       error.value = e.message || 'Erreur lors du chargement des collections'
     } finally {
@@ -78,36 +64,21 @@ export const useCollections = () => {
         updated_at: Date.now(),
       }
 
-      if (Capacitor.isNativePlatform()) {
-        // Mode natif - utiliser SQLite
-        const db = await getDbConnection()
-        
-        // Check if collection already exists
-        const existing = await db.get(
-          'SELECT COUNT(*) as count FROM collections WHERE name = ? AND deleted_at IS NULL', 
-          [name.trim()]
-        ) as { count: number } | undefined
-        if (existing && existing.count > 0) {
-          throw new Error(`Collection "${name}" already exists`)
-        }
-
-        await db.run(
-          'INSERT INTO collections (id, user_id, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-          [newCollection.id, newCollection.user_id, newCollection.name, newCollection.created_at, newCollection.updated_at]
-        )
-      } else {
-        // Mode web - utiliser localStorage
-        const stored = localStorage.getItem('memo_collections')
-        const existing = stored ? JSON.parse(stored) : []
-        
-        // Check duplicates
-        if (existing.some((c: Collection) => c.name.toLowerCase() === name.trim().toLowerCase() && !c.deleted_at)) {
-          throw new Error(`Collection "${name}" already exists`)
-        }
-        
-        existing.unshift(newCollection)
-        localStorage.setItem('memo_collections', JSON.stringify(existing))
+      const db = await getDbConnection()
+      
+      // Check if collection already exists
+      const existing = await db.get(
+        'SELECT COUNT(*) as count FROM collections WHERE name = ? AND deleted_at IS NULL', 
+        [name.trim()]
+      ) as { count: number } | undefined
+      if (existing && existing.count > 0) {
+        throw new Error(`Collection "${name}" already exists`)
       }
+
+      await db.run(
+        'INSERT INTO collections (id, user_id, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
+        [newCollection.id, newCollection.user_id, newCollection.name, newCollection.created_at, newCollection.updated_at]
+      )
       
       await loadCollections()
       return newCollection
@@ -120,40 +91,21 @@ export const useCollections = () => {
   const updateCollection = async (id: string, name: string): Promise<void> => {
     error.value = null
     try {
-      if (Capacitor.isNativePlatform()) {
-        // Mode natif - utiliser SQLite
-        const db = await getDbConnection()
-        
-        // Check if another collection with this name exists
-        const existing = await db.get(
-          'SELECT COUNT(*) as count FROM collections WHERE name = ? AND id != ? AND deleted_at IS NULL', 
-          [name.trim(), id]
-        ) as { count: number } | undefined
-        if (existing && existing.count > 0) {
-          throw new Error(`Collection "${name}" already exists`)
-        }
-
-        await db.run(
-          'UPDATE collections SET name = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
-          [name.trim(), Date.now(), id]
-        )
-      } else {
-        // Mode web - utiliser localStorage
-        const stored = localStorage.getItem('memo_collections')
-        const storedCollections = stored ? JSON.parse(stored) : []
-        
-        const idx = storedCollections.findIndex((c: Collection) => c.id === id && !c.deleted_at)
-        if (idx === -1) throw new Error('Collection not found')
-        
-        // Check duplicates
-        if (storedCollections.some((c: Collection) => c.name.toLowerCase() === name.trim().toLowerCase() && c.id !== id && !c.deleted_at)) {
-          throw new Error(`Collection "${name}" already exists`)
-        }
-        
-        storedCollections[idx].name = name.trim()
-        storedCollections[idx].updated_at = Date.now()
-        localStorage.setItem('memo_collections', JSON.stringify(storedCollections))
+      const db = await getDbConnection()
+      
+      // Check if another collection with this name exists
+      const existing = await db.get(
+        'SELECT COUNT(*) as count FROM collections WHERE name = ? AND id != ? AND deleted_at IS NULL', 
+        [name.trim(), id]
+      ) as { count: number } | undefined
+      if (existing && existing.count > 0) {
+        throw new Error(`Collection "${name}" already exists`)
       }
+
+      await db.run(
+        'UPDATE collections SET name = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
+        [name.trim(), Date.now(), id]
+      )
       
       await loadCollections()
     } catch (e: any) {
@@ -165,24 +117,11 @@ export const useCollections = () => {
   const deleteCollection = async (id: string): Promise<void> => {
     error.value = null
     try {
-      if (Capacitor.isNativePlatform()) {
-        // Mode natif - utiliser SQLite
-        const db = await getDbConnection()
-        await db.run(
-          'UPDATE collections SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL',
-          [Date.now(), id]
-        )
-      } else {
-        // Mode web - utiliser localStorage
-        const stored = localStorage.getItem('memo_collections')
-        const storedCollections = stored ? JSON.parse(stored) : []
-        
-        const idx = storedCollections.findIndex((c: Collection) => c.id === id && !c.deleted_at)
-        if (idx === -1) throw new Error('Collection not found')
-        
-        storedCollections[idx].deleted_at = Date.now()
-        localStorage.setItem('memo_collections', JSON.stringify(storedCollections))
-      }
+      const db = await getDbConnection()
+      await db.run(
+        'UPDATE collections SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL',
+        [Date.now(), id]
+      )
       
       await loadCollections()
     } catch (e: any) {

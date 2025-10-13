@@ -1,69 +1,84 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { useCollections } from '~/composables/useCollections'
 
-// Mock Capacitor to simulate web environment
-vi.mock('@capacitor/core', () => ({
-  Capacitor: {
-    isNativePlatform: () => false
-  }
+// Mock the SQLite connection for testing
+const mockSqliteConnection = {
+  exec: vi.fn(),
+  run: vi.fn(),
+  get: vi.fn(),
+  all: vi.fn(),
+  close: vi.fn()
+}
+
+vi.mock('~/lib/sqlite', () => ({
+  default: vi.fn(() => mockSqliteConnection)
 }))
 
-// Mock localStorage
-const mockLocalStorage = (() => {
-  let store: Record<string, string> = {}
-  return {
-    getItem: vi.fn((key: string) => store[key] || null),
-    setItem: vi.fn((key: string, value: string) => {
-      store[key] = value
-    }),
-    removeItem: vi.fn((key: string) => {
-      delete store[key]
-    }),
-    clear: vi.fn(() => {
-      store = {}
-    })
-  }
-})()
-
-Object.defineProperty(window, 'localStorage', {
-  value: mockLocalStorage
-})
-
 // Mock UUID pour des tests déterministes
+let mockUuidCounter = 0
 vi.mock('uuid', () => ({
-  v4: vi.fn(() => `mock-uuid-${Date.now()}`)
+  v4: () => {
+    mockUuidCounter += 1
+    return `mock-uuid-${mockUuidCounter}`
+  }
 }))
 
 describe('useCollections', () => {
   let composable: ReturnType<typeof useCollections>
 
   beforeEach(() => {
+    // Reset UUID counter
+    mockUuidCounter = 0
+    
     // Créer une nouvelle instance du composable pour chaque test
     composable = useCollections()
     // Reset les données mockées
     composable.resetCollections()
-    // Clear localStorage
-    mockLocalStorage.clear()
+    
+    // Setup default SQLite mocks
     vi.clearAllMocks()
+    mockSqliteConnection.exec.mockResolvedValue(undefined)
+    mockSqliteConnection.run.mockResolvedValue(undefined)
+    mockSqliteConnection.get.mockResolvedValue({ count: 0 })
+    mockSqliteConnection.all.mockResolvedValue([])
   })
 
   describe('createCollection', () => {
     it('should create a new collection', async () => {
+      // Mock successful creation
+      mockSqliteConnection.get.mockResolvedValue({ count: 0 }) // No duplicate
+      mockSqliteConnection.all.mockResolvedValue([{
+        id: 'mock-uuid-1',
+        user_id: 'default-user',
+        name: 'Test Collection',
+        created_at: expect.any(Number),
+        updated_at: expect.any(Number)
+      }])
+      
       const collection = await composable.createCollection('Test Collection')
 
       expect(collection).toEqual({
-        id: expect.stringMatching(/^mock-uuid-/),
+        id: 'mock-uuid-1',
         user_id: 'default-user',
         name: 'Test Collection',
         created_at: expect.any(Number),
         updated_at: expect.any(Number)
       })
 
-      expect(composable.collections.value).toHaveLength(1)
+      // Verify SQLite calls
+      expect(mockSqliteConnection.get).toHaveBeenCalledWith(
+        'SELECT COUNT(*) as count FROM collections WHERE name = ? AND deleted_at IS NULL',
+        ['Test Collection']
+      )
+      expect(mockSqliteConnection.run).toHaveBeenCalledWith(
+        'INSERT INTO collections (id, user_id, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
+        ['mock-uuid-1', 'default-user', 'Test Collection', expect.any(Number), expect.any(Number)]
+      )
     })
 
     it('should throw error for duplicate collection names', async () => {
-      await composable.createCollection('Duplicate')
+      // Mock duplicate found
+      mockSqliteConnection.get.mockResolvedValue({ count: 1 })
       
       await expect(composable.createCollection('Duplicate')).rejects.toThrow(
         'Collection "Duplicate" already exists'
@@ -73,27 +88,32 @@ describe('useCollections', () => {
 
   describe('updateCollection', () => {
     it('should update an existing collection', async () => {
-      const collection = await composable.createCollection('Original')
+      // Mock no duplicate for update
+      mockSqliteConnection.get.mockResolvedValue({ count: 0 })
       
-      // Wait a bit to ensure different timestamp
-      await new Promise(resolve => setTimeout(resolve, 10))
+      await composable.updateCollection('test-id', 'Updated')
       
-      await composable.updateCollection(collection.id, 'Updated')
-      
-      const updated = composable.getCollection(collection.id)
-      expect(updated?.name).toBe('Updated')
-      expect(updated?.updated_at).toBeGreaterThan(collection.created_at)
+      // Verify SQLite calls
+      expect(mockSqliteConnection.get).toHaveBeenCalledWith(
+        'SELECT COUNT(*) as count FROM collections WHERE name = ? AND id != ? AND deleted_at IS NULL',
+        ['Updated', 'test-id']
+      )
+      expect(mockSqliteConnection.run).toHaveBeenCalledWith(
+        'UPDATE collections SET name = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
+        ['Updated', expect.any(Number), 'test-id']
+      )
     })
   })
 
   describe('deleteCollection', () => {
     it('should soft delete a collection', async () => {
-      const collection = await composable.createCollection('To Delete')
+      await composable.deleteCollection('test-id')
       
-      await composable.deleteCollection(collection.id)
-      
-      expect(composable.collections.value).toHaveLength(0)
-      expect(composable.getCollection(collection.id)).toBeNull()
+      // Verify SQLite calls
+      expect(mockSqliteConnection.run).toHaveBeenCalledWith(
+        'UPDATE collections SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL',
+        [expect.any(Number), 'test-id']
+      )
     })
   })
 })
