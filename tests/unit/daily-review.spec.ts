@@ -210,57 +210,40 @@ describe('Daily Review Functions', () => {
 
   describe('Streak System', () => {
     it('valide le streak automatiquement à la fin de session', () => {
-      const { incrementTodayCards, validateTodayStreak } = useStreak()
-      
-      // Réviser quelques cartes (peu importe le nombre)
-      incrementTodayCards()
-      incrementTodayCards()
-      incrementTodayCards()
+      const { validateTodayStreak } = useStreak()
       
       // Terminer la session quotidienne valide automatiquement le streak
       expect(validateTodayStreak()).toBe(true)
     })
 
-    it('valide le streak même avec une seule carte', () => {
-      const { incrementTodayCards, validateTodayStreak } = useStreak()
-      
-      // Réviser une seule carte
-      incrementTodayCards()
-      
-      // Terminer la session valide le streak
-      expect(validateTodayStreak()).toBe(true)
-    })
-
     it('track le streak actuel', () => {
-      const { validateTodayStreak, getCurrentStreakLength, incrementTodayCards } = useStreak()
+      const { validateTodayStreak, getCurrentStreakLength } = useStreak()
       
       expect(getCurrentStreakLength()).toBe(0)
       
       // Simuler une validation aujourd'hui
-      incrementTodayCards()
       validateTodayStreak()
       
       expect(getCurrentStreakLength()).toBe(1)
     })
 
     it('sauvegarde et charge depuis localStorage', () => {
-      const { incrementTodayCards, loadStreak, todayCardsCount } = useStreak()
+      const { loadStreak, validateTodayStreak, isTodayStreakValidated } = useStreak()
       
-      incrementTodayCards()
-      incrementTodayCards()
-      expect(todayCardsCount.value).toBe(2)
+      // Valider le streak d'aujourd'hui
+      validateTodayStreak()
+      expect(isTodayStreakValidated()).toBe(true)
       
       // Simuler un rechargement
       loadStreak()
-      expect(todayCardsCount.value).toBe(2)
+      expect(isTodayStreakValidated()).toBe(true)
     })
 
     it('détecte si le streak est déjà validé aujourd\'hui', () => {
-      const { incrementTodayCards, validateTodayStreak, isTodayStreakValidated } = useStreak()
+      const { validateTodayStreak, isTodayStreakValidated } = useStreak()
       
       expect(isTodayStreakValidated()).toBe(false)
       
-      incrementTodayCards()
       validateTodayStreak()
       
       expect(isTodayStreakValidated()).toBe(true)
@@ -270,7 +253,7 @@ describe('Daily Review Functions', () => {
   describe('Daily Review Integration', () => {
     it('termine la session et valide le streak automatiquement', async () => {
       const { getCardsDueToday } = useCards()
-      const { incrementTodayCards, validateTodayStreak, isTodayStreakValidated } = useStreak()
+      const { validateTodayStreak, isTodayStreakValidated } = useStreak()
       
       // Mock quelques cartes dues
       const now = Date.now()
@@ -305,12 +288,7 @@ describe('Daily Review Functions', () => {
       expect(dueCards).toHaveLength(2)
       expect(isTodayStreakValidated()).toBe(false)
       
-      // Simuler la révision de toutes les cartes
-      dueCards.forEach(() => {
-        incrementTodayCards()
-      })
-      
-      // Terminer la session valide le streak
+      // Terminer la session (peu importe le nombre de cartes) valide le streak
       const streakValidated = validateTodayStreak()
       expect(streakValidated).toBe(true)
       expect(isTodayStreakValidated()).toBe(true)
@@ -318,7 +296,7 @@ describe('Daily Review Functions', () => {
 
     it('fonctionne même avec une seule carte due', async () => {
       const { getCardsDueToday } = useCards()
-      const { incrementTodayCards, validateTodayStreak } = useStreak()
+      const { validateTodayStreak } = useStreak()
       
       // Mock une seule carte due
       const now = Date.now()
@@ -339,10 +317,7 @@ describe('Daily Review Functions', () => {
       const dueCards = await getCardsDueToday()
       expect(dueCards).toHaveLength(1)
       
-      // Réviser cette unique carte
-      incrementTodayCards()
-      
-      // Le streak est validé même avec une seule carte
+      // Le streak est validé en terminant la session (peu importe le nombre de cartes)
       const streakValidated = validateTodayStreak()
       expect(streakValidated).toBe(true)
     })

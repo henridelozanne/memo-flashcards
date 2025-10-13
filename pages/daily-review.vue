@@ -48,7 +48,7 @@ import type { Card } from '~/lib/types'
 
 const router = useRouter()
 const { getCardsDueToday, applyAnswer } = useCards()
-const { incrementTodayCards, validateTodayStreak, getCurrentStreakLength } = useStreak()
+const { validateTodayStreak, getCurrentStreakLength } = useStreak()
 const { collections, loadCollections } = useCollections()
 
 const dueCards = ref<Card[]>([])
@@ -91,7 +91,6 @@ async function answer(resp: 'true' | 'almost' | 'false') {
   
   // Compter les statistiques
   cardsReviewed.value += 1
-  incrementTodayCards()
   if (resp === 'true') goodCount.value += 1
   
   // Animation/transition vers la carte suivante
