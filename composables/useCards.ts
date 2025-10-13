@@ -9,18 +9,15 @@ const cards = ref<Card[]>([])
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 
-// Shared database connection for mobile
-let dbConnection: any = null
-
 // Conditional import for uuid to avoid Node.js dependencies on mobile
 const generateId = (): string => {
   if (typeof process === 'undefined') {
     // In browser/mobile, use a simple UUID alternative
-    return 'card-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-  } else {
+    return `card-${  Date.now()  }-${  Math.random().toString(36).substr(2, 9)}`;
+  } 
     // In Node.js environment, we'll import uuid dynamically when needed
-    return 'card-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-  }
+    return `card-${  Date.now()  }-${  Math.random().toString(36).substr(2, 9)}`;
+  
 };
 
 // Helper function to get DB connection (only on native platform)

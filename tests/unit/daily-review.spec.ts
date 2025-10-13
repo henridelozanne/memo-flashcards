@@ -68,9 +68,10 @@ describe('Daily Review Functions', () => {
       
       // Faire passer une carte au compartiment 6
       const cardToPromote = cards[0]
-      for (let i = 0; i < 6; i += 1) {
-        await applyAnswer(cardToPromote, 'true')
-      }
+      // Répondre correctement 6 fois pour faire passer la carte au compartiment 6
+      await Promise.all(
+        Array.from({ length: 6 }, () => applyAnswer(cardToPromote, 'true'))
+      )
       
       const remainingCards = await getCardsDueToday()
       expect(remainingCards).toHaveLength(1)
@@ -180,10 +181,12 @@ describe('Daily Review Functions', () => {
       expect(isTodayStreakValidated()).toBe(false)
       
       // Simuler la révision de toutes les cartes
-      for (const card of dueCards) {
-        await applyAnswer(card, 'true')
-        incrementTodayCards()
-      }
+      await Promise.all(
+        dueCards.map(async (card) => {
+          await applyAnswer(card, 'true')
+          incrementTodayCards()
+        })
+      )
       
       // Terminer la session valide le streak
       const streakValidated = validateTodayStreak()

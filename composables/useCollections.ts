@@ -1,7 +1,7 @@
 import { ref, readonly } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import type { Collection } from '~/lib/types'
 import { Capacitor } from '@capacitor/core'
+import type { Collection } from '~/lib/types'
 
 const collections = ref<Collection[]>([])
 const isLoading = ref(true)
@@ -47,7 +47,7 @@ export const useCollections = () => {
       if (Capacitor.isNativePlatform()) {
         // Mode natif - utiliser SQLite
         const db = await getDbConnection()
-        const result = await db.all<Collection>('SELECT * FROM collections WHERE deleted_at IS NULL ORDER BY updated_at DESC')
+        const result = await db.all('SELECT * FROM collections WHERE deleted_at IS NULL ORDER BY updated_at DESC') as Collection[]
         collections.value = result
       } else {
         // Mode web - utiliser localStorage comme fallback temporaire
@@ -140,19 +140,19 @@ export const useCollections = () => {
       } else {
         // Mode web - utiliser localStorage
         const stored = localStorage.getItem('memo_collections')
-        const collections = stored ? JSON.parse(stored) : []
+        const storedCollections = stored ? JSON.parse(stored) : []
         
-        const idx = collections.findIndex((c: Collection) => c.id === id && !c.deleted_at)
+        const idx = storedCollections.findIndex((c: Collection) => c.id === id && !c.deleted_at)
         if (idx === -1) throw new Error('Collection not found')
         
         // Check duplicates
-        if (collections.some((c: Collection) => c.name.toLowerCase() === name.trim().toLowerCase() && c.id !== id && !c.deleted_at)) {
+        if (storedCollections.some((c: Collection) => c.name.toLowerCase() === name.trim().toLowerCase() && c.id !== id && !c.deleted_at)) {
           throw new Error(`Collection "${name}" already exists`)
         }
         
-        collections[idx].name = name.trim()
-        collections[idx].updated_at = Date.now()
-        localStorage.setItem('memo_collections', JSON.stringify(collections))
+        storedCollections[idx].name = name.trim()
+        storedCollections[idx].updated_at = Date.now()
+        localStorage.setItem('memo_collections', JSON.stringify(storedCollections))
       }
       
       await loadCollections()
@@ -175,13 +175,13 @@ export const useCollections = () => {
       } else {
         // Mode web - utiliser localStorage
         const stored = localStorage.getItem('memo_collections')
-        const collections = stored ? JSON.parse(stored) : []
+        const storedCollections = stored ? JSON.parse(stored) : []
         
-        const idx = collections.findIndex((c: Collection) => c.id === id && !c.deleted_at)
+        const idx = storedCollections.findIndex((c: Collection) => c.id === id && !c.deleted_at)
         if (idx === -1) throw new Error('Collection not found')
         
-        collections[idx].deleted_at = Date.now()
-        localStorage.setItem('memo_collections', JSON.stringify(collections))
+        storedCollections[idx].deleted_at = Date.now()
+        localStorage.setItem('memo_collections', JSON.stringify(storedCollections))
       }
       
       await loadCollections()

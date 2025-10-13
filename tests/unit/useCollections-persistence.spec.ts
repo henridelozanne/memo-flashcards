@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { useCollections } from '~/composables/useCollections'
 import { nextTick } from 'vue'
+import { useCollections } from '~/composables/useCollections'
 
 // Mock Capacitor to simulate native environment
 vi.mock('@capacitor/core', () => ({
@@ -43,7 +43,7 @@ describe('useCollections Persistence', () => {
   })
 
   it('should create collection and persist to SQLite', async () => {
-    const { createCollection, loadCollections } = useCollections()
+    const { createCollection } = useCollections()
     
     // Mock that collection doesn't exist
     mockSqliteConnection.get.mockResolvedValue({ count: 0 })

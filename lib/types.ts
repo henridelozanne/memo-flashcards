@@ -1,4 +1,3 @@
-// Entity interfaces with user_id
 export interface Collection {
   id: string;
   user_id: string;

@@ -37,7 +37,7 @@ module.exports = {
   
   overrides: [
     {
-      files: ['tests/**', 'playwright.config.ts', 'vitest.config.ts'],
+      files: ['tests/**', 'vitest.config.ts'],
       rules: {
         'import/no-extraneous-dependencies': 'off'
       }

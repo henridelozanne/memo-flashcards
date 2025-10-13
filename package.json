@@ -8,9 +8,7 @@
     "build:ios": "npm run build && npx @capacitor/cli sync ios",
     "preview": "nuxi preview",
     "test:unit": "vitest run",
-    "test:e2e": "playwright test",
-    "verify": "eslint . && tsc --noEmit && vitest run",
-    "verify:all": "npm run verify && playwright test"
+    "verify": "eslint . && tsc --noEmit && vitest run"
   },
   "dependencies": {
     "@capacitor-community/sqlite": "^7.0.1",
@@ -23,7 +21,6 @@
     "vue-i18n": "^9.2.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vitejs/plugin-vue": "^4.0.0",

@@ -1,1 +1,5 @@
 scripts/
+ios/
+.output/
+dist/
+node_modules/

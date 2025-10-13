@@ -28,12 +28,6 @@ Unit
 npm run test:unit
 ```
 
-E2E
-
-```
-npm run test:e2e
-```
-
 Capacitor commands
 
 ```

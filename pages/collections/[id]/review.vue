@@ -41,8 +41,6 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
-import ReviewCard from '~/components/ReviewCard.vue'
-import ReviewSessionEnd from '~/components/ReviewSessionEnd.vue'
 import type { Collection, Card } from '~/lib/types'
 
 const route = useRoute()
