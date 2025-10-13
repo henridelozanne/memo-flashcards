@@ -67,6 +67,27 @@ const getDueCards = async (collectionId: string) => {
 }
 
 /**
+ * Retourne toutes les cartes d'une collection (pour révision libre, indépendamment des intervalles).
+ * @param collectionId string
+ */
+const getAllCards = async (collectionId: string) => {
+  try {
+    const db = await getDbConnection()
+    const result = await db.all<Card>(`
+      SELECT * FROM cards 
+      WHERE collection_id = ?
+      AND deleted_at IS NULL 
+      AND archived = 0
+      ORDER BY created_at ASC
+    `, [collectionId])
+    return result
+  } catch (e: any) {
+    console.error('Erreur lors du chargement de toutes les cartes:', e)
+    return []
+  }
+}
+
+/**
  * Retourne toutes les cartes dues aujourd'hui (toutes collections confondues).
  */
 const getCardsDueToday = async () => {
@@ -338,6 +359,7 @@ export const useCards = () => {
     getCardsCount,
     getLastCardDate,
     getDueCards,
+    getAllCards,
     getCardsDueToday,
     applyAnswer,
     countCardsPerCompartment,

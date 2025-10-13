@@ -46,11 +46,11 @@ import type { Collection, Card } from '~/lib/types'
 const route = useRoute()
 const router = useRouter()
 const { getCollection } = useCollections()
-const { getDueCards, applyAnswer } = useCards()
+const { getAllCards, applyAnswer } = useCards()
 
 const collectionId = String(route.params.id)
 const collection = ref<Collection | null>(null)
-const dueCards = ref<Card[]>([])
+const cards = ref<Card[]>([])
 const currentIndex = ref(0)
 const showBack = ref(false)
 const sessionFinished = ref(false)
@@ -63,7 +63,7 @@ const responses = [
   { value: 'true', emoji: '✅', label: 'review.good' },
 ]
 
-const currentCard = computed(() => dueCards.value[currentIndex.value])
+const currentCard = computed(() => cards.value[currentIndex.value])
 
 function goBack() {
   router.push(`/collections/${collectionId}/cards`)
@@ -78,7 +78,7 @@ async function answer(resp: 'true' | 'almost' | 'false') {
   if (resp === 'true') goodCount.value += 1
   // Animation/transition vers la carte suivante
   showBack.value = false
-  if (currentIndex.value < dueCards.value.length - 1) {
+  if (currentIndex.value < cards.value.length - 1) {
   currentIndex.value += 1
   } else {
     sessionFinished.value = true
@@ -87,8 +87,8 @@ async function answer(resp: 'true' | 'almost' | 'false') {
 
 onMounted(async () => {
   collection.value = getCollection(collectionId)
-  dueCards.value = await getDueCards(collectionId)
-  total.value = dueCards.value.length
+  cards.value = await getAllCards(collectionId)
+  total.value = cards.value.length
 })
 defineOptions({ name: 'ReviewSessionPage' })
 </script>
