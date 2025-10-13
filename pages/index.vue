@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
@@ -88,8 +88,8 @@ const { getCardsDueToday, getCardsCount } = useCards()
 
 const collectionToDelete = ref<Collection | null>(null)
 const isDeleting = ref(false)
-const dailyCardsCount = ref(0)
 const cardsCounts = ref<Record<string, number>>({})
+const dailyCardsCount = ref(0)
 
 // Fonction pour charger le nombre de cartes d'une collection
 const loadCardCount = async (collectionId: string) => {
@@ -102,15 +102,8 @@ const loadCardCount = async (collectionId: string) => {
   }
 }
 
-// Fonction pour obtenir le compteur de cartes (avec fallback)
-const getCollectionCardCount = (collectionId: string) => cardsCounts.value[collectionId] ?? 0
-
-// Charger les cartes dues et le nombre de collections au montage
-onMounted(async () => {
-  // Attendre que les collections soient chargées
-  await loadCollections()
-  
-  // Charger le nombre de cartes dues aujourd'hui
+// Fonction pour recharger le total des cartes dues aujourd'hui
+const loadDailyCardsCount = async () => {
   try {
     const dueCards = await getCardsDueToday()
     dailyCardsCount.value = dueCards.length
@@ -118,6 +111,27 @@ onMounted(async () => {
     console.error('Erreur lors du chargement des cartes dues:', e)
     dailyCardsCount.value = 0
   }
+}
+
+// Fonction pour obtenir le compteur de cartes (avec fallback)
+const getCollectionCardCount = (collectionId: string) => cardsCounts.value[collectionId] ?? 0
+
+// Watch pour recharger automatiquement les cartes dues quand les collections changent
+watch(collections, async (newCollections) => {
+  if (newCollections.length > 0) {
+    await loadDailyCardsCount()
+  } else {
+    dailyCardsCount.value = 0
+  }
+}, { deep: true })
+
+// Charger les cartes dues et le nombre de collections au montage
+onMounted(async () => {
+  // Attendre que les collections soient chargées
+  await loadCollections()
+  
+  // Charger le nombre total de cartes dues aujourd'hui
+  await loadDailyCardsCount()
   
   // Charger les compteurs de cartes pour toutes les collections
   await Promise.all(collections.value.map(collection => loadCardCount(collection.id)))

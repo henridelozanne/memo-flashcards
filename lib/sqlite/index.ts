@@ -14,14 +14,18 @@ export default async function openDatabase(name: string): Promise<SqliteConnecti
     const sqlite = new SQLiteConnection(CapacitorSQLite)
     await sqlite.checkConnectionsConsistency()
     const isConn = await sqlite.isConnection(name, false)
-    if (isConn.result) {
-      await sqlite.closeConnection(name, false)
-    }
-    await sqlite.createConnection(name, false, 'no-encryption', 1, false)
-    const db = await sqlite.retrieveConnection(name, false)
     
-    // Important: Open the database before using it
-    await db.open()
+    let db
+    if (isConn.result) {
+      // Réutiliser la connexion existante
+      db = await sqlite.retrieveConnection(name, false)
+    } else {
+      // Créer une nouvelle connexion
+      await sqlite.createConnection(name, false, 'no-encryption', 1, false)
+      db = await sqlite.retrieveConnection(name, false)
+      // Important: Open the database before using it
+      await db.open()
+    }
     
     return new CapacitorSqliteConnection(db)
   }

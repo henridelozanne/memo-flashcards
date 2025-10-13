@@ -118,9 +118,18 @@ export const useCollections = () => {
     error.value = null
     try {
       const db = await getDbConnection()
+      const now = Date.now()
+      
+      // Supprimer d'abord toutes les cartes de la collection
+      await db.run(
+        'UPDATE cards SET deleted_at = ? WHERE collection_id = ? AND deleted_at IS NULL',
+        [now, id]
+      )
+      
+      // Puis supprimer la collection
       await db.run(
         'UPDATE collections SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL',
-        [Date.now(), id]
+        [now, id]
       )
       
       await loadCollections()
