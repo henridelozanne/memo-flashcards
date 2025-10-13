@@ -80,6 +80,8 @@ import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
 import type { Collection } from '~/lib/types'
 
+defineOptions({ name: 'HomePage' })
+
 const router = useRouter()
 const { collections, isLoading, error, loadCollections, deleteCollection } = useCollections()
 const { getCardsDueToday, getCardsCount } = useCards()

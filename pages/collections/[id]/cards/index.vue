@@ -126,7 +126,7 @@ async function init() {
   if (collection.value) {
     // Charger les cartes
     await loadCards(collectionId)
-    lastCardDate.value = getLastCardDate(collectionId)
+    lastCardDate.value = await getLastCardDate(collectionId)
   }
 }
 
