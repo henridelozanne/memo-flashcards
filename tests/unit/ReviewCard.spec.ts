@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ReviewCard from '~/components/ReviewCard.vue'
+import type { Card } from '~/lib/types'
 
 // Mock de vue-i18n
 type TParams = Record<string, string | number>
@@ -8,9 +9,9 @@ const mockT = (key: string, params?: TParams) => {
   const translations: Record<string, string> = {
     'review.noCard': 'Aucune carte',
     'review.showAnswer': 'Voir la réponse',
-    'review.again': 'Encore',
-    'review.almost': 'Presque',
-    'review.good': 'Bien'
+    'review.again': '❌ Encore',
+    'review.almost': '➖ Presque',
+    'review.good': '✅ Bien'
   }
   
   if (params && typeof translations[key] === 'string') {
@@ -31,17 +32,22 @@ const globalMountOptions = {
 }
 
 describe('ReviewCard', () => {
-  const mockCard: { id: string; question: string; answer: string; collection_id: string } = {
+  const mockCard: Card = {
     id: '1',
     question: 'Quelle est la capitale de la France ?',
     answer: 'Paris',
-    collection_id: 'collection1'
+    collection_id: 'collection1',
+    user_id: 'user1',
+    compartment: 1,
+    next_review_at: Date.now(),
+    created_at: Date.now(),
+    updated_at: Date.now()
   }
 
   const mockResponses = [
-    { value: 'false', emoji: '❌', label: 'review.again' },
-    { value: 'almost', emoji: '➖', label: 'review.almost' },
-    { value: 'true', emoji: '✅', label: 'review.good' }
+    { value: 'false', label: 'review.again' },
+    { value: 'almost', label: 'review.almost' },
+    { value: 'true', label: 'review.good' }
   ]
 
   it('affiche la question de la carte', () => {
@@ -49,13 +55,85 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         showBack: false,
-        responses: mockResponses
+        responses: mockResponses,
+        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
 
     expect(wrapper.text()).toContain('Quelle est la capitale de la France ?')
-    expect(wrapper.find('button').text()).toBe('Voir la réponse')
+  })
+
+  it('affiche le bouton pour voir la réponse', () => {
+    const wrapper = mount(ReviewCard, {
+      props: {
+        currentCard: mockCard,
+        showBack: false,
+        responses: mockResponses,
+        collectionName: 'Test Collection'
+      },
+      ...globalMountOptions
+    })
+
+    const button = wrapper.find('button')
+    expect(button.exists()).toBe(true)
+    expect(button.text()).toBe('Voir la réponse')
+  })
+
+  it('émet l\'événement show-back au clic sur le bouton', async () => {
+    const wrapper = mount(ReviewCard, {
+      props: {
+        currentCard: mockCard,
+        showBack: false,
+        responses: mockResponses,
+        collectionName: 'Test Collection'
+      },
+      ...globalMountOptions
+    })
+
+    const button = wrapper.find('button')
+    await button.trigger('click')
+
+    expect(wrapper.emitted('show-back')).toBeTruthy()
+  })
+
+  it('affiche les boutons de réponse quand showBack est true', () => {
+    const wrapper = mount(ReviewCard, {
+      props: {
+        currentCard: mockCard,
+        showBack: true,
+        responses: mockResponses,
+        collectionName: 'Test Collection'
+      },
+      ...globalMountOptions
+    })
+
+    // Vérifier que les boutons de réponse sont présents dans la face arrière
+    const backFace = wrapper.find('.flip-card-back')
+    const responseButtons = backFace.findAll('button')
+    expect(responseButtons).toHaveLength(3) // 3 boutons de réponse
+  })
+
+  it('émet l\'événement answer avec la bonne valeur', async () => {
+    const wrapper = mount(ReviewCard, {
+      props: {
+        currentCard: mockCard,
+        showBack: true,
+        responses: mockResponses,
+        collectionName: 'Test Collection'
+      },
+      ...globalMountOptions
+    })
+
+    // Prendre les boutons de la face arrière seulement
+    const backFace = wrapper.find('.flip-card-back')
+    const responseButtons = backFace.findAll('button')
+    await responseButtons[0]?.trigger('click')
+
+    if (responseButtons[0]) {
+      expect(wrapper.emitted('answer')).toBeTruthy()
+      expect(wrapper.emitted('answer')?.[0]).toEqual(['false'])
+    }
   })
 
   it('affiche le nom de la collection si fourni', () => {
@@ -77,7 +155,8 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         showBack: false,
-        responses: mockResponses
+        responses: mockResponses,
+        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
@@ -91,7 +170,8 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         showBack: true,
-        responses: mockResponses
+        responses: mockResponses,
+        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
@@ -106,7 +186,8 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         showBack: true,
-        responses: mockResponses
+        responses: mockResponses,
+        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
@@ -127,7 +208,8 @@ describe('ReviewCard', () => {
       props: {
         currentCard: null,
         showBack: false,
-        responses: mockResponses
+        responses: mockResponses,
+        collectionName: ''
       },
       ...globalMountOptions
     })

@@ -2,15 +2,17 @@
   "review": {
     "reviewThisCollection": "Réviser cette collection",
     "showAnswer": "Afficher la réponse",
-    "good": "Bien retenu",
-    "almost": "Presque",
-    "again": "À revoir",
+    "good": "✅ Bien retenu",
+    "almost": "➖ Presque",
+    "again": "❌ À revoir",
     "sessionFinished": "Session terminée !",
     "congrats": "Bravo pour cette session de révision !",
     "cardsReviewed": "Cartes révisées : {count}",
     "successRate": "% de bonnes réponses : {percent}%",
     "backToCollections": "Retour à mes collections",
-    "noCard": "Aucune carte à réviser."
+    "noCard": "Aucune carte à réviser.",
+    "loadingCards": "Chargement des cartes...",
+    "noCardsAvailable": "Aucune carte disponible pour le moment."
   },
   "dailyReview": {
     "reviewToday": "Réviser aujourd'hui {count} carte | Réviser aujourd'hui {count} cartes",

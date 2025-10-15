@@ -1,36 +1,13 @@
 import { ref, readonly } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import type { Card } from '~/lib/types'
+import { useDatabase } from './useDatabase'
 
 const cards = ref<Card[]>([])
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 
-// Helper function to get DB connection
-async function getDbConnection() {
-  // For critical operations, always get a fresh connection
-  const { default: openDatabase } = await import('~/lib/sqlite')
-  const db = await openDatabase('memoflash')
-  
-  // Initialize tables if needed
-  await db.exec(`
-    CREATE TABLE IF NOT EXISTS cards (
-      id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL DEFAULT 'default-user',
-      collection_id TEXT NOT NULL,
-      question TEXT NOT NULL,
-      answer TEXT NOT NULL,
-      compartment INTEGER NOT NULL DEFAULT 1,
-      next_review_at INTEGER NOT NULL,
-      created_at INTEGER NOT NULL,
-      updated_at INTEGER NOT NULL,
-      deleted_at INTEGER,
-      archived INTEGER DEFAULT 0
-    )
-  `)
-  
-  return db
-}
+const { getDbConnection } = useDatabase()
 
 // Intervalles Leitner en jours (compartiment 1 à 6)
 const LEITNER_INTERVALS: Record<number, number> = {

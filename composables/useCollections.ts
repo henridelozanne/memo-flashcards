@@ -1,38 +1,13 @@
 import { ref, readonly } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import type { Collection } from '~/lib/types'
+import { useDatabase } from './useDatabase'
 
 const collections = ref<Collection[]>([])
 const isLoading = ref(true)
 const error = ref<string | null>(null)
 
-// Shared database connection
-let dbConnection: any = null
-
-// Helper function to get DB connection
-async function getDbConnection() {
-  // Use existing connection if available
-  if (dbConnection) {
-    return dbConnection
-  }
-  
-  const { default: openDatabase } = await import('~/lib/sqlite')
-  dbConnection = await openDatabase('memoflash')
-  
-  // Initialize tables if needed
-  await dbConnection.exec(`
-    CREATE TABLE IF NOT EXISTS collections (
-      id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL DEFAULT 'default-user',
-      name TEXT NOT NULL,
-      created_at INTEGER NOT NULL,
-      updated_at INTEGER NOT NULL,
-      deleted_at INTEGER
-    )
-  `)
-  
-  return dbConnection
-}
+const { getDbConnection } = useDatabase()
 
 export const useCollections = () => {
   const loadCollections = async () => {

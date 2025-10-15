@@ -2,15 +2,17 @@
   "review": {
     "reviewThisCollection": "Review this collection",
     "showAnswer": "Show answer",
-    "good": "Well remembered",
-    "almost": "Almost",
-    "again": "Review again",
+    "good": "✅ Well remembered",
+    "almost": "➖ Almost",
+    "again": "❌ Review again",
     "sessionFinished": "Session finished!",
     "congrats": "Congrats on your review session!",
     "cardsReviewed": "Cards reviewed: {count}",
     "successRate": "Success rate: {percent}%",
     "backToCollections": "Back to my collections",
-    "noCard": "No card to review."
+    "noCard": "No card to review.",
+    "loadingCards": "Loading cards...",
+    "noCardsAvailable": "No cards available right now."
   },
   "dailyReview": {
     "reviewToday": "Review today {count} card | Review today {count} cards",

@@ -58,9 +58,9 @@ const goodCount = ref(0)
 const total = ref(0)
 
 const responses = [
-  { value: 'false', emoji: '❌', label: 'review.again' },
-  { value: 'almost', emoji: '➖', label: 'review.almost' },
-  { value: 'true', emoji: '✅', label: 'review.good' },
+  { value: 'false', label: 'review.again' },
+  { value: 'almost', label: 'review.almost' },
+  { value: 'true', label: 'review.good' },
 ]
 
 const currentCard = computed(() => cards.value[currentIndex.value])

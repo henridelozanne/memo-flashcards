@@ -12,25 +12,42 @@
 
     <!-- Main review area -->
     <div class="flex-1 flex flex-col items-center justify-center">
-      <transition name="slide" mode="out-in">
-        <div v-if="!sessionFinished" :key="currentIndex" class="w-full flex flex-col items-center">
+      <!-- Loading state -->
+      <div v-if="isLoadingCards" class="flex flex-col items-center space-y-4">
+        <div class="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-gray-600">{{ $t('review.loadingCards') }}</p>
+      </div>
+      
+      <!-- Review cards -->
+      <transition v-else name="slide" mode="out-in">
+        <div v-if="!sessionFinished && currentCard" :key="currentIndex" class="w-full flex flex-col items-center">
           <ReviewCard
             :current-card="currentCard"
             :show-back="showBack"
             :responses="responses"
-            :collection-name="currentCard?.collection_name"
+            :collection-name="currentCard.collection_name"
             @show-back="showBack = true"
             @answer="answer"
           />
         </div>
         <!-- End of session -->
         <DailyReviewEnd
-          v-else
+          v-else-if="sessionFinished"
           key="end"
           :cards-reviewed="cardsReviewed"
           :success-rate="successRate"
           @back="$router.push('/')"
         />
+        <!-- No cards available -->
+        <div v-else class="text-center text-gray-600">
+          <p>{{ $t('review.noCardsAvailable') }}</p>
+          <button 
+            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            @click="$router.push('/')"
+          >
+            {{ $t('common.backButton') }}
+          </button>
+        </div>
       </transition>
     </div>
   </div>
@@ -53,11 +70,12 @@ const showBack = ref(false)
 const sessionFinished = ref(false)
 const goodCount = ref(0)
 const cardsReviewed = ref(0)
+const isLoadingCards = ref(true)
 
 const responses = [
-  { value: 'false', emoji: '❌', label: 'review.again' },
-  { value: 'almost', emoji: '➖', label: 'review.almost' },
-  { value: 'true', emoji: '✅', label: 'review.good' },
+  { value: 'false', label: 'review.again' },
+  { value: 'almost', label: 'review.almost' },
+  { value: 'true', label: 'review.good' },
 ]
 
 const currentCard = computed(() => {
@@ -98,15 +116,24 @@ async function answer(resp: 'true' | 'almost' | 'false') {
 }
 
 onMounted(async () => {
-  // Charger les collections pour avoir les noms
-  await loadCollections()
-  
-  // Récupérer les cartes dues aujourd'hui
-  dueCards.value = await getCardsDueToday()
-  
-  // Si aucune carte, retourner à l'accueil
-  if (dueCards.value.length === 0) {
+  try {
+    isLoadingCards.value = true
+    
+    // Charger les collections pour avoir les noms
+    await loadCollections()
+    
+    // Récupérer les cartes dues aujourd'hui
+    dueCards.value = await getCardsDueToday()
+    
+    // Si aucune carte, retourner à l'accueil
+    if (dueCards.value.length === 0) {
+      router.push('/')
+    }
+  } catch (error) {
+    console.error('Erreur lors du chargement des cartes:', error)
     router.push('/')
+  } finally {
+    isLoadingCards.value = false
   }
 })
 

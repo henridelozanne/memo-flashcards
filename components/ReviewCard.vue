@@ -31,7 +31,6 @@
                 class="flex-1 flex items-center justify-center gap-2 px-2 py-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 text-base font-medium shadow-sm focus:outline-none transition"
                 @click="$emit('answer', resp.value)"
               >
-                <span>{{ resp.emoji }}</span>
                 <span>{{ $t(resp.label) }}</span>
               </button>
             </div>
@@ -44,13 +43,25 @@
 
 
 <script setup lang="ts">
-defineProps({
-  currentCard: { type: Object, default: null },
-  showBack: { type: Boolean, default: false },
-  responses: { type: Array, default: () => [] },
-  collectionName: { type: String, default: '' }
-})
-defineEmits(['show-back', 'answer'])
+import type { Card } from '~/lib/types'
+
+interface Response {
+  value: string
+  label: string
+}
+
+interface Props {
+  currentCard: Card | null
+  showBack: boolean
+  responses: Response[]
+  collectionName: string
+}
+
+defineProps<Props>()
+defineEmits<{
+  'show-back': []
+  'answer': [value: string]
+}>()
 </script>
 
 <style scoped>
