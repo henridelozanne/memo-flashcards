@@ -24,7 +24,6 @@
           <ReviewCard
             :current-card="currentCard"
             :is-back-visible="isBackVisible"
-            :responses="responses"
             :collection-name="currentCard.collection_name"
             @show-back="isBackVisible = true"
             @answer="answer"
@@ -71,12 +70,6 @@ const sessionFinished = ref(false)
 const goodCount = ref(0)
 const cardsReviewed = ref(0)
 const isLoadingCards = ref(true)
-
-const responses = [
-  { value: 'false', label: 'review.again' },
-  { value: 'almost', label: 'review.almost' },
-  { value: 'true', label: 'review.good' },
-]
 
 const currentCard = computed(() => {
   const card = dueCards.value[currentIndex.value]

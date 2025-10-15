@@ -46,6 +46,12 @@ export interface Meta {
   value: unknown;
 }
 
+// User choice for review responses
+export interface UserChoice {
+  value: string;
+  label: string;
+}
+
 // DB operations result types
 export type CreateCollectionParams = Pick<Collection, 'name'>;
 export type UpdateCollectionParams = Partial<Pick<Collection, 'name'>>;

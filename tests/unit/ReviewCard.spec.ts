@@ -32,30 +32,23 @@ const globalMountOptions = {
 }
 
 describe('ReviewCard', () => {
-  const mockCard: Card = {
-    id: '1',
-    question: 'Quelle est la capitale de la France ?',
-    answer: 'Paris',
-    collection_id: 'collection1',
-    user_id: 'user1',
-    compartment: 1,
-    next_review_at: Date.now(),
-    created_at: Date.now(),
-    updated_at: Date.now()
-  }
-
-  const mockResponses = [
-    { value: 'false', label: 'review.again' },
-    { value: 'almost', label: 'review.almost' },
-    { value: 'true', label: 'review.good' }
-  ]
+const mockCard: Card = {
+  id: '1',
+  question: 'Quelle est la capitale de la France ?',
+  answer: 'Paris',
+  collection_id: '1',
+  user_id: '1',
+  compartment: 1,
+  next_review_at: Date.now(),
+  created_at: Date.now(),
+  updated_at: Date.now()
+}
 
   it('affiche la question de la carte', () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
         isBackVisible: false,
-        responses: mockResponses,
         collectionName: 'Test Collection'
       },
       ...globalMountOptions
@@ -69,7 +62,6 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         isBackVisible: false,
-        responses: mockResponses,
         collectionName: 'Test Collection'
       },
       ...globalMountOptions
@@ -85,7 +77,6 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         isBackVisible: false,
-        responses: mockResponses,
         collectionName: 'Test Collection'
       },
       ...globalMountOptions
@@ -102,7 +93,6 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         isBackVisible: true,
-        responses: mockResponses,
         collectionName: 'Test Collection'
       },
       ...globalMountOptions
@@ -119,7 +109,6 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         isBackVisible: true,
-        responses: mockResponses,
         collectionName: 'Test Collection'
       },
       ...globalMountOptions
@@ -141,7 +130,6 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         isBackVisible: false,
-        responses: mockResponses,
         collectionName: 'Ma Collection'
       },
       ...globalMountOptions
@@ -155,7 +143,6 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         isBackVisible: false,
-        responses: mockResponses,
         collectionName: 'Test Collection'
       },
       ...globalMountOptions
@@ -170,7 +157,6 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         isBackVisible: true,
-        responses: mockResponses,
         collectionName: 'Test Collection'
       },
       ...globalMountOptions
@@ -186,7 +172,6 @@ describe('ReviewCard', () => {
       props: {
         currentCard: mockCard,
         isBackVisible: true,
-        responses: mockResponses,
         collectionName: 'Test Collection'
       },
       ...globalMountOptions
@@ -208,7 +193,6 @@ describe('ReviewCard', () => {
       props: {
         currentCard: null,
         isBackVisible: false,
-        responses: mockResponses,
         collectionName: ''
       },
       ...globalMountOptions
