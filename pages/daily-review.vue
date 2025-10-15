@@ -23,10 +23,10 @@
         <div v-if="!sessionFinished && currentCard" :key="currentIndex" class="w-full flex flex-col items-center">
           <ReviewCard
             :current-card="currentCard"
-            :show-back="showBack"
+            :is-back-visible="isBackVisible"
             :responses="responses"
             :collection-name="currentCard.collection_name"
-            @show-back="showBack = true"
+            @show-back="isBackVisible = true"
             @answer="answer"
           />
         </div>
@@ -66,7 +66,7 @@ const { collections, loadCollections } = useCollections()
 
 const dueCards = ref<Card[]>([])
 const currentIndex = ref(0)
-const showBack = ref(false)
+const isBackVisible = ref(false)
 const sessionFinished = ref(false)
 const goodCount = ref(0)
 const cardsReviewed = ref(0)
@@ -106,7 +106,7 @@ async function answer(resp: 'true' | 'almost' | 'false') {
   if (resp === 'true') goodCount.value += 1
   
   // Animation/transition vers la carte suivante
-  showBack.value = false
+  isBackVisible.value = false
   if (currentIndex.value < dueCards.value.length - 1) {
     currentIndex.value += 1
   } else {

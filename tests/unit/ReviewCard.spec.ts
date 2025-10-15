@@ -54,7 +54,7 @@ describe('ReviewCard', () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
-        showBack: false,
+        isBackVisible: false,
         responses: mockResponses,
         collectionName: 'Test Collection'
       },
@@ -68,7 +68,7 @@ describe('ReviewCard', () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
-        showBack: false,
+        isBackVisible: false,
         responses: mockResponses,
         collectionName: 'Test Collection'
       },
@@ -84,7 +84,7 @@ describe('ReviewCard', () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
-        showBack: false,
+        isBackVisible: false,
         responses: mockResponses,
         collectionName: 'Test Collection'
       },
@@ -97,11 +97,11 @@ describe('ReviewCard', () => {
     expect(wrapper.emitted('show-back')).toBeTruthy()
   })
 
-  it('affiche les boutons de réponse quand showBack est true', () => {
+  it('affiche les boutons de réponse quand isBackVisible est true', () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
-        showBack: true,
+        isBackVisible: true,
         responses: mockResponses,
         collectionName: 'Test Collection'
       },
@@ -118,7 +118,7 @@ describe('ReviewCard', () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
-        showBack: true,
+        isBackVisible: true,
         responses: mockResponses,
         collectionName: 'Test Collection'
       },
@@ -140,7 +140,7 @@ describe('ReviewCard', () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
-        showBack: false,
+        isBackVisible: false,
         responses: mockResponses,
         collectionName: 'Ma Collection'
       },
@@ -154,7 +154,7 @@ describe('ReviewCard', () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
-        showBack: false,
+        isBackVisible: false,
         responses: mockResponses,
         collectionName: 'Test Collection'
       },
@@ -165,11 +165,11 @@ describe('ReviewCard', () => {
     expect(wrapper.emitted('show-back')).toBeTruthy()
   })
 
-  it('affiche la réponse quand showBack est true', () => {
+  it('affiche la réponse quand isBackVisible est true', () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
-        showBack: true,
+        isBackVisible: true,
         responses: mockResponses,
         collectionName: 'Test Collection'
       },
@@ -185,7 +185,7 @@ describe('ReviewCard', () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
-        showBack: true,
+        isBackVisible: true,
         responses: mockResponses,
         collectionName: 'Test Collection'
       },
@@ -207,7 +207,7 @@ describe('ReviewCard', () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: null,
-        showBack: false,
+        isBackVisible: false,
         responses: mockResponses,
         collectionName: ''
       },

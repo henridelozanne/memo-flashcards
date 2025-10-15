@@ -7,7 +7,7 @@
     
     <div class="relative w-full aspect-[3/4] flex items-center justify-center select-none" style="perspective: 1000px;">
       <div class="flip-card w-full h-full">
-        <div class="flip-card-inner w-full h-full" :class="{ 'show-back': showBack }">
+        <div class="flip-card-inner w-full h-full" :class="{ 'back-visible': isBackVisible }">
           <!-- Recto -->
           <div class="flip-card-front w-full h-full bg-white rounded-2xl shadow-lg flex flex-col items-center justify-center text-center p-6">
             <div v-if="currentCard" class="font-medium text-lg text-gray-900 break-words line-clamp-6">{{ currentCard.question }}</div>
@@ -50,14 +50,13 @@ interface Response {
   label: string
 }
 
-interface Props {
+defineProps<{
   currentCard: Card | null
-  showBack: boolean
+  isBackVisible: boolean
   responses: Response[]
   collectionName: string
-}
+}>()
 
-defineProps<Props>()
 defineEmits<{
   'show-back': []
   'answer': [value: string]
@@ -78,7 +77,7 @@ defineEmits<{
   transition: transform 0.5s;
   transform-style: preserve-3d;
 }
-.flip-card-inner.show-back {
+.flip-card-inner.back-visible {
   transform: rotateY(-180deg);
 }
 .flip-card-front, .flip-card-back {

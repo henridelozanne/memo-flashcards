@@ -15,11 +15,12 @@
     <div class="flex-1 flex flex-col items-center justify-center">
       <transition name="fade" mode="out-in">
         <div v-if="!sessionFinished" :key="currentIndex" class="w-full flex flex-col items-center">
-          <ReviewCard
+                    <ReviewCard
             :current-card="currentCard"
-            :show-back="showBack"
+            :is-back-visible="isBackVisible"
             :responses="responses"
-            @show-back="showBack = true"
+            :collection-name="collection?.name"
+            @show-back="isBackVisible = true"
             @answer="answer"
           />
         </div>
@@ -52,7 +53,7 @@ const collectionId = String(route.params.id)
 const collection = ref<Collection | null>(null)
 const cards = ref<Card[]>([])
 const currentIndex = ref(0)
-const showBack = ref(false)
+const isBackVisible = ref(false)
 const sessionFinished = ref(false)
 const goodCount = ref(0)
 const total = ref(0)
@@ -77,7 +78,7 @@ async function answer(resp: 'true' | 'almost' | 'false') {
   await applyAnswer(currentCard.value, resp)
   if (resp === 'true') goodCount.value += 1
   // Animation/transition vers la carte suivante
-  showBack.value = false
+  isBackVisible.value = false
   if (currentIndex.value < cards.value.length - 1) {
   currentIndex.value += 1
   } else {
@@ -107,7 +108,7 @@ defineOptions({ name: 'ReviewSessionPage' })
   transition: transform 0.5s;
   transform-style: preserve-3d;
 }
-.flip-card-inner.show-back {
+.flip-card-inner.back-visible {
   transform: rotateY(-180deg);
 }
 .flip-card-front, .flip-card-back {
