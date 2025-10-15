@@ -15,7 +15,7 @@
     <div class="flex-1 flex flex-col items-center justify-center">
       <transition name="fade" mode="out-in">
         <div v-if="!sessionFinished" :key="currentIndex" class="w-full flex flex-col items-center">
-                    <ReviewCard
+          <ReviewCard
             :current-card="currentCard"
             :is-back-visible="isBackVisible"
             :collection-name="collection?.name"
@@ -41,7 +41,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
-import type { Collection, Card } from '~/lib/types'
+import type { Collection, Card, ReviewChoice } from '~/lib/types'
 
 const route = useRoute()
 const router = useRouter()
@@ -66,10 +66,11 @@ function goToCollections() {
   router.push('/')
 }
 
-async function answer(resp: 'true' | 'almost' | 'false') {
+async function answer(choice: ReviewChoice) {
   if (!currentCard.value) return
-  await applyAnswer(currentCard.value, resp)
-  if (resp === 'true') goodCount.value += 1
+  
+  await applyAnswer(currentCard.value, choice)
+  if (choice === 'true') goodCount.value += 1
   // Animation/transition vers la carte suivante
   isBackVisible.value = false
   if (currentIndex.value < cards.value.length - 1) {

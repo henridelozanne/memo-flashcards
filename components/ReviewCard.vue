@@ -43,7 +43,7 @@
 
 
 <script setup lang="ts">
-import type { Card, UserChoice } from '~/lib/types'
+import type { Card, UserChoice, ReviewChoice } from '~/lib/types'
 
 const userChoices: UserChoice[] = [
   { value: 'false', label: 'review.again' },
@@ -59,7 +59,7 @@ defineProps<{
 
 defineEmits<{
   'show-back': []
-  'answer': [value: string]
+  'answer': [value: ReviewChoice]
 }>()
 </script>
 

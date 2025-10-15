@@ -48,9 +48,12 @@ export interface Meta {
 
 // User choice for review responses
 export interface UserChoice {
-  value: string;
+  value: ReviewChoice;
   label: string;
 }
+
+// Review choice type (unified across the app)
+export type ReviewChoice = 'false' | 'almost' | 'true'
 
 // DB operations result types
 export type CreateCollectionParams = Pick<Collection, 'name'>;
