@@ -57,7 +57,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCards } from '~/composables/useCards'
 import { useCollections } from '~/composables/useCollections'
-import type { Card, ReviewChoice } from '~/lib/types'
+import type { Card } from '~/lib/types'
 
 const router = useRouter()
 const { getCardsDueToday, applyAnswer } = useCards()
@@ -88,7 +88,7 @@ const successRate = computed(() =>
   cardsReviewed.value > 0 ? Math.round((goodCount.value / cardsReviewed.value) * 100) : 0
 )
 
-async function answer(choice: ReviewChoice) {
+async function answer(choice: boolean) {
   if (!currentCard.value) return
   
   // Appliquer la réponse Leitner
@@ -96,7 +96,7 @@ async function answer(choice: ReviewChoice) {
   
   // Compter les statistiques
   cardsReviewed.value += 1
-  if (choice === 'true') goodCount.value += 1
+  if (choice === true) goodCount.value += 1
   
   // Animation/transition vers la carte suivante
   isBackVisible.value = false

@@ -101,7 +101,7 @@ const mockCard: Card = {
     // Vérifier que les boutons de réponse sont présents dans la face arrière
     const backFace = wrapper.find('.flip-card-back')
     const responseButtons = backFace.findAll('button')
-    expect(responseButtons).toHaveLength(3) // 3 boutons de réponse
+    expect(responseButtons).toHaveLength(2) // 2 boutons de réponse
   })
 
   it('émet l\'événement answer avec la bonne valeur', async () => {
@@ -121,7 +121,7 @@ const mockCard: Card = {
 
     if (responseButtons[0]) {
       expect(wrapper.emitted('answer')).toBeTruthy()
-      expect(wrapper.emitted('answer')?.[0]).toEqual(['false'])
+      expect(wrapper.emitted('answer')?.[0]).toEqual([false])
     }
   })
 
@@ -184,7 +184,7 @@ const mockCard: Card = {
     if (falseButton) {
       await falseButton.trigger('click')
       expect(wrapper.emitted('answer')).toBeTruthy()
-      expect(wrapper.emitted('answer')?.[0]).toEqual(['false'])
+      expect(wrapper.emitted('answer')?.[0]).toEqual([false])
     }
   })
 

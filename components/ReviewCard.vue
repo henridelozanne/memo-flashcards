@@ -43,12 +43,11 @@
 
 
 <script setup lang="ts">
-import type { Card, UserChoice, ReviewChoice } from '~/lib/types'
+import type { Card, UserChoice } from '~/lib/types'
 
 const userChoices: UserChoice[] = [
-  { value: 'false', label: 'review.again' },
-  { value: 'almost', label: 'review.almost' },
-  { value: 'true', label: 'review.good' },
+  { value: false, label: 'review.again' },
+  { value: true, label: 'review.good' },
 ]
 
 defineProps<{
@@ -59,7 +58,7 @@ defineProps<{
 
 defineEmits<{
   'show-back': []
-  'answer': [value: ReviewChoice]
+  'answer': [value: boolean]
 }>()
 </script>
 

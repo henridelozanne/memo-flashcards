@@ -126,7 +126,7 @@ describe('useCards - Leitner System', () => {
         archived: false
       }
       
-      await composable.applyAnswer(card, 'true')
+      await composable.applyAnswer(card, true)
       
       // Verify card was promoted to compartment 2
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
@@ -149,7 +149,7 @@ describe('useCards - Leitner System', () => {
         archived: false
       }
       
-      await composable.applyAnswer(card, 'false')
+      await composable.applyAnswer(card, false)
       
       // Verify card was demoted to compartment 1
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
@@ -172,35 +172,12 @@ describe('useCards - Leitner System', () => {
         archived: false
       }
       
-      await composable.applyAnswer(card, 'true')
+      await composable.applyAnswer(card, true)
       
       // Verify card stays in compartment 6 (max level)
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
         expect.stringContaining('UPDATE cards'),
         expect.arrayContaining([6, expect.any(Number), expect.any(Number), 'test-card'])
-      )
-    })
-
-    it('should handle almost correct answer', async () => {
-      const card = {
-        id: 'test-card',
-        compartment: 2,
-        next_review_at: Date.now() - 1000,
-        question: 'Test Q',
-        answer: 'Test A',
-        collection_id: 'test-collection',
-        user_id: 'test-user',
-        created_at: Date.now(),
-        updated_at: Date.now(),
-        archived: false
-      }
-      
-      await composable.applyAnswer(card, 'almost')
-      
-      // Verify card was promoted to compartment 3
-      expect(mockSqliteConnection.run).toHaveBeenCalledWith(
-        expect.stringContaining('UPDATE cards'),
-        expect.arrayContaining([3, expect.any(Number), expect.any(Number), 'test-card'])
       )
     })
   })
@@ -221,7 +198,7 @@ describe('useCards - Leitner System', () => {
       }
       
       const before = Date.now()
-      await composable.applyAnswer(card, 'true')
+      await composable.applyAnswer(card, true)
       
       // Verify SQL was called with promoted compartment
       const updateCall = mockSqliteConnection.run.mock.calls.find(call => 

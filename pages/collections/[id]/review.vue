@@ -41,7 +41,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
-import type { Collection, Card, ReviewChoice } from '~/lib/types'
+import type { Collection, Card } from '~/lib/types'
 
 const route = useRoute()
 const router = useRouter()
@@ -66,11 +66,11 @@ function goToCollections() {
   router.push('/')
 }
 
-async function answer(choice: ReviewChoice) {
+async function answer(choice: boolean) {
   if (!currentCard.value) return
   
   await applyAnswer(currentCard.value, choice)
-  if (choice === 'true') goodCount.value += 1
+  if (choice === true) goodCount.value += 1
   // Animation/transition vers la carte suivante
   isBackVisible.value = false
   if (currentIndex.value < cards.value.length - 1) {

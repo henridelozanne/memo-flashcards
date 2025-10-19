@@ -1,6 +1,6 @@
 import { ref, readonly } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import type { Card, ReviewChoice } from '~/lib/types'
+import type { Card } from '~/lib/types'
 import { useDatabase } from './useDatabase'
 
 const cards = ref<Card[]>([])
@@ -90,18 +90,16 @@ const getCardsDueToday = async () => {
 /**
  * Applique la réponse Leitner à une carte et met à jour son état.
  * @param card Card
- * @param response ReviewChoice
+ * @param response boolean
  */
-const applyAnswer = async (card: Card, response: ReviewChoice) => {
+const applyAnswer = async (card: Card, response: boolean) => {
   const db = await getDbConnection()
   
   // Calculer le nouveau compartiment
   let compartment = card.compartment ?? 1
-  if (response === 'false') {
+  if (response === false) {
     compartment = 1
-  } else if (response === 'almost') {
-    compartment = Math.min(compartment + 1, 6)
-  } else if (response === 'true') {
+  } else {
     compartment = Math.min(compartment + 1, 6)
   }
   
