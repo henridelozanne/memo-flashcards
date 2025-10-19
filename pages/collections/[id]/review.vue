@@ -89,37 +89,6 @@ defineOptions({ name: 'ReviewSessionPage' })
 </script>
 
 <style scoped>
-.flip-card {
-  perspective: 1000px;
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.5s;
-  transform-style: preserve-3d;
-}
-.flip-card-inner.back-visible {
-  transform: rotateY(-180deg);
-}
-.flip-card-front, .flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  top: 0;
-  left: 0;
-}
-.flip-card-front {
-  z-index: 2;
-}
-.flip-card-back {
-  transform: rotateY(-180deg);
-  z-index: 3;
-}
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.3s;
 }
