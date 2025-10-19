@@ -14,6 +14,7 @@
     "noCardsAvailable": "Aucune carte disponible pour le moment."
   },
   "dailyReview": {
+    "title": "Révision quotidienne",
     "reviewToday": "Réviser aujourd'hui {count} carte | Réviser aujourd'hui {count} cartes",
     "noCardsToday": "Aucune carte à réviser aujourd'hui",
     "sessionFinished": "Session quotidienne terminée !",
