@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col">
-    <!-- Header -->
-    <div class="px-4 pt-4 pb-2">
+  <div class="review-session-layout fixed inset-0 bg-gray-50 flex flex-col" style="padding-top: env(safe-area-inset-top);">
+    <!-- Header fixe -->
+    <div class="flex-shrink-0 px-6 pt-6 pb-2">
       <PageHeader 
         :title="headerTitle"
         back-button-visible
@@ -14,7 +14,7 @@
     </div>
 
     <!-- Main review area -->
-    <div class="flex-1 flex flex-col items-center justify-center">
+    <div class="flex-1 flex flex-col items-center justify-center p-4 overflow-hidden">
       <transition name="fade" mode="out-in">
         <div v-if="!sessionFinished" :key="currentIndex" class="w-full flex flex-col items-center">
           <ReviewCard
@@ -64,5 +64,12 @@ defineEmits<{
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+</style>
+
+<style>
+/* Empêcher le scroll du body quand le composant de révision est actif */
+body:has(.review-session-layout) {
+  overflow: hidden;
 }
 </style>
