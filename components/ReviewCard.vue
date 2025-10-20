@@ -1,10 +1,5 @@
 <template>
   <div class="w-full max-w-md mx-auto">
-    <!-- Collection name in italics -->
-    <div v-if="collectionName" class="text-center text-sm text-gray-500 italic mb-4">
-      {{ collectionName }}
-    </div>
-    
     <div class="relative w-full aspect-[3/4] flex items-center justify-center select-none" style="perspective: 1000px;">
       <div v-if="currentCard" class="flip-card w-full h-full">
         <div class="flip-card-inner w-full h-full" :class="{ 'back-visible': isBackVisible }">
@@ -24,8 +19,8 @@
             <div class="text-base text-gray-700 break-words line-clamp-8 mb-8">{{ currentCard.answer }}</div>
             <div class="flex justify-between gap-2 mt-auto">
               <button
-                v-for="choice in userChoices"
-                :key="choice.value"
+                v-for="(choice, index) in userChoices"
+                :key="index"
                 class="flex-1 flex items-center justify-center gap-2 px-2 py-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 text-base font-medium shadow-sm focus:outline-none transition"
                 @click="$emit('answer', choice.value)"
               >
@@ -53,7 +48,6 @@ const userChoices: UserChoice[] = [
 defineProps<{
   currentCard: Card | null
   isBackVisible: boolean
-  collectionName: string
 }>()
 
 defineEmits<{

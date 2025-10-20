@@ -1,12 +1,10 @@
 <template>
   <div class="min-h-screen bg-gray-50 p-6">
-    <div class="flex items-center justify-between mb-6">
-      <h1 class="text-2xl font-bold" data-testid="heading-collections">{{ $t('collections.collections') }}</h1>
-      <div class="flex gap-2">
-        <button class="bg-yellow-100 text-yellow-700 rounded px-3 py-1 text-sm">{{ $t('common.premium') }}</button>
-        <button class="bg-gray-200 text-gray-700 rounded px-3 py-1 text-sm">{{ $t('common.help') }}</button>
-      </div>
-    </div>
+    <PageHeader 
+      :title="$t('collections.collections')" 
+      test-id="heading-collections"
+      links-visible
+    />
 
     <!-- Loading state -->
   <div v-if="isLoading" class="flex justify-center items-center py-12" data-testid="loading">

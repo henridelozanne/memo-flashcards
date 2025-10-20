@@ -49,7 +49,6 @@ const mockCard: Card = {
       props: {
         currentCard: mockCard,
         isBackVisible: false,
-        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
@@ -62,7 +61,6 @@ const mockCard: Card = {
       props: {
         currentCard: mockCard,
         isBackVisible: false,
-        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
@@ -77,7 +75,6 @@ const mockCard: Card = {
       props: {
         currentCard: mockCard,
         isBackVisible: false,
-        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
@@ -93,7 +90,6 @@ const mockCard: Card = {
       props: {
         currentCard: mockCard,
         isBackVisible: true,
-        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
@@ -109,7 +105,6 @@ const mockCard: Card = {
       props: {
         currentCard: mockCard,
         isBackVisible: true,
-        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
@@ -125,25 +120,11 @@ const mockCard: Card = {
     }
   })
 
-  it('affiche le nom de la collection si fourni', () => {
-    const wrapper = mount(ReviewCard, {
-      props: {
-        currentCard: mockCard,
-        isBackVisible: false,
-        collectionName: 'Ma Collection'
-      },
-      ...globalMountOptions
-    })
-
-    expect(wrapper.text()).toContain('Ma Collection')
-  })
-
   it('émet show-back quand on clique sur le bouton', async () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
         isBackVisible: false,
-        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
@@ -157,7 +138,6 @@ const mockCard: Card = {
       props: {
         currentCard: mockCard,
         isBackVisible: true,
-        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
@@ -172,7 +152,6 @@ const mockCard: Card = {
       props: {
         currentCard: mockCard,
         isBackVisible: true,
-        collectionName: 'Test Collection'
       },
       ...globalMountOptions
     })
@@ -193,7 +172,6 @@ const mockCard: Card = {
       props: {
         currentCard: null,
         isBackVisible: false,
-        collectionName: ''
       },
       ...globalMountOptions
     })

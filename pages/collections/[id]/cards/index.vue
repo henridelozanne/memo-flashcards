@@ -2,14 +2,12 @@
   <div class="min-h-screen bg-gray-50 p-6">
     <div class="max-w-2xl mx-auto">
       <!-- Header avec retour et titre -->
-      <div class="flex items-center mb-6">
-  <button class="mr-4 text-gray-600 hover:text-gray-800" :aria-label="$t('common.backButton')" @click="$router.push('/')">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-          </svg>
-        </button>
-        <h1 class="text-2xl font-bold" data-testid="heading-cards">{{ collection?.name || 'Collection' }}</h1>
-      </div>
+      <PageHeader 
+        :title="collection?.name || 'Collection'"
+        test-id="heading-cards"
+        back-button-visible
+        @back="$router.push('/')"
+      />
 
       <!-- Loading state -->
       <div v-if="isLoadingCollection || isLoadingCards" class="flex justify-center items-center py-12" data-testid="loading">

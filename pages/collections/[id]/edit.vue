@@ -1,14 +1,12 @@
 <template>
   <div class="min-h-screen bg-gray-50 p-6">
     <div class="max-w-md mx-auto">
-      <div class="flex items-center mb-6">
-        <button class="mr-4 text-gray-600 hover:text-gray-800" :aria-label="$t('common.backButton')" @click="$router.back()">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-          </svg>
-        </button>
-  <h1 class="text-2xl font-bold" data-testid="heading-edit">{{ $t('collections.editTitle') }}</h1>
-      </div>
+      <PageHeader 
+        :title="$t('collections.editTitle')"
+        test-id="heading-edit"
+        back-button-visible
+        @back="$router.back()"
+      />
 
       <div v-if="!collection && isLoading" class="flex justify-center items-center py-12">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>

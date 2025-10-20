@@ -14,7 +14,7 @@
     "noCardsAvailable": "No cards available right now."
   },
   "dailyReview": {
-    "title": "Daily Review",
+    "title": "Today's Cards",
     "reviewToday": "Review today {count} card | Review today {count} cards",
     "noCardsToday": "No cards to review today",
     "sessionFinished": "Daily session completed!",
