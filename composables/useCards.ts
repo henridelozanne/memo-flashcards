@@ -47,7 +47,7 @@ const getDueCards = async (collectionId: string) => {
  * Retourne toutes les cartes d'une collection (pour révision libre, indépendamment des intervalles).
  * @param collectionId string
  */
-const getAllCards = async (collectionId: string) => {
+const getAllCardsFromCollection = async (collectionId: string) => {
   try {
     const db = await getDbConnection()
     const result = await db.all<Card>(`
@@ -193,7 +193,7 @@ export const useCards = () => {
       throw new Error('Le verso de la carte est obligatoire')
     }
     
-    let db = await getDbConnection()
+    const db = await getDbConnection()
     
     // Vérifier que la carte existe
     const existing = await db.get<Card>(
@@ -202,20 +202,12 @@ export const useCards = () => {
     )
     if (!existing) throw new Error('Carte introuvable')
     
-    // Fermer et rouvrir la connexion pour éviter les conflits
-    await db.close()
-    db = await getDbConnection()
-    
     // Mettre à jour la carte
     await db.run(`
       UPDATE cards 
       SET question = ?, answer = ?, updated_at = ?
       WHERE id = ? AND deleted_at IS NULL
     `, [front.trim(), back.trim(), Date.now(), id])
-    
-    // Fermer et rouvrir encore pour le rechargement
-    await db.close()
-    db = await getDbConnection()
     
     // Recharger les cartes pour la collection
     const result = await db.all<Card>(`
@@ -224,15 +216,12 @@ export const useCards = () => {
       ORDER BY created_at DESC
     `, [existing.collection_id])
     cards.value = result
-    
-    // Fermer la connexion finale
-    await db.close()
   }
 
   const deleteCard = async (id: string): Promise<void> => {
     error.value = null
     
-    let db = await getDbConnection()
+    const db = await getDbConnection()
     
     // Vérifier que la carte existe et récupérer la collection_id
     const existing = await db.get<Card>(
@@ -241,20 +230,12 @@ export const useCards = () => {
     )
     if (!existing) throw new Error('Carte introuvable')
     
-    // Fermer et rouvrir la connexion
-    await db.close()
-    db = await getDbConnection()
-    
     // Marquer comme supprimée (soft delete)
     await db.run(`
       UPDATE cards 
       SET deleted_at = ?
       WHERE id = ? AND deleted_at IS NULL
     `, [Date.now(), id])
-    
-    // Fermer et rouvrir pour le rechargement
-    await db.close()
-    db = await getDbConnection()
     
     // Recharger les cartes pour la collection
     const result = await db.all<Card>(`
@@ -263,9 +244,6 @@ export const useCards = () => {
       ORDER BY created_at DESC
     `, [existing.collection_id])
     cards.value = result
-    
-    // Fermer la connexion finale
-    await db.close()
   }
 
   const getCardsCount = async (collectionId: string): Promise<number> => {
@@ -334,7 +312,7 @@ export const useCards = () => {
     getCardsCount,
     getLastCardDate,
     getDueCards,
-    getAllCards,
+    getAllCardsFromCollection,
     getCardsDueToday,
     applyAnswer,
     countCardsPerCompartment,

@@ -26,7 +26,7 @@ import type { Collection } from '~/lib/types'
 const route = useRoute()
 const router = useRouter()
 const { getCollection } = useCollections()
-const { getAllCards } = useCards()
+const { getAllCardsFromCollection } = useCards()
 
 const collectionId = String(route.params.id)
 const collection = ref<Collection | null>(null)
@@ -44,7 +44,7 @@ const {
   goToFinish,
   initializeSession
 } = useReviewSession({
-  getCards: () => getAllCards(collectionId),
+  getCards: () => getAllCardsFromCollection(collectionId),
   onBack: () => router.push(`/collections/${collectionId}/cards`),
   onFinish: () => router.push('/')
 })
