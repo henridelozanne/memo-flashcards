@@ -16,15 +16,10 @@
       </div>
 
       <!-- Error state -->
-      <div v-else-if="error" class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-        {{ error }}
-        <button class="ml-2 underline" @click="init">
-          {{ $t('common.retry') }}
-        </button>
-      </div>
+      <ErrorMessage v-else-if="error" :error="error" :on-retry="init" />
 
       <!-- Card not found -->
-      <div v-else-if="!card" class="text-center text-gray-600">Carte introuvable</div>
+      <div v-else-if="!card" class="text-center text-gray-600">{{ $t('cards.notFound') }}</div>
 
       <!-- Content -->
       <div v-else>
@@ -68,13 +63,7 @@
         </div>
 
         <!-- Message de succès/erreur -->
-        <div
-          v-if="message"
-          class="mt-4 rounded-md p-4"
-          :class="message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
-        >
-          {{ message.text }}
-        </div>
+        <StatusMessage :message="message" />
       </div>
     </div>
 

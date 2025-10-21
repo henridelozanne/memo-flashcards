@@ -11,17 +11,16 @@
 
       <!-- Formulaire -->
       <div class="rounded-lg bg-white p-6 shadow" data-testid="create-form">
-        <CollectionForm :is-submitting="isSubmitting" submit-label="Créer" @submit="onSubmit" @cancel="router.back()" />
+        <CollectionForm
+          :is-submitting="isSubmitting"
+          :submit-label="$t('collections.create')"
+          @submit="onSubmit"
+          @cancel="router.back()"
+        />
       </div>
 
       <!-- Message de succès/erreur -->
-      <div
-        v-if="message"
-        class="mt-4 rounded-md p-4"
-        :class="message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
-      >
-        {{ message.text }}
-      </div>
+      <StatusMessage :message="message" />
     </div>
   </div>
 </template>

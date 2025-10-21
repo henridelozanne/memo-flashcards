@@ -15,8 +15,7 @@
   },
   "dailyReview": {
     "title": "Cartes du jour",
-    "reviewToday": "Réviser aujourd'hui {count} carte | Réviser aujourd'hui {count} cartes",
-    "noCardsToday": "Aucune carte à réviser aujourd'hui",
+    "reviewToday": "Aucune carte à réviser aujourd'hui | Réviser aujourd'hui {count} carte | Réviser aujourd'hui {count} cartes",
     "sessionFinished": "Session quotidienne terminée !",
     "finishSession": "Terminer",
     "cardsReviewed": "Cartes révisées : {count}",
@@ -61,11 +60,13 @@
     "nameLabel": "Nom de la collection",
     "namePlaceholder": "Ex: Vocabulaire anglais",
     "submitting": "En cours...",
-    "edit": "Modifier"
+    "edit": "Modifier",
+    "create": "Créer"
   },
   "cards": {
     "card": "carte",
     "cards": "cartes",
+    "cardCount": "{count} carte | {count} cartes",
     "lastAdded": "Dernière ajoutée le",
     "noCards": "Aucune carte",
     "addCard": "Ajouter une carte",
@@ -84,7 +85,8 @@
     "deleteConfirm": "Supprimer cette carte",
     "deleteMessage": "Êtes-vous sûr de vouloir supprimer cette carte ?",
     "deletedSuccess": "Carte supprimée avec succès",
-    "deletedError": "Erreur lors de la suppression de la carte"
+    "deletedError": "Erreur lors de la suppression de la carte",
+    "notFound": "Carte introuvable"
   },
   "stats": {
     "streakTitle": "Calendrier de streak (90 jours)",

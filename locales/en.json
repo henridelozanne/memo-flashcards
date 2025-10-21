@@ -15,8 +15,7 @@
   },
   "dailyReview": {
     "title": "Today's Cards",
-    "reviewToday": "Review today {count} card | Review today {count} cards",
-    "noCardsToday": "No cards to review today",
+    "reviewToday": "No cards to review today | Review {count} card today | Review {count} cards today",
     "sessionFinished": "Daily session completed!",
     "finishSession": "Finish",
     "cardsReviewed": "Cards reviewed: {count}",
@@ -61,11 +60,13 @@
     "nameLabel": "Collection name",
     "namePlaceholder": "e.g. English vocabulary",
     "submitting": "Processing...",
-    "edit": "Edit"
+    "edit": "Edit",
+    "create": "Create"
   },
   "cards": {
     "card": "card",
     "cards": "cards",
+    "cardCount": "{count} card | {count} cards",
     "lastAdded": "Last added on",
     "noCards": "No cards",
     "addCard": "Add a card",
@@ -84,7 +85,8 @@
     "deleteConfirm": "Delete this card",
     "deleteMessage": "Are you sure you want to delete this card?",
     "deletedSuccess": "Card deleted successfully",
-    "deletedError": "Error while deleting the card"
+    "deletedError": "Error while deleting the card",
+    "notFound": "Card not found"
   },
   "stats": {
     "streakTitle": "Streak calendar (90 days)",

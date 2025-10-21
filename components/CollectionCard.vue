@@ -5,8 +5,7 @@
   >
     <div class="mb-2 text-lg font-semibold">{{ collection.name }}</div>
     <div class="mb-4 text-sm text-gray-500">
-      <!-- Slot pour infos supplémentaires (ex: nombre de cartes) -->
-      <slot name="info">0 cartes</slot>
+      {{ $t('cards.cardCount', { count: cardCount }) }}
     </div>
     <div class="mt-auto flex gap-2">
       <button v-if="onEdit" class="text-xs text-blue-600 hover:underline" @click.stop="onEdit(collection.id)">
@@ -20,6 +19,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useCards } from '~/composables/useCards'
 import type { Collection } from '~/lib/types'
 
 const props = defineProps<{
@@ -28,6 +29,18 @@ const props = defineProps<{
   onDelete?: (collection: Collection) => void
   onClick?: (id: string) => void
 }>()
+
+const { getCardsCount } = useCards()
+const cardCount = ref(0)
+
+onMounted(async () => {
+  try {
+    cardCount.value = await getCardsCount(props.collection.id)
+  } catch (e) {
+    console.error('Erreur lors du chargement du compteur de cartes:', e)
+    cardCount.value = 0
+  }
+})
 
 function handleClick() {
   if (props.onClick) props.onClick(props.collection.id)

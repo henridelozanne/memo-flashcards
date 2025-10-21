@@ -20,12 +20,7 @@
       </div>
 
       <!-- Error state -->
-      <div v-else-if="error" class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-        {{ error }}
-        <button class="ml-2 underline" @click="init">
-          {{ $t('common.retry') }}
-        </button>
-      </div>
+      <ErrorMessage v-else-if="error" :error="error" :on-retry="init" />
 
       <!-- Collection not found -->
       <div v-else-if="!collection" class="text-center text-gray-600">
