@@ -1,13 +1,20 @@
 <template>
-  <div class="flex flex-col border rounded-lg p-4 bg-white shadow hover:shadow-md transition cursor-pointer" @click="handleClick">
-    <div class="font-semibold text-lg mb-2">{{ collection.name }}</div>
-    <div class="text-gray-500 text-sm mb-4">
+  <div
+    class="flex cursor-pointer flex-col rounded-lg border bg-white p-4 shadow transition hover:shadow-md"
+    @click="handleClick"
+  >
+    <div class="mb-2 text-lg font-semibold">{{ collection.name }}</div>
+    <div class="mb-4 text-sm text-gray-500">
       <!-- Slot pour infos supplémentaires (ex: nombre de cartes) -->
       <slot name="info">0 cartes</slot>
     </div>
-    <div class="flex gap-2 mt-auto">
-      <button v-if="onEdit" class="text-xs text-blue-600 hover:underline" @click.stop="onEdit(collection.id)">{{ $t('collections.edit') }}</button>
-      <button v-if="onDelete" class="text-xs text-red-500 hover:underline" @click.stop="onDelete(collection)">{{ $t('common.delete') }}</button>
+    <div class="mt-auto flex gap-2">
+      <button v-if="onEdit" class="text-xs text-blue-600 hover:underline" @click.stop="onEdit(collection.id)">
+        {{ $t('collections.edit') }}
+      </button>
+      <button v-if="onDelete" class="text-xs text-red-500 hover:underline" @click.stop="onDelete(collection)">
+        {{ $t('common.delete') }}
+      </button>
     </div>
   </div>
 </template>

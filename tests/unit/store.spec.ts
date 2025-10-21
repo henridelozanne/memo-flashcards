@@ -8,14 +8,14 @@ describe('app store', () => {
   })
 
   it('toggles premium', () => {
-  const store = useAppStore()
+    const store = useAppStore()
     expect(store.isPremium).toBe(false)
     store.togglePremium()
     expect(store.isPremium).toBe(true)
   })
 
   it('sets language', () => {
-  const store = useAppStore()
+    const store = useAppStore()
     store.setLanguage('en')
     expect(store.language).toBe('en')
   })

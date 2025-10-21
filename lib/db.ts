@@ -30,7 +30,7 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
     }
 
     // Open fresh DB connection
-  db = await openDatabase(dbName)
+    db = await openDatabase(dbName)
 
     // Run migrations if they exist (with tracking to avoid reapplying)
     if (fs.existsSync(MIGRATIONS_DIR)) {
@@ -46,17 +46,13 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
         .sort()
 
       for (const file of files) {
-        const applied = await migrationDb.get<{ file: string }>(
-          'SELECT file FROM Migrations WHERE file = ? LIMIT 1',
-          [file]
-        )
+        const applied = await migrationDb.get<{ file: string }>('SELECT file FROM Migrations WHERE file = ? LIMIT 1', [
+          file,
+        ])
         if (!applied) {
           const sql = fs.readFileSync(path.join(MIGRATIONS_DIR, file), 'utf-8')
           await migrationDb.exec(sql)
-          await migrationDb.run(
-            'INSERT INTO Migrations (file, applied_at) VALUES (?, ?)',
-            [file, Date.now()]
-          )
+          await migrationDb.run('INSERT INTO Migrations (file, applied_at) VALUES (?, ?)', [file, Date.now()])
         }
       }
     }
@@ -75,10 +71,11 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
   async function setMeta(key: string, value: unknown): Promise<void> {
     ensureDb(db)
     const now = Date.now()
-    await db.run(
-      'INSERT OR REPLACE INTO Meta (key, value, updated_at) VALUES (?, ?, ?)',
-      [key, JSON.stringify(value), now]
-    )
+    await db.run('INSERT OR REPLACE INTO Meta (key, value, updated_at) VALUES (?, ?, ?)', [
+      key,
+      JSON.stringify(value),
+      now,
+    ])
   }
 
   // Collections
@@ -86,12 +83,9 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
     ensureDb(db)
     // Get current user id if present in Meta (fallback to null)
     const currentUserId = (await getMeta('user_id')) as string | null
-    
+
     // Check unique
-    const exist = await db.get<Collection>(
-      'SELECT * FROM Collection WHERE name = ? AND deleted_at IS NULL',
-      [name]
-    )
+    const exist = await db.get<Collection>('SELECT * FROM Collection WHERE name = ? AND deleted_at IS NULL', [name])
     if (exist) throw new Error('Collection with this name already exists')
 
     const now = Date.now()
@@ -102,7 +96,13 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
       [id, name, now, now, currentUserId ?? null]
     )
 
-  return { id, name, created_at: now, updated_at: now, user_id: currentUserId ?? '' }
+    return {
+      id,
+      name,
+      created_at: now,
+      updated_at: now,
+      user_id: currentUserId ?? '',
+    }
   }
 
   async function getCollections(includeDeleted = false): Promise<Collection[]> {
@@ -135,20 +135,14 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
       sets.push('name = ?')
       params.push(data.name)
     }
-    
+
     sets.push('updated_at = ?')
     params.push(now)
     params.push(id)
     if (currentUserId) {
-      await db.run(
-        `UPDATE Collection SET ${sets.join(', ')} WHERE id = ? AND user_id = ?`,
-        [...params, currentUserId]
-      )
+      await db.run(`UPDATE Collection SET ${sets.join(', ')} WHERE id = ? AND user_id = ?`, [...params, currentUserId])
     } else {
-      await db.run(
-        `UPDATE Collection SET ${sets.join(', ')} WHERE id = ?`,
-        params
-      )
+      await db.run(`UPDATE Collection SET ${sets.join(', ')} WHERE id = ?`, params)
     }
   }
 
@@ -157,41 +151,25 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
     const now = Date.now()
     const currentUserId = (await getMeta('user_id')) as string | null
     if (currentUserId) {
-      await db.run(
-        'UPDATE Collection SET deleted_at = ? WHERE id = ? AND user_id = ?',
-        [now, id, currentUserId]
-      )
+      await db.run('UPDATE Collection SET deleted_at = ? WHERE id = ? AND user_id = ?', [now, id, currentUserId])
     } else {
-      await db.run(
-        'UPDATE Collection SET deleted_at = ? WHERE id = ?',
-        [now, id]
-      )
+      await db.run('UPDATE Collection SET deleted_at = ? WHERE id = ?', [now, id])
     }
     // Soft-delete associated cards
     if (currentUserId) {
-      await db.run(
-        'UPDATE Card SET deleted_at = ? WHERE collection_id = ? AND user_id = ?',
-        [now, id, currentUserId]
-      )
+      await db.run('UPDATE Card SET deleted_at = ? WHERE collection_id = ? AND user_id = ?', [now, id, currentUserId])
     } else {
-      await db.run(
-        'UPDATE Card SET deleted_at = ? WHERE collection_id = ?',
-        [now, id]
-      )
+      await db.run('UPDATE Card SET deleted_at = ? WHERE collection_id = ?', [now, id])
     }
   }
 
   // Cards
-  async function createCard(
-    collectionId: string,
-    question: string,
-    answer: string
-  ): Promise<Card> {
+  async function createCard(collectionId: string, question: string, answer: string): Promise<Card> {
     ensureDb(db)
     const now = Date.now()
     const id = uuidv4()
     const currentUserId = (await getMeta('user_id')) as string | null
-    
+
     await db.run(
       'INSERT INTO Card (id, collection_id, question, answer, format, compartment, next_review_at, created_at, updated_at, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [id, collectionId, question, answer, 'text', 1, now, now, now, currentUserId ?? null]
@@ -211,10 +189,9 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
         [collectionId, currentUserId]
       )
     }
-    return db.all<Card>(
-      'SELECT * FROM Card WHERE collection_id = ? AND deleted_at IS NULL ORDER BY updated_at DESC',
-      [collectionId]
-    )
+    return db.all<Card>('SELECT * FROM Card WHERE collection_id = ? AND deleted_at IS NULL ORDER BY updated_at DESC', [
+      collectionId,
+    ])
   }
 
   async function updateCard(id: string, data: Partial<Card>): Promise<void> {
@@ -236,20 +213,14 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
       sets.push('compartment = ?')
       params.push(data.compartment)
     }
-    
+
     sets.push('updated_at = ?')
     params.push(now)
     params.push(id)
     if (currentUserId) {
-      await db.run(
-        `UPDATE Card SET ${sets.join(', ')} WHERE id = ? AND user_id = ?`,
-        [...params, currentUserId]
-      )
+      await db.run(`UPDATE Card SET ${sets.join(', ')} WHERE id = ? AND user_id = ?`, [...params, currentUserId])
     } else {
-      await db.run(
-        `UPDATE Card SET ${sets.join(', ')} WHERE id = ?`,
-        params
-      )
+      await db.run(`UPDATE Card SET ${sets.join(', ')} WHERE id = ?`, params)
     }
   }
 
@@ -258,15 +229,9 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
     const now = Date.now()
     const currentUserId = (await getMeta('user_id')) as string | null
     if (currentUserId) {
-      await db.run(
-        'UPDATE Card SET deleted_at = ? WHERE id = ? AND user_id = ?',
-        [now, id, currentUserId]
-      )
+      await db.run('UPDATE Card SET deleted_at = ? WHERE id = ? AND user_id = ?', [now, id, currentUserId])
     } else {
-      await db.run(
-        'UPDATE Card SET deleted_at = ? WHERE id = ?',
-        [now, id]
-      )
+      await db.run('UPDATE Card SET deleted_at = ? WHERE id = ?', [now, id])
     }
   }
 
@@ -276,24 +241,19 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
     const now = Date.now()
     const id = uuidv4()
     const currentUserId = (await getMeta('user_id')) as string | null
-    
-    await db.run(
-      'INSERT INTO ReviewSession (id, started_at, user_id) VALUES (?, ?, ?)',
-      [id, now, currentUserId ?? null]
-    )
 
-    const row = await db.get<ReviewSession>(
-      'SELECT * FROM ReviewSession WHERE id = ?',
-      [id]
-    )
+    await db.run('INSERT INTO ReviewSession (id, started_at, user_id) VALUES (?, ?, ?)', [
+      id,
+      now,
+      currentUserId ?? null,
+    ])
+
+    const row = await db.get<ReviewSession>('SELECT * FROM ReviewSession WHERE id = ?', [id])
     if (!row) throw new Error('Failed to create review session')
     return row
   }
 
-  async function endReviewSession(
-    id: string,
-    stats: { correct: number; wrong: number; total: number }
-  ): Promise<void> {
+  async function endReviewSession(id: string, stats: { correct: number; wrong: number; total: number }): Promise<void> {
     ensureDb(db)
     const now = Date.now()
     const currentUserId = (await getMeta('user_id')) as string | null
@@ -311,11 +271,7 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
   }
 
   // Logs
-  async function addReviewLog(
-    cardId: string,
-    sessionId: string,
-    result: string
-  ): Promise<void> {
+  async function addReviewLog(cardId: string, sessionId: string, result: string): Promise<void> {
     ensureDb(db)
     const now = Date.now()
     const id = uuidv4()
@@ -340,6 +296,6 @@ export default function createDb(dbName: string = DEFAULT_DB_NAME) {
     endReviewSession,
     addReviewLog,
     getMeta,
-    setMeta
+    setMeta,
   }
 }

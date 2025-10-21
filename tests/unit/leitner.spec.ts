@@ -97,20 +97,45 @@ describe('scheduleAfterReview', () => {
 describe('selectDueCards', () => {
   const now = 1_000_000_000_000
   const cards: CardLike[] = [
-    { id: 'a', collectionId: 'c1', compartment: 1, nextReviewAt: now - 1, updatedAt: now - 10 },
-    { id: 'b', collectionId: 'c1', compartment: 6, nextReviewAt: now - 1, updatedAt: now - 9 },
-    { id: 'c', collectionId: 'c2', compartment: 2, nextReviewAt: now + 1, updatedAt: now - 8 },
-    { id: 'd', collectionId: 'c2', compartment: 3, nextReviewAt: now - 1, updatedAt: now - 7, archived: true },
+    {
+      id: 'a',
+      collectionId: 'c1',
+      compartment: 1,
+      nextReviewAt: now - 1,
+      updatedAt: now - 10,
+    },
+    {
+      id: 'b',
+      collectionId: 'c1',
+      compartment: 6,
+      nextReviewAt: now - 1,
+      updatedAt: now - 9,
+    },
+    {
+      id: 'c',
+      collectionId: 'c2',
+      compartment: 2,
+      nextReviewAt: now + 1,
+      updatedAt: now - 8,
+    },
+    {
+      id: 'd',
+      collectionId: 'c2',
+      compartment: 3,
+      nextReviewAt: now - 1,
+      updatedAt: now - 7,
+      archived: true,
+    },
   ]
 
   it('filters by nextReviewAt and archived', () => {
-  const res = selectDueCards(cards, now)
-  expect(res.map((r: CardLike) => r.id).sort()).toEqual(['a', 'b'].sort())
+    const res = selectDueCards(cards, now)
+    expect(res.map((r: CardLike) => r.id).sort()).toEqual(['a', 'b'].sort())
   })
 
   it('can exclude C6', () => {
-  const res = selectDueCards(cards, now, { excludeC6: true })
-  expect(res.map((r: CardLike) => r.id)).toEqual(['a'])
+    const res = selectDueCards(cards, now, { excludeC6: true })
+    expect(res.map((r: CardLike) => r.id)).toEqual(['a'])
   })
 })
 
@@ -123,10 +148,34 @@ describe('sortDueCardsDeterministically', () => {
     ]
 
     const cards: CardLike[] = [
-      { id: 'a1', collectionId: 'A', compartment: 1, nextReviewAt: now - 1, updatedAt: 100 },
-      { id: 'a2', collectionId: 'A', compartment: 1, nextReviewAt: now - 1, updatedAt: 200 },
-      { id: 'b1', collectionId: 'B', compartment: 1, nextReviewAt: now - 1, updatedAt: 50 },
-      { id: 'a3', collectionId: 'A', compartment: 1, nextReviewAt: now - 1, updatedAt: 100 },
+      {
+        id: 'a1',
+        collectionId: 'A',
+        compartment: 1,
+        nextReviewAt: now - 1,
+        updatedAt: 100,
+      },
+      {
+        id: 'a2',
+        collectionId: 'A',
+        compartment: 1,
+        nextReviewAt: now - 1,
+        updatedAt: 200,
+      },
+      {
+        id: 'b1',
+        collectionId: 'B',
+        compartment: 1,
+        nextReviewAt: now - 1,
+        updatedAt: 50,
+      },
+      {
+        id: 'a3',
+        collectionId: 'A',
+        compartment: 1,
+        nextReviewAt: now - 1,
+        updatedAt: 100,
+      },
     ]
 
     const sorted = sortDueCardsDeterministically(cards, collections)
@@ -137,7 +186,7 @@ describe('sortDueCardsDeterministically', () => {
     expect(sorted[3].collectionId).toBe('B')
 
     // within A: updatedAt ascending, tie break by id
-  const aOrder = sorted.filter((c: CardLike) => c.collectionId === 'A').map((c: CardLike) => c.id)
+    const aOrder = sorted.filter((c: CardLike) => c.collectionId === 'A').map((c: CardLike) => c.id)
     expect(aOrder).toEqual(['a1', 'a3', 'a2'])
   })
 })

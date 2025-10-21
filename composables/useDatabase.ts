@@ -6,7 +6,6 @@ let isInitializing = false
 let initPromise: Promise<SqliteConnection> | null = null
 
 export const useDatabase = () => {
-  
   const getDbConnection = async (): Promise<SqliteConnection> => {
     // Si une connexion existe déjà, la retourner
     if (dbConnection) {
@@ -21,7 +20,7 @@ export const useDatabase = () => {
     // Démarrer l'initialisation
     isInitializing = true
     initPromise = initializeConnection()
-    
+
     try {
       dbConnection = await initPromise
       return dbConnection
@@ -34,7 +33,7 @@ export const useDatabase = () => {
   const initializeConnection = async (): Promise<SqliteConnection> => {
     const { default: openDatabase } = await import('~/lib/sqlite')
     const connection = await openDatabase('memoflash')
-    
+
     // Initialiser toutes les tables nécessaires
     await connection.exec(`
       CREATE TABLE IF NOT EXISTS collections (
@@ -60,7 +59,7 @@ export const useDatabase = () => {
         archived INTEGER DEFAULT 0
       );
     `)
-    
+
     return connection
   }
 
@@ -73,6 +72,6 @@ export const useDatabase = () => {
 
   return {
     getDbConnection,
-    closeConnection
+    closeConnection,
   }
 }

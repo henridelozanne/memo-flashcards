@@ -1,8 +1,8 @@
 <template>
   <div class="min-h-screen bg-gray-50 p-6">
-    <div class="max-w-md mx-auto">
+    <div class="mx-auto max-w-md">
       <!-- Header avec retour -->
-      <PageHeader 
+      <PageHeader
         :title="$t('cards.editTitle')"
         test-id="heading-edit-card"
         back-button-visible
@@ -10,33 +10,34 @@
       />
 
       <!-- Loading state -->
-      <div v-if="isLoading" class="flex justify-center items-center py-12" data-testid="loading">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div v-if="isLoading" class="flex items-center justify-center py-12" data-testid="loading">
+        <div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
         <span class="ml-2 text-gray-600">{{ $t('common.loading') }}</span>
       </div>
 
       <!-- Error state -->
-      <div v-else-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <div v-else-if="error" class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
         {{ error }}
-        <button class="ml-2 underline" @click="init">{{ $t('common.retry') }}</button>
+        <button class="ml-2 underline" @click="init">
+          {{ $t('common.retry') }}
+        </button>
       </div>
 
       <!-- Card not found -->
-      <div v-else-if="!card" class="text-center text-gray-600">
-        Carte introuvable
-      </div>
+      <div v-else-if="!card" class="text-center text-gray-600">Carte introuvable</div>
 
       <!-- Content -->
       <div v-else>
         <!-- Collection info -->
-        <div v-if="collection" class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div v-if="collection" class="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
           <p class="text-sm text-blue-700">
-            <span class="font-medium">{{ $t('collections.collection') }}:</span> {{ collection.name }}
+            <span class="font-medium">{{ $t('collections.collection') }}:</span>
+            {{ collection.name }}
           </p>
         </div>
 
         <!-- Formulaire -->
-        <div class="bg-white rounded-lg shadow p-6 mb-6" data-testid="edit-card-form">
+        <div class="mb-6 rounded-lg bg-white p-6 shadow" data-testid="edit-card-form">
           <CardForm
             :front="card.question"
             :back="card.answer"
@@ -48,21 +49,30 @@
         </div>
 
         <!-- Bouton supprimer -->
-        <div class="bg-white rounded-lg shadow p-6">
+        <div class="rounded-lg bg-white p-6 shadow">
           <button
-            class="w-full px-4 py-2 text-red-700 bg-red-100 rounded-md hover:bg-red-200 transition flex items-center justify-center gap-2"
+            class="flex w-full items-center justify-center gap-2 rounded-md bg-red-100 px-4 py-2 text-red-700 transition hover:bg-red-200"
             data-testid="delete-card-btn"
             @click="confirmDelete"
           >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              ></path>
             </svg>
             {{ $t('cards.deleteConfirm') }}
           </button>
         </div>
 
         <!-- Message de succès/erreur -->
-        <div v-if="message" class="mt-4 p-4 rounded-md" :class="message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
+        <div
+          v-if="message"
+          class="mt-4 rounded-md p-4"
+          :class="message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+        >
           {{ message.text }}
         </div>
       </div>
@@ -108,25 +118,25 @@ const card = ref<Card | null>(null)
 const isSubmitting = ref(false)
 const isDeleting = ref(false)
 const showDeleteModal = ref(false)
-const message = ref<{ type: 'success' | 'error', text: string } | null>(null)
+const message = ref<{ type: 'success' | 'error'; text: string } | null>(null)
 
 async function init() {
   message.value = null
-  
+
   // Charger les collections si nécessaire
   if (!collections.value.length) {
     await loadCollections()
   }
-  
+
   // Récupérer la collection
   collection.value = getCollection(collectionId)
-  
+
   if (collection.value) {
     // Charger les cartes si pas déjà fait
     if (!cards.value.length) {
       await loadCards(collectionId)
     }
-    
+
     // Récupérer la carte
     card.value = getCard(cardId)
   }
@@ -135,19 +145,22 @@ async function init() {
 async function onSubmit(front: string, back: string) {
   isSubmitting.value = true
   message.value = null
-  
+
   try {
     await updateCard(cardId, front, back)
-    message.value = { type: 'success', text: t('cards.updatedSuccess') as string }
-    
+    message.value = {
+      type: 'success',
+      text: t('cards.updatedSuccess') as string,
+    }
+
     // Navigate back to cards list after 1.5 seconds
     setTimeout(() => {
       router.push(`/collections/${collectionId}/cards`)
     }, 1500)
   } catch (err) {
-    message.value = { 
-      type: 'error', 
-      text: err instanceof Error ? err.message : (t('cards.updatedError') as string)
+    message.value = {
+      type: 'error',
+      text: err instanceof Error ? err.message : (t('cards.updatedError') as string),
     }
   } finally {
     isSubmitting.value = false
@@ -160,20 +173,23 @@ function confirmDelete() {
 
 async function handleDelete() {
   isDeleting.value = true
-  
+
   try {
     await deleteCard(cardId)
-    message.value = { type: 'success', text: t('cards.deletedSuccess') as string }
+    message.value = {
+      type: 'success',
+      text: t('cards.deletedSuccess') as string,
+    }
     showDeleteModal.value = false
-    
+
     // Navigate back to cards list after 1 second
     setTimeout(() => {
       router.push(`/collections/${collectionId}/cards`)
     }, 1000)
   } catch (err) {
-    message.value = { 
-      type: 'error', 
-      text: err instanceof Error ? err.message : (t('cards.deletedError') as string)
+    message.value = {
+      type: 'error',
+      text: err instanceof Error ? err.message : (t('cards.deletedError') as string),
     }
     showDeleteModal.value = false
   } finally {

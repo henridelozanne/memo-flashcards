@@ -8,7 +8,7 @@ interface AppState {
 const useAppStore = defineStore('app', {
   state: (): AppState => ({
     language: 'fr',
-    isPremium: false
+    isPremium: false,
   }),
   actions: {
     togglePremium() {
@@ -16,9 +16,8 @@ const useAppStore = defineStore('app', {
     },
     setLanguage(lang: string) {
       this.language = lang
-    }
-  }
+    },
+  },
 })
 
 export default useAppStore
-

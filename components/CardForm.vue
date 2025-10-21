@@ -1,34 +1,32 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-6">
-      <label for="front" class="block text-sm font-medium text-gray-700 mb-2">
-        {{ $t('cards.front') }} *
-      </label>
+      <label for="front" class="mb-2 block text-sm font-medium text-gray-700"> {{ $t('cards.front') }} * </label>
       <input
         id="front"
         v-model="localFront"
         type="text"
         required
         maxlength="500"
-        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
         :class="{ 'border-red-500': frontError }"
         :placeholder="$t('cards.frontPlaceholder')"
         data-testid="front-input"
       />
-      <p v-if="frontError" class="mt-1 text-sm text-red-600">{{ frontError }}</p>
+      <p v-if="frontError" class="mt-1 text-sm text-red-600">
+        {{ frontError }}
+      </p>
     </div>
 
     <div class="mb-6">
-      <label for="back" class="block text-sm font-medium text-gray-700 mb-2">
-        {{ $t('cards.back') }} *
-      </label>
+      <label for="back" class="mb-2 block text-sm font-medium text-gray-700"> {{ $t('cards.back') }} * </label>
       <textarea
         id="back"
         v-model="localBack"
         required
         maxlength="2000"
         rows="4"
-        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
         :class="{ 'border-red-500': backError }"
         :placeholder="$t('cards.backPlaceholder')"
         data-testid="back-input"
@@ -39,25 +37,25 @@
     <div class="flex gap-3">
       <button
         type="button"
-        class="flex-1 px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition"
+        class="flex-1 rounded-md bg-gray-200 px-4 py-2 text-gray-700 transition hover:bg-gray-300"
         @click="$emit('cancel')"
       >
         {{ $t('common.cancel') }}
       </button>
       <button
-  v-if="showAddAnother"
-  type="button"
-  :disabled="isSubmitting || !isFormValid"
-  class="flex-1 px-4 py-2 text-blue-700 bg-blue-100 rounded-md hover:bg-blue-200 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed transition"
-  data-testid="add-card-another"
-  @click="handleAddAnother"
+        v-if="showAddAnother"
+        type="button"
+        :disabled="isSubmitting || !isFormValid"
+        class="flex-1 rounded-md bg-blue-100 px-4 py-2 text-blue-700 transition hover:bg-blue-200 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
+        data-testid="add-card-another"
+        @click="handleAddAnother"
       >
         {{ isSubmitting ? $t('common.loading') : $t('cards.addAnother') }}
       </button>
       <button
         type="submit"
         :disabled="isSubmitting || !isFormValid"
-        class="flex-1 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+        class="flex-1 rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
         data-testid="add-card-submit"
       >
         {{ isSubmitting ? $t('common.loading') : submitLabel }}
@@ -69,19 +67,22 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 
-const props = withDefaults(defineProps<{
-  front?: string
-  back?: string
-  isSubmitting?: boolean
-  submitLabel?: string
-  showAddAnother?: boolean
-}>(), {
-  front: '',
-  back: '',
-  isSubmitting: false,
-  submitLabel: 'Ajouter',
-  showAddAnother: false
-})
+const props = withDefaults(
+  defineProps<{
+    front?: string
+    back?: string
+    isSubmitting?: boolean
+    submitLabel?: string
+    showAddAnother?: boolean
+  }>(),
+  {
+    front: '',
+    back: '',
+    isSubmitting: false,
+    submitLabel: 'Ajouter',
+    showAddAnother: false,
+  }
+)
 
 const emit = defineEmits<{
   (e: 'submit', front: string, back: string): void
@@ -101,14 +102,11 @@ defineExpose({
     localBack.value = ''
     frontError.value = null
     backError.value = null
-  }
+  },
 })
 
-const isFormValid = computed(() => 
-  localFront.value.trim().length > 0 && 
-  localBack.value.trim().length > 0 && 
-  !frontError.value && 
-  !backError.value
+const isFormValid = computed(
+  () => localFront.value.trim().length > 0 && localBack.value.trim().length > 0 && !frontError.value && !backError.value
 )
 
 function validateFront() {
@@ -165,8 +163,12 @@ function handleAddAnother() {
 }
 
 // Reset form when props change (for edit mode)
-watch(() => [props.front, props.back], () => {
-  localFront.value = props.front ?? ''
-  localBack.value = props.back ?? ''
-}, { immediate: true })
+watch(
+  () => [props.front, props.back],
+  () => {
+    localFront.value = props.front ?? ''
+    localBack.value = props.back ?? ''
+  },
+  { immediate: true }
+)
 </script>

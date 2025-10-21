@@ -11,9 +11,9 @@ const mockT = (key: string, params?: TParams) => {
     'review.showAnswer': 'Voir la réponse',
     'review.again': '❌ Encore',
     'review.almost': '➖ Presque',
-    'review.good': '✅ Bien'
+    'review.good': '✅ Bien',
   }
-  
+
   if (params && typeof translations[key] === 'string') {
     return translations[key].replace(/\{(\w+)\}/g, (match, param) => {
       const val = params[param]
@@ -26,23 +26,23 @@ const mockT = (key: string, params?: TParams) => {
 const globalMountOptions = {
   global: {
     mocks: {
-      $t: mockT
-    }
-  }
+      $t: mockT,
+    },
+  },
 }
 
 describe('ReviewCard', () => {
-const mockCard: Card = {
-  id: '1',
-  question: 'Quelle est la capitale de la France ?',
-  answer: 'Paris',
-  collection_id: '1',
-  user_id: '1',
-  compartment: 1,
-  next_review_at: Date.now(),
-  created_at: Date.now(),
-  updated_at: Date.now()
-}
+  const mockCard: Card = {
+    id: '1',
+    question: 'Quelle est la capitale de la France ?',
+    answer: 'Paris',
+    collection_id: '1',
+    user_id: '1',
+    compartment: 1,
+    next_review_at: Date.now(),
+    created_at: Date.now(),
+    updated_at: Date.now(),
+  }
 
   it('affiche la question de la carte', () => {
     const wrapper = mount(ReviewCard, {
@@ -50,7 +50,7 @@ const mockCard: Card = {
         currentCard: mockCard,
         isBackVisible: false,
       },
-      ...globalMountOptions
+      ...globalMountOptions,
     })
 
     expect(wrapper.text()).toContain('Quelle est la capitale de la France ?')
@@ -62,7 +62,7 @@ const mockCard: Card = {
         currentCard: mockCard,
         isBackVisible: false,
       },
-      ...globalMountOptions
+      ...globalMountOptions,
     })
 
     const button = wrapper.find('button')
@@ -70,13 +70,13 @@ const mockCard: Card = {
     expect(button.text()).toBe('Voir la réponse')
   })
 
-  it('émet l\'événement show-back au clic sur le bouton', async () => {
+  it("émet l'événement show-back au clic sur le bouton", async () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
         isBackVisible: false,
       },
-      ...globalMountOptions
+      ...globalMountOptions,
     })
 
     const button = wrapper.find('button')
@@ -91,7 +91,7 @@ const mockCard: Card = {
         currentCard: mockCard,
         isBackVisible: true,
       },
-      ...globalMountOptions
+      ...globalMountOptions,
     })
 
     // Vérifier que les boutons de réponse sont présents dans la face arrière
@@ -100,13 +100,13 @@ const mockCard: Card = {
     expect(responseButtons).toHaveLength(2) // 2 boutons de réponse
   })
 
-  it('émet l\'événement answer avec la bonne valeur', async () => {
+  it("émet l'événement answer avec la bonne valeur", async () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: mockCard,
         isBackVisible: true,
       },
-      ...globalMountOptions
+      ...globalMountOptions,
     })
 
     // Prendre les boutons de la face arrière seulement
@@ -126,7 +126,7 @@ const mockCard: Card = {
         currentCard: mockCard,
         isBackVisible: false,
       },
-      ...globalMountOptions
+      ...globalMountOptions,
     })
 
     await wrapper.find('button').trigger('click')
@@ -139,7 +139,7 @@ const mockCard: Card = {
         currentCard: mockCard,
         isBackVisible: true,
       },
-      ...globalMountOptions
+      ...globalMountOptions,
     })
 
     expect(wrapper.text()).toContain('Paris')
@@ -153,13 +153,13 @@ const mockCard: Card = {
         currentCard: mockCard,
         isBackVisible: true,
       },
-      ...globalMountOptions
+      ...globalMountOptions,
     })
 
     const buttons = wrapper.findAll('button')
     // Le premier bouton de réponse devrait être "false" (❌)
-    const falseButton = buttons.find(btn => btn.text().includes('❌'))
-    
+    const falseButton = buttons.find((btn) => btn.text().includes('❌'))
+
     if (falseButton) {
       await falseButton.trigger('click')
       expect(wrapper.emitted('answer')).toBeTruthy()
@@ -167,13 +167,13 @@ const mockCard: Card = {
     }
   })
 
-  it('affiche le message par défaut quand il n\'y a pas de carte', () => {
+  it("affiche le message par défaut quand il n'y a pas de carte", () => {
     const wrapper = mount(ReviewCard, {
       props: {
         currentCard: null,
         isBackVisible: false,
       },
-      ...globalMountOptions
+      ...globalMountOptions,
     })
 
     expect(wrapper.text()).toContain('Aucune carte')

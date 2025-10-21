@@ -1,15 +1,22 @@
 <template>
-  <div v-if="open" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg p-6 max-w-sm mx-4">
-      <h3 class="text-lg font-semibold mb-4">{{ title }}</h3>
-      <div class="text-gray-600 mb-6">
+  <div v-if="open" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="mx-4 max-w-sm rounded-lg bg-white p-6">
+      <h3 class="mb-4 text-lg font-semibold">{{ title }}</h3>
+      <div class="mb-6 text-gray-600">
         <slot />
       </div>
       <div class="flex gap-3">
-        <button class="flex-1 px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition" @click="$emit('cancel')">
+        <button
+          class="flex-1 rounded-md bg-gray-200 px-4 py-2 text-gray-700 transition hover:bg-gray-300"
+          @click="$emit('cancel')"
+        >
           {{ cancelLabel }}
         </button>
-        <button :disabled="loading" class="flex-1 px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700 disabled:bg-gray-400 transition" @click="$emit('confirm')">
+        <button
+          :disabled="loading"
+          class="flex-1 rounded-md bg-red-600 px-4 py-2 text-white transition hover:bg-red-700 disabled:bg-gray-400"
+          @click="$emit('confirm')"
+        >
           <slot name="confirmLabel">{{ loading ? $t('common.processing') : confirmLabel }}</slot>
         </button>
       </div>
@@ -29,7 +36,7 @@ withDefaults(
   {
     confirmLabel: 'Confirmer',
     cancelLabel: 'Annuler',
-    loading: false
+    loading: false,
   }
 )
 

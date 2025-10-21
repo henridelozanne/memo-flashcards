@@ -1,28 +1,33 @@
 <template>
   <div class="min-h-screen bg-gray-50 p-6">
-    <div class="max-w-md mx-auto">
-      <PageHeader 
+    <div class="mx-auto max-w-md">
+      <PageHeader
         :title="$t('collections.editTitle')"
         test-id="heading-edit"
         back-button-visible
         @back="$router.back()"
       />
 
-      <div v-if="!collection && isLoading" class="flex justify-center items-center py-12">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div v-if="!collection && isLoading" class="flex items-center justify-center py-12">
+        <div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
         <span class="ml-2 text-gray-600">{{ $t('common.loading') }}</span>
       </div>
 
-      <div v-else-if="!collection && error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <div
+        v-else-if="!collection && error"
+        class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
+      >
         {{ error }}
-        <button class="ml-2 underline" @click="init">{{ $t('common.retry') }}</button>
+        <button class="ml-2 underline" @click="init">
+          {{ $t('common.retry') }}
+        </button>
       </div>
 
       <div v-else-if="!collection" class="text-center text-gray-600">
         {{ $t('collections.notFound') }}
       </div>
 
-      <div v-else class="bg-white rounded-lg shadow p-6">
+      <div v-else class="rounded-lg bg-white p-6 shadow">
         <CollectionForm
           :name="collection.name"
           :is-submitting="isSubmitting"
@@ -32,7 +37,11 @@
         />
       </div>
 
-      <div v-if="message" class="mt-4 p-4 rounded-md" :class="message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
+      <div
+        v-if="message"
+        class="mt-4 rounded-md p-4"
+        :class="message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+      >
         {{ message.text }}
       </div>
     </div>
@@ -55,7 +64,7 @@ const { collections, isLoading, error, loadCollections, getCollection, updateCol
 
 const collection = ref<Collection | null>(null)
 const isSubmitting = ref(false)
-const message = ref<{ type: 'success' | 'error', text: string } | null>(null)
+const message = ref<{ type: 'success' | 'error'; text: string } | null>(null)
 
 async function init() {
   message.value = null
@@ -74,10 +83,16 @@ async function onSubmit(name: string) {
   message.value = null
   try {
     await updateCollection(collection.value.id, name)
-    message.value = { type: 'success', text: t('collections.updatedSuccess') as string }
+    message.value = {
+      type: 'success',
+      text: t('collections.updatedSuccess') as string,
+    }
     setTimeout(() => router.push('/'), 1500)
   } catch (err) {
-    message.value = { type: 'error', text: err instanceof Error ? err.message : (t('collections.updatedError') as string) }
+    message.value = {
+      type: 'error',
+      text: err instanceof Error ? err.message : (t('collections.updatedError') as string),
+    }
   } finally {
     isSubmitting.value = false
   }

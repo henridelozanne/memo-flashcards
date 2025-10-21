@@ -66,10 +66,10 @@ This module is pure and will be wired into the data-layer and UI in subsequent s
 The app uses silent authentication via Supabase on startup, without requiring any visible user accounts. A unique anonymous user ID is automatically generated and used to link local data. While remote backup is not yet enabled, this lays the groundwork for future Supabase synchronization features.
 
 Authentication is handled by the `useSupabaseAuth()` composable, which:
+
 - Checks for an existing session or creates an anonymous one
 - Stores the user ID in the local SQLite Meta table
 - Provides a fallback to local UUID if auth fails
-
 
 All data entities (collections, cards, sessions, logs) include a `user_id` field, preparing for future multi-user sync capabilities while maintaining strict data isolation even in offline mode.
 
@@ -83,5 +83,7 @@ Le code prépare la synchronisation future avec Supabase :
 - Les tests valident la structure et l’isolation des données
 
 La synchronisation effective (push/pull, gestion des conflits) sera ajoutée dans un prompt ultérieur.
+
+```
 
 ```

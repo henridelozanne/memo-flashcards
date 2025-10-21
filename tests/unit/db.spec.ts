@@ -69,7 +69,7 @@ describe('Database', () => {
       await db.updateCard(card.id, {
         question: 'Updated',
         answer: 'New Answer',
-        compartment: 2
+        compartment: 2,
       })
 
       const cards = await db.getCardsByCollection(testCollectionId)
@@ -96,7 +96,7 @@ describe('Database', () => {
 
       const stats = { total: 10, correct: 7, wrong: 3 }
       await db.endReviewSession(session.id, stats)
-      
+
       // Add log entry
       const collection = await db.createCollection('Test')
       const card = await db.createCard(collection.id, 'Q', 'A')

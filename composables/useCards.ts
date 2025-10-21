@@ -27,7 +27,8 @@ const getDueCards = async (collectionId: string) => {
   const now = Date.now()
   try {
     const db = await getDbConnection()
-    const result = await db.all<Card>(`
+    const result = await db.all<Card>(
+      `
       SELECT * FROM cards 
       WHERE collection_id = ?
       AND deleted_at IS NULL 
@@ -35,7 +36,9 @@ const getDueCards = async (collectionId: string) => {
       AND compartment < 6
       AND archived = 0
       ORDER BY next_review_at ASC, created_at ASC
-    `, [collectionId, now])
+    `,
+      [collectionId, now]
+    )
     return result
   } catch (e: any) {
     console.error('Erreur lors du chargement des cartes dues:', e)
@@ -50,13 +53,16 @@ const getDueCards = async (collectionId: string) => {
 const getAllCardsFromCollection = async (collectionId: string) => {
   try {
     const db = await getDbConnection()
-    const result = await db.all<Card>(`
+    const result = await db.all<Card>(
+      `
       SELECT * FROM cards 
       WHERE collection_id = ?
       AND deleted_at IS NULL 
       AND archived = 0
       ORDER BY created_at ASC
-    `, [collectionId])
+    `,
+      [collectionId]
+    )
     return result
   } catch (e: any) {
     console.error('Erreur lors du chargement de toutes les cartes:', e)
@@ -69,17 +75,20 @@ const getAllCardsFromCollection = async (collectionId: string) => {
  */
 const getCardsDueToday = async () => {
   const now = Date.now()
-  
+
   try {
     const db = await getDbConnection()
-    const result = await db.all<Card>(`
+    const result = await db.all<Card>(
+      `
       SELECT * FROM cards 
       WHERE deleted_at IS NULL 
       AND next_review_at <= ? 
       AND compartment < 6
       AND archived = 0
       ORDER BY next_review_at ASC, created_at ASC
-    `, [now])
+    `,
+      [now]
+    )
     return result
   } catch (e: any) {
     console.error('Erreur lors du chargement des cartes:', e)
@@ -94,7 +103,7 @@ const getCardsDueToday = async () => {
  */
 const applyAnswer = async (card: Card, response: boolean) => {
   const db = await getDbConnection()
-  
+
   // Calculer le nouveau compartiment
   let compartment = card.compartment ?? 1
   if (response === false) {
@@ -102,32 +111,38 @@ const applyAnswer = async (card: Card, response: boolean) => {
   } else {
     compartment = Math.min(compartment + 1, 6)
   }
-  
+
   // Calculer la prochaine révision
   const now = Date.now()
   const intervalDays = LEITNER_INTERVALS[compartment] ?? 0
   const nextReviewAt = now + intervalDays * 24 * 60 * 60 * 1000
-  
+
   // Mettre à jour en base
-  await db.run(`
+  await db.run(
+    `
     UPDATE cards 
     SET compartment = ?, next_review_at = ?, updated_at = ?
     WHERE id = ? AND deleted_at IS NULL
-  `, [compartment, nextReviewAt, now, card.id])
+  `,
+    [compartment, nextReviewAt, now, card.id]
+  )
 }
 
 export const useCards = () => {
   const loadCards = async (collectionId: string) => {
     isLoading.value = true
     error.value = null
-    
+
     try {
       const db = await getDbConnection()
-      const result = await db.all<Card>(`
+      const result = await db.all<Card>(
+        `
         SELECT * FROM cards 
         WHERE collection_id = ? AND deleted_at IS NULL 
         ORDER BY created_at DESC
-      `, [collectionId])
+      `,
+        [collectionId]
+      )
       cards.value = result
     } catch (e: any) {
       error.value = e.message || 'Erreur lors du chargement des cartes'
@@ -136,13 +151,11 @@ export const useCards = () => {
     }
   }
 
-  const getCard = (id: string): Card | null => (
-    cards.value.find(c => c.id === id && !c.deleted_at) ?? null
-  )
+  const getCard = (id: string): Card | null => cards.value.find((c) => c.id === id && !c.deleted_at) ?? null
 
   const createCard = async (front: string, back: string, collectionId: string): Promise<Card> => {
     error.value = null
-    
+
     // Validation
     if (!front.trim()) {
       throw new Error('Le recto de la carte est obligatoire')
@@ -150,7 +163,7 @@ export const useCards = () => {
     if (!back.trim()) {
       throw new Error('Le verso de la carte est obligatoire')
     }
-    
+
     const now = Date.now()
     const card: Card = {
       id: uuidv4(),
@@ -162,29 +175,46 @@ export const useCards = () => {
       updated_at: now,
       compartment: 1,
       next_review_at: now,
-      archived: false
+      archived: false,
     }
-    
+
     const db = await getDbConnection()
-    await db.run(`
+    await db.run(
+      `
       INSERT INTO cards (id, user_id, collection_id, question, answer, compartment, next_review_at, created_at, updated_at, archived)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, [card.id, card.user_id, card.collection_id, card.question, card.answer, card.compartment, card.next_review_at, card.created_at, card.updated_at, card.archived ? 1 : 0])
-      
+    `,
+      [
+        card.id,
+        card.user_id,
+        card.collection_id,
+        card.question,
+        card.answer,
+        card.compartment,
+        card.next_review_at,
+        card.created_at,
+        card.updated_at,
+        card.archived ? 1 : 0,
+      ]
+    )
+
     // Recharger les cartes depuis la base pour mettre à jour la liste réactive
-    const result = await db.all<Card>(`
+    const result = await db.all<Card>(
+      `
       SELECT * FROM cards 
       WHERE collection_id = ? AND deleted_at IS NULL 
       ORDER BY created_at DESC
-    `, [collectionId])
+    `,
+      [collectionId]
+    )
     cards.value = result
-    
+
     return card
   }
 
   const updateCard = async (id: string, front: string, back: string): Promise<void> => {
     error.value = null
-    
+
     // Validation
     if (!front.trim()) {
       throw new Error('Le recto de la carte est obligatoire')
@@ -192,57 +222,63 @@ export const useCards = () => {
     if (!back.trim()) {
       throw new Error('Le verso de la carte est obligatoire')
     }
-    
+
     const db = await getDbConnection()
-    
+
     // Vérifier que la carte existe
-    const existing = await db.get<Card>(
-      'SELECT * FROM cards WHERE id = ? AND deleted_at IS NULL',
-      [id]
-    )
+    const existing = await db.get<Card>('SELECT * FROM cards WHERE id = ? AND deleted_at IS NULL', [id])
     if (!existing) throw new Error('Carte introuvable')
-    
+
     // Mettre à jour la carte
-    await db.run(`
+    await db.run(
+      `
       UPDATE cards 
       SET question = ?, answer = ?, updated_at = ?
       WHERE id = ? AND deleted_at IS NULL
-    `, [front.trim(), back.trim(), Date.now(), id])
-    
+    `,
+      [front.trim(), back.trim(), Date.now(), id]
+    )
+
     // Recharger les cartes pour la collection
-    const result = await db.all<Card>(`
+    const result = await db.all<Card>(
+      `
       SELECT * FROM cards 
       WHERE collection_id = ? AND deleted_at IS NULL 
       ORDER BY created_at DESC
-    `, [existing.collection_id])
+    `,
+      [existing.collection_id]
+    )
     cards.value = result
   }
 
   const deleteCard = async (id: string): Promise<void> => {
     error.value = null
-    
+
     const db = await getDbConnection()
-    
+
     // Vérifier que la carte existe et récupérer la collection_id
-    const existing = await db.get<Card>(
-      'SELECT * FROM cards WHERE id = ? AND deleted_at IS NULL',
-      [id]
-    )
+    const existing = await db.get<Card>('SELECT * FROM cards WHERE id = ? AND deleted_at IS NULL', [id])
     if (!existing) throw new Error('Carte introuvable')
-    
+
     // Marquer comme supprimée (soft delete)
-    await db.run(`
+    await db.run(
+      `
       UPDATE cards 
       SET deleted_at = ?
       WHERE id = ? AND deleted_at IS NULL
-    `, [Date.now(), id])
-    
+    `,
+      [Date.now(), id]
+    )
+
     // Recharger les cartes pour la collection
-    const result = await db.all<Card>(`
+    const result = await db.all<Card>(
+      `
       SELECT * FROM cards 
       WHERE collection_id = ? AND deleted_at IS NULL 
       ORDER BY created_at DESC
-    `, [existing.collection_id])
+    `,
+      [existing.collection_id]
+    )
     cards.value = result
   }
 
@@ -316,6 +352,6 @@ export const useCards = () => {
     getCardsDueToday,
     applyAnswer,
     countCardsPerCompartment,
-    resetCards
+    resetCards,
   }
 }

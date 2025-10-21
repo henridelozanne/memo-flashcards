@@ -10,7 +10,7 @@ interface ReviewSessionConfig {
 
 export function useReviewSession(config: ReviewSessionConfig) {
   const { applyAnswer } = useCards()
-  
+
   const cards = ref<Card[]>([])
   const currentIndex = ref(0)
   const isBackVisible = ref(false)
@@ -21,7 +21,7 @@ export function useReviewSession(config: ReviewSessionConfig) {
   const isLoading = ref(true)
 
   const currentCard = computed(() => cards.value[currentIndex.value])
-  const successRate = computed(() => 
+  const successRate = computed(() =>
     cardsReviewedCount.value > 0 ? Math.round((goodCount.value / cardsReviewedCount.value) * 100) : 0
   )
 
@@ -37,14 +37,14 @@ export function useReviewSession(config: ReviewSessionConfig) {
 
   async function answer(choice: boolean) {
     if (!currentCard.value) return
-    
+
     // Appliquer la réponse Leitner
     await applyAnswer(currentCard.value, choice)
-    
+
     // Compter les statistiques
     cardsReviewedCount.value += 1
     if (choice === true) goodCount.value += 1
-    
+
     // Animation/transition vers la carte suivante
     isBackVisible.value = false
     if (currentIndex.value < cards.value.length - 1) {
@@ -73,15 +73,15 @@ export function useReviewSession(config: ReviewSessionConfig) {
     cardsReviewedCount,
     total,
     isLoading,
-    
+
     // Computed
     currentCard,
     successRate,
-    
+
     // Methods
     initializeSession,
     answer,
     goBack,
-    goToFinish
+    goToFinish,
   }
 }

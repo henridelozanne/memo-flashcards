@@ -7,11 +7,11 @@ const mockSqliteConnection = {
   run: vi.fn(),
   get: vi.fn(),
   all: vi.fn(),
-  close: vi.fn()
+  close: vi.fn(),
 }
 
 vi.mock('~/lib/sqlite', () => ({
-  default: vi.fn(() => mockSqliteConnection)
+  default: vi.fn(() => mockSqliteConnection),
 }))
 
 // Mock UUID
@@ -20,7 +20,7 @@ vi.mock('uuid', () => ({
   v4: () => {
     mockUuidCounter += 1
     return `mock-uuid-${mockUuidCounter}`
-  }
+  },
 }))
 
 describe('useCards - Leitner System', () => {
@@ -29,12 +29,12 @@ describe('useCards - Leitner System', () => {
   beforeEach(() => {
     // Reset UUID counter
     mockUuidCounter = 0
-    
+
     // Créer une nouvelle instance du composable pour chaque test
     composable = useCards()
     // Reset les données mockées
     composable.resetCards()
-    
+
     // Setup default SQLite mocks
     vi.clearAllMocks()
     mockSqliteConnection.exec.mockResolvedValue(undefined)
@@ -54,7 +54,7 @@ describe('useCards - Leitner System', () => {
           answer: 'A1',
           compartment: 1,
           next_review_at: now - 1000, // Due
-          collection_id: 'test-collection'
+          collection_id: 'test-collection',
         },
         {
           id: 'card-2',
@@ -62,26 +62,26 @@ describe('useCards - Leitner System', () => {
           answer: 'A2',
           compartment: 2,
           next_review_at: now - 2000, // Due
-          collection_id: 'test-collection'
-        }
+          collection_id: 'test-collection',
+        },
       ]
-      
+
       mockSqliteConnection.all.mockResolvedValue(mockDueCards)
-      
+
       const dueCards = await composable.getDueCards('test-collection')
-      
+
       expect(dueCards).toEqual(mockDueCards)
-      expect(mockSqliteConnection.all).toHaveBeenCalledWith(
-        expect.stringContaining('SELECT * FROM cards'),
-        ['test-collection', expect.any(Number)]
-      )
+      expect(mockSqliteConnection.all).toHaveBeenCalledWith(expect.stringContaining('SELECT * FROM cards'), [
+        'test-collection',
+        expect.any(Number),
+      ])
     })
 
     it('should return empty array if no due cards', async () => {
       mockSqliteConnection.all.mockResolvedValue([])
-      
+
       const dueCards = await composable.getDueCards('test-collection')
-      
+
       expect(dueCards).toEqual([])
     })
   })
@@ -94,16 +94,16 @@ describe('useCards - Leitner System', () => {
           question: 'Q1',
           answer: 'A1',
           compartment: 1,
-          next_review_at: Date.now() - 1000
-        }
+          next_review_at: Date.now() - 1000,
+        },
       ]
-      
+
       mockSqliteConnection.all.mockResolvedValue(mockCardsToday)
-      
+
       const cardsToday = await composable.getCardsDueToday()
-      
+
       expect(cardsToday).toEqual(mockCardsToday)
-      
+
       // Verify SQL query looks for cards due now (no collection filter)
       const callArgs = mockSqliteConnection.all.mock.calls[0]
       expect(callArgs[0]).toContain('next_review_at <= ?')
@@ -123,11 +123,11 @@ describe('useCards - Leitner System', () => {
         user_id: 'test-user',
         created_at: Date.now(),
         updated_at: Date.now(),
-        archived: false
+        archived: false,
       }
-      
+
       await composable.applyAnswer(card, true)
-      
+
       // Verify card was promoted to compartment 2
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
         expect.stringContaining('UPDATE cards'),
@@ -146,11 +146,11 @@ describe('useCards - Leitner System', () => {
         user_id: 'test-user',
         created_at: Date.now(),
         updated_at: Date.now(),
-        archived: false
+        archived: false,
       }
-      
+
       await composable.applyAnswer(card, false)
-      
+
       // Verify card was demoted to compartment 1
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
         expect.stringContaining('UPDATE cards'),
@@ -169,11 +169,11 @@ describe('useCards - Leitner System', () => {
         user_id: 'test-user',
         created_at: Date.now(),
         updated_at: Date.now(),
-        archived: false
+        archived: false,
       }
-      
+
       await composable.applyAnswer(card, true)
-      
+
       // Verify card stays in compartment 6 (max level)
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
         expect.stringContaining('UPDATE cards'),
@@ -194,24 +194,22 @@ describe('useCards - Leitner System', () => {
         user_id: 'test-user',
         created_at: Date.now(),
         updated_at: Date.now(),
-        archived: false
+        archived: false,
       }
-      
+
       const before = Date.now()
       await composable.applyAnswer(card, true)
-      
+
       // Verify SQL was called with promoted compartment
-      const updateCall = mockSqliteConnection.run.mock.calls.find(call => 
-        call[0].includes('UPDATE cards')
-      )
-      
+      const updateCall = mockSqliteConnection.run.mock.calls.find((call) => call[0].includes('UPDATE cards'))
+
       expect(updateCall).toBeTruthy()
       const [, params] = updateCall
       const [compartment, nextReviewAt] = params
-      
+
       // Should be promoted to compartment 3
       expect(compartment).toBe(3)
-      
+
       // Next review should be in the future (3 days for compartment 3)
       expect(nextReviewAt).toBeGreaterThan(before)
     })

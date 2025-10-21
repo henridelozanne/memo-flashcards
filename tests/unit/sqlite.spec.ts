@@ -6,7 +6,7 @@ import openDatabase from '../../lib/sqlite'
 
 describe('SQLite abstraction', () => {
   const DB_FILE = 'test.sqlite'
-  
+
   afterEach(async () => {
     // Clean up test database file
     if (fs.existsSync(DB_FILE)) {
@@ -32,14 +32,10 @@ describe('SQLite abstraction', () => {
   it('supports parameterized queries', async () => {
     const db = await openDatabase('test')
     await db.exec('CREATE TABLE test (id INTEGER PRIMARY KEY, value TEXT)')
-    
+
     // Use Promise.all instead of for...of
-    await Promise.all([
-      'one',
-      'two', 
-      'three'
-    ].map(value => db.run('INSERT INTO test (value) VALUES (?)', [value])))
-    
+    await Promise.all(['one', 'two', 'three'].map((value) => db.run('INSERT INTO test (value) VALUES (?)', [value])))
+
     const rows = await db.all<{ value: string }>('SELECT value FROM test WHERE value != ?', ['two'])
     expect(rows.length).toBe(2)
     expect(rows[0].value).toBe('one')
@@ -50,21 +46,21 @@ describe('SQLite abstraction', () => {
   it('handles transactions', async () => {
     const db = await openDatabase('test')
     await db.exec('CREATE TABLE test (id INTEGER PRIMARY KEY, value TEXT)')
-    
+
     // Start transaction
     await db.exec('BEGIN TRANSACTION')
-    
+
     try {
       // Add some data
       await db.run('INSERT INTO test (value) VALUES (?)', ['test1'])
       await db.run('INSERT INTO test (value) VALUES (?)', ['test2'])
-      
+
       // Commit changes
       await db.exec('COMMIT')
     } catch (err) {
       // Rollback on error
       await db.exec('ROLLBACK')
-      throw err 
+      throw err
     }
 
     const rows = await db.all<{ value: string }>('SELECT value FROM test')
@@ -75,10 +71,10 @@ describe('SQLite abstraction', () => {
   it('handles rollback on error', async () => {
     const db = await openDatabase('test')
     await db.exec('CREATE TABLE test (id INTEGER PRIMARY KEY, value TEXT)')
-    
+
     // Start transaction
     await db.exec('BEGIN TRANSACTION')
-    
+
     try {
       // Add some data
       await db.run('INSERT INTO test (value) VALUES (?)', ['test1'])
@@ -126,7 +122,7 @@ describe('SQLite abstraction', () => {
 
     const row = await db.get<TestRow>('SELECT * FROM test')
     expect(row).toBeDefined()
-    
+
     // Use optional chaining to avoid non-null assertions
     expect(row?.text_val).toBe('hello')
     expect(row?.int_val).toBe(42)
@@ -135,7 +131,7 @@ describe('SQLite abstraction', () => {
     expect(row?.date_val).toBe(now)
     expect(Buffer.isBuffer(row?.blob_val)).toBe(true)
     expect(row?.blob_val.toString()).toBe('binary data')
-    
+
     await db.close()
   })
 })

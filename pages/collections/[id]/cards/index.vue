@@ -1,8 +1,8 @@
 <template>
   <div class="min-h-screen bg-gray-50 p-6">
-    <div class="max-w-2xl mx-auto">
+    <div class="mx-auto max-w-2xl">
       <!-- Header avec retour et titre -->
-      <PageHeader 
+      <PageHeader
         :title="collection?.name || 'Collection'"
         test-id="heading-cards"
         back-button-visible
@@ -10,15 +10,21 @@
       />
 
       <!-- Loading state -->
-      <div v-if="isLoadingCollection || isLoadingCards" class="flex justify-center items-center py-12" data-testid="loading">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div
+        v-if="isLoadingCollection || isLoadingCards"
+        class="flex items-center justify-center py-12"
+        data-testid="loading"
+      >
+        <div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
         <span class="ml-2 text-gray-600">{{ $t('common.loading') }}</span>
       </div>
 
       <!-- Error state -->
-      <div v-else-if="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <div v-else-if="error" class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
         {{ error }}
-        <button class="ml-2 underline" @click="init">{{ $t('common.retry') }}</button>
+        <button class="ml-2 underline" @click="init">
+          {{ $t('common.retry') }}
+        </button>
       </div>
 
       <!-- Collection not found -->
@@ -29,18 +35,23 @@
       <!-- Content -->
       <div v-else>
         <!-- Résumé -->
-        <div class="bg-white rounded-lg shadow p-6 mb-6">
-          <div class="flex items-center justify-between gap-2 flex-wrap">
+        <div class="mb-6 rounded-lg bg-white p-6 shadow">
+          <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <p class="text-lg font-medium">{{ cards.length }} {{ cards.length <= 1 ? $t('cards.card') : $t('cards.cards') }}</p>
+              <p class="text-lg font-medium">
+                {{ cards.length }}
+                {{ cards.length <= 1 ? $t('cards.card') : $t('cards.cards') }}
+              </p>
               <p v-if="lastCardDate" class="text-sm text-gray-500">
                 {{ $t('cards.lastAdded') }} {{ formatDate(lastCardDate) }}
               </p>
-              <p v-else class="text-sm text-gray-500">{{ $t('cards.noCards') }}</p>
+              <p v-else class="text-sm text-gray-500">
+                {{ $t('cards.noCards') }}
+              </p>
             </div>
-            <div class="flex gap-2 flex-wrap">
-              <button 
-                class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition flex items-center gap-2"
+            <div class="flex flex-wrap gap-2">
+              <button
+                class="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
                 data-testid="add-card-btn"
                 @click="$router.push(`/collections/${collectionId}/cards/create`)"
               >
@@ -48,7 +59,7 @@
                 {{ $t('cards.addCard') }}
               </button>
               <button
-                class="bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="flex items-center gap-2 rounded-md bg-gray-900 px-4 py-2 text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
                 data-testid="review-collection-btn"
                 :disabled="cards.length === 0"
                 @click="$router.push(`/collections/${collectionId}/review`)"
@@ -60,28 +71,32 @@
         </div>
 
         <!-- Liste des cartes -->
-        <div v-if="cards.length === 0" class="text-center py-12" data-testid="empty-state">
-          <div class="text-gray-400 text-lg mb-2">{{ $t('cards.noCards') }}</div>
-          <div class="text-gray-500 text-sm">{{ $t('cards.addFirstCard') }}</div>
+        <div v-if="cards.length === 0" class="py-12 text-center" data-testid="empty-state">
+          <div class="mb-2 text-lg text-gray-400">
+            {{ $t('cards.noCards') }}
+          </div>
+          <div class="text-sm text-gray-500">
+            {{ $t('cards.addFirstCard') }}
+          </div>
         </div>
 
-        <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 justify-items-center">
-          <div 
-            v-for="card in cards" 
+        <div v-else class="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <div
+            v-for="card in cards"
             :key="card.id"
-            class="bg-white rounded-2xl shadow-lg transition cursor-pointer flex flex-col items-center justify-center aspect-[3/4] w-full max-w-56 h-72 p-4 border border-gray-200 relative"
+            class="relative flex aspect-[3/4] h-72 w-full max-w-56 cursor-pointer flex-col items-center justify-center rounded-2xl border border-gray-200 bg-white p-4 shadow-lg transition"
             data-testid="card-item"
             @click="editCard(card.id)"
           >
-            <div class="w-full flex-1 flex flex-col items-center justify-center text-center overflow-hidden">
+            <div class="flex w-full flex-1 flex-col items-center justify-center overflow-hidden text-center">
               <!-- Front (question) -->
-              <div class="font-medium text-sm text-gray-900 mb-2 break-words line-clamp-3 leading-tight">
+              <div class="mb-2 line-clamp-3 break-words text-sm font-medium leading-tight text-gray-900">
                 {{ card.question }}
               </div>
               <!-- Divider -->
-              <div class="w-8 h-px bg-gray-300 my-2 opacity-50"></div>
+              <div class="my-2 h-px w-8 bg-gray-300 opacity-50"></div>
               <!-- Back (answer) -->
-              <div class="text-xs text-gray-500 break-words line-clamp-4 leading-tight">
+              <div class="line-clamp-4 break-words text-xs leading-tight text-gray-500">
                 {{ card.answer }}
               </div>
             </div>
@@ -103,7 +118,13 @@ defineOptions({ name: 'CollectionCardsPage' })
 
 const route = useRoute()
 const router = useRouter()
-const { collections, isLoading: isLoadingCollection, error: collectionError, loadCollections, getCollection } = useCollections()
+const {
+  collections,
+  isLoading: isLoadingCollection,
+  error: collectionError,
+  loadCollections,
+  getCollection,
+} = useCollections()
 const { cards, isLoading: isLoadingCards, error: cardsError, loadCards, getLastCardDate } = useCards()
 
 const collectionId = String(route.params.id)
@@ -117,10 +138,10 @@ async function init() {
   if (!collections.value.length && !isLoadingCollection.value) {
     await loadCollections()
   }
-  
+
   // Récupérer la collection
   collection.value = getCollection(collectionId)
-  
+
   if (collection.value) {
     // Charger les cartes
     await loadCards(collectionId)
@@ -136,7 +157,7 @@ function formatDate(date: Date): string {
   return new Intl.DateTimeFormat('fr-FR', {
     day: 'numeric',
     month: 'long',
-    year: 'numeric'
+    year: 'numeric',
   }).format(date)
 }
 

@@ -7,12 +7,12 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '~', replacement: path.resolve(__dirname) },
-      { find: '@', replacement: path.resolve(__dirname) }
-    ]
+      { find: '@', replacement: path.resolve(__dirname) },
+    ],
   },
   test: {
     globals: true,
     environment: 'jsdom',
-    include: ['tests/unit/**/*.spec.ts']
-  }
+    include: ['tests/unit/**/*.spec.ts'],
+  },
 })

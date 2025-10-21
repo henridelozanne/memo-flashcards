@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #__nuxt {
+html,
+body,
+#__nuxt {
   height: 100%;
 }
 

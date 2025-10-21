@@ -19,20 +19,20 @@ describe('Database multi-user scoping', () => {
   })
 
   it('isolates collections by user_id', async () => {
-  await setUser(db, 'userA')
-  await db.createCollection('A')
+    await setUser(db, 'userA')
+    await db.createCollection('A')
 
     await setUser(db, 'userB')
     await db.createCollection('B')
 
     // Under userB, only B is visible
     const underB = await db.getCollections()
-    expect(underB.map(c => c.name)).toEqual(['B'])
+    expect(underB.map((c) => c.name)).toEqual(['B'])
 
     // Switch back to userA, only A visible
     await setUser(db, 'userA')
     const underA = await db.getCollections()
-    expect(underA.map(c => c.name)).toEqual(['A'])
+    expect(underA.map((c) => c.name)).toEqual(['A'])
 
     // With includeDeleted fallback when user removed
     await db.setMeta('user_id', null)
@@ -51,11 +51,11 @@ describe('Database multi-user scoping', () => {
     const colB = await db.createCollection('C_B')
     await db.createCard(colB.id, 'Q2', 'A2')
 
-  const cardsB = await db.getCardsByCollection(colB.id)
-  expect(cardsB.map((c) => (c as unknown as { question: string }).question)).toEqual(['Q2'])
+    const cardsB = await db.getCardsByCollection(colB.id)
+    expect(cardsB.map((c) => (c as unknown as { question: string }).question)).toEqual(['Q2'])
 
     await setUser(db, 'userA')
-  const cardsA = await db.getCardsByCollection(colA.id)
-  expect(cardsA.map((c) => (c as unknown as { question: string }).question)).toEqual(['Q1'])
+    const cardsA = await db.getCardsByCollection(colA.id)
+    expect(cardsA.map((c) => (c as unknown as { question: string }).question)).toEqual(['Q1'])
   })
 })

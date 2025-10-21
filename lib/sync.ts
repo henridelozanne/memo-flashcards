@@ -1,9 +1,8 @@
-
 interface SyncStats {
-  collections: number;
-  cards: number;
-  sessions: number;
-  logs: number;
+  collections: number
+  cards: number
+  sessions: number
+  logs: number
 }
 
 export async function syncLocalToRemote(): Promise<SyncStats> {
@@ -13,7 +12,7 @@ export async function syncLocalToRemote(): Promise<SyncStats> {
     cards: 0,
     sessions: 0,
     logs: 0,
-  };
+  }
 }
 
 export async function syncRemoteToLocal(): Promise<SyncStats> {
@@ -23,10 +22,10 @@ export async function syncRemoteToLocal(): Promise<SyncStats> {
     cards: 0,
     sessions: 0,
     logs: 0,
-  };
+  }
 }
 
 export async function isSyncNeeded(): Promise<boolean> {
   // Will compare local and remote updated_at timestamps
-  return false;
+  return false
 }

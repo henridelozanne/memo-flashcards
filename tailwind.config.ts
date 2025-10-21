@@ -11,7 +11,7 @@ const config: Config = {
           200: '#e5e7eb',
           300: '#d1d5db',
           400: '#9ca3af',
-          500: '#6b7280'
+          500: '#6b7280',
         },
         blue: {
           50: '#f0f9ff',
@@ -19,15 +19,15 @@ const config: Config = {
           200: '#bae6fd',
           300: '#7dd3fc',
           400: '#38bdf8',
-          500: '#0ea5e9'
-        }
+          500: '#0ea5e9',
+        },
       },
       fontFamily: {
-        sans: ['system-ui', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif']
-      }
-    }
+        sans: ['system-ui', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 }
 
 export default config

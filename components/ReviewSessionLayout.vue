@@ -1,22 +1,21 @@
 <template>
-  <div class="review-session-layout fixed inset-0 bg-gray-50 flex flex-col" style="padding-top: env(safe-area-inset-top);">
+  <div
+    class="review-session-layout fixed inset-0 flex flex-col bg-gray-50"
+    style="padding-top: env(safe-area-inset-top)"
+  >
     <!-- Header fixe -->
-    <div class="flex-shrink-0 px-6 pt-6 pb-2">
-      <PageHeader 
-        :title="headerTitle"
-        back-button-visible
-        @back="goBack"
-      >
+    <div class="flex-shrink-0 px-6 pb-2 pt-6">
+      <PageHeader :title="headerTitle" back-button-visible @back="goBack">
         <template #actions>
-          <div class="text-sm text-gray-600 font-semibold">{{ currentIndex + 1 }} / {{ total }}</div>
+          <div class="text-sm font-semibold text-gray-600">{{ currentIndex + 1 }} / {{ total }}</div>
         </template>
       </PageHeader>
     </div>
 
     <!-- Main review area -->
-    <div class="flex-1 flex flex-col items-center justify-center p-4 overflow-hidden">
+    <div class="flex flex-1 flex-col items-center justify-center overflow-hidden p-4">
       <transition name="fade" mode="out-in">
-        <div v-if="!sessionFinished" :key="currentIndex" class="w-full flex flex-col items-center">
+        <div v-if="!sessionFinished" :key="currentIndex" class="flex w-full flex-col items-center">
           <ReviewCard
             :current-card="currentCard"
             :is-back-visible="isBackVisible"
@@ -59,10 +58,12 @@ defineEmits<{
 </script>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.3s;
 }
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 </style>

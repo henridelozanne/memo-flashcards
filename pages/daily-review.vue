@@ -35,11 +35,11 @@ const {
   answer,
   goBack,
   goToFinish,
-  initializeSession
+  initializeSession,
 } = useReviewSession({
   getCards: getCardsDueToday,
   onBack: () => router.push('/'),
-  onFinish: () => router.push('/')
+  onFinish: () => router.push('/'),
 })
 
 onMounted(initializeSession)

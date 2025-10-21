@@ -42,11 +42,11 @@ const {
   answer,
   goBack,
   goToFinish,
-  initializeSession
+  initializeSession,
 } = useReviewSession({
   getCards: () => getAllCardsFromCollection(collectionId),
   onBack: () => router.push(`/collections/${collectionId}/cards`),
-  onFinish: () => router.push('/')
+  onFinish: () => router.push('/'),
 })
 
 onMounted(async () => {

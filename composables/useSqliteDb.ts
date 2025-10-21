@@ -15,7 +15,7 @@ export async function useSqliteDb(): Promise<SqlDb> {
   if (!db) {
     const opened = await open({
       filename: './memo-flashcards.sqlite',
-      driver: sqlite3.Database
+      driver: sqlite3.Database,
     })
     db = opened as unknown as SqlDb
   }
