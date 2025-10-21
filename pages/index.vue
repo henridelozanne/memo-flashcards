@@ -3,10 +3,7 @@
     <PageHeader :title="$t('collections.collections')" test-id="heading-collections" links-visible />
 
     <!-- Loading state -->
-    <div v-if="isLoading" class="flex items-center justify-center py-12" data-testid="loading">
-      <div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
-      <span class="ml-2 text-gray-600">{{ $t('common.loadingCollections') }}</span>
-    </div>
+    <Loading v-if="isLoading" :message="$t('common.loadingCollections')" />
 
     <!-- Error state -->
     <ErrorMessage v-if="error" :error="error" :on-retry="loadCollections" />

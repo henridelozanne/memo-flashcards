@@ -10,12 +10,7 @@
       />
 
       <!-- Collection info -->
-      <div v-if="collection" class="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
-        <p class="text-sm text-blue-700">
-          <span class="font-medium">{{ $t('collections.collection') }}:</span>
-          {{ collection.name }}
-        </p>
-      </div>
+      <CollectionInfo :collection="collection" />
 
       <!-- Formulaire -->
       <div class="rounded-lg bg-white p-6 shadow" data-testid="create-card-form">

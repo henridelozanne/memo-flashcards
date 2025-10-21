@@ -10,10 +10,7 @@
       />
 
       <!-- Loading state -->
-      <div v-if="isLoading" class="flex items-center justify-center py-12" data-testid="loading">
-        <div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
-        <span class="ml-2 text-gray-600">{{ $t('common.loading') }}</span>
-      </div>
+      <Loading v-if="isLoading" />
 
       <!-- Error state -->
       <ErrorMessage v-else-if="error" :error="error" :on-retry="init" />
@@ -24,12 +21,7 @@
       <!-- Content -->
       <div v-else>
         <!-- Collection info -->
-        <div v-if="collection" class="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <p class="text-sm text-blue-700">
-            <span class="font-medium">{{ $t('collections.collection') }}:</span>
-            {{ collection.name }}
-          </p>
-        </div>
+        <CollectionInfo :collection="collection" />
 
         <!-- Formulaire -->
         <div class="mb-6 rounded-lg bg-white p-6 shadow" data-testid="edit-card-form">

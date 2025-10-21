@@ -58,7 +58,7 @@
         class="flex-1 rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
         data-testid="add-card-submit"
       >
-        {{ isSubmitting ? $t('common.loading') : submitLabel }}
+        {{ isSubmitting ? $t('common.loading') : submitLabel || $t('common.add') }}
       </button>
     </div>
   </form>
@@ -79,7 +79,7 @@ const props = withDefaults(
     front: '',
     back: '',
     isSubmitting: false,
-    submitLabel: 'Ajouter',
+    submitLabel: '',
     showAddAnother: false,
   }
 )

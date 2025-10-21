@@ -8,20 +8,9 @@
         @back="$router.back()"
       />
 
-      <div v-if="!collection && isLoading" class="flex items-center justify-center py-12">
-        <div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
-        <span class="ml-2 text-gray-600">{{ $t('common.loading') }}</span>
-      </div>
+      <Loading v-if="!collection && isLoading" />
 
-      <div
-        v-else-if="!collection && error"
-        class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
-      >
-        {{ error }}
-        <button class="ml-2 underline" @click="init">
-          {{ $t('common.retry') }}
-        </button>
-      </div>
+      <ErrorMessage v-else-if="!collection && error" :error="error" :on-retry="init" />
 
       <div v-else-if="!collection" class="text-center text-gray-600">
         {{ $t('collections.notFound') }}
@@ -76,12 +65,13 @@ async function onSubmit(name: string) {
   isSubmitting.value = true
   message.value = null
   try {
-    await updateCollection(collection.value.id, name)
+    const collectionId = collection.value.id
+    await updateCollection(collectionId, name)
     message.value = {
       type: 'success',
       text: t('collections.updatedSuccess') as string,
     }
-    setTimeout(() => router.push('/'), 1500)
+    setTimeout(() => router.push(`/collections/${collectionId}/cards`), 1500)
   } catch (err) {
     message.value = {
       type: 'error',

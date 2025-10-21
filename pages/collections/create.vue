@@ -43,12 +43,12 @@ async function onSubmit(name: string) {
   isSubmitting.value = true
   message.value = null
   try {
-    await createCollection(name)
+    const collection = await createCollection(name)
     message.value = {
       type: 'success',
       text: t('collections.createdSuccess') as string,
     }
-    setTimeout(() => router.push('/'), 2000)
+    setTimeout(() => router.push(`/collections/${collection.id}/cards`), 2000)
   } catch (error) {
     message.value = {
       type: 'error',

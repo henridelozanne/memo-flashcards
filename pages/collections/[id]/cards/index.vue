@@ -10,14 +10,7 @@
       />
 
       <!-- Loading state -->
-      <div
-        v-if="isLoadingCollection || isLoadingCards"
-        class="flex items-center justify-center py-12"
-        data-testid="loading"
-      >
-        <div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
-        <span class="ml-2 text-gray-600">{{ $t('common.loading') }}</span>
-      </div>
+      <Loading v-if="isLoadingCollection || isLoadingCards" />
 
       <!-- Error state -->
       <ErrorMessage v-else-if="error" :error="error" :on-retry="init" />
@@ -34,14 +27,10 @@
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
               <p class="text-lg font-medium">
-                {{ cards.length }}
-                {{ cards.length <= 1 ? $t('cards.card') : $t('cards.cards') }}
+                {{ $t('cards.cardCount', { count: cards.length }) }}
               </p>
               <p v-if="lastCardDate" class="text-sm text-gray-500">
                 {{ $t('cards.lastAdded') }} {{ formatDate(lastCardDate) }}
-              </p>
-              <p v-else class="text-sm text-gray-500">
-                {{ $t('cards.noCards') }}
               </p>
             </div>
             <div class="flex flex-wrap gap-2">
