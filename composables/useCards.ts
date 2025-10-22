@@ -167,8 +167,8 @@ export const useCards = () => {
     const now = Date.now()
     const card: Card = {
       id: uuidv4(),
-      question: front.trim(), // front -> question pour compatibilité
-      answer: back.trim(), // back -> answer pour compatibilité
+      question: front.trim(),
+      answer: back.trim(),
       collection_id: collectionId,
       user_id: 'default-user',
       created_at: now,
@@ -317,25 +317,6 @@ export const useCards = () => {
     isLoading.value = false
   }
 
-  /**
-   * Compte le nombre de cartes dans un compartiment donné pour une collection.
-   * @param collectionId string
-   * @param compartment number (1-6)
-   */
-  const countCardsPerCompartment = async (collectionId: string, compartment: number): Promise<number> => {
-    try {
-      const db = await getDbConnection()
-      const result = await db.get<{ count: number }>(
-        'SELECT COUNT(*) as count FROM cards WHERE collection_id = ? AND deleted_at IS NULL AND compartment = ?',
-        [collectionId, compartment]
-      )
-      return result?.count || 0
-    } catch (e) {
-      console.error('Erreur lors du comptage des cartes par compartiment:', e)
-      return 0
-    }
-  }
-
   return {
     cards: readonly(cards),
     isLoading: readonly(isLoading),
@@ -351,7 +332,6 @@ export const useCards = () => {
     getAllCardsFromCollection,
     getCardsDueToday,
     applyAnswer,
-    countCardsPerCompartment,
     resetCards,
   }
 }

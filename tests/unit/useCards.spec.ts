@@ -245,20 +245,6 @@ describe('useCards', () => {
     })
   })
 
-  describe('countCardsPerCompartment', () => {
-    it('should count cards in specific compartment', async () => {
-      mockSqliteConnection.get.mockResolvedValue({ count: 3 })
-
-      const count = await composable.countCardsPerCompartment('test-collection', 2)
-
-      expect(count).toBe(3)
-      expect(mockSqliteConnection.get).toHaveBeenCalledWith(
-        'SELECT COUNT(*) as count FROM cards WHERE collection_id = ? AND deleted_at IS NULL AND compartment = ?',
-        ['test-collection', 2]
-      )
-    })
-  })
-
   describe('getCard', () => {
     it('should return card by id from loaded cards', async () => {
       const mockCards = [
