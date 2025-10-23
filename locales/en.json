@@ -1,4 +1,8 @@
 {
+  "date": {
+    "today": "Today",
+    "tomorrow": "Tomorrow"
+  },
   "review": {
     "reviewThisCollection": "Review this collection",
     "showAnswer": "Show answer",
@@ -66,7 +70,7 @@
   "cards": {
     "card": "card",
     "cards": "cards",
-    "cardCount": "{count} card | {count} cards",
+    "cardCount": "{count} card | {count} card | {count} cards",
     "lastAdded": "Last added on",
     "noCards": "No cards",
     "addCard": "Add a card",
@@ -86,7 +90,8 @@
     "deleteMessage": "Are you sure you want to delete this card?",
     "deletedSuccess": "Card deleted successfully",
     "deletedError": "Error while deleting the card",
-    "notFound": "Card not found"
+    "notFound": "Card not found",
+    "nextReview": "Next review"
   },
   "stats": {
     "streakTitle": "Streak calendar (90 days)",

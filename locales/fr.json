@@ -1,4 +1,8 @@
 {
+  "date": {
+    "today": "Aujourd'hui",
+    "tomorrow": "Demain"
+  },
   "review": {
     "reviewThisCollection": "Réviser cette collection",
     "showAnswer": "Afficher la réponse",
@@ -66,7 +70,7 @@
   "cards": {
     "card": "carte",
     "cards": "cartes",
-    "cardCount": "{count} carte | {count} cartes",
+    "cardCount": "{count} carte | {count} carte | {count} cartes",
     "lastAdded": "Dernière ajoutée le",
     "noCards": "Aucune carte",
     "addCard": "Ajouter une carte",
@@ -86,7 +90,8 @@
     "deleteMessage": "Êtes-vous sûr de vouloir supprimer cette carte ?",
     "deletedSuccess": "Carte supprimée avec succès",
     "deletedError": "Erreur lors de la suppression de la carte",
-    "notFound": "Carte introuvable"
+    "notFound": "Carte introuvable",
+    "nextReview": "Prochaine révision"
   },
   "stats": {
     "streakTitle": "Calendrier de streak (90 jours)",
