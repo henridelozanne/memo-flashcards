@@ -91,7 +91,8 @@
     "deletedSuccess": "Carte supprimée avec succès",
     "deletedError": "Erreur lors de la suppression de la carte",
     "notFound": "Carte introuvable",
-    "nextReview": "Prochaine révision"
+    "nextReview": "Prochaine révision",
+    "compartment": "Compartiment : {n}/{total}"
   },
   "stats": {
     "streakTitle": "Calendrier de streak (90 jours)",
@@ -101,7 +102,6 @@
     "progressionTitle": "Progression par collection",
     "collection": "Collection",
     "totalCards": "Total cartes",
-    "compartment": "Compartiment {n}",
     "successRateTitle": "Taux de réussite global",
     "successRate": "{value} de bonnes réponses",
     "todayTitle": "Cartes révisées aujourd'hui",

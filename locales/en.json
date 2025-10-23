@@ -91,7 +91,8 @@
     "deletedSuccess": "Card deleted successfully",
     "deletedError": "Error while deleting the card",
     "notFound": "Card not found",
-    "nextReview": "Next review"
+    "nextReview": "Next review",
+    "compartment": "Compartment: {n}/{total}"
   },
   "stats": {
     "streakTitle": "Streak calendar (90 days)",
@@ -101,7 +102,6 @@
     "progressionTitle": "Progress by collection",
     "collection": "Collection",
     "totalCards": "Total cards",
-    "compartment": "Compartment {n}",
     "successRateTitle": "Global success rate",
     "successRate": "{value} correct answers",
     "todayTitle": "Cards reviewed today",

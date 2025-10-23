@@ -40,6 +40,11 @@
           <span class="mr-1">{{ $t('cards.nextReview') }}: {{ formatReviewDate(card.next_review_at) }}</span>
         </div>
 
+        <div v-if="card" class="mb-6 flex items-center justify-end text-[13px] text-gray-500">
+          <IconBox class="mr-2 opacity-60" />
+          <span class="mr-1">{{ $t('cards.compartment', { n: card.compartment, total: 6 }) }}</span>
+        </div>
+
         <!-- Bouton supprimer -->
         <div class="rounded-lg bg-white p-6 shadow">
           <button
@@ -88,6 +93,7 @@ import { useI18n } from 'vue-i18n'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
 import IconClock from '~/components/IconClock.vue'
+import IconBox from '~/components/IconBox.vue'
 import { formatReviewDate } from '~/utils/date'
 import type { Collection, Card } from '~/lib/types'
 
