@@ -16,14 +16,15 @@
 
     <!-- Collections grid -->
     <div v-if="!isLoading && !error" class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-      <!-- Carte +Créer une collection -->
+      <!-- Carte + Créer une collection -->
       <div
         data-testid="create-card"
-        class="order-last flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-blue-300 bg-white p-6 transition hover:bg-blue-50"
+        class="order-last flex cursor-pointer flex-col items-center justify-center rounded-[15px] border-2 border-dashed bg-white p-6 transition hover:bg-[var(--color-light-purple)]"
+        style="border-color: var(--color-accent-purple)"
         @click="$router.push('/collections/create')"
       >
-        <span class="mb-2 text-4xl text-blue-400">+</span>
-        <span class="text-center font-medium text-blue-700">{{ $t('common.createCollection') }}</span>
+        <span class="mb-2 text-4xl text-[var(--color-accent-purple)]">+</span>
+        <span class="text-center font-medium text-[var(--color-primary)]">{{ $t('common.createCollection') }}</span>
       </div>
 
       <!-- Collections existantes -->

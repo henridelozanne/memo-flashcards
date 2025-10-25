@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex cursor-pointer flex-col rounded-lg border bg-white p-4 shadow transition hover:shadow-md"
+    class="flex cursor-pointer flex-col rounded-[15px] border border-gray-100 bg-white p-4 shadow-[0px_4px_32px_#0000000a] transition hover:shadow-md"
     @click="handleClick"
   >
     <div class="mb-2 text-lg font-semibold">{{ collection.name }}</div>
@@ -8,10 +8,18 @@
       {{ $t('cards.cardCount', { count: cardCount }) }}
     </div>
     <div class="mt-auto flex gap-2">
-      <button v-if="onEdit" class="text-xs text-blue-600 hover:underline" @click.stop="onEdit(collection.id)">
+      <button
+        v-if="onEdit"
+        class="text-xs text-[var(--color-accent-blue)] hover:underline"
+        @click.stop="onEdit(collection.id)"
+      >
         {{ $t('collections.edit') }}
       </button>
-      <button v-if="onDelete" class="text-xs text-red-500 hover:underline" @click.stop="onDelete(collection)">
+      <button
+        v-if="onDelete"
+        class="text-xs text-[var(--color-accent-red)] hover:underline"
+        @click.stop="onDelete(collection)"
+      >
         {{ $t('common.delete') }}
       </button>
     </div>
