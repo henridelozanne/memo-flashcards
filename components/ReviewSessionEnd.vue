@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-lg">
+  <div class="w-full max-w-md rounded-[15px] bg-white p-8 text-center shadow-[0px_4px_32px_#0000000a]">
     <div class="mb-2 text-2xl font-bold">
       {{ $t('review.sessionFinished') }}
     </div>
@@ -11,7 +11,7 @@
       {{ $t('review.successRate', { percent: successRate }) }}
     </div>
     <button
-      class="mt-6 rounded bg-gray-100 px-6 py-2 text-base font-medium text-gray-700 shadow-sm"
+      class="mt-6 rounded-[15px] bg-[var(--color-primary)] px-6 py-2 text-base font-medium text-white shadow-sm transition hover:bg-[var(--color-dark-purple)]"
       @click="$emit('back')"
     >
       {{ $t('review.backToCollections') }}

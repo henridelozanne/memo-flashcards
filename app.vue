@@ -6,6 +6,7 @@
 </template>
 
 <script setup>
+// Design : https://www.figma.com/design/V15DbYppzpLTKLMGpOmXxf/Task-management---to-do-list-app--Community-?node-id=1-87&p=f&t=g7PKTuPvHqPTjuhe-0
 import BackgroundEffects from '~/components/BackgroundEffects.vue'
 </script>
 
