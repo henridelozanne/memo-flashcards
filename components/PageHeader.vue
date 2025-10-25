@@ -1,24 +1,14 @@
 <template>
-  <div class="mb-6 flex items-center" :class="$slots.actions ? 'justify-between' : ''">
-    <!-- Groupe gauche: bouton retour + titre -->
-    <div class="flex items-center">
-      <button
-        v-if="backButtonVisible"
-        class="mr-4 text-gray-600 hover:text-gray-800"
-        :aria-label="$t('common.backButton')"
-        @click="handleBackClick"
-      >
-        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-        </svg>
-      </button>
+  <div class="relative mb-6 flex h-8 items-center">
+    <BackButton v-if="backButtonVisible" class="absolute left-0" @click="handleBackClick" />
 
-      <h1 class="text-2xl font-bold" :data-testid="testId">{{ title }}</h1>
-    </div>
+    <h1 class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold whitespace-nowrap" :data-testid="testId">{{ title }}</h1>
   </div>
 </template>
 
 <script setup lang="ts">
+import BackButton from '~/components/BackButton.vue'
+
 defineOptions({ name: 'PageHeader' })
 
 defineProps({
