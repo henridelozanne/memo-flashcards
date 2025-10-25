@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen p-6">
-    <PageHeader :title="$t('collections.collections')" test-id="heading-collections" />
+    <PageHeader title="Memo Flashcards" test-id="heading-collections" />
 
     <!-- Loading state -->
     <Loading v-if="isLoading" :message="$t('common.loadingCollections')" />
@@ -10,6 +10,9 @@
 
     <!-- Daily review button -->
     <DailyReviewButton :daily-cards-count="dailyCardsCount" />
+
+    <!-- Collections title -->
+    <h2 class="mb-4 text-xl font-semibold">{{ $t('collections.myCollections') }}</h2>
 
     <!-- Collections grid -->
     <div v-if="!isLoading && !error" class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">

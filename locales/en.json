@@ -51,6 +51,7 @@
   "collections": {
     "collection": "Collection",
     "collections": "Collections",
+    "myCollections": "My Collections",
     "editTitle": "Edit collection",
     "notFound": "Collection not found",
     "updatedSuccess": "Collection updated successfully",
