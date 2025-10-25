@@ -35,7 +35,7 @@
             </div>
             <div class="flex justify-center">
               <button
-                class="flex min-h-[48px] items-center gap-2 rounded-[15px] bg-[var(--color-accent-blue)] px-4 py-2 text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                class="flex min-h-[48px] items-center gap-2 rounded-[15px] bg-[var(--color-primary)] px-4 py-2 text-white transition hover:bg-[var(--color-dark-purple)] disabled:cursor-not-allowed disabled:opacity-50"
                 data-testid="review-collection-btn"
                 :disabled="cards.length === 0"
                 @click="$router.push(`/collections/${collectionId}/review`)"
@@ -48,16 +48,14 @@
         </div>
 
         <!-- Liste des cartes -->
-        <div v-if="cards.length === 0" class="py-12 text-center" data-testid="empty-state">
-          <div class="mb-2 text-lg text-gray-400">
-            {{ $t('cards.noCards') }}
-          </div>
-          <div class="text-sm text-gray-500">
-            {{ $t('cards.addFirstCard') }}
+        <div v-if="cards.length === 0" class="py-12" data-testid="empty-state">
+          <div class="grid grid-cols-2 justify-items-center gap-3">
+            <CreateCardItem @click="createCard" />
           </div>
         </div>
 
         <div v-else class="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <CreateCardItem @click="createCard" />
           <CardItem v-for="card in cards" :key="card.id" :card="card" data-testid="card-item" @click="editCard" />
         </div>
       </div>
@@ -72,6 +70,7 @@ import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
 import IconPlay from '~/components/icons/IconPlay.vue'
 import CardItem from '~/components/CardItem.vue'
+import CreateCardItem from '~/components/CreateCardItem.vue'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'CollectionCardsPage' })
@@ -107,6 +106,10 @@ async function init() {
     await loadCards(collectionId)
     lastCardDate.value = await getLastCardDate(collectionId)
   }
+}
+
+function createCard() {
+  router.push(`/collections/${collectionId}/cards/create`)
 }
 
 function editCard(cardId: string) {
