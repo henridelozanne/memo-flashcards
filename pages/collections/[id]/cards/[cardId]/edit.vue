@@ -155,10 +155,7 @@ async function onSubmit(front: string, back: string) {
       text: t('cards.updatedSuccess') as string,
     }
 
-    // Navigate back to cards list after 1.5 seconds
-    setTimeout(() => {
-      router.push(`/collections/${collectionId}/cards`)
-    }, 1500)
+    router.push(`/collections/${collectionId}/cards`)
   } catch (err) {
     message.value = {
       type: 'error',
@@ -184,10 +181,8 @@ async function handleDelete() {
     }
     showDeleteModal.value = false
 
-    // Navigate back to cards list after 1 second
-    setTimeout(() => {
-      router.push(`/collections/${collectionId}/cards`)
-    }, 1000)
+    // Navigate back to cards list immediately
+    router.push(`/collections/${collectionId}/cards`)
   } catch (err) {
     message.value = {
       type: 'error',

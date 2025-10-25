@@ -82,10 +82,7 @@ async function handleCreateCard(front: string, back: string, addAnother: boolean
       // Reset form fields using exposed method
       cardFormRef.value?.reset()
     } else {
-      // Navigate back to cards list after 1.5 seconds
-      setTimeout(() => {
-        router.push(`/collections/${collectionId}/cards`)
-      }, 1500)
+      router.push(`/collections/${collectionId}/cards`)
     }
   } catch (error) {
     message.value = {

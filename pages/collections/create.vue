@@ -48,7 +48,7 @@ async function onSubmit(name: string) {
       type: 'success',
       text: t('collections.createdSuccess') as string,
     }
-    setTimeout(() => router.push(`/collections/${collection.id}/cards`), 2000)
+    router.push(`/collections/${collection.id}/cards`)
   } catch (error) {
     message.value = {
       type: 'error',
