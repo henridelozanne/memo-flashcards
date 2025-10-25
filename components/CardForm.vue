@@ -7,11 +7,11 @@
         v-model="localFront"
         type="text"
         class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-        :class="{ 'border-red-500': frontError }"
+        :class="{ 'border-[var(--color-accent-red)]': frontError }"
         :placeholder="$t('cards.frontPlaceholder')"
         data-testid="front-input"
       />
-      <p v-if="frontError" class="mt-1 text-sm text-red-600">
+      <p v-if="frontError" class="mt-1 text-sm text-[var(--color-accent-red)]">
         {{ frontError }}
       </p>
     </div>
@@ -23,11 +23,11 @@
         v-model="localBack"
         rows="4"
         class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-        :class="{ 'border-red-500': backError }"
+        :class="{ 'border-[var(--color-accent-red)]': backError }"
         :placeholder="$t('cards.backPlaceholder')"
         data-testid="back-input"
       ></textarea>
-      <p v-if="backError" class="mt-1 text-sm text-red-600">{{ backError }}</p>
+      <p v-if="backError" class="mt-1 text-sm text-[var(--color-accent-red)]">{{ backError }}</p>
     </div>
 
     <div class="flex gap-3">

@@ -9,15 +9,15 @@
         v-model="localName"
         type="text"
         class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-        :class="{ 'border-red-500': error }"
+        :class="{ 'border-[var(--color-accent-red)]': error }"
         :placeholder="$t('collections.namePlaceholder')"
       />
-      <p v-if="error" class="mt-1 text-sm text-red-600">{{ error }}</p>
+      <p v-if="error" class="mt-1 text-sm text-[var(--color-accent-red)]">{{ error }}</p>
     </div>
     <div class="flex gap-3">
       <button
         type="button"
-        class="flex-1 rounded-md bg-gray-200 px-4 py-2 text-gray-700 transition hover:bg-gray-300"
+        class="flex-1 rounded-[15px] bg-gray-200 px-4 py-2 text-gray-700 transition hover:bg-gray-300"
         @click="$emit('cancel')"
       >
         {{ $t('common.cancel') }}
@@ -25,7 +25,7 @@
       <button
         type="submit"
         :disabled="isSubmitting"
-        class="flex-1 rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+        class="flex-1 rounded-[15px] bg-[var(--color-primary)] px-4 py-2 text-white transition hover:bg-[var(--color-dark-purple)] disabled:cursor-not-allowed disabled:bg-gray-400"
         data-testid="create-btn"
       >
         {{ isSubmitting ? $t('collections.submitting') : submitLabel }}

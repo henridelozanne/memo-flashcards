@@ -10,7 +10,7 @@
       />
 
       <!-- Formulaire -->
-      <div class="rounded-lg bg-white p-6 shadow" data-testid="create-form">
+      <div class="rounded-[15px] border border-gray-100 bg-white p-6 shadow-[0px_4px_32px_#0000000a]" data-testid="create-form">
         <CollectionForm
           :is-submitting="isSubmitting"
           :submit-label="$t('collections.create')"
