@@ -23,8 +23,8 @@
       <!-- Content -->
       <div v-else>
         <!-- Résumé -->
-        <div class="mb-6 rounded-lg bg-white p-6 shadow">
-          <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="mb-6 rounded-[15px] border border-gray-100 bg-white p-6 shadow-[0px_4px_32px_#0000000a]">
+          <div class="flex flex-col gap-4">
             <div>
               <p class="text-lg font-medium">
                 {{ $t('cards.cardCount', { count: cards.length }) }}
@@ -33,21 +33,14 @@
                 {{ $t('cards.lastAdded') }} {{ formatDate(lastCardDate) }}
               </p>
             </div>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex justify-center">
               <button
-                class="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
-                data-testid="add-card-btn"
-                @click="$router.push(`/collections/${collectionId}/cards/create`)"
-              >
-                <span class="text-xl">+</span>
-                {{ $t('cards.addCard') }}
-              </button>
-              <button
-                class="flex items-center gap-2 rounded-md bg-gray-900 px-4 py-2 text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+                class="flex min-h-[48px] items-center gap-2 rounded-[15px] bg-[var(--color-accent-blue)] px-4 py-2 text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                 data-testid="review-collection-btn"
                 :disabled="cards.length === 0"
                 @click="$router.push(`/collections/${collectionId}/review`)"
               >
+                <IconPlay class="h-5 w-5" />
                 {{ $t('review.reviewThisCollection') }}
               </button>
             </div>
@@ -65,26 +58,7 @@
         </div>
 
         <div v-else class="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          <div
-            v-for="card in cards"
-            :key="card.id"
-            class="relative flex aspect-[3/4] h-72 w-full max-w-56 cursor-pointer flex-col items-center justify-center rounded-2xl border border-gray-200 bg-white p-4 shadow-lg transition"
-            data-testid="card-item"
-            @click="editCard(card.id)"
-          >
-            <div class="flex w-full flex-1 flex-col items-center justify-center overflow-hidden text-center">
-              <!-- Front (question) -->
-              <div class="mb-2 line-clamp-3 break-words text-sm font-medium leading-tight text-gray-900">
-                {{ card.question }}
-              </div>
-              <!-- Divider -->
-              <div class="my-2 h-px w-8 bg-gray-300 opacity-50"></div>
-              <!-- Back (answer) -->
-              <div class="line-clamp-4 break-words text-xs leading-tight text-gray-500">
-                {{ card.answer }}
-              </div>
-            </div>
-          </div>
+          <CardItem v-for="card in cards" :key="card.id" :card="card" data-testid="card-item" @click="editCard" />
         </div>
       </div>
     </div>
@@ -96,6 +70,8 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
+import IconPlay from '~/components/icons/IconPlay.vue'
+import CardItem from '~/components/CardItem.vue'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'CollectionCardsPage' })
