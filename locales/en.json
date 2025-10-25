@@ -107,5 +107,10 @@
     "successRate": "{value} correct answers",
     "todayTitle": "Cards reviewed today",
     "cardsReviewedToday": "{count} card reviewed today | {count} cards reviewed today"
+  },
+  "form": {
+    "nameRequired": "The name cannot be empty.",
+    "frontRequired": "The front cannot be empty.",
+    "backRequired": "The back cannot be empty."
   }
 }

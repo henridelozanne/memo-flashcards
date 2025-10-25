@@ -107,5 +107,10 @@
     "successRate": "{value} de bonnes réponses",
     "todayTitle": "Cartes révisées aujourd'hui",
     "cardsReviewedToday": "{count} carte révisée aujourd'hui | {count} cartes révisées aujourd'hui"
+  },
+  "form": {
+    "nameRequired": "Le nom ne peut pas être vide.",
+    "frontRequired": "Le recto ne peut pas être vide.",
+    "backRequired": "Le verso ne peut pas être vide."
   }
 }

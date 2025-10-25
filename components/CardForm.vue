@@ -6,8 +6,6 @@
         id="front"
         v-model="localFront"
         type="text"
-        required
-        maxlength="500"
         class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
         :class="{ 'border-red-500': frontError }"
         :placeholder="$t('cards.frontPlaceholder')"
@@ -23,8 +21,6 @@
       <textarea
         id="back"
         v-model="localBack"
-        required
-        maxlength="2000"
         rows="4"
         class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
         :class="{ 'border-red-500': backError }"
@@ -45,7 +41,7 @@
       <button
         v-if="showAddAnother"
         type="button"
-        :disabled="isSubmitting || !isFormValid"
+        :disabled="isSubmitting"
         class="flex-1 rounded-md bg-blue-100 px-4 py-2 text-blue-700 transition hover:bg-blue-200 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
         data-testid="add-card-another"
         @click="handleAddAnother"
@@ -54,7 +50,7 @@
       </button>
       <button
         type="submit"
-        :disabled="isSubmitting || !isFormValid"
+        :disabled="isSubmitting"
         class="flex-1 rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
         data-testid="add-card-submit"
       >
@@ -65,7 +61,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = withDefaults(
   defineProps<{
@@ -105,23 +104,10 @@ defineExpose({
   },
 })
 
-const isFormValid = computed(
-  () => localFront.value.trim().length > 0 && localBack.value.trim().length > 0 && !frontError.value && !backError.value
-)
-
 function validateFront() {
   const front = localFront.value.trim()
-  // Skip validation if field is empty and this is initial state
-  if (!front && localFront.value === '') {
-    frontError.value = null
-    return
-  }
-  if (!front) {
-    frontError.value = 'Le recto est obligatoire'
-  } else if (front.length < 2) {
-    frontError.value = 'Le recto doit contenir au moins 2 caractères'
-  } else if (front.length > 500) {
-    frontError.value = 'Le recto ne peut pas dépasser 500 caractères'
+  if (front.length === 0) {
+    frontError.value = t('form.frontRequired') as string
   } else {
     frontError.value = null
   }
@@ -129,36 +115,24 @@ function validateFront() {
 
 function validateBack() {
   const back = localBack.value.trim()
-  // Skip validation if field is empty and this is initial state
-  if (!back && localBack.value === '') {
-    backError.value = null
-    return
-  }
-  if (!back) {
-    backError.value = 'Le verso est obligatoire'
-  } else if (back.length < 2) {
-    backError.value = 'Le verso doit contenir au moins 2 caractères'
-  } else if (back.length > 2000) {
-    backError.value = 'Le verso ne peut pas dépasser 2000 caractères'
+  if (back.length === 0) {
+    backError.value = t('form.backRequired') as string
   } else {
     backError.value = null
   }
 }
 
-watch(() => localFront.value, validateFront)
-watch(() => localBack.value, validateBack)
-
 function handleSubmit() {
   validateFront()
   validateBack()
-  if (!isFormValid.value) return
+  if (frontError.value || backError.value) return
   emit('submit', localFront.value.trim(), localBack.value.trim())
 }
 
 function handleAddAnother() {
   validateFront()
   validateBack()
-  if (!isFormValid.value) return
+  if (frontError.value || backError.value) return
   emit('addAnother', localFront.value.trim(), localBack.value.trim())
 }
 
@@ -168,6 +142,8 @@ watch(
   () => {
     localFront.value = props.front ?? ''
     localBack.value = props.back ?? ''
+    frontError.value = null
+    backError.value = null
   },
   { immediate: true }
 )

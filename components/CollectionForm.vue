@@ -8,8 +8,6 @@
         id="name"
         v-model="localName"
         type="text"
-        required
-        maxlength="100"
         class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
         :class="{ 'border-red-500': error }"
         :placeholder="$t('collections.namePlaceholder')"
@@ -26,7 +24,7 @@
       </button>
       <button
         type="submit"
-        :disabled="isSubmitting || !isFormValid"
+        :disabled="isSubmitting"
         class="flex-1 rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
         data-testid="create-btn"
       >
@@ -37,7 +35,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = withDefaults(
   defineProps<{
@@ -59,26 +60,18 @@ const emit = defineEmits<{
 const localName = ref(props.name ?? '')
 const error = ref<string | null>(null)
 
-const isFormValid = computed(() => localName.value.trim().length > 0 && !error.value)
-
 function validateName() {
   const name = localName.value.trim()
-  if (!name) {
-    error.value = 'Le nom est obligatoire'
-  } else if (name.length < 2) {
-    error.value = 'Le nom doit contenir au moins 2 caractères'
-  } else if (name.length > 100) {
-    error.value = 'Le nom ne peut pas dépasser 100 caractères'
+  if (name.length === 0) {
+    error.value = t('form.nameRequired') as string
   } else {
     error.value = null
   }
 }
 
-watch(() => localName.value, validateName)
-
 function handleSubmit() {
   validateName()
-  if (!isFormValid.value) return
+  if (error.value) return
   emit('submit', localName.value.trim())
 }
 </script>
