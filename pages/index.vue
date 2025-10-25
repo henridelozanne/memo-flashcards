@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen bg-gray-50 p-6">
-    <PageHeader :title="$t('collections.collections')" test-id="heading-collections" links-visible />
+  <div class="min-h-screen p-6">
+    <PageHeader :title="$t('collections.collections')" test-id="heading-collections" />
 
     <!-- Loading state -->
     <Loading v-if="isLoading" :message="$t('common.loadingCollections')" />

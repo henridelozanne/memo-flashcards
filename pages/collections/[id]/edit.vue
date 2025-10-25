@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50 p-6">
+  <div class="min-h-screen p-6">
     <div class="mx-auto max-w-md">
       <PageHeader
         :title="$t('collections.editTitle')"

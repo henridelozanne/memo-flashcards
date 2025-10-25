@@ -1,8 +1,13 @@
 <template>
   <div class="app-container">
+    <BackgroundEffects />
     <NuxtPage />
   </div>
 </template>
+
+<script setup>
+import BackgroundEffects from '~/components/BackgroundEffects.vue'
+</script>
 
 <style>
 .app-container {
@@ -12,6 +17,7 @@
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
   min-height: 100vh;
+  background: white;
 }
 
 /* Ensure the viewport meta tag is properly configured */

@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-6 flex items-center" :class="linksVisible || $slots.actions ? 'justify-between' : ''">
+  <div class="mb-6 flex items-center" :class="$slots.actions ? 'justify-between' : ''">
     <!-- Groupe gauche: bouton retour + titre -->
     <div class="flex items-center">
       <button
@@ -15,16 +15,6 @@
 
       <h1 class="text-2xl font-bold" :data-testid="testId">{{ title }}</h1>
     </div>
-
-    <div v-if="linksVisible || $slots.actions" class="flex gap-2">
-      <button v-if="linksVisible" class="rounded bg-yellow-100 px-3 py-1 text-sm text-yellow-700">
-        {{ $t('common.premium') }}
-      </button>
-      <button v-if="linksVisible" class="rounded bg-gray-200 px-3 py-1 text-sm text-gray-700">
-        {{ $t('common.help') }}
-      </button>
-      <slot name="actions" />
-    </div>
   </div>
 </template>
 
@@ -34,7 +24,6 @@ defineOptions({ name: 'PageHeader' })
 defineProps({
   title: { type: String, required: true },
   testId: { type: String, default: '' },
-  linksVisible: { type: Boolean, default: false },
   backButtonVisible: { type: Boolean, default: false },
 })
 
