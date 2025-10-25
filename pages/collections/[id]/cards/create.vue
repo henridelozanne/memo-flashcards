@@ -13,7 +13,10 @@
       <CollectionInfo :collection="collection" />
 
       <!-- Formulaire -->
-      <div class="rounded-lg bg-white p-6 shadow" data-testid="create-card-form">
+      <div
+        class="rounded-[15px] border border-gray-100 bg-white p-6 shadow-[0px_4px_32px_#0000000a]"
+        data-testid="create-card-form"
+      >
         <CardForm
           ref="cardFormRef"
           :is-submitting="isSubmitting"

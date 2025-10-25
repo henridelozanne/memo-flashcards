@@ -6,7 +6,7 @@
         id="front"
         v-model="localFront"
         type="text"
-        class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full rounded-[15px] border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
         :class="{ 'border-[var(--color-accent-red)]': frontError }"
         :placeholder="$t('cards.frontPlaceholder')"
         data-testid="front-input"
@@ -22,7 +22,7 @@
         id="back"
         v-model="localBack"
         rows="4"
-        class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full rounded-[15px] border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
         :class="{ 'border-[var(--color-accent-red)]': backError }"
         :placeholder="$t('cards.backPlaceholder')"
         data-testid="back-input"
@@ -33,7 +33,7 @@
     <div class="flex gap-3">
       <button
         type="button"
-        class="flex-1 rounded-md bg-gray-200 px-4 py-2 text-gray-700 transition hover:bg-gray-300"
+        class="flex-1 rounded-[15px] bg-gray-200 px-4 py-2 text-gray-700 transition hover:bg-gray-300"
         @click="$emit('cancel')"
       >
         {{ $t('common.cancel') }}
@@ -42,7 +42,7 @@
         v-if="showAddAnother"
         type="button"
         :disabled="isSubmitting"
-        class="flex-1 rounded-md bg-blue-100 px-4 py-2 text-blue-700 transition hover:bg-blue-200 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
+        class="flex-1 rounded-[15px] bg-[var(--color-light-purple)] px-4 py-2 text-[var(--color-primary)] transition hover:bg-[var(--color-accent-purple)] disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
         data-testid="add-card-another"
         @click="handleAddAnother"
       >
@@ -51,7 +51,7 @@
       <button
         type="submit"
         :disabled="isSubmitting"
-        class="flex-1 rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+        class="flex-1 rounded-[15px] bg-[var(--color-primary)] px-4 py-2 text-white transition hover:bg-[var(--color-dark-purple)] disabled:cursor-not-allowed disabled:bg-gray-400"
         data-testid="add-card-submit"
       >
         {{ isSubmitting ? $t('common.loading') : submitLabel || $t('common.add') }}
