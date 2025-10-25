@@ -9,11 +9,11 @@
     stroke-linejoin="round"
     class="h-4 w-4"
   >
-    <rect x="3" y="7" width="18" height="10" rx="2" ry="2" />
-    <path d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2" />
+    <path d="M3 3v18h18" />
+    <path d="m19 9-5 5-4-4-3 3" />
   </svg>
 </template>
 
 <script setup lang="ts">
-defineOptions({ name: 'IconBox' })
+defineOptions({ name: 'IconStats' })
 </script>

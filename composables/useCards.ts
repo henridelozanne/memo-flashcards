@@ -121,10 +121,10 @@ const applyAnswer = async (card: Card, response: boolean) => {
   await db.run(
     `
     UPDATE cards 
-    SET compartment = ?, next_review_at = ?, updated_at = ?
+    SET compartment = ?, next_review_at = ?, updated_at = ?, correct_answers = correct_answers + ?, total_reviews = total_reviews + 1
     WHERE id = ? AND deleted_at IS NULL
   `,
-    [compartment, nextReviewAt, now, card.id]
+    [compartment, nextReviewAt, now, response ? 1 : 0, card.id]
   )
 }
 
@@ -176,13 +176,15 @@ export const useCards = () => {
       compartment: 1,
       next_review_at: now,
       archived: false,
+      correct_answers: 0,
+      total_reviews: 0,
     }
 
     const db = await getDbConnection()
     await db.run(
       `
-      INSERT INTO cards (id, user_id, collection_id, question, answer, compartment, next_review_at, created_at, updated_at, archived)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO cards (id, user_id, collection_id, question, answer, compartment, next_review_at, created_at, updated_at, archived, correct_answers, total_reviews)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
       [
         card.id,
@@ -195,6 +197,8 @@ export const useCards = () => {
         card.created_at,
         card.updated_at,
         card.archived ? 1 : 0,
+        card.correct_answers ?? 0,
+        card.total_reviews ?? 0,
       ]
     )
 

@@ -92,7 +92,8 @@
     "deletedError": "Erreur lors de la suppression de la carte",
     "notFound": "Carte introuvable",
     "nextReview": "Prochaine révision",
-    "compartment": "Compartiment : {n}/{total}"
+    "compartment": "Compartiment : {n}/{total}",
+    "correctAnswers": "Réponses correctes : {correct}/{total}"
   },
   "stats": {
     "streakTitle": "Calendrier de streak (90 jours)",

@@ -92,7 +92,8 @@
     "deletedError": "Error while deleting the card",
     "notFound": "Card not found",
     "nextReview": "Next review",
-    "compartment": "Compartment: {n}/{total}"
+    "compartment": "Compartment: {n}/{total}",
+    "correctAnswers": "Correct answers: {correct}/{total}"
   },
   "stats": {
     "streakTitle": "Streak calendar (90 days)",

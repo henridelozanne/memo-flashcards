@@ -19,6 +19,8 @@ export interface Card {
   updated_at: number
   archived?: boolean
   deleted_at?: number
+  correct_answers: number
+  total_reviews: number
 }
 
 export interface ReviewSession {

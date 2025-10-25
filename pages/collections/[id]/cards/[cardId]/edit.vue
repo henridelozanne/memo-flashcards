@@ -45,6 +45,13 @@
           <span class="mr-1">{{ $t('cards.compartment', { n: card.compartment, total: 6 }) }}</span>
         </div>
 
+        <div v-if="card?.total_reviews > 0" class="mb-6 flex items-center justify-end text-[13px] text-gray-500">
+          <IconStats class="mr-2 opacity-60" />
+          <span class="mr-1">{{
+            $t('cards.correctAnswers', { correct: card.correct_answers, total: card.total_reviews })
+          }}</span>
+        </div>
+
         <!-- Bouton supprimer -->
         <div class="rounded-lg bg-white p-6 shadow">
           <button
@@ -94,6 +101,7 @@ import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
 import IconClock from '~/components/IconClock.vue'
 import IconBox from '~/components/IconBox.vue'
+import IconStats from '~/components/IconStats.vue'
 import { formatReviewDate } from '~/utils/date'
 import type { Collection, Card } from '~/lib/types'
 

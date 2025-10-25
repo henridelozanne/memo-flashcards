@@ -56,7 +56,9 @@ export const useDatabase = () => {
         created_at INTEGER NOT NULL,
         updated_at INTEGER NOT NULL,
         deleted_at INTEGER,
-        archived INTEGER DEFAULT 0
+        archived INTEGER DEFAULT 0,
+        correct_answers INTEGER NOT NULL DEFAULT 0,
+        total_reviews INTEGER NOT NULL DEFAULT 0
       );
     `)
 
