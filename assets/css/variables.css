@@ -1,0 +1,63 @@
+:root {
+  /* Colors */
+  --color-black: rgba(36, 37, 44, 1);
+  --color-secondary: rgba(110, 106, 124, 1);
+  --color-primary: rgba(95, 51, 225, 1);
+  --color-accent-purple: #ab93ff;
+  --color-accent-blue: #0087ff;
+  --color-accent-orange: #ff7d53;
+  --color-accent-green: #047c78;
+  --color-accent-red: #f2582c;
+  --color-light-purple: #eee9ff;
+  --color-light-pink: #ffe4f2;
+  --color-light-blue: #e6f3ff;
+  --color-light-orange: #ffe8e1;
+  --color-light-green: #ece4ff;
+  --color-light-yellow: #ffe6d4;
+  --color-light-yellow-alt: #fff5d4;
+  --color-dark-pink: #ffd6e3;
+  --color-dark-green: #7efba9;
+  --color-dark-blue: #91deff;
+  --color-dark-purple: #bd9fff;
+  --color-dark-cyan: #a3e6f8;
+  --color-dark-yellow: #e9ec2a;
+
+  /* Fonts */
+  --font-family-main: 'Lexend Deca', Helvetica;
+  --font-family-secondary: 'Poppins', Helvetica;
+
+  /* Font sizes and weights */
+  --font-size-xs: 9px;
+  --font-size-sm: 11px;
+  --font-size-base: 14px;
+  --font-size-lg: 19px;
+  --font-size-xl: 24px;
+
+  --font-weight-regular: 400;
+  --font-weight-semi-bold: 600;
+
+  /* Line heights */
+  --line-height-normal: normal;
+
+  /* Letter spacing */
+  --letter-spacing-none: 0px;
+
+  /* Border radius */
+  --border-radius-sm: 7px;
+  --border-radius-md: 15px;
+  --border-radius-lg: 19px;
+  --border-radius-xl: 24px;
+  --border-radius-circle: 50%;
+
+  /* Shadows */
+  --shadow-light: 0px 4px 32px #0000000a;
+  --shadow-primary: 2px 10px 18px #5e32e17d;
+  --shadow-home: 0px 6px 6px #5f33e159;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 22px;
+  --spacing-xl: 38px;
+}

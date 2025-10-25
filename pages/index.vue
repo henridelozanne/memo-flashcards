@@ -9,16 +9,7 @@
     <ErrorMessage v-if="error" :error="error" :on-retry="loadCollections" />
 
     <!-- Daily review button -->
-    <div class="mb-6">
-      <button
-        class="flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4 text-lg font-semibold text-white shadow-lg transition hover:from-blue-600 hover:to-blue-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:from-blue-500 disabled:hover:to-blue-600"
-        data-testid="daily-review-btn"
-        :disabled="dailyCardsCount === 0"
-        @click="$router.push('/daily-review')"
-      >
-        {{ $t('dailyReview.reviewToday', { count: dailyCardsCount }) }}
-      </button>
-    </div>
+    <DailyReviewButton :daily-cards-count="dailyCardsCount" />
 
     <!-- Collections grid -->
     <div v-if="!isLoading && !error" class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
@@ -66,6 +57,7 @@ import { useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
 import type { Collection } from '~/lib/types'
+import DailyReviewButton from '~/components/DailyReviewButton.vue'
 
 defineOptions({ name: 'HomePage' })
 

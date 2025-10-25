@@ -16,6 +16,12 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   app: {
     head: {
+      link: [
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;600&display=swap',
+        },
+      ],
       meta: [
         {
           name: 'viewport',
