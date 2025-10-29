@@ -119,7 +119,7 @@ describe('Daily Review Functions', () => {
           question: 'Q2',
           answer: 'A2',
           collection_id: 'collection1',
-          compartment: 6, // Cette carte est au compartiment 6, donc exclue
+          compartment: 5, // Cette carte est au compartiment 5, donc exclue
           next_review_at: now,
           created_at: now,
           deleted_at: null,
@@ -127,8 +127,8 @@ describe('Daily Review Functions', () => {
         },
       ]
 
-      // La fonction getCardsDueToday filtre compartment < 6
-      const filteredCards = initialCards.filter((c) => c.compartment < 6)
+      // La fonction getCardsDueToday filtre compartment < 5
+      const filteredCards = initialCards.filter((c) => c.compartment < 5)
       mockSqliteConnection.all.mockResolvedValue(filteredCards)
 
       const cards = await getCardsDueToday()

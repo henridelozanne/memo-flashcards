@@ -9,18 +9,17 @@ const error = ref<string | null>(null)
 
 const { getDbConnection } = useDatabase()
 
-// Intervalles Leitner en jours (compartiment 1 à 6)
+// Intervalles Leitner en jours (compartiment 1 à 5)
 const LEITNER_INTERVALS: Record<number, number> = {
-  1: 0,
-  2: 1,
-  3: 3,
-  4: 7,
-  5: 14,
-  6: 30,
+  1: 1,
+  2: 3,
+  3: 7,
+  4: 14,
+  5: 30,
 }
 
 /**
- * Retourne les cartes à réviser aujourd'hui pour une collection donnée (compartment < 6).
+ * Retourne les cartes à réviser aujourd'hui pour une collection donnée (compartment < 5).
  * @param collectionId string
  */
 const getDueCards = async (collectionId: string) => {
@@ -33,7 +32,7 @@ const getDueCards = async (collectionId: string) => {
       WHERE collection_id = ?
       AND deleted_at IS NULL 
       AND next_review_at <= ? 
-      AND compartment < 6
+      AND compartment < 5
       AND archived = 0
       ORDER BY next_review_at ASC, created_at ASC
     `,
@@ -83,7 +82,7 @@ const getCardsDueToday = async () => {
       SELECT * FROM cards 
       WHERE deleted_at IS NULL 
       AND next_review_at <= ? 
-      AND compartment < 6
+      AND compartment < 5
       AND archived = 0
       ORDER BY next_review_at ASC, created_at ASC
     `,
@@ -109,12 +108,12 @@ const applyAnswer = async (card: Card, response: boolean) => {
   if (response === false) {
     compartment = 1
   } else {
-    compartment = Math.min(compartment + 1, 6)
+    compartment = Math.min(compartment + 1, 5)
   }
 
   // Calculer la prochaine révision
   const now = Date.now()
-  const intervalDays = LEITNER_INTERVALS[compartment] ?? 0
+  const intervalDays = LEITNER_INTERVALS[compartment] ?? 1
   const nextReviewAt = now + intervalDays * 24 * 60 * 60 * 1000
 
   // Mettre à jour en base
@@ -174,7 +173,7 @@ export const useCards = () => {
       created_at: now,
       updated_at: now,
       compartment: 1,
-      next_review_at: now,
+      next_review_at: now + 24 * 60 * 60 * 1000, // Tomorrow
       archived: false,
       correct_answers: 0,
       total_reviews: 0,

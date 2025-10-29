@@ -42,7 +42,7 @@
 
         <div v-if="card" class="mb-6 flex items-center justify-end text-[13px] text-gray-500">
           <IconBox class="mr-2 opacity-60" />
-          <span class="mr-1">{{ $t('cards.compartment', { n: card.compartment, total: 6 }) }}</span>
+          <span class="mr-1">{{ $t('cards.compartment', { n: card.compartment, total: 5 }) }}</span>
         </div>
 
         <div v-if="card?.total_reviews > 0" class="mb-6 flex items-center justify-end text-[13px] text-gray-500">

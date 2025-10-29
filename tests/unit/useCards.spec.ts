@@ -59,6 +59,8 @@ describe('useCards', () => {
         compartment: 1,
         next_review_at: now,
         archived: false,
+        correct_answers: 0,
+        total_reviews: 0,
       }
 
       mockSqliteConnection.all.mockResolvedValue([mockCard])
@@ -76,6 +78,8 @@ describe('useCards', () => {
         compartment: 1,
         next_review_at: expect.any(Number),
         archived: false,
+        correct_answers: 0,
+        total_reviews: 0,
       })
 
       // Verify SQLite calls

@@ -124,6 +124,8 @@ describe('useCards - Leitner System', () => {
         created_at: Date.now(),
         updated_at: Date.now(),
         archived: false,
+        correct_answers: 0,
+        total_reviews: 0,
       }
 
       await composable.applyAnswer(card, true)
@@ -147,6 +149,8 @@ describe('useCards - Leitner System', () => {
         created_at: Date.now(),
         updated_at: Date.now(),
         archived: false,
+        correct_answers: 2,
+        total_reviews: 3,
       }
 
       await composable.applyAnswer(card, false)
@@ -158,10 +162,10 @@ describe('useCards - Leitner System', () => {
       )
     })
 
-    it('should keep card in compartment 6 on correct answer at max level', async () => {
+    it('should keep card in compartment 5 on correct answer at max level', async () => {
       const card = {
         id: 'test-card',
-        compartment: 6,
+        compartment: 5,
         next_review_at: Date.now() - 1000,
         question: 'Test Q',
         answer: 'Test A',
@@ -170,14 +174,16 @@ describe('useCards - Leitner System', () => {
         created_at: Date.now(),
         updated_at: Date.now(),
         archived: false,
+        correct_answers: 4,
+        total_reviews: 5,
       }
 
       await composable.applyAnswer(card, true)
 
-      // Verify card stays in compartment 6 (max level)
+      // Verify card stays in compartment 5 (max level)
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
         expect.stringContaining('UPDATE cards'),
-        expect.arrayContaining([6, expect.any(Number), expect.any(Number), 'test-card'])
+        expect.arrayContaining([5, expect.any(Number), expect.any(Number), 'test-card'])
       )
     })
   })
@@ -195,6 +201,8 @@ describe('useCards - Leitner System', () => {
         created_at: Date.now(),
         updated_at: Date.now(),
         archived: false,
+        correct_answers: 1,
+        total_reviews: 2,
       }
 
       const before = Date.now()
@@ -212,6 +220,40 @@ describe('useCards - Leitner System', () => {
 
       // Next review should be in the future (3 days for compartment 3)
       expect(nextReviewAt).toBeGreaterThan(before)
+    })
+
+    it('should set next review to tomorrow when card is answered incorrectly', async () => {
+      const card = {
+        id: 'test-card',
+        compartment: 4,
+        next_review_at: Date.now() - 1000,
+        question: 'Test Q',
+        answer: 'Test A',
+        collection_id: 'test-collection',
+        user_id: 'test-user',
+        created_at: Date.now(),
+        updated_at: Date.now(),
+        archived: false,
+        correct_answers: 3,
+        total_reviews: 5,
+      }
+
+      const before = Date.now()
+      await composable.applyAnswer(card, false)
+
+      // Verify SQL was called with demoted compartment
+      const updateCall = mockSqliteConnection.run.mock.calls.find((call) => call[0].includes('UPDATE cards'))
+
+      expect(updateCall).toBeTruthy()
+      const [, params] = updateCall
+      const [compartment, nextReviewAt] = params
+
+      // Should be demoted to compartment 1
+      expect(compartment).toBe(1)
+
+      // Next review should be tomorrow (exactly 24 hours from now)
+      const tomorrow = before + 24 * 60 * 60 * 1000
+      expect(nextReviewAt).toBe(tomorrow)
     })
   })
 })
