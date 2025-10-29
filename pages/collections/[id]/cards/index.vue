@@ -33,17 +33,6 @@
                 {{ $t('cards.lastAdded') }} {{ formatDate(lastCardDate) }}
               </p>
             </div>
-            <div class="flex justify-center">
-              <button
-                class="flex min-h-[48px] items-center gap-2 rounded-[15px] bg-[var(--color-primary)] px-4 py-2 text-white transition hover:bg-[var(--color-dark-purple)] disabled:cursor-not-allowed disabled:opacity-50"
-                data-testid="review-collection-btn"
-                :disabled="cards.length === 0"
-                @click="$router.push(`/collections/${collectionId}/review`)"
-              >
-                <IconPlay class="h-5 w-5" />
-                {{ $t('review.reviewThisCollection') }}
-              </button>
-            </div>
           </div>
         </div>
 
@@ -68,7 +57,6 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
-import IconPlay from '~/components/icons/IconPlay.vue'
 import CardItem from '~/components/CardItem.vue'
 import CreateCardItem from '~/components/CreateCardItem.vue'
 import type { Collection } from '~/lib/types'
