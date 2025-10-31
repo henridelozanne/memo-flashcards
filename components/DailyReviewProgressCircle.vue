@@ -7,19 +7,20 @@
           a 15 15 0 1 1 0 30
           a 15 15 0 1 1 0 -30"
         fill="none"
-        stroke="rgba(255,255,255,0.3)"
+        :class="backgroundStrokeClass"
         stroke-width="3"
       />
       <!-- Cercle de progression -->
       <path
-        v-if="progressPercentage > 0"
         d="M20 5
           a 15 15 0 1 1 0 30
           a 15 15 0 1 1 0 -30"
         fill="none"
-        stroke="white"
+        :class="progressStrokeClass"
+        class="progress-stroke"
         stroke-width="3"
         :stroke-dasharray="strokeDashArray"
+        :stroke-opacity="progressPercentage > 0 ? 1 : 0"
         stroke-linecap="round"
       />
     </svg>
@@ -37,6 +38,19 @@ import { useDailyReviewStore } from '~/store/dailyReview'
 
 const dailyReviewStore = useDailyReviewStore()
 
+const props = defineProps({
+  isFromPageHeader: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const backgroundStrokeClass = computed(() =>
+  props.isFromPageHeader ? 'stroke-[var(--color-accent-purple)]' : 'stroke-white/30'
+)
+
+const progressStrokeClass = computed(() => (props.isFromPageHeader ? 'stroke-[var(--color-primary)]' : 'stroke-white'))
+
 // Données depuis le store
 const current = computed(() => dailyReviewStore.answeredCardsCount)
 const total = computed(() => dailyReviewStore.totalCardsDueCount)
@@ -50,3 +64,11 @@ const progressPercentage = computed(() => {
 // Calcul du stroke-dasharray pour la progression
 const strokeDashArray = computed(() => `${progressPercentage.value}, 100`)
 </script>
+
+<style scoped>
+.progress-stroke {
+  transition:
+    stroke-dasharray 0.6s ease-out,
+    stroke-opacity 0.3s ease-out;
+}
+</style>

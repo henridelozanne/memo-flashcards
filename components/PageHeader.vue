@@ -8,6 +8,10 @@
     >
       {{ title }}
     </h1>
+
+    <div v-if="$slots.actions" class="absolute right-0">
+      <slot name="actions" />
+    </div>
   </div>
 </template>
 

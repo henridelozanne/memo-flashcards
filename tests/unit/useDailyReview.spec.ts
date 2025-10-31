@@ -3,6 +3,22 @@ import { setActivePinia, createPinia } from 'pinia'
 import { useDailyReview } from '~/composables/useDailyReview'
 import { Preferences } from '@capacitor/preferences'
 import { useCards } from '~/composables/useCards'
+import type { Card } from '~/lib/types'
+
+// Helper pour créer des cartes de test
+const createMockCard = (id: string, question: string = 'Q', answer: string = 'A'): Card => ({
+  id,
+  question,
+  answer,
+  collection_id: 'c1',
+  user_id: 'u1',
+  created_at: Date.now(),
+  updated_at: Date.now(),
+  compartment: 1,
+  next_review_at: Date.now(),
+  correct_answers: 0,
+  total_reviews: 0,
+})
 
 // Mock Capacitor Preferences
 vi.mock('@capacitor/preferences', () => {
@@ -36,8 +52,8 @@ describe('useDailyReview', () => {
     it('should initialize daily review with no existing data', async () => {
       vi.mocked(Preferences.get).mockResolvedValue({ value: null })
       vi.mocked(vi.mocked(useCards)().getCardsDueToday).mockResolvedValue([
-        { id: '1', question: 'Q1', answer: 'A1' },
-        { id: '2', question: 'Q2', answer: 'A2' },
+        createMockCard('1', 'Q1', 'A1'),
+        createMockCard('2', 'Q2', 'A2'),
       ])
 
       const { initDailyReview } = useDailyReview()
@@ -56,7 +72,7 @@ describe('useDailyReview', () => {
         .mockResolvedValueOnce({ value: null }) // For total cards
         .mockResolvedValueOnce({ value: existingAnsweredData }) // For answered cards
 
-      vi.mocked(vi.mocked(useCards)().getCardsDueToday).mockResolvedValue([{ id: '1', question: 'Q1', answer: 'A1' }])
+      vi.mocked(vi.mocked(useCards)().getCardsDueToday).mockResolvedValue([createMockCard('1', 'Q1', 'A1')])
 
       const { initDailyReview } = useDailyReview()
       await initDailyReview()
@@ -74,7 +90,7 @@ describe('useDailyReview', () => {
         .mockResolvedValueOnce({ value: null }) // For total cards
         .mockResolvedValueOnce({ value: existingAnsweredData }) // For answered cards
 
-      vi.mocked(vi.mocked(useCards)().getCardsDueToday).mockResolvedValue([{ id: '1', question: 'Q1', answer: 'A1' }])
+      vi.mocked(vi.mocked(useCards)().getCardsDueToday).mockResolvedValue([createMockCard('1', 'Q1', 'A1')])
 
       const { initDailyReview } = useDailyReview()
       await initDailyReview()
