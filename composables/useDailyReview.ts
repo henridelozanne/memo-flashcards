@@ -66,7 +66,19 @@ export const useDailyReview = () => {
   // Fonction pour initialiser la revue quotidienne
   const initDailyReview = async () => {
     await setCardsDueTotalCount()
-    await setAnsweredCardsCount(0)
+
+    // Vérifier s'il y a déjà des données pour aujourd'hui
+    const today = new Date().toDateString()
+    const existingData = await Preferences.get({ key: 'dailyAnsweredCardsCount' })
+
+    if (existingData.value) {
+      const parsedData = JSON.parse(existingData.value)
+      if (parsedData.date !== today) {
+        await setAnsweredCardsCount(0)
+      }
+    } else {
+      await setAnsweredCardsCount(0)
+    }
   }
 
   // Fonction pour incrémenter le nombre de cartes répondues
