@@ -2,12 +2,11 @@ import { ref, readonly } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import type { Card } from '~/lib/types'
 import { useDatabase } from './useDatabase'
+import { useDailyReviewStore } from '~/store/dailyReview'
 
 const cards = ref<Card[]>([])
 const isLoading = ref(false)
 const error = ref<string | null>(null)
-
-const { getDbConnection } = useDatabase()
 
 // Intervalles Leitner en jours (compartiment 1 à 5)
 const LEITNER_INTERVALS: Record<number, number> = {
@@ -18,116 +17,10 @@ const LEITNER_INTERVALS: Record<number, number> = {
   5: 30,
 }
 
-/**
- * Retourne les cartes à réviser aujourd'hui pour une collection donnée (compartment < 5).
- * @param collectionId string
- */
-const getDueCards = async (collectionId: string) => {
-  const now = Date.now()
-  try {
-    const db = await getDbConnection()
-    const result = await db.all<Card>(
-      `
-      SELECT * FROM cards 
-      WHERE collection_id = ?
-      AND deleted_at IS NULL 
-      AND next_review_at <= ? 
-      AND compartment < 5
-      AND archived = 0
-      ORDER BY next_review_at ASC, created_at ASC
-    `,
-      [collectionId, now]
-    )
-    return result
-  } catch (e: any) {
-    console.error('Erreur lors du chargement des cartes dues:', e)
-    return []
-  }
-}
-
-/**
- * Retourne toutes les cartes d'une collection (pour révision libre, indépendamment des intervalles).
- * @param collectionId string
- */
-const getAllCardsFromCollection = async (collectionId: string) => {
-  try {
-    const db = await getDbConnection()
-    const result = await db.all<Card>(
-      `
-      SELECT * FROM cards 
-      WHERE collection_id = ?
-      AND deleted_at IS NULL 
-      AND archived = 0
-      ORDER BY created_at ASC
-    `,
-      [collectionId]
-    )
-    return result
-  } catch (e: any) {
-    console.error('Erreur lors du chargement de toutes les cartes:', e)
-    return []
-  }
-}
-
-/**
- * Retourne toutes les cartes dues aujourd'hui (toutes collections confondues).
- */
-const getCardsDueToday = async () => {
-  const now = Date.now()
-
-  try {
-    const db = await getDbConnection()
-    const result = await db.all<Card>(
-      `
-      SELECT * FROM cards 
-      WHERE deleted_at IS NULL 
-      AND next_review_at <= ? 
-      AND compartment < 5
-      AND archived = 0
-      ORDER BY next_review_at ASC, created_at ASC
-    `,
-      [now]
-    )
-    return result
-  } catch (e: any) {
-    console.error('Erreur lors du chargement des cartes:', e)
-    return []
-  }
-}
-
-/**
- * Applique la réponse Leitner à une carte et met à jour son état.
- * @param card Card
- * @param response boolean
- */
-const applyAnswer = async (card: Card, response: boolean) => {
-  const db = await getDbConnection()
-
-  // Calculer le nouveau compartiment
-  let compartment = card.compartment ?? 1
-  if (response === false) {
-    compartment = 1
-  } else {
-    compartment = Math.min(compartment + 1, 5)
-  }
-
-  // Calculer la prochaine révision
-  const now = Date.now()
-  const intervalDays = LEITNER_INTERVALS[compartment] ?? 1
-  const nextReviewAt = now + intervalDays * 24 * 60 * 60 * 1000
-
-  // Mettre à jour en base
-  await db.run(
-    `
-    UPDATE cards 
-    SET compartment = ?, next_review_at = ?, updated_at = ?, correct_answers = correct_answers + ?, total_reviews = total_reviews + 1
-    WHERE id = ? AND deleted_at IS NULL
-  `,
-    [compartment, nextReviewAt, now, response ? 1 : 0, card.id]
-  )
-}
-
 export const useCards = () => {
+  const { getDbConnection } = useDatabase()
+  const dailyReviewStore = useDailyReviewStore()
+
   const loadCards = async (collectionId: string) => {
     isLoading.value = true
     error.value = null
@@ -283,6 +176,102 @@ export const useCards = () => {
       [existing.collection_id]
     )
     cards.value = result
+  }
+
+  const getDueCards = async (collectionId: string) => {
+    const now = Date.now()
+    try {
+      const db = await getDbConnection()
+      const result = await db.all<Card>(
+        `
+      SELECT * FROM cards 
+      WHERE collection_id = ?
+      AND deleted_at IS NULL 
+      AND next_review_at <= ? 
+      AND compartment < 5
+      AND archived = 0
+      ORDER BY next_review_at ASC, created_at ASC
+    `,
+        [collectionId, now]
+      )
+      return result
+    } catch (e: any) {
+      console.error('Erreur lors du chargement des cartes dues:', e)
+      return []
+    }
+  }
+
+  const getAllCardsFromCollection = async (collectionId: string) => {
+    try {
+      const db = await getDbConnection()
+      const result = await db.all<Card>(
+        `
+      SELECT * FROM cards 
+      WHERE collection_id = ?
+      AND deleted_at IS NULL 
+      AND archived = 0
+      ORDER BY created_at ASC
+    `,
+        [collectionId]
+      )
+      return result
+    } catch (e: any) {
+      console.error('Erreur lors du chargement de toutes les cartes:', e)
+      return []
+    }
+  }
+
+  const getCardsDueToday = async () => {
+    const now = Date.now()
+
+    try {
+      const db = await getDbConnection()
+      const result = await db.all<Card>(
+        `
+      SELECT * FROM cards 
+      WHERE deleted_at IS NULL 
+      AND next_review_at <= ? 
+      AND compartment < 5
+      AND archived = 0
+      ORDER BY next_review_at ASC, created_at ASC
+    `,
+        [now]
+      )
+      return result
+    } catch (e: any) {
+      console.error('Erreur lors du chargement des cartes:', e)
+      return []
+    }
+  }
+
+  const applyAnswer = async (card: Card, response: boolean) => {
+    const db = await getDbConnection()
+
+    // Calculer le nouveau compartiment
+    let compartment = card.compartment ?? 1
+    if (response === false) {
+      compartment = 1
+    } else {
+      compartment = Math.min(compartment + 1, 5)
+    }
+
+    // Calculer la prochaine révision
+    const now = Date.now()
+    const intervalDays = LEITNER_INTERVALS[compartment] ?? 1
+    const nextReviewAt = now + intervalDays * 24 * 60 * 60 * 1000
+
+    // Mettre à jour en base
+    await db.run(
+      `
+    UPDATE cards 
+    SET compartment = ?, next_review_at = ?, updated_at = ?, correct_answers = correct_answers + ?, total_reviews = total_reviews + 1
+    WHERE id = ? AND deleted_at IS NULL
+  `,
+      [compartment, nextReviewAt, now, response ? 1 : 0, card.id]
+    )
+
+    // Incrémenter le compteur de cartes répondues
+    dailyReviewStore.setAnsweredCardsCount(dailyReviewStore.answeredCardsCount + 1)
   }
 
   const getCardsCount = async (collectionId: string): Promise<number> => {

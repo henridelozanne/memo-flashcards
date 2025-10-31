@@ -9,13 +9,24 @@
     <ErrorMessage v-if="error" :error="error" :on-retry="loadCollections" />
 
     <!-- Daily review button -->
-    <DailyReviewButton :daily-cards-count="dailyCardsCount" />
+    <DailyReviewButton />
 
     <!-- Collections title -->
     <h2 class="mb-4 text-xl font-semibold">{{ $t('collections.myCollections') }}</h2>
 
     <!-- Collections grid -->
     <div v-if="!isLoading && !error" class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+      <!-- Test Data Button (Development only) -->
+      <div
+        data-testid="create-test-data"
+        class="order-last flex cursor-pointer flex-col items-center justify-center rounded-[15px] border-2 border-dashed bg-yellow-50 p-6 transition hover:bg-yellow-100"
+        style="border-color: #f59e0b"
+        @click="createTestData"
+      >
+        <span class="mb-2 text-4xl text-yellow-600">🧪</span>
+        <span class="text-center font-medium text-yellow-800">Créer Données Test</span>
+      </div>
+
       <!-- Carte + Créer une collection -->
       <div
         data-testid="create-card"
@@ -59,35 +70,36 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
-import { useCards } from '~/composables/useCards'
-import type { Collection } from '~/lib/types'
+import { useDailyReview } from '~/composables/useDailyReview'
 import DailyReviewButton from '~/components/DailyReviewButton.vue'
+import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'HomePage' })
 
 const router = useRouter()
 const { collections, isLoading, error, loadCollections, deleteCollection } = useCollections()
-const { getCardsDueToday } = useCards()
+const { initDailyReview } = useDailyReview()
 
 const collectionToDelete = ref<Collection | null>(null)
 const isDeleting = ref(false)
-const dailyCardsCount = ref(0)
 
-// Fonction pour recharger le total des cartes dues aujourd'hui
-const loadDailyCardsCount = async () => {
+// Fonction pour créer des données de test
+const createTestData = async () => {
   try {
-    const dueCards = await getCardsDueToday()
-    dailyCardsCount.value = dueCards.length
-  } catch (e) {
-    console.error('Erreur lors du chargement des cartes dues:', e)
-    dailyCardsCount.value = 0
+    const { createTestData: createTestDataFn } = await import('~/lib/testData')
+    await createTestDataFn()
+    // Recharger les collections et le compteur de cartes
+    await loadCollections()
+    console.log('Données de test créées avec succès !')
+  } catch (err) {
+    console.error('Erreur lors de la création des données de test:', err)
   }
 }
 
 onMounted(async () => {
   await loadCollections()
-
-  await loadDailyCardsCount()
+  // await createTestData()
+  await initDailyReview()
 })
 
 // Navigation vers l'édition
