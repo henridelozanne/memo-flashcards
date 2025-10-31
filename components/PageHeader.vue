@@ -2,7 +2,12 @@
   <div class="relative mb-6 flex h-8 items-center">
     <BackButton v-if="backButtonVisible" class="absolute left-0" @click="handleBackClick" />
 
-    <h1 class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold whitespace-nowrap" :data-testid="testId">{{ title }}</h1>
+    <h1
+      class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-2xl font-bold"
+      :data-testid="testId"
+    >
+      {{ title }}
+    </h1>
   </div>
 </template>
 

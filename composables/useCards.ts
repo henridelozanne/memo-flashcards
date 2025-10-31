@@ -2,7 +2,7 @@ import { ref, readonly } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import type { Card } from '~/lib/types'
 import { useDatabase } from './useDatabase'
-import { useDailyReviewStore } from '~/store/dailyReview'
+import { useDailyReview } from './useDailyReview'
 
 const cards = ref<Card[]>([])
 const isLoading = ref(false)
@@ -19,7 +19,6 @@ const LEITNER_INTERVALS: Record<number, number> = {
 
 export const useCards = () => {
   const { getDbConnection } = useDatabase()
-  const dailyReviewStore = useDailyReviewStore()
 
   const loadCards = async (collectionId: string) => {
     isLoading.value = true
@@ -271,7 +270,8 @@ export const useCards = () => {
     )
 
     // Incrémenter le compteur de cartes répondues
-    dailyReviewStore.setAnsweredCardsCount(dailyReviewStore.answeredCardsCount + 1)
+    const { incrementAnsweredCardsCount } = useDailyReview()
+    await incrementAnsweredCardsCount()
   }
 
   const getCardsCount = async (collectionId: string): Promise<number> => {

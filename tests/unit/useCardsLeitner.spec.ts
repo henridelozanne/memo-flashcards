@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { setActivePinia, createPinia } from 'pinia'
 import { useCards } from '~/composables/useCards'
 
 // Mock the SQLite connection for testing
@@ -27,6 +28,9 @@ describe('useCards - Leitner System', () => {
   let composable: ReturnType<typeof useCards>
 
   beforeEach(() => {
+    // Initialize Pinia for testing
+    setActivePinia(createPinia())
+
     // Reset UUID counter
     mockUuidCounter = 0
 

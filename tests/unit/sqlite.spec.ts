@@ -36,7 +36,7 @@ describe('SQLite abstraction', () => {
     // Use Promise.all instead of for...of
     await Promise.all(['one', 'two', 'three'].map((value) => db.run('INSERT INTO test (value) VALUES (?)', [value])))
 
-    const rows = await db.all<{ value: string }>('SELECT value FROM test WHERE value != ?', ['two'])
+    const rows = await db.all<{ value: string }>('SELECT value FROM test WHERE value != ? ORDER BY value', ['two'])
     expect(rows.length).toBe(2)
     expect(rows[0].value).toBe('one')
     expect(rows[1].value).toBe('three')
