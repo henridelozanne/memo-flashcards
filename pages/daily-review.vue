@@ -7,7 +7,7 @@
     <div class="flex-shrink-0 px-6 pb-2 pt-6">
       <PageHeader :title="$t('dailyReview.title')" back-button-visible @back="goBack">
         <template #actions>
-          <DailyReviewProgressCircle :is-from-page-header="true" />
+          <ProgressCircle :is-from-page-header="true" />
         </template>
       </PageHeader>
     </div>
@@ -40,7 +40,7 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCards } from '~/composables/useCards'
 import { useReviewSession } from '~/composables/useReviewSession'
-import DailyReviewProgressCircle from '~/components/DailyReviewProgressCircle.vue'
+import ProgressCircle from '~/components/ProgressCircle.vue'
 
 const router = useRouter()
 const { getCardsDueToday } = useCards()

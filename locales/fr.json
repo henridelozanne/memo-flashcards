@@ -111,5 +111,14 @@
     "nameRequired": "Le nom ne peut pas être vide.",
     "frontRequired": "Le recto ne peut pas être vide.",
     "backRequired": "Le verso ne peut pas être vide."
+  },
+  "onboarding": {
+    "appName": "Mémo Flashcards",
+    "step1": {
+      "tagline1": "Apprends durablement.",
+      "tagline2": "En quelques minutes par jour."
+    },
+    "continue": "Continuer",
+    "start": "Commencer"
   }
 }

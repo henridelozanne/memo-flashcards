@@ -9,7 +9,7 @@
       <span>{{ $t('dailyReview.reviewToday', { count: totalCardsDueToday }) }}</span>
 
       <!-- Barre de progression circulaire -->
-      <DailyReviewProgressCircle v-if="totalCardsDueToday > 0" />
+      <ProgressCircle v-if="totalCardsDueToday > 0" />
     </button>
   </div>
 </template>
@@ -18,7 +18,7 @@
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
 import { useDailyReviewStore } from '~/store/dailyReview'
-import DailyReviewProgressCircle from '~/components/DailyReviewProgressCircle.vue'
+import ProgressCircle from '~/components/ProgressCircle.vue'
 
 const router = useRouter()
 const dailyReviewStore = useDailyReviewStore()

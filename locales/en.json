@@ -111,5 +111,14 @@
     "nameRequired": "The name cannot be empty.",
     "frontRequired": "The front cannot be empty.",
     "backRequired": "The back cannot be empty."
+  },
+  "onboarding": {
+    "appName": "Memo Flashcards",
+    "step1": {
+      "tagline1": "Learn sustainably.",
+      "tagline2": "In just a few minutes a day."
+    },
+    "continue": "Continue",
+    "start": "Get started"
   }
 }

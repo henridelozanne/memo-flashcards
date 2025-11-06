@@ -26,8 +26,8 @@
     </svg>
     <!-- Texte au centre -->
     <div class="absolute inset-1 flex items-center justify-center">
-      <span class="text-[12px] font-bold">{{ current }}</span
-      >/<span class="text-[12px] font-bold">{{ total }}</span>
+      <span class="text-[12px] font-bold">{{ currentValue }}</span
+      >/<span class="text-[12px] font-bold">{{ totalValue }}</span>
     </div>
   </div>
 </template>
@@ -43,6 +43,15 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  // Props optionnelles pour utiliser des valeurs custom au lieu du store
+  current: {
+    type: Number,
+    default: undefined,
+  },
+  total: {
+    type: Number,
+    default: undefined,
+  },
 })
 
 const backgroundStrokeClass = computed(() =>
@@ -51,14 +60,14 @@ const backgroundStrokeClass = computed(() =>
 
 const progressStrokeClass = computed(() => (props.isFromPageHeader ? 'stroke-[var(--color-primary)]' : 'stroke-white'))
 
-// Données depuis le store
-const current = computed(() => dailyReviewStore.answeredCardsCount)
-const total = computed(() => dailyReviewStore.totalCardsDueCount)
+// Données depuis les props ou depuis le store
+const currentValue = computed(() => props.current ?? dailyReviewStore.answeredCardsCount)
+const totalValue = computed(() => props.total ?? dailyReviewStore.totalCardsDueCount)
 
 // Calcul de la progression en pourcentage
 const progressPercentage = computed(() => {
-  if (total.value === 0) return 0
-  return Math.round((current.value / total.value) * 100)
+  if (totalValue.value === 0) return 0
+  return Math.round((currentValue.value / totalValue.value) * 100)
 })
 
 // Calcul du stroke-dasharray pour la progression
