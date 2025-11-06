@@ -123,6 +123,18 @@
       "placeholder": "Your first name",
       "error": "Enter your name to continue"
     },
+    "step3": {
+      "title": "Welcome {name}!",
+      "subtitle": "What's your goal?",
+      "goals": {
+        "learnLanguage": "Learn a language",
+        "reviseClasses": "Review my classes",
+        "memorizeFactsScience": "Memorize historical or scientific facts",
+        "learnVocabulary": "Learn professional vocabulary",
+        "developCulture": "Develop my general knowledge",
+        "other": "Other"
+      }
+    },
     "continue": "Continue",
     "start": "Get started"
   }

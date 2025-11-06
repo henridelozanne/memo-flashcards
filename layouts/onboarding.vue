@@ -69,8 +69,9 @@ watch(
       1: '/onboarding/step-1',
       2: '/onboarding/step-2',
       3: '/onboarding/step-3',
+      4: '/onboarding/step-4',
       // Ajouter ici les routes des étapes suivantes
-      // 4: '/onboarding/step-4',
+      // 5: '/onboarding/step-5',
       // etc.
     }
 
