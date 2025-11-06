@@ -118,6 +118,11 @@
       "tagline1": "Apprends durablement.",
       "tagline2": "En quelques minutes par jour."
     },
+    "step2": {
+      "title": "Comment tu t'appelles ?",
+      "placeholder": "Ton prénom",
+      "error": "Entre ton prénom pour continuer"
+    },
     "continue": "Continuer",
     "start": "Commencer"
   }

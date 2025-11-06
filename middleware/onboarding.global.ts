@@ -2,7 +2,7 @@ import { useOnboardingStore } from '~/store/onboarding'
 
 export default defineNuxtRouteMiddleware((to) => {
   // Éviter la redirection infinie
-  if (to.path === '/onboarding') {
+  if (to.path.startsWith('/onboarding')) {
     return
   }
 
@@ -10,6 +10,6 @@ export default defineNuxtRouteMiddleware((to) => {
   const onboardingStore = useOnboardingStore()
 
   if (!onboardingStore.hasCompletedOnboarding) {
-    return navigateTo('/onboarding')
+    return navigateTo('/onboarding/step-1')
   }
 })

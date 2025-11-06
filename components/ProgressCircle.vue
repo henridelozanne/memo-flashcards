@@ -25,7 +25,7 @@
       />
     </svg>
     <!-- Texte au centre -->
-    <div class="absolute inset-1 flex items-center justify-center">
+    <div v-if="numbersVisible" class="absolute inset-1 flex items-center justify-center">
       <span class="text-[12px] font-bold">{{ currentValue }}</span
       >/<span class="text-[12px] font-bold">{{ totalValue }}</span>
     </div>
@@ -51,6 +51,11 @@ const props = defineProps({
   total: {
     type: Number,
     default: undefined,
+  },
+  // Masquer les chiffres (utile pour l'onboarding)
+  numbersVisible: {
+    type: Boolean,
+    default: true,
   },
 })
 

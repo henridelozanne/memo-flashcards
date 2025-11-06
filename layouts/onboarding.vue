@@ -3,7 +3,12 @@
     <!-- Header fixe (masqué sur l'écran 1) - Seulement ProgressCircle -->
     <div v-if="showHeader" class="flex-shrink-0 px-6 pb-2 pt-6">
       <div class="flex justify-end">
-        <ProgressCircle :current="completedSteps" :total="onboardingStore.totalSteps" is-from-page-header />
+        <ProgressCircle
+          :current="completedSteps"
+          :total="onboardingStore.totalSteps"
+          is-from-page-header
+          :numbers-visible="false"
+        />
       </div>
     </div>
 
@@ -31,10 +36,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
 import ProgressCircle from '~/components/ProgressCircle.vue'
 
+const router = useRouter()
 const onboardingStore = useOnboardingStore()
 
 // Nombre d'étapes complétées (étape actuelle - 1)
@@ -44,9 +51,43 @@ const completedSteps = computed(() => Math.max(0, onboardingStore.currentStep - 
 const showHeader = computed(() => onboardingStore.currentStep > 1)
 
 function handleNext() {
+  // Valider avant de passer à l'étape suivante
+  const isValid = onboardingStore.validateCurrentStep()
+
+  if (!isValid) {
+    return // Ne pas continuer si la validation échoue
+  }
+
   onboardingStore.nextStep()
-  // Émettre un événement que la page peut écouter
 }
+
+// Navigation automatique basée sur currentStep
+watch(
+  () => onboardingStore.currentStep,
+  (newStep) => {
+    const stepRoutes: Record<number, string> = {
+      1: '/onboarding/step-1',
+      2: '/onboarding/step-2',
+      3: '/onboarding/step-3',
+      // Ajouter ici les routes des étapes suivantes
+      // 4: '/onboarding/step-4',
+      // etc.
+    }
+
+    const targetRoute = stepRoutes[newStep]
+    if (targetRoute && router.currentRoute.value.path !== targetRoute) {
+      router.push(targetRoute)
+    }
+  }
+)
+
+// Réinitialiser la validation quand la route change
+watch(
+  () => router.currentRoute.value.path,
+  () => {
+    onboardingStore.currentStepValidation = null
+  }
+)
 
 defineOptions({ name: 'OnboardingLayout' })
 </script>

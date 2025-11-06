@@ -118,6 +118,11 @@
       "tagline1": "Learn sustainably.",
       "tagline2": "In just a few minutes a day."
     },
+    "step2": {
+      "title": "What's your name?",
+      "placeholder": "Your first name",
+      "error": "Enter your name to continue"
+    },
     "continue": "Continue",
     "start": "Get started"
   }

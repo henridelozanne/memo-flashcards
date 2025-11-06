@@ -13,6 +13,22 @@ export const useOnboardingStore = defineStore('onboarding', () => {
   // Nombre total d'étapes
   const totalSteps = 11
 
+  // Fonction de validation de l'étape courante (enregistrée par chaque page)
+  const currentStepValidation = ref<(() => boolean) | null>(null)
+
+  // Enregistrer la validation de l'étape courante
+  function registerStepValidation(validationFn: () => boolean) {
+    currentStepValidation.value = validationFn
+  }
+
+  // Valider l'étape courante avant de continuer
+  function validateCurrentStep(): boolean {
+    if (currentStepValidation.value) {
+      return currentStepValidation.value()
+    }
+    return true // Pas de validation = on peut continuer
+  }
+
   // Réinitialiser l'onboarding
   function resetOnboarding() {
     firstName.value = ''
@@ -21,12 +37,15 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     notificationHour.value = ''
     currentStep.value = 1
     hasCompletedOnboarding.value = false
+    currentStepValidation.value = null
   }
 
   // Passer à l'étape suivante
   function nextStep() {
     if (currentStep.value < totalSteps) {
       currentStep.value++
+      // Réinitialiser la validation pour la nouvelle étape
+      currentStepValidation.value = null
     }
   }
 
@@ -34,13 +53,8 @@ export const useOnboardingStore = defineStore('onboarding', () => {
   function previousStep() {
     if (currentStep.value > 1) {
       currentStep.value--
-    }
-  }
-
-  // Aller à une étape spécifique
-  function goToStep(step: number) {
-    if (step >= 1 && step <= totalSteps) {
-      currentStep.value = step
+      // Réinitialiser la validation pour la nouvelle étape
+      currentStepValidation.value = null
     }
   }
 
@@ -59,12 +73,14 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     currentStep,
     hasCompletedOnboarding,
     totalSteps,
+    currentStepValidation,
 
     // Actions
+    registerStepValidation,
+    validateCurrentStep,
     resetOnboarding,
     nextStep,
     previousStep,
-    goToStep,
     completeOnboarding,
   }
 })
