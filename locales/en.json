@@ -135,6 +135,18 @@
         "other": "Other"
       }
     },
+    "step4": {
+      "title": "What's your situation?",
+      "situations": {
+        "student": "Student",
+        "highSchool": "High school / Middle school",
+        "employed": "Employed",
+        "retraining": "In retraining / learning",
+        "selfLearner": "Self-learner",
+        "jobSeeking": "Job seeker",
+        "other": "Other"
+      }
+    },
     "continue": "Continue",
     "start": "Get started"
   }

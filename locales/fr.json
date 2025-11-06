@@ -135,6 +135,18 @@
         "other": "Autre"
       }
     },
+    "step4": {
+      "title": "Quelle est ta situation ?",
+      "situations": {
+        "student": "Étudiant(e)",
+        "highSchool": "Lycéen(ne) / Collégien(ne)",
+        "employed": "Actif(ve) en poste",
+        "retraining": "En reconversion / apprentissage",
+        "selfLearner": "Apprenant(e) autonome",
+        "jobSeeking": "En recherche d'emploi",
+        "other": "Autre"
+      }
+    },
     "continue": "Continuer",
     "start": "Commencer"
   }
