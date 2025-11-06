@@ -161,6 +161,13 @@
       "secondReview": "second review",
       "fourthReview": "fourth review"
     },
+    "step6": {
+      "title": "It's proven",
+      "text1": "Our algorithm is based on spaced repetition, a method up to",
+      "highlight": "4.8 times",
+      "text2": "more effective than traditional learning for long-term memorization.",
+      "studyCaption": "Study \"Repeat before Forgetting\", Harvard Medical School, 2017"
+    },
     "continue": "Continue",
     "start": "Get started"
   }

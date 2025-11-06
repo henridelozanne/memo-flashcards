@@ -1,12 +1,37 @@
 <template>
   <NuxtLayout name="onboarding">
-    <!-- Contenu de l'écran 6 (temporaire pour test) -->
-    <div class="flex h-full flex-col items-center justify-center pt-12">
+    <div class="flex h-full flex-col items-center justify-center px-6 pt-12">
       <!-- Titre -->
-      <h1 class="mb-8 text-center text-2xl font-bold text-[var(--color-black)]">Étape 6 - En cours de développement</h1>
+      <h1 class="mb-12 text-center text-2xl font-bold text-[var(--color-black)]">
+        {{ $t('onboarding.step6.title') }}
+      </h1>
 
-      <div class="space-y-2 text-center text-gray-600">
-        <p>📚 Suite de l'onboarding...</p>
+      <!-- Bloc de texte avec mise en avant du chiffre -->
+      <div class="mb-16 max-w-md text-center">
+        <p class="text-base leading-relaxed text-gray-700">
+          {{ $t('onboarding.step6.text1') }}
+        </p>
+        <p class="my-4 text-3xl font-bold text-[var(--color-black)]">
+          {{ $t('onboarding.step6.highlight') }}
+        </p>
+        <p class="text-base leading-relaxed text-gray-700">
+          {{ $t('onboarding.step6.text2') }}
+        </p>
+      </div>
+
+      <!-- Image Harvard + légende -->
+      <div class="flex items-center justify-center gap-4">
+        <!-- Logo Harvard -->
+        <img 
+          src="~/assets/svg/Harvard_University_coat_of_arms.svg" 
+          alt="Harvard University" 
+          class="h-12 w-auto"
+        />
+        
+        <!-- Légende -->
+        <p class="max-w-xs text-sm text-gray-600">
+          {{ $t('onboarding.step6.studyCaption') }}
+        </p>
       </div>
     </div>
   </NuxtLayout>

@@ -161,6 +161,13 @@
       "secondReview": "2ème révision",
       "fourthReview": "4ème révision"
     },
+    "step6": {
+      "title": "C'est prouvé",
+      "text1": "Notre algorithme repose sur les répétitions espacées, une méthode jusqu'à",
+      "highlight": "4,8 fois",
+      "text2": "plus efficace que l'apprentissage classique pour mémoriser durablement.",
+      "studyCaption": "Étude \"Repeat before Forgetting\", Harvard Medical School, 2017"
+    },
     "continue": "Continuer",
     "start": "Commencer"
   }
