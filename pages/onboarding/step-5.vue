@@ -1,18 +1,61 @@
 <template>
   <NuxtLayout name="onboarding">
-    <!-- Contenu de l'écran 5 (temporaire pour test) -->
-    <div class="flex h-full flex-col items-center justify-center pt-12">
-      <!-- Titre -->
-      <h1 class="mb-8 text-center text-2xl font-bold text-[var(--color-black)]">Étape 5 - En cours de développement</h1>
+    <!-- Contenu de l'écran 5 - Courbe de l'oubli -->
+    <div class="flex h-full flex-col items-center justify-center gap-8 pt-12">
+      <!-- Titre avec sous-titre -->
+      <div class="text-center">
+        <h1 class="text-2xl font-bold text-[var(--color-black)]">
+          {{ $t('onboarding.step5.title') }}
+        </h1>
+        <p class="mt-1 text-lg italic text-gray-500">
+          {{ $t('onboarding.step5.subtitle') }}
+        </p>
+      </div>
 
-      <div class="space-y-2 text-center text-gray-600">
-        <p>👋 Bonjour {{ onboardingStore.firstName }} !</p>
-        <p>
-          🎯 Ton objectif : <strong>{{ onboardingStore.goal }}</strong>
-        </p>
-        <p>
-          📚 Ta situation : <strong>{{ onboardingStore.situation }}</strong>
-        </p>
+      <!-- Image SVG de la courbe de l'oubli -->
+      <div class="relative mt-12 w-full max-w-md px-4">
+        <img src="~/assets/svg/forgetting-curve.svg" alt="Forgetting curve" class="w-full" />
+
+        <!-- Labels au-dessus des courbes -->
+        <!-- Original learning (première courbe, à gauche) -->
+        <div class="absolute -top-8 left-[8%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
+          {{ $t('onboarding.step5.originalLearning') }}
+        </div>
+
+        <!-- First review (deuxième courbe) -->
+        <div class="absolute -top-4 left-[25%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
+          {{ $t('onboarding.step5.firstReview') }}
+        </div>
+
+        <!-- Second review (troisième courbe) -->
+        <div class="absolute -top-4 left-[40%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
+          {{ $t('onboarding.step5.secondReview') }}
+        </div>
+
+        <!-- Fourth review (quatrième courbe) -->
+        <div class="absolute -top-4 left-[65%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
+          {{ $t('onboarding.step5.fourthReview') }}
+        </div>
+
+        <!-- Label "temps" sous l'axe X -->
+        <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs font-medium italic text-gray-600">
+          {{ $t('onboarding.step5.timeLabel') }}
+        </div>
+        <!-- Label "rétention" vertical à gauche de l'axe Y -->
+        <div class="absolute -left-2 top-1/2 -translate-y-1/2 -rotate-90 text-xs font-medium italic text-gray-600">
+          {{ $t('onboarding.step5.retentionLabel') }}
+        </div>
+      </div>
+
+      <!-- Texte explicatif avec mots en gras -->
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div class="max-w-md space-y-3 px-6 text-justify text-base leading-relaxed text-gray-700">
+        <!-- eslint-disable vue/no-v-html -->
+        <p v-html="formatText($t('onboarding.step5.explanation'))"></p>
+        <p v-html="formatText($t('onboarding.step5.forgettingCurve'))"></p>
+        <p v-html="formatText($t('onboarding.step5.solution'))"></p>
+        <p v-html="formatText($t('onboarding.step5.spacedRepetition'))"></p>
+        <!-- eslint-enable vue/no-v-html -->
       </div>
     </div>
   </NuxtLayout>
@@ -23,6 +66,11 @@ import { onMounted } from 'vue'
 import { useOnboardingStore } from '~/store/onboarding'
 
 const onboardingStore = useOnboardingStore()
+
+// Fonction pour convertir les **texte** en <strong>texte</strong>
+function formatText(text: string): string {
+  return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+}
 
 // Initialiser l'étape à 5
 onMounted(() => {
