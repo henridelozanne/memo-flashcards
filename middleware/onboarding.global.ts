@@ -1,6 +1,8 @@
+import type { RouteLocationNormalized } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
 
-export default defineNuxtRouteMiddleware((to) => {
+// @ts-expect-error - Auto-imported by Nuxt
+export default defineNuxtRouteMiddleware((to: RouteLocationNormalized) => {
   // Éviter la redirection infinie
   if (to.path.startsWith('/onboarding')) {
     return
@@ -10,6 +12,7 @@ export default defineNuxtRouteMiddleware((to) => {
   const onboardingStore = useOnboardingStore()
 
   if (!onboardingStore.hasCompletedOnboarding) {
+    // @ts-expect-error - Auto-imported by Nuxt
     return navigateTo('/onboarding/step-1')
   }
 })
