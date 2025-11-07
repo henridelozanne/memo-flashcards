@@ -168,6 +168,14 @@
       "text2": "more effective than traditional learning for long-term memorization.",
       "studyCaption": "Study \"Repeat before Forgetting\", Harvard Medical School, 2017"
     },
+    "step7": {
+      "title": "Create clear, effective, and memorable cards",
+      "card1Question": "Hello",
+      "card3Question": "French Revolution date",
+      "card3Answer": "1789",
+      "card2Question": "Water boiling point",
+      "card2Answer": "100°C"
+    },
     "continue": "Continue",
     "start": "Get started"
   }

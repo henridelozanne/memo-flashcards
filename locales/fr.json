@@ -168,6 +168,14 @@
       "text2": "plus efficace que l'apprentissage classique pour mémoriser durablement.",
       "studyCaption": "Étude \"Repeat before Forgetting\", Harvard Medical School, 2017"
     },
+    "step7": {
+      "title": "Crée des cartes claires, efficaces, et mémorables",
+      "card1Question": "Bonjour",
+      "card2Question": "Date de la Révolution française",
+      "card2Answer": "1789",
+      "card3Question": "Température d'ébullition de l'eau",
+      "card3Answer": "100°C"
+    },
     "continue": "Continuer",
     "start": "Commencer"
   }
