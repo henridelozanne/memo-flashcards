@@ -176,6 +176,9 @@
       "card2Question": "Water boiling point",
       "card2Answer": "100°C"
     },
+    "step8": {
+      "title": "Your cards progress through levels with each correct answer"
+    },
     "continue": "Continue",
     "start": "Get started"
   }

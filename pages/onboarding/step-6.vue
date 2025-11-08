@@ -22,12 +22,8 @@
       <!-- Image Harvard + légende -->
       <div class="flex items-center justify-center gap-4">
         <!-- Logo Harvard -->
-        <img 
-          src="~/assets/svg/Harvard_University_coat_of_arms.svg" 
-          alt="Harvard University" 
-          class="h-12 w-auto"
-        />
-        
+        <img src="~/assets/svg/Harvard_University_coat_of_arms.svg" alt="Harvard University" class="h-12 w-auto" />
+
         <!-- Légende -->
         <p class="max-w-xs text-sm text-gray-600">
           {{ $t('onboarding.step6.studyCaption') }}

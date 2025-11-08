@@ -176,6 +176,9 @@
       "card3Question": "Température d'ébullition de l'eau",
       "card3Answer": "100°C"
     },
+    "step8": {
+      "title": "Tes cartes progressent de niveau à chaque bonne réponse"
+    },
     "continue": "Continuer",
     "start": "Commencer"
   }
