@@ -74,9 +74,9 @@ watch(
       6: '/onboarding/step-6',
       7: '/onboarding/step-7',
       8: '/onboarding/step-8',
-      // Ajouter ici les routes des étapes suivantes
-      // 9: '/onboarding/step-9',
-      // etc.
+      9: '/onboarding/step-9',
+      10: '/onboarding/step-10',
+      11: '/onboarding/step-11',
     }
 
     const targetRoute = stepRoutes[newStep]

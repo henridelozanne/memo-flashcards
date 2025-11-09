@@ -7,7 +7,7 @@ export const useOnboardingStore = defineStore('onboarding', () => {
   const goal = ref<string>('')
   const situation = ref<string>('')
   const notificationHour = ref<string>('')
-  const currentStep = ref<number>(8)
+  const currentStep = ref<number>(9)
   const hasCompletedOnboarding = ref<boolean>(false)
 
   // Nombre total d'étapes

@@ -179,6 +179,12 @@
     "step8": {
       "title": "Your cards progress through levels with each correct answer"
     },
+    "step9": {
+      "title": "Every day, review what you need to, nothing more"
+    },
+    "step10": {
+      "title": "What time would you like to be notified?"
+    },
     "continue": "Continue",
     "start": "Get started"
   }

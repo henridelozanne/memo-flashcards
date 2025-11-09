@@ -179,6 +179,12 @@
     "step8": {
       "title": "Tes cartes progressent de niveau à chaque bonne réponse"
     },
+    "step9": {
+      "title": "Chaque jour, révise ce qu'il faut, rien de plus"
+    },
+    "step10": {
+      "title": "À quelle heure souhaites-tu être notifié ?"
+    },
     "continue": "Continuer",
     "start": "Commencer"
   }
