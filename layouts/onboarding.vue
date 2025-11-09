@@ -51,14 +51,19 @@ const completedSteps = computed(() => Math.max(0, onboardingStore.currentStep - 
 const showHeader = computed(() => onboardingStore.currentStep > 1)
 
 function handleNext() {
-  // Valider avant de passer à l'étape suivante
-  const isValid = onboardingStore.validateCurrentStep()
+  // Valider avant de passer à l'étape suivante (support async)
+  const validationResult = onboardingStore.validateCurrentStep()
 
-  if (!isValid) {
-    return // Ne pas continuer si la validation échoue
+  // Si c'est une Promise, attendre le résultat
+  if (validationResult instanceof Promise) {
+    validationResult.then((isValid) => {
+      if (isValid) {
+        onboardingStore.nextStep()
+      }
+    })
+  } else if (validationResult) {
+    onboardingStore.nextStep()
   }
-
-  onboardingStore.nextStep()
 }
 
 // Navigation automatique basée sur currentStep

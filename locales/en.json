@@ -185,7 +185,12 @@
     "step10": {
       "title": "What time would you like to be notified?"
     },
+    "step11": {
+      "title": "You're all set, {firstName}!",
+      "subtitle": "You're now ready to start your learning journey with Memo"
+    },
     "continue": "Continue",
-    "start": "Get started"
+    "start": "Get started",
+    "letsGo": "Let's go"
   }
 }

@@ -14,17 +14,19 @@ export const useOnboardingStore = defineStore('onboarding', () => {
   const totalSteps = 11
 
   // Fonction de validation de l'étape courante (enregistrée par chaque page)
-  const currentStepValidation = ref<(() => boolean) | null>(null)
+  const currentStepValidation = ref<(() => boolean | Promise<boolean>) | null>(null)
 
   // Enregistrer la validation de l'étape courante
-  function registerStepValidation(validationFn: () => boolean) {
+  function registerStepValidation(validationFn: () => boolean | Promise<boolean>) {
     currentStepValidation.value = validationFn
   }
 
   // Valider l'étape courante avant de continuer
-  function validateCurrentStep(): boolean {
+  async function validateCurrentStep(): Promise<boolean> {
     if (currentStepValidation.value) {
-      return currentStepValidation.value()
+      const result = currentStepValidation.value()
+      // Support des validations synchrones et asynchrones
+      return result instanceof Promise ? await result : result
     }
     return true // Pas de validation = on peut continuer
   }
