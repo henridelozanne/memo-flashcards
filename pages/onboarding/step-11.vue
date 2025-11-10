@@ -28,12 +28,20 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
 
+const router = useRouter()
 const onboardingStore = useOnboardingStore()
 
 onMounted(() => {
   onboardingStore.currentStep = 11
+})
+
+// Rediriger vers le paywall au lieu de passer à l'étape suivante
+onboardingStore.registerStepValidation(() => {
+  router.push('/onboarding/paywall')
+  return false // Empêcher la navigation automatique
 })
 
 defineOptions({ name: 'OnboardingStep11Page' })

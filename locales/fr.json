@@ -189,6 +189,28 @@
       "title": "Tout est prêt, {firstName} !",
       "subtitle": "Tu es maintenant prêt à commencer ton apprentissage avec Memo"
     },
+    "paywall": {
+      "title": "Débloque ton potentiel",
+      "benefit1": "Création de cartes et de collections illimitées",
+      "benefit2": "Statistiques d'apprentissage avancées",
+      "benefit3": "Accès aux nouveautés en avant-première",
+      "benefit4": "Support prioritaire pour les abonnés",
+      "monthly": {
+        "title": "Mensuel",
+        "price": "2,99€ / mois",
+        "subtitle": "Idéal pour tester",
+        "renewal": "Renouvellement automatique"
+      },
+      "lifetime": {
+        "title": "À vie",
+        "price": "Paiement unique de 49,99€",
+        "subtitle": "Accès premium à vie",
+        "renewal": "Aucun renouvellement"
+      },
+      "chooseOffer": "Choisir cette offre",
+      "freeTrial": "Essayer gratuitement pendant 7 jours",
+      "disclaimer": "Sans engagement. Vous pouvez annuler à tout moment."
+    },
     "continue": "Continuer",
     "start": "Commencer",
     "letsGo": "C'est parti"

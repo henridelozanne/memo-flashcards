@@ -189,6 +189,28 @@
       "title": "You're all set, {firstName}!",
       "subtitle": "You're now ready to start your learning journey with Memo"
     },
+    "paywall": {
+      "title": "Unlock your potential",
+      "benefit1": "Unlimited cards and collections",
+      "benefit2": "Advanced learning statistics",
+      "benefit3": "Early access to new features",
+      "benefit4": "Priority support for subscribers",
+      "monthly": {
+        "title": "Monthly",
+        "price": "$2.99 / month",
+        "subtitle": "Perfect for testing",
+        "renewal": "Automatic renewal"
+      },
+      "lifetime": {
+        "title": "Lifetime",
+        "price": "One-time payment of $49.99",
+        "subtitle": "Premium access forever",
+        "renewal": "No renewal"
+      },
+      "chooseOffer": "Choose this offer",
+      "freeTrial": "Try free for 7 days",
+      "disclaimer": "No commitment. You can cancel anytime."
+    },
     "continue": "Continue",
     "start": "Get started",
     "letsGo": "Let's go"
