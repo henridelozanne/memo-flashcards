@@ -1,7 +1,9 @@
 <template>
-  <div class="paywall-container flex min-h-screen flex-col bg-white">
+  <div class="paywall-container flex min-h-screen flex-col">
+    <BackgroundEffects />
+
     <!-- Bouton fermer en haut à droite -->
-    <button class="close-button" @click="skipPaywall">
+    <button class="close-button relative z-10" @click="skipPaywall">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="18" y1="6" x2="6" y2="18" />
         <line x1="6" y1="6" x2="18" y2="18" />
@@ -9,7 +11,7 @@
     </button>
 
     <!-- Contenu scrollable -->
-    <div class="flex-1 overflow-y-auto px-6 pb-32 pt-16">
+    <div class="relative z-10 flex-1 overflow-y-auto px-6 pb-32 pt-16">
       <!-- Titre -->
       <h1 class="mb-12 text-center text-3xl font-bold text-[var(--color-black)]">
         {{ $t('onboarding.paywall.title') }}
@@ -72,7 +74,7 @@
     </div>
 
     <!-- CTA fixé en bas -->
-    <div class="fixed bottom-0 left-0 right-0 bg-white px-6 pb-8 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
+    <div class="fixed bottom-0 left-0 right-0 z-10 bg-white px-6 pb-8 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
       <button class="trial-button w-full" @click="startFreeTrial">
         {{ $t('onboarding.paywall.freeTrial') }}
       </button>
@@ -84,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
 

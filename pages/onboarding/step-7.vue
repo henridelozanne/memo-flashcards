@@ -171,7 +171,7 @@ defineOptions({ name: 'OnboardingStep7Page' })
   z-index: 2;
   animation-name: fanOut4;
   animation-delay: 1.3s;
-  opacity: 0.7;
+  opacity: 1;
 }
 
 /* Carte 5 (arrière-plan) */
@@ -179,6 +179,6 @@ defineOptions({ name: 'OnboardingStep7Page' })
   z-index: 1;
   animation-name: fanOut5;
   animation-delay: 1.4s;
-  opacity: 0.5;
+  opacity: 1;
 }
 </style>

@@ -1,7 +1,10 @@
 <template>
-  <div class="onboarding-layout fixed inset-0 flex flex-col bg-gray-50" style="padding-top: env(safe-area-inset-top)">
+  <div class="onboarding-layout fixed inset-0 flex flex-col bg-white" style="padding-top: env(safe-area-inset-top)">
+    <!-- Fond d'écran avec effets -->
+    <BackgroundEffects />
+
     <!-- Header fixe (masqué sur l'écran 1) - Seulement ProgressCircle -->
-    <div v-if="showHeader" class="flex-shrink-0 px-6 pb-2 pt-6">
+    <div v-if="showHeader" class="relative z-10 flex-shrink-0 px-6 pb-2 pt-6">
       <div class="flex justify-end">
         <ProgressCircle
           :current="completedSteps"
@@ -13,7 +16,7 @@
     </div>
 
     <!-- Contenu de l'onboarding -->
-    <div class="flex flex-1 flex-col overflow-auto p-6">
+    <div class="relative z-10 flex flex-1 flex-col overflow-auto p-6">
       <div class="flex h-full w-full max-w-lg flex-col">
         <transition name="fade" mode="out-in">
           <slot />
@@ -22,7 +25,7 @@
     </div>
 
     <!-- Bouton fixe en bas -->
-    <div class="flex-shrink-0 p-6" style="padding-bottom: calc(env(safe-area-inset-bottom) + 1.5rem)">
+    <div class="relative z-10 flex-shrink-0 p-6" style="padding-bottom: calc(env(safe-area-inset-bottom) + 1.5rem)">
       <div class="mx-auto w-full max-w-lg">
         <button
           class="w-full rounded-[15px] bg-[var(--color-primary)] px-8 py-4 text-lg font-semibold text-white shadow-[0px_4px_32px_#0000000a] transition hover:opacity-90"

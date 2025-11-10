@@ -17,7 +17,7 @@
           :class="
             selectedGoal === goalOption.value
               ? 'border-[var(--color-primary)] bg-[var(--color-primary)] font-semibold text-white'
-              : 'border-gray-200 text-gray-700 hover:border-gray-300'
+              : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
           "
           @click="selectGoal(goalOption.value)"
         >
