@@ -8,11 +8,19 @@ export default defineConfig({
     alias: [
       { find: '~', replacement: path.resolve(__dirname) },
       { find: '@', replacement: path.resolve(__dirname) },
+      { find: 'assets', replacement: path.resolve(__dirname, 'assets') },
     ],
   },
   test: {
     globals: true,
     environment: 'jsdom',
     include: ['tests/unit/**/*.spec.ts'],
+    setupFiles: ['./tests/setup.ts'],
+    server: {
+      deps: {
+        inline: ['vitest-canvas-mock'],
+      },
+    },
   },
+  assetsInclude: ['**/*.svg'],
 })

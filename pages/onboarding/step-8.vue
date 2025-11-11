@@ -6,78 +6,108 @@
         {{ $t('onboarding.step8.title') }}
       </h1>
 
-      <!-- Animation Leitner carousel -->
-      <div class="relative flex flex-1 items-center justify-center">
-        <div class="leitner-carousel-container relative" style="height: 350px; width: 100%; max-width: 400px">
-          <!-- Conteneur des boîtes qui va slider -->
-          <div class="boxes-track absolute flex items-center gap-8">
-            <!-- Boîte 1 -->
-            <div class="leitner-box">
-              <div class="box-back"></div>
-              <div class="box-front"></div>
-              <div class="box-number">
-                <span class="text-sm font-bold text-gray-700">1</span>
-              </div>
+      <!-- Animation de streak -->
+      <div class="relative flex w-full flex-1 flex-col items-center justify-center gap-8">
+        <div class="streak-widget w-full">
+          <div class="streak-container flex items-center gap-2">
+            <!-- Jour 1 - complété -->
+            <div class="streak-day completed">
+              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M7 12l3 3 7-7"
+                  stroke="white"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </div>
 
-            <!-- Boîte 2 -->
-            <div class="leitner-box">
-              <div class="box-back"></div>
-              <div class="box-front"></div>
-              <div class="box-number">
-                <span class="text-sm font-bold text-gray-700">2</span>
-              </div>
+            <!-- Jour 2 - complété -->
+            <div class="streak-day completed">
+              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M7 12l3 3 7-7"
+                  stroke="white"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </div>
 
-            <!-- Boîte 3 -->
-            <div class="leitner-box">
-              <div class="box-back"></div>
-              <div class="box-front"></div>
-              <div class="box-number">
-                <span class="text-sm font-bold text-gray-700">3</span>
-              </div>
+            <!-- Jour 3 - complété -->
+            <div class="streak-day completed">
+              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M7 12l3 3 7-7"
+                  stroke="white"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </div>
 
-            <!-- Boîte 4 -->
-            <div class="leitner-box">
-              <div class="box-back"></div>
-              <div class="box-front"></div>
-              <div class="box-number">
-                <span class="text-sm font-bold text-gray-700">4</span>
-              </div>
+            <!-- Jour 4 - complété -->
+            <div class="streak-day completed">
+              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M7 12l3 3 7-7"
+                  stroke="white"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </div>
 
-            <!-- Boîte 5 -->
-            <div class="leitner-box">
-              <div class="box-back"></div>
-              <div class="box-front"></div>
-              <div class="box-number box-number-5">
-                <span class="box-5-number text-sm font-bold text-gray-700">5</span>
-                <svg class="box-5-check absolute opacity-0" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M7 12l3 3 7-7"
-                    stroke="white"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </div>
+            <!-- Jour 5 - animation -->
+            <div class="streak-day day-5">
+              <svg class="check-icon check-5" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M7 12l3 3 7-7"
+                  stroke="white"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+
+            <!-- Jour 6 - animation -->
+            <div class="streak-day day-6">
+              <svg class="check-icon check-6" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M7 12l3 3 7-7"
+                  stroke="white"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+
+            <!-- Jour 7 - aujourd'hui, animation -->
+            <div class="streak-day day-7">
+              <svg class="check-icon check-7" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M7 12l3 3 7-7"
+                  stroke="white"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </div>
           </div>
+        </div>
 
-          <!-- Carte animée (identique à la Carte 1 de step-7) -->
-          <div class="jumping-card absolute">
-            <div
-              class="flex h-full w-full flex-col items-center justify-center rounded-[15px] border border-gray-100 bg-white p-4 shadow-[0px_4px_32px_#0000000a]"
-            >
-              <div class="mb-2 text-center text-sm font-medium leading-tight text-gray-900">
-                {{ $t('onboarding.step7.card1Question') }}
-              </div>
-              <div class="my-2 h-px w-8 bg-gray-300 opacity-50"></div>
-              <div class="text-center text-xs leading-tight text-gray-500">おはよう</div>
-            </div>
-          </div>
+        <!-- Message de célébration -->
+        <div class="celebration-message">
+          <div class="celebration-icon">🎉</div>
+          <div class="celebration-text">7 jours d'affilée !</div>
+          <div class="celebration-subtext">Continue comme ça</div>
         </div>
       </div>
     </div>
@@ -98,208 +128,177 @@ defineOptions({ name: 'OnboardingStep8Page' })
 </script>
 
 <style scoped>
-.leitner-carousel-container {
-  overflow: visible;
+/* Widget contenant le streak */
+.streak-widget {
+  background: #374151;
+  border-radius: 24px;
+  padding: 20px;
+  border: 2px solid #9ca3af;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  margin: 0 8px;
 }
 
-/* Boîte Leitner avec effet 3D */
-.leitner-box {
-  position: relative;
-  width: 200px;
-  height: 240px;
-  flex-shrink: 0;
+.streak-container {
+  width: 100%;
 }
 
-/* Face arrière de la boîte (fond) */
-.box-back {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  right: -8px;
-  bottom: 0;
-  background: #e5e7eb;
-  border-radius: 0 0 12px 12px;
-  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Face avant de la boîte */
-.box-front {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 8px;
-  background: white;
-  border: 2px solid #d1d5db;
-  border-top: none;
-  border-radius: 0 0 12px 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  z-index: 2;
-}
-
-/* Numéro de la boîte */
-.box-number {
-  position: absolute;
-  bottom: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 32px;
-  height: 32px;
+/* Case de jour de streak */
+.streak-day {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   border: 2px solid #d1d5db;
   background: white;
-  z-index: 3;
+  transition: all 0.3s ease;
 }
 
-/* Track contenant toutes les boîtes */
-.boxes-track {
-  left: 50%;
-  top: 50%;
-  transform: translate(-100px, -120px);
-  animation: slideBoxes 8s ease-in-out forwards;
+/* Jours complétés */
+.streak-day.completed {
+  background: #10b981;
+  border-color: #10b981;
 }
 
-/* Animation du carousel de boîtes */
-@keyframes slideBoxes {
-  0% {
-    transform: translate(-100px, -120px);
-  }
-  15% {
-    transform: translate(-100px, -120px);
-  }
-  20% {
-    transform: translate(calc(-100px - 228px), -120px);
-  }
-  35% {
-    transform: translate(calc(-100px - 228px), -120px);
-  }
-  40% {
-    transform: translate(calc(-100px - 456px), -120px);
-  }
-  55% {
-    transform: translate(calc(-100px - 456px), -120px);
-  }
-  60% {
-    transform: translate(calc(-100px - 684px), -120px);
-  }
-  75% {
-    transform: translate(calc(-100px - 684px), -120px);
-  }
-  80% {
-    transform: translate(calc(-100px - 912px), -120px);
-  }
-  100% {
-    transform: translate(calc(-100px - 912px), -120px);
-  }
+/* Jours 5, 6, 7 - animation progressive */
+.streak-day.day-5,
+.streak-day.day-6,
+.streak-day.day-7 {
+  background: #e5e7eb;
+  border-color: #d1d5db;
 }
 
-/* Carte qui saute */
-.jumping-card {
-  width: 140px;
-  height: 180px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-70px, -90px);
-  z-index: 1;
-  animation: jumpCard 8s ease-in-out forwards;
+.streak-day.day-5 {
+  animation: fillDay 0.6s ease-out 1s forwards;
 }
 
-/* Animation de saut de la carte */
-@keyframes jumpCard {
-  /* Boîte 1 */
-  0%,
-  15% {
-    transform: translate(-70px, -90px);
-  }
-  /* Saut vers boîte 2 */
-  17% {
-    transform: translate(-70px, -150px);
-  }
-  20% {
-    transform: translate(-70px, -90px);
-  }
-  35% {
-    transform: translate(-70px, -90px);
-  }
-  /* Saut vers boîte 3 */
-  37% {
-    transform: translate(-70px, -150px);
-  }
-  40% {
-    transform: translate(-70px, -90px);
-  }
-  55% {
-    transform: translate(-70px, -90px);
-  }
-  /* Saut vers boîte 4 */
-  57% {
-    transform: translate(-70px, -150px);
-  }
-  60% {
-    transform: translate(-70px, -90px);
-  }
-  75% {
-    transform: translate(-70px, -90px);
-  }
-  /* Saut vers boîte 5 */
-  77% {
-    transform: translate(-70px, -150px);
-  }
-  80% {
-    transform: translate(-70px, -90px);
-  }
-  100% {
-    transform: translate(-70px, -90px);
-  }
+.streak-day.day-6 {
+  animation: fillDay 0.6s ease-out 2.2s forwards;
 }
 
-/* Animation pour transformer le 5 en check vert */
-.box-number-5 {
-  animation: transformToCheck 8s ease-in-out forwards;
+.streak-day.day-7 {
+  animation: fillDay 0.6s ease-out 3.4s forwards;
 }
 
-.box-5-number {
-  animation: fadeOutNumber 0.3s ease-in-out 7.5s forwards;
+/* Check icons cachés par défaut pour jours 5, 6, 7 */
+.check-5,
+.check-6,
+.check-7 {
+  opacity: 0;
+  transform: scale(0.5);
 }
 
-.box-5-check {
-  animation: fadeInCheck 0.3s ease-in-out 7.5s forwards;
+.check-5 {
+  animation: showCheck 0.6s ease-out 1s forwards;
 }
 
-@keyframes fadeOutNumber {
+.check-6 {
+  animation: showCheck 0.6s ease-out 2.2s forwards;
+}
+
+.check-7 {
+  animation: showCheck 0.6s ease-out 3.4s forwards;
+}
+
+/* Check icon visible pour les jours complétés */
+.completed .check-icon {
+  opacity: 1;
+}
+
+/* Animation pour remplir une case */
+@keyframes fillDay {
   from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-}
-
-@keyframes fadeInCheck {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes transformToCheck {
-  0%,
-  93% {
-    background: white;
+    background: #e5e7eb;
     border-color: #d1d5db;
   }
-  100% {
+  to {
     background: #10b981;
     border-color: #10b981;
+  }
+}
+
+/* Animation pour faire apparaître le check */
+@keyframes showCheck {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Message de célébration */
+.celebration-message {
+  position: relative;
+  text-align: center;
+  opacity: 0;
+  animation:
+    celebrationAppear 0.6s ease-out 4.2s forwards,
+    celebrationDisappear 0.6s ease-out 7s forwards;
+  padding: 0 12px;
+}
+
+.celebration-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  animation: celebrationBounce 0.8s ease-out 4.2s;
+  display: block;
+}
+
+.celebration-text {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-black);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.celebration-subtext {
+  font-size: 16px;
+  color: #6b7280;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* Animation d'apparition du message */
+@keyframes celebrationAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation de disparition du message */
+@keyframes celebrationDisappear {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Animation de rebond de l'emoji */
+@keyframes celebrationBounce {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+  }
+  25% {
+    transform: scale(1.2) translateY(-10px);
+  }
+  50% {
+    transform: scale(0.9) translateY(0);
+  }
+  75% {
+    transform: scale(1.05) translateY(-5px);
   }
 }
 </style>

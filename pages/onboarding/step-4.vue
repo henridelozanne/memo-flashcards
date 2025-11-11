@@ -1,81 +1,80 @@
 <template>
   <NuxtLayout name="onboarding">
-    <!-- Contenu de l'écran 4 -->
-    <div class="flex h-full flex-col pt-12">
-      <!-- Titre -->
-      <h1 class="mb-8 text-center text-2xl font-bold text-[var(--color-black)]">
-        {{ $t('onboarding.step4.title') }}
-      </h1>
+    <!-- Contenu de l'écran 5 - Courbe de l'oubli -->
+    <div class="flex h-full flex-col items-center justify-center gap-8 pt-12">
+      <!-- Titre avec sous-titre -->
+      <div class="text-center">
+        <h1 class="text-2xl font-bold text-[var(--color-black)]">
+          {{ $t('onboarding.step4.title') }}
+        </h1>
+        <p class="mt-1 text-lg italic text-gray-500">
+          {{ $t('onboarding.step4.subtitle') }}
+        </p>
+      </div>
 
-      <!-- Liste d'options -->
-      <div class="flex flex-col gap-3">
-        <button
-          v-for="situationOption in situationOptions"
-          :key="situationOption.value"
-          class="w-full rounded-[15px] border-2 px-6 py-4 text-left text-base transition"
-          :class="
-            selectedSituation === situationOption.value
-              ? 'border-[var(--color-primary)] bg-[var(--color-primary)] font-semibold text-white'
-              : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-          "
-          @click="selectSituation(situationOption.value)"
-        >
-          {{ situationOption.label }}
-        </button>
+      <!-- Image SVG de la courbe de l'oubli -->
+      <div class="relative mt-12 w-full max-w-md px-4">
+        <img src="~/assets/svg/forgetting-curve.svg" alt="Forgetting curve" class="w-full" />
+
+        <!-- Labels au-dessus des courbes -->
+        <!-- Original learning (première courbe, à gauche) -->
+        <div class="absolute -top-8 left-[8%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
+          {{ $t('onboarding.step4.originalLearning') }}
+        </div>
+
+        <!-- First review (deuxième courbe) -->
+        <div class="absolute -top-4 left-[25%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
+          {{ $t('onboarding.step4.firstReview') }}
+        </div>
+
+        <!-- Second review (troisième courbe) -->
+        <div class="absolute -top-4 left-[40%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
+          {{ $t('onboarding.step4.secondReview') }}
+        </div>
+
+        <!-- Fourth review (quatrième courbe) -->
+        <div class="absolute -top-4 left-[65%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
+          {{ $t('onboarding.step4.fourthReview') }}
+        </div>
+
+        <!-- Label "temps" sous l'axe X -->
+        <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs font-medium italic text-gray-600">
+          {{ $t('onboarding.step4.timeLabel') }}
+        </div>
+        <!-- Label "rétention" vertical à gauche de l'axe Y -->
+        <div class="absolute -left-2 top-1/2 -translate-y-1/2 -rotate-90 text-xs font-medium italic text-gray-600">
+          {{ $t('onboarding.step4.retentionLabel') }}
+        </div>
+      </div>
+
+      <!-- Texte explicatif avec mots en gras -->
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div class="max-w-md space-y-3 px-6 text-justify text-base leading-relaxed text-gray-700">
+        <!-- eslint-disable vue/no-v-html -->
+        <p v-html="formatText($t('onboarding.step4.explanation'))"></p>
+        <p v-html="formatText($t('onboarding.step4.forgettingCurve'))"></p>
+        <p v-html="formatText($t('onboarding.step4.solution'))"></p>
+        <p v-html="formatText($t('onboarding.step4.spacedRepetition'))"></p>
+        <!-- eslint-enable vue/no-v-html -->
       </div>
     </div>
-
-    <!-- Slot pour personnaliser le bouton -->
-    <template #button-label>
-      <span :class="{ 'opacity-50': !selectedSituation }">
-        {{ $t('onboarding.continue') }}
-      </span>
-    </template>
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { onMounted } from 'vue'
 import { useOnboardingStore } from '~/store/onboarding'
 
 const onboardingStore = useOnboardingStore()
-const { t } = useI18n()
 
-// État local
-const selectedSituation = ref<string>(onboardingStore.situation || '')
-
-// Liste des options de situations
-const situationOptions = computed(() => [
-  { value: 'student', label: t('onboarding.step4.situations.student') },
-  { value: 'highSchool', label: t('onboarding.step4.situations.highSchool') },
-  { value: 'employed', label: t('onboarding.step4.situations.employed') },
-  { value: 'retraining', label: t('onboarding.step4.situations.retraining') },
-  { value: 'selfLearner', label: t('onboarding.step4.situations.selfLearner') },
-  { value: 'jobSeeking', label: t('onboarding.step4.situations.jobSeeking') },
-  { value: 'other', label: t('onboarding.step4.situations.other') },
-])
-
-// Sélectionner une situation
-function selectSituation(situation: string) {
-  selectedSituation.value = situation
+// Fonction pour convertir les **texte** en <strong>texte</strong>
+function formatText(text: string): string {
+  return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
 }
 
-// Fonction de validation
-function validate(): boolean {
-  if (!selectedSituation.value) {
-    return false // Bloquer si aucune sélection
-  }
-
-  // Sauvegarder dans le store
-  onboardingStore.situation = selectedSituation.value
-  return true
-}
-
-// Enregistrer la validation au montage
+// Initialiser l'étape à 5
 onMounted(() => {
   onboardingStore.currentStep = 4
-  onboardingStore.registerStepValidation(validate)
 })
 
 defineOptions({ name: 'OnboardingStep4Page' })

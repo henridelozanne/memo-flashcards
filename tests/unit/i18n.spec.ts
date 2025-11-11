@@ -3,9 +3,9 @@ import messages from '~/locales'
 
 describe('i18n messages', () => {
   it('has french app name', () => {
-    expect(messages.fr.app.name).toBe('Memo Flashcards')
+    expect(messages.fr.app.name).toBe('Remember')
   })
   it('has english app name', () => {
-    expect(messages.en.app.name).toBe('Memo Flashcards')
+    expect(messages.en.app.name).toBe('Remember')
   })
 })

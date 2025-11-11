@@ -29,7 +29,7 @@
     "needMoreCards": "Révisez au moins 10 cartes pour valider votre streak",
     "backToCollections": "Retour aux collections"
   },
-  "app": { "name": "Memo Flashcards" },
+  "app": { "name": "Remember" },
   "common": {
     "ok": "OK",
     "cancel": "Annuler",
@@ -113,17 +113,17 @@
     "backRequired": "Le verso ne peut pas être vide."
   },
   "onboarding": {
-    "appName": "Mémo Flashcards",
-    "step1": {
+    "appName": "Remember",
+    "welcome": {
       "tagline1": "Apprends durablement.",
       "tagline2": "En quelques minutes par jour."
     },
-    "step2": {
+    "step1": {
       "title": "Comment tu t'appelles ?",
       "placeholder": "Ton prénom",
       "error": "Entre ton prénom pour continuer"
     },
-    "step3": {
+    "step2": {
       "title": "Bienvenue {name} !",
       "subtitle": "Quel est ton objectif ?",
       "goals": {
@@ -135,7 +135,7 @@
         "other": "Autre"
       }
     },
-    "step4": {
+    "step3": {
       "title": "Quelle est ta situation ?",
       "situations": {
         "student": "Étudiant(e)",
@@ -147,7 +147,7 @@
         "other": "Autre"
       }
     },
-    "step5": {
+    "step4": {
       "title": "Pourquoi tu oublies...",
       "subtitle": "... et comment l'éviter",
       "explanation": "Après quelques jours, ton cerveau oublie l'essentiel de ce que tu apprends, si tu ne révises pas.",
@@ -161,14 +161,14 @@
       "secondReview": "2ème révision",
       "fourthReview": "4ème révision"
     },
-    "step6": {
+    "step5": {
       "title": "C'est prouvé",
       "text1": "Notre algorithme repose sur les répétitions espacées, une méthode jusqu'à",
       "highlight": "4,8 fois",
       "text2": "plus efficace que l'apprentissage classique pour mémoriser durablement.",
       "studyCaption": "Étude \"Repeat before Forgetting\", Harvard Medical School, 2017"
     },
-    "step7": {
+    "step6": {
       "title": "Crée des cartes claires, efficaces, et mémorables",
       "card1Question": "Bonjour",
       "card2Question": "Date de la Révolution française",
@@ -176,18 +176,18 @@
       "card3Question": "Température d'ébullition de l'eau",
       "card3Answer": "100°C"
     },
-    "step8": {
+    "step7": {
       "title": "Tes cartes progressent de niveau à chaque bonne réponse"
     },
-    "step9": {
+    "step8": {
       "title": "Chaque jour, révise ce qu'il faut, rien de plus"
     },
-    "step10": {
+    "step9": {
       "title": "À quelle heure souhaites-tu être notifié ?"
     },
-    "step11": {
+    "step10": {
       "title": "Tout est prêt, {firstName} !",
-      "subtitle": "Tu es maintenant prêt à commencer ton apprentissage avec Memo"
+      "subtitle": "Tu es maintenant prêt à commencer ton apprentissage avec Remember"
     },
     "paywall": {
       "title": "Débloque ton potentiel",

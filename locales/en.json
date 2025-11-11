@@ -29,7 +29,7 @@
     "needMoreCards": "Review at least 10 cards to validate your streak",
     "backToCollections": "Back to collections"
   },
-  "app": { "name": "Memo Flashcards" },
+  "app": { "name": "Remember" },
   "common": {
     "ok": "OK",
     "cancel": "Cancel",
@@ -113,17 +113,17 @@
     "backRequired": "The back cannot be empty."
   },
   "onboarding": {
-    "appName": "Memo Flashcards",
-    "step1": {
+    "appName": "Remember",
+    "welcome": {
       "tagline1": "Learn sustainably.",
       "tagline2": "In just a few minutes a day."
     },
-    "step2": {
+    "step1": {
       "title": "What's your name?",
       "placeholder": "Your first name",
       "error": "Enter your name to continue"
     },
-    "step3": {
+    "step2": {
       "title": "Welcome {name}!",
       "subtitle": "What's your goal?",
       "goals": {
@@ -135,7 +135,7 @@
         "other": "Other"
       }
     },
-    "step4": {
+    "step3": {
       "title": "What's your situation?",
       "situations": {
         "student": "Student",
@@ -147,7 +147,7 @@
         "other": "Other"
       }
     },
-    "step5": {
+    "step4": {
       "title": "Why you forget...",
       "subtitle": "... and how to avoid it",
       "explanation": "After a few days, your brain forgets most of what you learn, if you don't review.",
@@ -161,33 +161,33 @@
       "secondReview": "second review",
       "fourthReview": "fourth review"
     },
-    "step6": {
+    "step5": {
       "title": "It's proven",
       "text1": "Our algorithm is based on spaced repetition, a method up to",
       "highlight": "4.8 times",
       "text2": "more effective than traditional learning for long-term memorization.",
       "studyCaption": "Study \"Repeat before Forgetting\", Harvard Medical School, 2017"
     },
-    "step7": {
+    "step6": {
       "title": "Create clear, effective, and memorable cards",
       "card1Question": "Hello",
-      "card3Question": "French Revolution date",
-      "card3Answer": "1789",
-      "card2Question": "Water boiling point",
-      "card2Answer": "100°C"
+      "card2Question": "French Revolution date",
+      "card2Answer": "1789",
+      "card3Question": "Water boiling point",
+      "card3Answer": "100°C"
     },
-    "step8": {
+    "step7": {
       "title": "Your cards progress through levels with each correct answer"
     },
-    "step9": {
-      "title": "Every day, review what you need to, nothing more"
+    "step8": {
+      "title": "Review what you need, every day, nothing more"
     },
-    "step10": {
+    "step9": {
       "title": "What time would you like to be notified?"
     },
-    "step11": {
+    "step10": {
       "title": "You're all set, {firstName}!",
-      "subtitle": "You're now ready to start your learning journey with Memo"
+      "subtitle": "You're now ready to start your learning journey with Remember"
     },
     "paywall": {
       "title": "Unlock your potential",

@@ -3,15 +3,16 @@
     <!-- Fond d'écran avec effets -->
     <BackgroundEffects />
 
-    <!-- Header fixe (masqué sur l'écran 1) - Seulement ProgressCircle -->
-    <div v-if="showHeader" class="relative z-10 flex-shrink-0 px-6 pb-2 pt-6">
-      <div class="flex justify-end">
-        <ProgressCircle
-          :current="completedSteps"
-          :total="onboardingStore.totalSteps"
-          is-from-page-header
-          :numbers-visible="false"
-        />
+    <!-- Header fixe avec flèche retour et progress bar (masqué sur welcome) -->
+    <div v-show="onboardingStore.currentStep > 0" class="relative z-10 flex-shrink-0 px-6 pb-4 pt-6">
+      <div class="flex items-center justify-center" style="height: 24px">
+        <!-- Flèche retour (visible à partir de l'étape 2) -->
+        <div class="absolute left-6 flex items-center" style="height: 24px">
+          <BackButton v-if="onboardingStore.currentStep > 1" @click="handleBack" />
+        </div>
+
+        <!-- Progress Bar au centre -->
+        <ProgressBar :current="completedSteps" :total="onboardingStore.totalSteps" />
       </div>
     </div>
 
@@ -42,16 +43,18 @@
 import { computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
-import ProgressCircle from '~/components/ProgressCircle.vue'
+import ProgressBar from '~/components/ProgressBar.vue'
+import BackButton from '~/components/BackButton.vue'
 
 const router = useRouter()
 const onboardingStore = useOnboardingStore()
 
-// Nombre d'étapes complétées (étape actuelle - 1)
-const completedSteps = computed(() => Math.max(0, onboardingStore.currentStep - 1))
+// Nombre d'étapes complétées (étape actuelle)
+const completedSteps = computed(() => onboardingStore.currentStep)
 
-// Afficher le header seulement à partir de l'étape 2
-const showHeader = computed(() => onboardingStore.currentStep > 1)
+function handleBack() {
+  onboardingStore.previousStep()
+}
 
 function handleNext() {
   // Valider avant de passer à l'étape suivante (support async)
@@ -74,6 +77,7 @@ watch(
   () => onboardingStore.currentStep,
   (newStep) => {
     const stepRoutes: Record<number, string> = {
+      0: '/onboarding/welcome',
       1: '/onboarding/step-1',
       2: '/onboarding/step-2',
       3: '/onboarding/step-3',
@@ -84,7 +88,6 @@ watch(
       8: '/onboarding/step-8',
       9: '/onboarding/step-9',
       10: '/onboarding/step-10',
-      11: '/onboarding/step-11',
     }
 
     const targetRoute = stepRoutes[newStep]

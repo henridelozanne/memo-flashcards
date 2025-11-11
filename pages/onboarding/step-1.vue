@@ -1,35 +1,87 @@
 <template>
   <NuxtLayout name="onboarding">
-    <!-- Contenu de l'écran 1 -->
-    <div class="flex h-full flex-col justify-between py-8">
-      <!-- Logo et nom de l'app -->
-      <div class="flex flex-col items-center gap-6 pt-12">
-        <div class="text-8xl">🧠</div>
-        <h1 class="text-center text-3xl font-bold text-[var(--color-black)]">{{ $t('onboarding.appName') }}</h1>
-      </div>
+    <!-- Contenu de l'écran 2 -->
+    <div class="flex h-full flex-col pt-12">
+      <!-- Titre -->
+      <h1 class="mb-12 text-center text-2xl font-bold text-[var(--color-black)]">
+        {{ $t('onboarding.step1.title') }}
+      </h1>
 
-      <!-- Phrase d'accroche -->
-      <div class="flex flex-col items-center gap-2 text-center">
-        <p class="text-xl font-semibold text-[var(--color-black)]">{{ $t('onboarding.step1.tagline1') }}</p>
-        <p class="text-xl font-semibold text-[var(--color-secondary)]">{{ $t('onboarding.step1.tagline2') }}</p>
-      </div>
+      <!-- Champ de saisie -->
+      <div class="flex flex-col gap-3">
+        <input
+          v-model="firstName"
+          type="text"
+          :placeholder="$t('onboarding.step1.placeholder')"
+          class="w-full rounded-[15px] border-2 px-6 py-4 text-lg transition focus:outline-none"
+          :class="hasError ? 'border-[var(--color-accent-red)]' : 'border-gray-200 focus:border-[var(--color-primary)]'"
+          @input="hasError = false"
+          @keyup.enter="handleEnter"
+        />
 
-      <!-- Espace pour pousser le bouton vers le bas (géré par le layout) -->
-      <div></div>
+        <!-- Message d'erreur -->
+        <transition name="error-fade">
+          <p v-if="hasError" class="text-sm text-[var(--color-accent-red)]">
+            {{ $t('onboarding.step1.error') }}
+          </p>
+        </transition>
+      </div>
     </div>
-
-    <!-- Personnalisation du texte du bouton -->
-    <template #button-label>{{ $t('onboarding.start') }}</template>
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { useOnboardingStore } from '~/store/onboarding'
 
 const onboardingStore = useOnboardingStore()
 
-// Initialiser l'étape à 1 au montage
-onboardingStore.currentStep = 1
+// État local
+const firstName = ref(onboardingStore.firstName || '')
+const hasError = ref(false)
+
+// Fonction de validation
+function validate(): boolean {
+  const trimmedName = firstName.value.trim()
+
+  if (!trimmedName) {
+    hasError.value = true
+    return false
+  }
+
+  // Sauvegarder dans le store
+  onboardingStore.firstName = trimmedName
+  hasError.value = false
+  return true
+}
+
+// Gestion de la touche Enter
+function handleEnter() {
+  if (validate()) {
+    onboardingStore.nextStep()
+  }
+}
+
+// Enregistrer la validation au montage
+onMounted(() => {
+  // Initialiser l'étape à 2 en premier
+  onboardingStore.currentStep = 1
+
+  // Enregistrer la validation dans le store
+  onboardingStore.registerStepValidation(validate)
+})
 
 defineOptions({ name: 'OnboardingStep1Page' })
 </script>
+
+<style scoped>
+.error-fade-enter-active,
+.error-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.error-fade-enter-from,
+.error-fade-leave-to {
+  opacity: 0;
+}
+</style>

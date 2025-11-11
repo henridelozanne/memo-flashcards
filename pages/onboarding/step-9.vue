@@ -6,108 +6,10 @@
         {{ $t('onboarding.step9.title') }}
       </h1>
 
-      <!-- Animation de streak -->
-      <div class="relative flex w-full flex-1 flex-col items-center justify-center gap-8">
-        <div class="streak-widget w-full">
-          <div class="streak-container flex items-center gap-2">
-            <!-- Jour 1 - complété -->
-            <div class="streak-day completed">
-              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-
-            <!-- Jour 2 - complété -->
-            <div class="streak-day completed">
-              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-
-            <!-- Jour 3 - complété -->
-            <div class="streak-day completed">
-              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-
-            <!-- Jour 4 - complété -->
-            <div class="streak-day completed">
-              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-
-            <!-- Jour 5 - animation -->
-            <div class="streak-day day-5">
-              <svg class="check-icon check-5" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-
-            <!-- Jour 6 - animation -->
-            <div class="streak-day day-6">
-              <svg class="check-icon check-6" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-
-            <!-- Jour 7 - aujourd'hui, animation -->
-            <div class="streak-day day-7">
-              <svg class="check-icon check-7" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- Message de célébration -->
-        <div class="celebration-message">
-          <div class="celebration-icon">🎉</div>
-          <div class="celebration-text">7 jours d'affilée !</div>
-          <div class="celebration-subtext">Continue comme ça</div>
+      <!-- Time Picker -->
+      <div class="relative flex flex-1 items-center justify-center">
+        <div class="time-picker-container">
+          <input ref="timeInput" v-model="selectedTime" type="time" class="time-input" @change="handleTimeChange" />
         </div>
       </div>
     </div>
@@ -115,190 +17,96 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { LocalNotifications } from '@capacitor/local-notifications'
+import { ref, onMounted } from 'vue'
 import { useOnboardingStore } from '~/store/onboarding'
 
 const onboardingStore = useOnboardingStore()
+const timeInput = ref<HTMLInputElement | null>(null)
+const selectedTime = ref<string>('')
 
-onMounted(() => {
+// Obtenir l'heure actuelle au format HH:MM
+function getCurrentTime(): string {
+  const now = new Date()
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  return `${hours}:${minutes}`
+}
+
+// Gérer le changement d'heure
+function handleTimeChange() {
+  onboardingStore.notificationHour = selectedTime.value
+}
+
+// Demander la permission pour les notifications
+async function requestNotificationPermission() {
+  try {
+    const permission = await LocalNotifications.requestPermissions()
+    return permission.display === 'granted'
+  } catch (error) {
+    console.error('Erreur lors de la demande de permission:', error)
+    return false
+  }
+}
+
+// Enregistrer la validation de l'étape
+onboardingStore.registerStepValidation(async () => {
+  if (!selectedTime.value) {
+    return false
+  }
+
+  // Demander la permission pour les notifications
+  await requestNotificationPermission()
+
+  return true
+})
+
+onMounted(async () => {
   onboardingStore.currentStep = 9
+
+  // Définir l'heure actuelle par défaut
+  selectedTime.value = getCurrentTime()
+  onboardingStore.notificationHour = selectedTime.value
 })
 
 defineOptions({ name: 'OnboardingStep9Page' })
 </script>
 
 <style scoped>
-/* Widget contenant le streak */
-.streak-widget {
-  background: #374151;
-  border-radius: 24px;
-  padding: 20px;
-  border: 2px solid #9ca3af;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  margin: 0 8px;
-}
-
-.streak-container {
+.time-picker-container {
   width: 100%;
-}
-
-/* Case de jour de streak */
-.streak-day {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  max-width: 300px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  border: 2px solid #d1d5db;
-  background: white;
-  transition: all 0.3s ease;
 }
 
-/* Jours complétés */
-.streak-day.completed {
-  background: #10b981;
-  border-color: #10b981;
-}
-
-/* Jours 5, 6, 7 - animation progressive */
-.streak-day.day-5,
-.streak-day.day-6,
-.streak-day.day-7 {
-  background: #e5e7eb;
-  border-color: #d1d5db;
-}
-
-.streak-day.day-5 {
-  animation: fillDay 0.6s ease-out 1s forwards;
-}
-
-.streak-day.day-6 {
-  animation: fillDay 0.6s ease-out 2.2s forwards;
-}
-
-.streak-day.day-7 {
-  animation: fillDay 0.6s ease-out 3.4s forwards;
-}
-
-/* Check icons cachés par défaut pour jours 5, 6, 7 */
-.check-5,
-.check-6,
-.check-7 {
-  opacity: 0;
-  transform: scale(0.5);
-}
-
-.check-5 {
-  animation: showCheck 0.6s ease-out 1s forwards;
-}
-
-.check-6 {
-  animation: showCheck 0.6s ease-out 2.2s forwards;
-}
-
-.check-7 {
-  animation: showCheck 0.6s ease-out 3.4s forwards;
-}
-
-/* Check icon visible pour les jours complétés */
-.completed .check-icon {
-  opacity: 1;
-}
-
-/* Animation pour remplir une case */
-@keyframes fillDay {
-  from {
-    background: #e5e7eb;
-    border-color: #d1d5db;
-  }
-  to {
-    background: #10b981;
-    border-color: #10b981;
-  }
-}
-
-/* Animation pour faire apparaître le check */
-@keyframes showCheck {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Message de célébration */
-.celebration-message {
-  position: relative;
+.time-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 24px;
+  font-weight: 600;
   text-align: center;
-  opacity: 0;
-  animation:
-    celebrationAppear 0.6s ease-out 4.2s forwards,
-    celebrationDisappear 0.6s ease-out 7s forwards;
-  padding: 0 12px;
-}
-
-.celebration-icon {
-  font-size: 48px;
-  margin-bottom: 12px;
-  animation: celebrationBounce 0.8s ease-out 4.2s;
-  display: block;
-}
-
-.celebration-text {
-  font-size: 22px;
-  font-weight: 700;
+  border: 2px solid #d1d5db;
+  border-radius: 12px;
+  background: white;
   color: var(--color-black);
-  margin-bottom: 8px;
-  line-height: 1.3;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.celebration-subtext {
-  font-size: 16px;
-  color: #6b7280;
-  font-weight: 500;
-  line-height: 1.3;
+.time-input:hover {
+  border-color: #9ca3af;
 }
 
-/* Animation d'apparition du message */
-@keyframes celebrationAppear {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.time-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-/* Animation de disparition du message */
-@keyframes celebrationDisappear {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-/* Animation de rebond de l'emoji */
-@keyframes celebrationBounce {
-  0%,
-  100% {
-    transform: scale(1) translateY(0);
-  }
-  25% {
-    transform: scale(1.2) translateY(-10px);
-  }
-  50% {
-    transform: scale(0.9) translateY(0);
-  }
-  75% {
-    transform: scale(1.05) translateY(-5px);
-  }
+/* Style pour le picker natif */
+.time-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  font-size: 20px;
 }
 </style>

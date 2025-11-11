@@ -1,112 +1,68 @@
 <template>
   <NuxtLayout name="onboarding">
-    <div class="flex h-full flex-col items-center px-6 pt-6">
+    <div class="flex h-full flex-col items-center justify-center px-6">
       <!-- Titre -->
-      <h1 class="mb-16 max-w-md text-center text-2xl font-bold leading-tight text-[var(--color-black)]">
-        {{ $t('onboarding.step10.title') }}
+      <h1 class="mb-8 max-w-md text-center text-3xl font-bold leading-tight text-[var(--color-black)]">
+        {{ $t('onboarding.step10.title', { firstName: onboardingStore.firstName }) }}
       </h1>
 
-      <!-- Time Picker -->
-      <div class="relative flex flex-1 items-center justify-center">
-        <div class="time-picker-container">
-          <input ref="timeInput" v-model="selectedTime" type="time" class="time-input" @change="handleTimeChange" />
-        </div>
+      <!-- Message -->
+      <p class="mb-16 max-w-md text-center text-lg text-gray-600">
+        {{ $t('onboarding.step10.subtitle') }}
+      </p>
+
+      <!-- Icône de succès -->
+      <div class="success-icon mb-16">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" fill="#10b981" />
+          <path d="M8 12l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
       </div>
     </div>
+
+    <template #button-label>
+      {{ $t('onboarding.letsGo') }}
+    </template>
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import { LocalNotifications } from '@capacitor/local-notifications'
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
 
+const router = useRouter()
 const onboardingStore = useOnboardingStore()
-const timeInput = ref<HTMLInputElement | null>(null)
-const selectedTime = ref<string>('')
 
-// Obtenir l'heure actuelle au format HH:MM
-function getCurrentTime(): string {
-  const now = new Date()
-  const hours = String(now.getHours()).padStart(2, '0')
-  const minutes = String(now.getMinutes()).padStart(2, '0')
-  return `${hours}:${minutes}`
-}
-
-// Gérer le changement d'heure
-function handleTimeChange() {
-  onboardingStore.notificationHour = selectedTime.value
-}
-
-// Demander la permission pour les notifications
-async function requestNotificationPermission() {
-  try {
-    const permission = await LocalNotifications.requestPermissions()
-    return permission.display === 'granted'
-  } catch (error) {
-    console.error('Erreur lors de la demande de permission:', error)
-    return false
-  }
-}
-
-// Enregistrer la validation de l'étape
-onboardingStore.registerStepValidation(async () => {
-  if (!selectedTime.value) {
-    return false
-  }
-
-  // Demander la permission pour les notifications
-  await requestNotificationPermission()
-
-  return true
-})
-
-onMounted(async () => {
+onMounted(() => {
   onboardingStore.currentStep = 10
 
-  // Définir l'heure actuelle par défaut
-  selectedTime.value = getCurrentTime()
-  onboardingStore.notificationHour = selectedTime.value
+  // Rediriger vers le paywall au lieu de passer à l'étape suivante
+  onboardingStore.registerStepValidation(() => {
+    router.push('/paywall')
+    return false // Empêcher la navigation automatique
+  })
 })
 
 defineOptions({ name: 'OnboardingStep10Page' })
 </script>
 
 <style scoped>
-.time-picker-container {
-  width: 100%;
-  max-width: 300px;
-  display: flex;
-  justify-content: center;
+.success-icon {
+  animation: successPop 0.5s ease-out;
 }
 
-.time-input {
-  width: 100%;
-  padding: 16px 20px;
-  font-size: 24px;
-  font-weight: 600;
-  text-align: center;
-  border: 2px solid #d1d5db;
-  border-radius: 12px;
-  background: white;
-  color: var(--color-black);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.time-input:hover {
-  border-color: #9ca3af;
-}
-
-.time-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Style pour le picker natif */
-.time-input::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  font-size: 20px;
+@keyframes successPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 </style>

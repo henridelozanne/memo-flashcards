@@ -1,87 +1,82 @@
 <template>
   <NuxtLayout name="onboarding">
-    <!-- Contenu de l'écran 2 -->
+    <!-- Contenu de l'écran 3 -->
     <div class="flex h-full flex-col pt-12">
-      <!-- Titre -->
-      <h1 class="mb-12 text-center text-2xl font-bold text-[var(--color-black)]">
-        {{ $t('onboarding.step2.title') }}
+      <!-- Titre avec prénom et retour à la ligne -->
+      <h1 class="mb-8 text-center text-2xl font-bold text-[var(--color-black)]">
+        {{ $t('onboarding.step2.title', { name: onboardingStore.firstName }) }}<br />
+        {{ $t('onboarding.step2.subtitle') }}
       </h1>
 
-      <!-- Champ de saisie -->
+      <!-- Liste d'options -->
       <div class="flex flex-col gap-3">
-        <input
-          v-model="firstName"
-          type="text"
-          :placeholder="$t('onboarding.step2.placeholder')"
-          class="w-full rounded-[15px] border-2 px-6 py-4 text-lg transition focus:outline-none"
-          :class="hasError ? 'border-[var(--color-accent-red)]' : 'border-gray-200 focus:border-[var(--color-primary)]'"
-          @input="hasError = false"
-          @keyup.enter="handleEnter"
-        />
-
-        <!-- Message d'erreur -->
-        <transition name="error-fade">
-          <p v-if="hasError" class="text-sm text-[var(--color-accent-red)]">
-            {{ $t('onboarding.step2.error') }}
-          </p>
-        </transition>
+        <button
+          v-for="goalOption in goalOptions"
+          :key="goalOption.value"
+          class="w-full rounded-[15px] border-2 px-6 py-4 text-left text-base transition"
+          :class="
+            selectedGoal === goalOption.value
+              ? 'border-[var(--color-primary)] bg-[var(--color-primary)] font-semibold text-white'
+              : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+          "
+          @click="selectGoal(goalOption.value)"
+        >
+          {{ goalOption.label }}
+        </button>
       </div>
     </div>
+
+    <!-- Slot pour personnaliser le bouton -->
+    <template #button-label>
+      <span :class="{ 'opacity-50': !selectedGoal }">
+        {{ $t('onboarding.continue') }}
+      </span>
+    </template>
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useOnboardingStore } from '~/store/onboarding'
 
 const onboardingStore = useOnboardingStore()
+const { t } = useI18n()
 
 // État local
-const firstName = ref(onboardingStore.firstName || '')
-const hasError = ref(false)
+const selectedGoal = ref<string>(onboardingStore.goal || '')
+
+// Liste des options d'objectifs
+const goalOptions = computed(() => [
+  { value: 'learnLanguage', label: t('onboarding.step2.goals.learnLanguage') },
+  { value: 'reviseClasses', label: t('onboarding.step2.goals.reviseClasses') },
+  { value: 'memorizeFactsScience', label: t('onboarding.step2.goals.memorizeFactsScience') },
+  { value: 'learnVocabulary', label: t('onboarding.step2.goals.learnVocabulary') },
+  { value: 'developCulture', label: t('onboarding.step2.goals.developCulture') },
+  { value: 'other', label: t('onboarding.step2.goals.other') },
+])
+
+// Sélectionner un objectif
+function selectGoal(goal: string) {
+  selectedGoal.value = goal
+}
 
 // Fonction de validation
 function validate(): boolean {
-  const trimmedName = firstName.value.trim()
-
-  if (!trimmedName) {
-    hasError.value = true
-    return false
+  if (!selectedGoal.value) {
+    return false // Bloquer si aucune sélection
   }
 
   // Sauvegarder dans le store
-  onboardingStore.firstName = trimmedName
-  hasError.value = false
+  onboardingStore.goal = selectedGoal.value
   return true
-}
-
-// Gestion de la touche Enter
-function handleEnter() {
-  if (validate()) {
-    onboardingStore.nextStep()
-  }
 }
 
 // Enregistrer la validation au montage
 onMounted(() => {
-  // Initialiser l'étape à 2 en premier
   onboardingStore.currentStep = 2
-
-  // Enregistrer la validation dans le store
   onboardingStore.registerStepValidation(validate)
 })
 
 defineOptions({ name: 'OnboardingStep2Page' })
 </script>
-
-<style scoped>
-.error-fade-enter-active,
-.error-fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.error-fade-enter-from,
-.error-fade-leave-to {
-  opacity: 0;
-}
-</style>
