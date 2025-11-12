@@ -18,22 +18,21 @@
 
         <!-- Labels au-dessus des courbes -->
         <!-- Original learning (première courbe, à gauche) -->
-        <div class="absolute -top-8 left-[8%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
-          {{ $t('onboarding.step4.originalLearning') }}
-        </div>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div class="absolute -top-8 left-[8%] -rotate-[45deg] text-center text-[8px] font-medium leading-tight text-[var(--color-primary)]" v-html="$t('onboarding.step4.originalLearning')"></div>
 
         <!-- First review (deuxième courbe) -->
-        <div class="absolute -top-4 left-[25%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
+        <div class="absolute -top-4 left-[25%] -rotate-[45deg] text-[8px] font-medium text-[var(--color-accent-purple)]">
           {{ $t('onboarding.step4.firstReview') }}
         </div>
 
         <!-- Second review (troisième courbe) -->
-        <div class="absolute -top-4 left-[40%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
+        <div class="absolute -top-4 left-[40%] -rotate-[45deg] text-[8px] font-medium text-[var(--color-accent-purple)]">
           {{ $t('onboarding.step4.secondReview') }}
         </div>
 
         <!-- Fourth review (quatrième courbe) -->
-        <div class="absolute -top-4 left-[65%] -rotate-[60deg] text-[8px] font-medium text-gray-700">
+        <div class="absolute -top-4 left-[65%] -rotate-[45deg] text-[8px] font-medium text-[var(--color-accent-purple)]">
           {{ $t('onboarding.step4.fourthReview') }}
         </div>
 

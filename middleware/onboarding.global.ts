@@ -14,6 +14,6 @@ export default defineNuxtRouteMiddleware((to: RouteLocationNormalized) => {
   if (!onboardingStore.hasCompletedOnboarding) {
     // @ts-expect-error - Auto-imported by Nuxt
     // TODO: Remettre à welcome en production
-    return navigateTo('/onboarding/welcome')
+    return navigateTo('/onboarding/step-4')
   }
 })

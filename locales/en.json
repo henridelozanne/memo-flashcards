@@ -156,7 +156,7 @@
       "spacedRepetition": "This is the principle of **spaced repetition**, used in this app.",
       "timeLabel": "time (days)",
       "retentionLabel": "retention",
-      "originalLearning": "original learning",
+      "originalLearning": "original<br>learning",
       "firstReview": "first review",
       "secondReview": "second review",
       "fourthReview": "fourth review"
