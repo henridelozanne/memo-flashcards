@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout name="onboarding">
     <!-- Contenu de l'écran 3 -->
-    <div class="flex h-full flex-col pt-12">
+    <div class="flex h-full flex-col pt-4">
       <!-- Titre avec prénom et retour à la ligne -->
       <h1 class="mb-8 text-center text-2xl font-bold text-[var(--color-black)]">
         {{ $t('onboarding.step2.title', { name: onboardingStore.firstName }) }}<br />
