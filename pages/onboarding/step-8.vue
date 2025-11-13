@@ -2,12 +2,12 @@
   <NuxtLayout name="onboarding">
     <div class="flex h-full flex-col items-center px-6 pt-6">
       <!-- Titre -->
-      <h1 class="mb-16 max-w-md text-center text-2xl font-bold leading-tight text-[var(--color-black)]">
+      <h1 class="slide-up-1 mb-16 max-w-md text-center text-2xl font-bold leading-tight text-[var(--color-black)]">
         {{ $t('onboarding.step8.title') }}
       </h1>
 
       <!-- Animation de streak -->
-      <div class="relative flex w-full flex-1 flex-col items-center justify-center gap-8">
+      <div class="slide-up-2 relative flex w-full flex-1 flex-col items-center justify-center gap-8">
         <div class="streak-widget w-full">
           <div class="streak-container flex items-center gap-2">
             <!-- Jour 1 - complété -->

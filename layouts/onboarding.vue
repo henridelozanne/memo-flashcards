@@ -4,7 +4,7 @@
     <BackgroundEffects />
 
     <!-- Header fixe avec flèche retour et progress bar (masqué sur welcome) -->
-    <div v-show="onboardingStore.currentStep > 0" class="relative z-10 flex-shrink-0 px-6 pb-4 pt-6">
+    <div v-show="!isWelcomePage" class="relative z-10 flex-shrink-0 px-6 pb-4 pt-6">
       <div class="flex items-center justify-center" style="height: 24px">
         <!-- Flèche retour (visible à partir de l'étape 2) -->
         <div class="absolute left-6 flex items-center" style="height: 24px">
@@ -41,13 +41,17 @@
 
 <script setup lang="ts">
 import { computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
 import ProgressBar from '~/components/ProgressBar.vue'
 import BackButton from '~/components/BackButton.vue'
 
 const router = useRouter()
+const route = useRoute()
 const onboardingStore = useOnboardingStore()
+
+// Vérifier si on est sur la page welcome
+const isWelcomePage = computed(() => route.path === '/onboarding/welcome')
 
 // Nombre d'étapes complétées (étape actuelle)
 const completedSteps = computed(() => onboardingStore.currentStep)

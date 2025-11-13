@@ -2,12 +2,12 @@
   <NuxtLayout name="onboarding">
     <div class="flex h-full flex-col items-center px-6 pt-6">
       <!-- Titre -->
-      <h1 class="mb-12 max-w-md text-center text-2xl font-bold leading-tight text-[var(--color-black)]">
+      <h1 class="fade-in-1 mb-12 max-w-md text-center text-2xl font-bold leading-tight text-[var(--color-black)]">
         {{ $t('onboarding.step6.title') }}
       </h1>
 
       <!-- Animation d'éventail de cartes -->
-      <div class="relative flex flex-1 items-center justify-center">
+      <div class="fade-in-2 relative flex flex-1 items-center justify-center">
         <div class="cards-fan relative h-80 w-64">
           <!-- Carte 5 (arrière-plan, partiellement masquée) -->
           <div class="card-fan card-5 absolute left-1/2 top-1/2 h-72 w-56 -translate-x-1/2 -translate-y-1/2">

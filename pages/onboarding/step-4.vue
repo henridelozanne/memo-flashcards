@@ -1,24 +1,24 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <NuxtLayout name="onboarding">
     <!-- Contenu de l'écran 5 - Courbe de l'oubli -->
     <div class="flex h-full flex-col items-center justify-center gap-8 pt-12">
       <!-- Titre avec sous-titre -->
       <div class="text-center">
-        <h1 class="text-2xl font-bold text-[var(--color-black)]">
+        <h1 class="slide-up-1 text-2xl font-bold text-[var(--color-black)]">
           {{ $t('onboarding.step4.title') }}
         </h1>
-        <p class="mt-1 text-lg italic text-gray-500">
+        <p class="slide-up-2 mt-1 text-lg italic text-gray-500">
           {{ $t('onboarding.step4.subtitle') }}
         </p>
       </div>
 
       <!-- Image SVG de la courbe de l'oubli -->
-      <div class="relative mt-12 w-full max-w-md px-4">
+      <div class="slide-up-3 relative mt-12 w-full max-w-md px-4">
         <img src="~/assets/svg/forgetting-curve.svg" alt="Forgetting curve" class="w-full" />
 
         <!-- Labels au-dessus des courbes -->
         <!-- Original learning (première courbe, à gauche) -->
-        <!-- eslint-disable-next-line vue/no-v-html -->
         <div
           class="absolute -top-8 left-[8%] -rotate-[45deg] text-center text-[8px] font-medium leading-tight text-[var(--color-primary)]"
           v-html="$t('onboarding.step4.originalLearning')"
@@ -56,14 +56,11 @@
       </div>
 
       <!-- Texte explicatif avec mots en gras -->
-      <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="max-w-md space-y-3 px-6 text-justify text-base leading-relaxed text-gray-700">
-        <!-- eslint-disable vue/no-v-html -->
-        <p v-html="formatText($t('onboarding.step4.explanation'))"></p>
-        <p v-html="formatText($t('onboarding.step4.forgettingCurve'))"></p>
-        <p v-html="formatText($t('onboarding.step4.solution'))"></p>
-        <p v-html="formatText($t('onboarding.step4.spacedRepetition'))"></p>
-        <!-- eslint-enable vue/no-v-html -->
+        <p class="slide-up-4" v-html="formatText($t('onboarding.step4.explanation'))"></p>
+        <p class="slide-up-5" v-html="formatText($t('onboarding.step4.forgettingCurve'))"></p>
+        <p class="slide-up-6" v-html="formatText($t('onboarding.step4.solution'))"></p>
+        <p class="slide-up-7" v-html="formatText($t('onboarding.step4.spacedRepetition'))"></p>
       </div>
     </div>
   </NuxtLayout>

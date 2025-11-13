@@ -3,12 +3,12 @@
     <!-- Contenu de l'écran 2 -->
     <div class="flex h-full flex-col pt-12">
       <!-- Titre -->
-      <h1 class="mb-12 text-center text-2xl font-bold text-[var(--color-black)]">
+      <h1 class="slide-up-1 mb-12 text-center text-2xl font-bold text-[var(--color-black)]">
         {{ $t('onboarding.step1.title') }}
       </h1>
 
       <!-- Champ de saisie -->
-      <div class="flex flex-col gap-3">
+      <div class="slide-up-2 flex flex-col gap-3">
         <input
           v-model="firstName"
           type="text"

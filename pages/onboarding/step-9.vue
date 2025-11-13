@@ -2,12 +2,12 @@
   <NuxtLayout name="onboarding">
     <div class="flex h-full flex-col items-center px-6 pt-6">
       <!-- Titre -->
-      <h1 class="mb-16 max-w-md text-center text-2xl font-bold leading-tight text-[var(--color-black)]">
+      <h1 class="slide-up-1 mb-16 max-w-md text-center text-2xl font-bold leading-tight text-[var(--color-black)]">
         {{ $t('onboarding.step9.title') }}
       </h1>
 
       <!-- Time Picker -->
-      <div class="relative flex flex-1 items-center justify-center">
+      <div class="slide-up-2 relative flex flex-1 items-center justify-center">
         <div class="time-picker-container">
           <input ref="timeInput" v-model="selectedTime" type="time" class="time-input" @change="handleTimeChange" />
         </div>

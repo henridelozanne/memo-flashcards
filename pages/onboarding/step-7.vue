@@ -2,12 +2,12 @@
   <NuxtLayout name="onboarding">
     <div class="flex h-full flex-col items-center px-6 pt-6">
       <!-- Titre -->
-      <h1 class="mb-16 max-w-md text-center text-2xl font-bold leading-tight text-[var(--color-black)]">
+      <h1 class="fade-in-1 mb-16 max-w-md text-center text-2xl font-bold leading-tight text-[var(--color-black)]">
         {{ $t('onboarding.step7.title') }}
       </h1>
 
       <!-- Animation Leitner carousel -->
-      <div class="relative flex flex-1 items-center justify-center">
+      <div class="fade-in-2 relative flex flex-1 items-center justify-center">
         <div class="leitner-carousel-container relative" style="height: 350px; width: 100%; max-width: 400px">
           <!-- Conteneur des boîtes qui va slider -->
           <div class="boxes-track absolute flex items-center gap-8">

@@ -2,12 +2,12 @@
   <NuxtLayout name="onboarding">
     <div class="flex h-full flex-col items-center px-6 pt-4">
       <!-- Titre -->
-      <h1 class="mb-12 text-center text-2xl font-bold text-[var(--color-black)]">
+      <h1 class="fade-in-1 mb-12 text-center text-2xl font-bold text-[var(--color-black)]">
         {{ $t('onboarding.step5.title') }}
       </h1>
 
       <!-- Contenu centré verticalement -->
-      <div class="-mt-12 flex flex-1 flex-col items-center justify-center">
+      <div class="scale-up -mt-12 flex flex-1 flex-col items-center justify-center">
         <!-- Bloc de texte avec mise en avant du chiffre -->
         <div class="mb-16 max-w-md text-center">
           <p class="text-base leading-relaxed text-gray-700">

@@ -1,4 +1,5 @@
 @import './variables.css';
+@import './onboarding-animations.css';
 
 @tailwind base;
 @tailwind components;

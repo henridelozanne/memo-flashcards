@@ -3,7 +3,7 @@
     <!-- Contenu de l'écran 3 -->
     <div class="flex h-full flex-col pt-4">
       <!-- Titre avec prénom et retour à la ligne -->
-      <h1 class="mb-8 text-center text-2xl font-bold text-[var(--color-black)]">
+      <h1 class="slide-up-1 mb-8 text-center text-2xl font-bold text-[var(--color-black)]">
         {{ $t('onboarding.step2.title', { name: onboardingStore.firstName }) }}<br />
         {{ $t('onboarding.step2.subtitle') }}
       </h1>
@@ -11,14 +11,15 @@
       <!-- Liste d'options -->
       <div class="flex flex-col gap-3">
         <button
-          v-for="goalOption in goalOptions"
+          v-for="(goalOption, index) in goalOptions"
           :key="goalOption.value"
-          class="w-full rounded-[15px] border-2 px-6 py-4 text-left text-base transition"
-          :class="
+          :class="[
+            'w-full rounded-[15px] border-2 px-6 py-4 text-left text-base transition',
             selectedGoal === goalOption.value
               ? 'border-[var(--color-primary)] bg-[var(--color-primary)] font-semibold text-white'
-              : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-          "
+              : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300',
+            `slide-up-${index + 2}`
+          ]"
           @click="selectGoal(goalOption.value)"
         >
           {{ goalOption.label }}
