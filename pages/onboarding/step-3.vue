@@ -17,7 +17,7 @@
             selectedSituation === situationOption.value
               ? 'border-[var(--color-primary)] bg-[var(--color-primary)] font-semibold text-white'
               : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300',
-            `slide-up-${index + 2}`
+            `slide-up-${index + 2}`,
           ]"
           @click="selectSituation(situationOption.value)"
         >

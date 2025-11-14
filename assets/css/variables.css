@@ -3,11 +3,16 @@
   --color-black: rgba(36, 37, 44, 1);
   --color-secondary: rgba(110, 106, 124, 1);
   --color-primary: rgba(95, 51, 225, 1);
+  --color-white: #ffffff;
+  --color-gray-50: #f9fafb;
+  --color-gray-200: #e5e7eb;
+  --color-gray-500: #6b7280;
   --color-accent-purple: #ab93ff;
   --color-accent-blue: #0087ff;
   --color-accent-orange: #ff7d53;
   --color-accent-green: #047c78;
   --color-accent-red: #f2582c;
+  --color-accent-yellow: #f59e0b;
   --color-light-purple: #eee9ff;
   --color-light-pink: #ffe4f2;
   --color-light-blue: #e6f3ff;

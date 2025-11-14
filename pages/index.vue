@@ -1,6 +1,13 @@
 <template>
   <div class="min-h-screen p-6">
-    <PageHeader title="Memo Flashcards" test-id="heading-collections" />
+    <!-- Header with settings button -->
+    <PageHeader title="Remember" test-id="heading-collections">
+      <template #actions>
+        <BaseButton variant="icon" aria-label="Settings" @click="$router.push('/settings')">
+          <IconSettings />
+        </BaseButton>
+      </template>
+    </PageHeader>
 
     <!-- Loading state -->
     <Loading v-if="isLoading" :message="$t('common.loadingCollections')" />
@@ -19,18 +26,18 @@
       <!-- Test Data Button (Development only) -->
       <div
         data-testid="create-test-data"
-        class="order-last flex cursor-pointer flex-col items-center justify-center rounded-[15px] border-2 border-dashed bg-yellow-50 p-6 transition hover:bg-yellow-100"
-        style="border-color: #f59e0b"
+        class="order-last flex cursor-pointer flex-col items-center justify-center rounded-[15px] border-2 border-dashed p-6 transition"
+        style="background-color: var(--color-light-yellow-alt); border-color: var(--color-accent-yellow)"
         @click="createTestData"
       >
-        <span class="mb-2 text-4xl text-yellow-600">🧪</span>
-        <span class="text-center font-medium text-yellow-800">Créer Données Test</span>
+        <span class="mb-2 text-4xl" style="color: var(--color-accent-yellow)">🧪</span>
+        <span class="text-center font-medium" style="color: var(--color-accent-orange)">Créer Données Test</span>
       </div>
 
       <!-- Carte + Créer une collection -->
       <div
         data-testid="create-card"
-        class="order-last flex cursor-pointer flex-col items-center justify-center rounded-[15px] border-2 border-dashed bg-white p-6 transition hover:bg-[var(--color-light-purple)]"
+        class="order-last flex cursor-pointer flex-col items-center justify-center rounded-[15px] border-2 border-dashed bg-[var(--color-white)] p-6 transition hover:bg-[var(--color-light-purple)]"
         style="border-color: var(--color-accent-purple)"
         @click="$router.push('/collections/create')"
       >
@@ -61,7 +68,7 @@
     >
       {{ $t('collections.deleteConfirm', { name: collectionToDelete?.name }) }}
       <br />
-      <span class="text-sm text-gray-500">{{ $t('collections.deleteWarning') }}</span>
+      <span class="text-sm text-[var(--color-gray-500)]">{{ $t('collections.deleteWarning') }}</span>
     </ConfirmModal>
   </div>
 </template>
@@ -72,6 +79,9 @@ import { useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useDailyReview } from '~/composables/useDailyReview'
 import DailyReviewButton from '~/components/DailyReviewButton.vue'
+import PageHeader from '~/components/PageHeader.vue'
+import BaseButton from '~/components/Button.vue'
+import IconSettings from '~/components/icons/IconSettings.vue'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'HomePage' })

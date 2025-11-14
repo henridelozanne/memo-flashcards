@@ -112,6 +112,20 @@
     "frontRequired": "Le recto ne peut pas être vide.",
     "backRequired": "Le verso ne peut pas être vide."
   },
+  "settings": {
+    "title": "Paramètres",
+    "reminderTime": "Heure de rappel",
+    "subscription": "Abonnement",
+    "subscriptionFree": "Gratuit",
+    "subscriptionPremium": "Premium",
+    "language": "Langue",
+    "feedback": "Faire une suggestion ou signaler un bug",
+    "deleteData": "Supprimer mes données",
+    "legalNotice": "Mentions légales"
+  },
+  "legal": {
+    "content": "Le contenu des mentions légales sera ajouté ici."
+  },
   "onboarding": {
     "appName": "Remember",
     "welcome": {

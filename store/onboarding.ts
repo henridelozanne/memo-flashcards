@@ -8,7 +8,7 @@ export const useOnboardingStore = defineStore('onboarding', () => {
   const situation = ref<string>('')
   const notificationHour = ref<string>('')
   const currentStep = ref<number>(1)
-  const hasCompletedOnboarding = ref<boolean>(false)
+  const hasCompletedOnboarding = ref<boolean>(true)
 
   // Nombre total d'étapes (10 steps + 1 welcome = 11 écrans, mais totalSteps = 10 pour la progress bar)
   const totalSteps = 10

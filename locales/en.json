@@ -112,6 +112,20 @@
     "frontRequired": "The front cannot be empty.",
     "backRequired": "The back cannot be empty."
   },
+  "settings": {
+    "title": "Settings",
+    "reminderTime": "Reminder Time",
+    "subscription": "Subscription",
+    "subscriptionFree": "Free",
+    "subscriptionPremium": "Premium",
+    "language": "Language",
+    "feedback": "Make a suggestion or report a bug",
+    "deleteData": "Delete My Data",
+    "legalNotice": "Legal Notice"
+  },
+  "legal": {
+    "content": "Legal notice content will be added here."
+  },
   "onboarding": {
     "appName": "Remember",
     "welcome": {
