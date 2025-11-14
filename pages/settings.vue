@@ -36,10 +36,17 @@
         </template>
       </SettingsItem>
 
-      <!-- Faire une suggestion -->
-      <SettingsItem :label="$t('settings.feedback')" icon-color="orange" @click="() => {}">
+      <!-- Demander une fonctionnalité -->
+      <SettingsItem :label="$t('settings.featureRequest')" icon-color="green" @click="() => {}">
         <template #icon>
-          <IconMessage />
+          <IconFeatureRequest />
+        </template>
+      </SettingsItem>
+
+      <!-- Signaler un bug -->
+      <SettingsItem :label="$t('settings.bugReport')" icon-color="orange" @click="() => {}">
+        <template #icon>
+          <IconBug />
         </template>
       </SettingsItem>
 
@@ -69,7 +76,8 @@ import PageHeader from '~/components/PageHeader.vue'
 import IconClock from '~/components/icons/IconClock.vue'
 import IconStar from '~/components/icons/IconStar.vue'
 import IconGlobe from '~/components/icons/IconGlobe.vue'
-import IconMessage from '~/components/icons/IconMessage.vue'
+import IconFeatureRequest from '~/components/icons/IconFeatureRequest.vue'
+import IconBug from '~/components/icons/IconBug.vue'
 import IconTrash from '~/components/icons/IconTrash.vue'
 import IconDocument from '~/components/icons/IconDocument.vue'
 

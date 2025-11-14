@@ -120,6 +120,8 @@
     "subscriptionPremium": "Premium",
     "language": "Language",
     "feedback": "Make a suggestion or report a bug",
+    "featureRequest": "Request a feature",
+    "bugReport": "Report a bug",
     "deleteData": "Delete My Data",
     "legalNotice": "Legal Notice"
   },
