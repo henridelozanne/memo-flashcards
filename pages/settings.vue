@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[var(--color-gray-50)] p-6">
+  <div class="min-h-screen p-6">
     <!-- Header -->
     <PageHeader :title="$t('settings.title')" :back-button-visible="true" @back="$router.back()" />
 
@@ -58,7 +58,7 @@
       </SettingsItem>
 
       <!-- Mentions légales -->
-      <SettingsItem :label="$t('settings.legalNotice')" icon-color="blue" @click="$router.push('/settings/legal')">
+      <SettingsItem :label="$t('settings.legalNotice')" @click="$router.push('/legal')">
         <template #icon>
           <IconDocument />
         </template>

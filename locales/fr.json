@@ -126,7 +126,37 @@
     "legalNotice": "Mentions légales"
   },
   "legal": {
-    "content": "Le contenu des mentions légales sera ajouté ici."
+    "editor": {
+      "title": "Éditeur de l'application",
+      "description": "L'application Remember est éditée par Henri Delozanne, développeur indépendant basé en France. Pour toute demande, vous pouvez nous contacter par email à :",
+      "address": "L'adresse professionnelle est disponible sur demande."
+    },
+    "hosting": {
+      "title": "Hébergement",
+      "description": "Les données de l'application sont hébergées par Supabase, un fournisseur de services cloud sécurisé basé en Europe et aux États-Unis.",
+      "privacy": "Les informations stockées sont exclusivement liées à l'usage de l'application et ne sont ni partagées, ni revendues à des tiers."
+    },
+    "personalData": {
+      "title": "Données personnelles",
+      "collection": "L'application Remember ne collecte que les données strictement nécessaires à son bon fonctionnement (cartes, progression, préférences).",
+      "ads": "Aucune donnée n'est utilisée à des fins publicitaires.",
+      "deletion": "Vous pouvez demander à tout moment la suppression de vos données personnelles en nous contactant."
+    },
+    "distribution": {
+      "title": "Plateformes de distribution",
+      "platforms": "L'application est distribuée via l'App Store (Apple) et le Google Play Store (Android).",
+      "policies": "Ces plateformes peuvent, de leur côté, collecter certaines données techniques conformément à leurs propres politiques de confidentialité."
+    },
+    "intellectualProperty": {
+      "title": "Propriété intellectuelle",
+      "copyright": "Tous les contenus de l'application Remember (textes, visuels, fonctionnalités) sont protégés par le droit d'auteur.",
+      "prohibition": "Toute reproduction non autorisée est interdite."
+    },
+    "termsOfUse": {
+      "title": "Conditions d'utilisation",
+      "version": "L'application est disponible en version gratuite avec des options payantes.",
+      "compliance": "L'utilisateur s'engage à une utilisation respectueuse et conforme à la législation française."
+    }
   },
   "onboarding": {
     "appName": "Remember",

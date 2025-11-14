@@ -126,7 +126,37 @@
     "legalNotice": "Legal Notice"
   },
   "legal": {
-    "content": "Legal notice content will be added here."
+    "editor": {
+      "title": "Application Publisher",
+      "description": "The Remember app is published by Henri Delozanne, an independent developer based in France. For any inquiries, you can contact us by email at:",
+      "address": "The professional address is available upon request."
+    },
+    "hosting": {
+      "title": "Hosting",
+      "description": "The application data is hosted by Supabase, a secure cloud service provider based in Europe and the United States.",
+      "privacy": "The stored information is exclusively related to the use of the application and is neither shared nor sold to third parties."
+    },
+    "personalData": {
+      "title": "Personal Data",
+      "collection": "The Remember app only collects data strictly necessary for its proper functioning (cards, progress, preferences).",
+      "ads": "No data is used for advertising purposes.",
+      "deletion": "You can request the deletion of your personal data at any time by contacting us."
+    },
+    "distribution": {
+      "title": "Distribution Platforms",
+      "platforms": "The application is distributed through the App Store (Apple) and Google Play Store (Android).",
+      "policies": "These platforms may, on their end, collect certain technical data in accordance with their own privacy policies."
+    },
+    "intellectualProperty": {
+      "title": "Intellectual Property",
+      "copyright": "All content of the Remember app (texts, visuals, features) is protected by copyright.",
+      "prohibition": "Any unauthorized reproduction is prohibited."
+    },
+    "termsOfUse": {
+      "title": "Terms of Use",
+      "version": "The application is available in a free version with paid options.",
+      "compliance": "The user agrees to respectful use in accordance with French legislation."
+    }
   },
   "onboarding": {
     "appName": "Remember",
