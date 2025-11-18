@@ -2,18 +2,22 @@ import type { RouteLocationNormalized } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
 
 // @ts-expect-error - Auto-imported by Nuxt
-export default defineNuxtRouteMiddleware((to: RouteLocationNormalized) => {
-  // Éviter la redirection infinie
-  if (to.path.startsWith('/onboarding') || to.path === '/paywall') {
+export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => {
+  // Skip check if already on onboarding route
+  if (to.path.startsWith('/onboarding') || to.path.startsWith('/paywall')) {
     return
   }
 
-  // Vérifier si l'utilisateur a complété l'onboarding
   const onboardingStore = useOnboardingStore()
 
+  // Only check once per session
+  if (onboardingStore.hasCompletedOnboarding === null) {
+    await onboardingStore.initOnboardingStatus()
+  }
+
+  // Redirect to onboarding if not completed
   if (!onboardingStore.hasCompletedOnboarding) {
     // @ts-expect-error - Auto-imported by Nuxt
-    // TODO: Remettre à welcome en production
     return navigateTo('/onboarding/welcome')
   }
 })

@@ -89,6 +89,33 @@ export default function useSupabaseAuth() {
     }
   }
 
+  async function checkOnboardingStatus(): Promise<boolean> {
+    try {
+      const supabase = await getSupabase()
+
+      // Get current session
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      if (!session?.user?.id) return false
+
+      // Check if user profile exists with completed onboarding
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('onboarding_completed_at')
+        .eq('id', session.user.id)
+        .single()
+
+      if (error || !data) return false
+
+      return !!data.onboarding_completed_at
+    } catch (e) {
+      console.error('Error checking onboarding status:', e)
+      return false
+    }
+  }
+
   return {
     userId,
     isLoading,
@@ -96,6 +123,7 @@ export default function useSupabaseAuth() {
     initAuth,
     getCurrentUserId,
     saveUserProfile,
+    checkOnboardingStatus,
   }
 }
 

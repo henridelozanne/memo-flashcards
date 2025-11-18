@@ -8,7 +8,7 @@ export const useOnboardingStore = defineStore('onboarding', () => {
   const situation = ref<string>('')
   const notificationHour = ref<string>('')
   const currentStep = ref<number>(1)
-  const hasCompletedOnboarding = ref<boolean>(false)
+  const hasCompletedOnboarding = ref<boolean | null>(null) // null = not checked yet
 
   // Nombre total d'étapes (10 steps + 1 welcome = 11 écrans, mais totalSteps = 10 pour la progress bar)
   const totalSteps = 10
@@ -66,6 +66,21 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     currentStep.value = totalSteps
   }
 
+  // Initialiser le statut d'onboarding depuis Supabase
+  async function initOnboardingStatus() {
+    try {
+      // Lazy import to avoid circular dependencies
+      const useSupabaseAuth = (await import('~/composables/useSupabaseAuth')).default
+      const { checkOnboardingStatus } = useSupabaseAuth()
+      const isCompleted = await checkOnboardingStatus()
+      hasCompletedOnboarding.value = isCompleted
+    } catch (e) {
+      console.error('Error initializing onboarding status:', e)
+      // En cas d'erreur, on considère que l'onboarding n'est pas terminé
+      hasCompletedOnboarding.value = false
+    }
+  }
+
   return {
     // État
     firstName,
@@ -84,5 +99,6 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     nextStep,
     previousStep,
     completeOnboarding,
+    initOnboardingStatus,
   }
 })
