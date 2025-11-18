@@ -1,17 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import useSupabaseAuth from '@/composables/useSupabaseAuth'
 
-// Mock db module
-const mockSetMeta = vi.fn()
-const mockGetMeta = vi.fn()
-
-vi.mock('@/lib/db', () => ({
-  default: () => ({
-    getMeta: mockGetMeta,
-    setMeta: mockSetMeta,
-  }),
-}))
-
 // Mock environment variables
 vi.mock('@/lib/supabase', async () => {
   const mockSupabase = {
@@ -20,6 +9,13 @@ vi.mock('@/lib/supabase', async () => {
       signInAnonymously: vi.fn(),
       getUser: vi.fn(),
     },
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          single: vi.fn(),
+        })),
+      })),
+    })),
   }
   return {
     supabase: mockSupabase,
@@ -29,22 +25,15 @@ vi.mock('@/lib/supabase', async () => {
 
 // Import after mocks are set up
 const { supabase } = await import('@/lib/supabase')
-const useDb = (await import('@/lib/db')).default
 
 describe('useSupabaseAuth', () => {
   const mockUserId = 'test-user-123'
-  let mockDb: ReturnType<typeof useDb>
 
   beforeEach(() => {
     vi.clearAllMocks()
-    mockDb = useDb()
   })
 
   it('initializes with anonymous auth if no session exists', async () => {
-    // Mock database operations
-    mockGetMeta.mockResolvedValueOnce(null)
-    mockSetMeta.mockResolvedValueOnce(undefined)
-
     // Mock no existing session
     vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
       data: { session: null },
@@ -94,8 +83,6 @@ describe('useSupabaseAuth', () => {
       error: null,
     })
 
-    vi.mocked(mockDb.setMeta).mockResolvedValueOnce(undefined)
-
     const { initAuth, userId, error } = useSupabaseAuth()
     await initAuth()
 
@@ -103,12 +90,9 @@ describe('useSupabaseAuth', () => {
     expect(supabase.auth.getSession).toHaveBeenCalled()
     expect(supabase.auth.signInAnonymously).toHaveBeenCalled()
 
-    // Mock setup check
+    // Verify userId is set correctly
     expect(userId.value).toBe(mockUserId)
     expect(error.value).toBeNull()
-
-    // Database operation check
-    expect(mockSetMeta).toHaveBeenCalledWith('user_id', mockUserId)
   })
 
   it('uses existing session if available', async () => {
@@ -159,5 +143,95 @@ describe('useSupabaseAuth', () => {
     expect(error.value).toBeDefined()
     expect(userId.value).toBeDefined() // Should have a fallback UUID
     expect(userId.value?.length).toBeGreaterThan(0)
+  })
+
+  it('checkOnboardingStatus returns true if onboarding completed', async () => {
+    // Mock session
+    vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
+      data: {
+        session: {
+          user: { id: mockUserId },
+          access_token: 'token',
+          refresh_token: 'refresh',
+          expires_in: 3600,
+          token_type: 'bearer',
+        } as any,
+      },
+      error: null,
+    })
+
+    // Mock user_profiles query
+    const mockSingle = vi.fn().mockResolvedValue({
+      data: { onboarding_completed_at: new Date().toISOString() },
+      error: null,
+    })
+    const mockEq = vi.fn().mockReturnValue({ single: mockSingle })
+    const mockSelect = vi.fn().mockReturnValue({ eq: mockEq })
+    vi.mocked(supabase.from).mockReturnValue({ select: mockSelect } as any)
+
+    const { checkOnboardingStatus } = useSupabaseAuth()
+    const result = await checkOnboardingStatus()
+
+    expect(result).toBe(true)
+  })
+
+  it('checkOnboardingStatus returns false if onboarding not completed', async () => {
+    // Mock session
+    vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
+      data: {
+        session: {
+          user: { id: mockUserId },
+          access_token: 'token',
+          refresh_token: 'refresh',
+          expires_in: 3600,
+          token_type: 'bearer',
+        } as any,
+      },
+      error: null,
+    })
+
+    // Mock user_profiles query
+    const mockSingle = vi.fn().mockResolvedValue({
+      data: { onboarding_completed_at: null },
+      error: null,
+    })
+    const mockEq = vi.fn().mockReturnValue({ single: mockSingle })
+    const mockSelect = vi.fn().mockReturnValue({ eq: mockEq })
+    vi.mocked(supabase.from).mockReturnValue({ select: mockSelect } as any)
+
+    const { checkOnboardingStatus } = useSupabaseAuth()
+    const result = await checkOnboardingStatus()
+
+    expect(result).toBe(false)
+  })
+
+  it('checkOnboardingStatus returns false on error', async () => {
+    // Mock session
+    vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
+      data: {
+        session: {
+          user: { id: mockUserId },
+          access_token: 'token',
+          refresh_token: 'refresh',
+          expires_in: 3600,
+          token_type: 'bearer',
+        } as any,
+      },
+      error: null,
+    })
+
+    // Mock user_profiles query error
+    const mockSingle = vi.fn().mockResolvedValue({
+      data: null,
+      error: { message: 'Not found' },
+    })
+    const mockEq = vi.fn().mockReturnValue({ single: mockSingle })
+    const mockSelect = vi.fn().mockReturnValue({ eq: mockEq })
+    vi.mocked(supabase.from).mockReturnValue({ select: mockSelect } as any)
+
+    const { checkOnboardingStatus } = useSupabaseAuth()
+    const result = await checkOnboardingStatus()
+
+    expect(result).toBe(false)
   })
 })
