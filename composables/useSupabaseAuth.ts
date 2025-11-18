@@ -1,18 +1,29 @@
 import { ref } from 'vue'
-import { supabase } from '../lib/supabase'
-import useDb from '../lib/db'
+import { useOnboardingStore } from '~/store/onboarding'
+
+// Lazy import de supabase pour éviter les erreurs process côté client
+let supabaseInstance: any = null
+
+async function getSupabase() {
+  if (!supabaseInstance) {
+    const { supabase } = await import('../lib/supabase')
+    supabaseInstance = supabase
+  }
+  return supabaseInstance
+}
 
 export default function useSupabaseAuth() {
   const userId = ref<string | null>(null)
   const isLoading = ref(false)
   const error = ref<Error | null>(null)
-  const db = useDb()
 
   async function initAuth() {
     isLoading.value = true
     error.value = null
 
     try {
+      const supabase = await getSupabase()
+
       // Check existing session
       const {
         data: { session },
@@ -24,36 +35,58 @@ export default function useSupabaseAuth() {
           data: { user },
           error: signInError,
         } = await supabase.auth.signInAnonymously()
+
         if (signInError) throw signInError
         if (!user?.id) throw new Error('Failed to get user ID after anonymous sign in')
         userId.value = user.id
       } else {
         userId.value = session.user.id
       }
-
-      // Store user ID in local SQLite Meta table
-      await db.setMeta('user_id', userId.value)
     } catch (e) {
       error.value = e instanceof Error ? e : new Error('Unknown auth error')
       // Fall back to generating a local ID if auth fails
       userId.value = crypto.randomUUID()
-      await db.setMeta('user_id', userId.value)
     } finally {
       isLoading.value = false
     }
   }
 
   async function getCurrentUserId(): Promise<string> {
-    // Get from local Meta first
-    const storedId = await db.getMeta('user_id')
-    if (storedId) return storedId as string
+    // Try to get from Supabase session first
+    if (userId.value) return userId.value
 
-    // Initialize auth if no stored ID
+    // Initialize auth if no userId yet
     await initAuth()
     if (!userId.value) {
       throw new Error('Unable to resolve user id after initAuth')
     }
     return userId.value
+  }
+
+  async function saveUserProfile() {
+    if (!userId.value) {
+      throw new Error('User ID not available')
+    }
+
+    try {
+      const onboardingStore = useOnboardingStore()
+      const supabase = await getSupabase()
+
+      const { error: upsertError } = await supabase.from('user_profiles').upsert({
+        id: userId.value,
+        first_name: onboardingStore.firstName,
+        goal: onboardingStore.goal,
+        situation: onboardingStore.situation,
+        notification_hour: onboardingStore.notificationHour,
+        onboarding_completed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+
+      if (upsertError) throw upsertError
+    } catch (e) {
+      // Don't throw - allow onboarding to complete even if save fails
+      console.error('Error saving user profile:', e)
+    }
   }
 
   return {
@@ -62,6 +95,7 @@ export default function useSupabaseAuth() {
     error,
     initAuth,
     getCurrentUserId,
+    saveUserProfile,
   }
 }
 

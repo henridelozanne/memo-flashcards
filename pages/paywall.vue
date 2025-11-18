@@ -89,15 +89,32 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
+import useSupabaseAuth from '~/composables/useSupabaseAuth'
 
 const router = useRouter()
 const onboardingStore = useOnboardingStore()
 const selectedPlan = ref<'monthly' | 'lifetime' | null>(null)
+const { initAuth, saveUserProfile } = useSupabaseAuth()
 
-function completeOnboarding() {
-  onboardingStore.completeOnboarding()
-  // TODO: Rediriger vers l'écran principal de l'app
-  router.push('/')
+async function completeOnboarding() {
+  try {
+    // 1. Authentification silencieuse via Supabase
+    await initAuth()
+
+    // 2. Sauvegarder les données d'onboarding dans Supabase
+    await saveUserProfile()
+
+    // 3. Marquer l'onboarding comme terminé
+    onboardingStore.completeOnboarding()
+
+    // 4. Rediriger vers l'écran principal
+    router.push('/')
+  } catch (e) {
+    console.error('Error completing onboarding:', e)
+    // Continuer malgré l'erreur pour ne pas bloquer l'utilisateur
+    onboardingStore.completeOnboarding()
+    router.push('/')
+  }
 }
 
 function selectPlan(plan: 'monthly' | 'lifetime') {

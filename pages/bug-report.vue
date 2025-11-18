@@ -147,9 +147,7 @@ async function handleSubmit() {
       }),
     })
 
-    console.log('Response status:', response.status)
     const result = await response.json()
-    console.log('Response result:', result)
 
     if (result.success) {
       submitted.value = true
