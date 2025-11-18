@@ -109,6 +109,9 @@
   },
   "form": {
     "nameRequired": "Le nom ne peut pas être vide.",
+    "emailRequired": "L'email ne peut pas être vide.",
+    "emailInvalid": "L'email n'est pas valide.",
+    "messageRequired": "Le message ne peut pas être vide.",
     "frontRequired": "Le recto ne peut pas être vide.",
     "backRequired": "Le verso ne peut pas être vide."
   },
@@ -157,6 +160,19 @@
       "version": "L'application est disponible en version gratuite avec des options payantes.",
       "compliance": "L'utilisateur s'engage à une utilisation respectueuse et conforme à la législation française."
     }
+  },
+  "contact": {
+    "name": "Nom",
+    "namePlaceholder": "Votre nom",
+    "email": "Email",
+    "emailPlaceholder": "Votre email",
+    "message": "Message",
+    "featureRequestPlaceholder": "Décrivez la fonctionnalité que vous aimeriez voir dans Remember...",
+    "bugReportPlaceholder": "Décrivez le problème que vous avez rencontré...",
+    "send": "Envoyer",
+    "sendError": "Une erreur est survenue lors de l'envoi du message.",
+    "success": "Message envoyé !",
+    "successMessage": "Merci pour votre retour. Nous vous répondrons dans les plus brefs délais."
   },
   "onboarding": {
     "appName": "Remember",

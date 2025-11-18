@@ -109,6 +109,9 @@
   },
   "form": {
     "nameRequired": "The name cannot be empty.",
+    "emailRequired": "The email cannot be empty.",
+    "emailInvalid": "The email is not valid.",
+    "messageRequired": "The message cannot be empty.",
     "frontRequired": "The front cannot be empty.",
     "backRequired": "The back cannot be empty."
   },
@@ -157,6 +160,19 @@
       "version": "The application is available in a free version with paid options.",
       "compliance": "The user agrees to respectful use in accordance with French legislation."
     }
+  },
+  "contact": {
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "Your email",
+    "message": "Message",
+    "featureRequestPlaceholder": "Describe the feature you would like to see in Remember...",
+    "bugReportPlaceholder": "Describe the issue you encountered...",
+    "send": "Send",
+    "sendError": "An error occurred while sending the message.",
+    "success": "Message sent!",
+    "successMessage": "Thank you for your feedback. We will get back to you as soon as possible."
   },
   "onboarding": {
     "appName": "Remember",

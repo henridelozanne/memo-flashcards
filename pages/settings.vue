@@ -37,14 +37,14 @@
       </SettingsItem>
 
       <!-- Demander une fonctionnalité -->
-      <SettingsItem :label="$t('settings.featureRequest')" icon-color="green" @click="() => {}">
+      <SettingsItem :label="$t('settings.featureRequest')" icon-color="green" @click="$router.push('/feature-request')">
         <template #icon>
           <IconFeatureRequest />
         </template>
       </SettingsItem>
 
       <!-- Signaler un bug -->
-      <SettingsItem :label="$t('settings.bugReport')" icon-color="orange" @click="() => {}">
+      <SettingsItem :label="$t('settings.bugReport')" icon-color="orange" @click="$router.push('/bug-report')">
         <template #icon>
           <IconBug />
         </template>
