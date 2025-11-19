@@ -6,52 +6,52 @@
     <!-- Settings list -->
     <div class="mx-auto max-w-2xl space-y-2">
       <!-- Heure de rappel -->
-      <SettingsItem
-        :label="$t('settings.reminderTime')"
-        :value="currentReminderTime"
-        icon-color="blue"
-        @click="() => {}"
-      >
+      <SettingsItem :label="$t('settings.reminderTime')" :value="currentReminderTime" @click="openTimePicker">
         <template #icon>
           <IconClock />
         </template>
       </SettingsItem>
 
+      <!-- Time picker invisible -->
+      <input
+        ref="timeInput"
+        v-model="selectedTime"
+        type="time"
+        class="pointer-events-none absolute opacity-0"
+        style="width: 1px; height: 1px"
+        @blur="handleTimeChange"
+      />
+
       <!-- Abonnement -->
-      <SettingsItem
-        :label="$t('settings.subscription')"
-        :value="subscriptionStatus"
-        icon-color="purple"
-        @click="() => {}"
-      >
+      <SettingsItem :label="$t('settings.subscription')" :value="subscriptionStatus" @click="() => {}">
         <template #icon>
           <IconStar />
         </template>
       </SettingsItem>
 
       <!-- Langue -->
-      <SettingsItem :label="$t('settings.language')" :value="currentLanguage" icon-color="green" @click="() => {}">
+      <SettingsItem :label="$t('settings.language')" :value="currentLanguage" @click="() => {}">
         <template #icon>
           <IconGlobe />
         </template>
       </SettingsItem>
 
       <!-- Demander une fonctionnalité -->
-      <SettingsItem :label="$t('settings.featureRequest')" icon-color="green" @click="$router.push('/feature-request')">
+      <SettingsItem :label="$t('settings.featureRequest')" @click="$router.push('/feature-request')">
         <template #icon>
           <IconFeatureRequest />
         </template>
       </SettingsItem>
 
       <!-- Signaler un bug -->
-      <SettingsItem :label="$t('settings.bugReport')" icon-color="orange" @click="$router.push('/bug-report')">
+      <SettingsItem :label="$t('settings.bugReport')" @click="$router.push('/bug-report')">
         <template #icon>
           <IconBug />
         </template>
       </SettingsItem>
 
       <!-- Supprimer mes données -->
-      <SettingsItem :label="$t('settings.deleteData')" icon-color="red" @click="() => {}">
+      <SettingsItem :label="$t('settings.deleteData')" @click="() => {}">
         <template #icon>
           <IconTrash />
         </template>
@@ -64,6 +64,9 @@
         </template>
       </SettingsItem>
     </div>
+
+    <!-- Status Message -->
+    <StatusMessage v-if="statusMessage" :message="statusMessage" class="mx-auto mt-4 max-w-2xl" />
   </div>
 </template>
 
@@ -71,8 +74,10 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useOnboardingStore } from '~/store/onboarding'
+import { useNotificationTime } from '~/composables/useNotificationTime'
 import { LANGUAGE_NAMES } from '~/constants/languages'
 import PageHeader from '~/components/PageHeader.vue'
+import StatusMessage from '~/components/StatusMessage.vue'
 import IconClock from '~/components/icons/IconClock.vue'
 import IconStar from '~/components/icons/IconStar.vue'
 import IconGlobe from '~/components/icons/IconGlobe.vue'
@@ -83,6 +88,7 @@ import IconDocument from '~/components/icons/IconDocument.vue'
 
 const { t, locale } = useI18n()
 const onboardingStore = useOnboardingStore()
+const { timeInput, selectedTime, statusMessage, openTimePicker, handleTimeChange } = useNotificationTime()
 
 // Heure de rappel actuelle
 const currentReminderTime = computed(() => onboardingStore.notificationHour || '08:00')

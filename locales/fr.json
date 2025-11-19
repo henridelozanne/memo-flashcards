@@ -118,6 +118,8 @@
   "settings": {
     "title": "Paramètres",
     "reminderTime": "Heure de rappel",
+    "reminderTimeUpdated": "Heure de rappel mise à jour avec succès",
+    "reminderTimeError": "Échec de la mise à jour de l'heure de rappel",
     "subscription": "Abonnement",
     "subscriptionFree": "Gratuit",
     "subscriptionPremium": "Premium",

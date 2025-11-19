@@ -89,6 +89,31 @@ export default function useSupabaseAuth() {
     }
   }
 
+  async function updateNotificationHour(notificationHour: string) {
+    const currentUserId = await getCurrentUserId()
+
+    try {
+      const supabase = await getSupabase()
+
+      const { error: updateError } = await supabase
+        .from('user_profiles')
+        .update({
+          notification_hour: notificationHour,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', currentUserId)
+
+      if (updateError) throw updateError
+
+      // Update store
+      const onboardingStore = useOnboardingStore()
+      onboardingStore.notificationHour = notificationHour
+    } catch (e) {
+      console.error('Error updating notification hour:', e)
+      throw e
+    }
+  }
+
   async function loadUserProfile() {
     try {
       const supabase = await getSupabase()
@@ -122,6 +147,7 @@ export default function useSupabaseAuth() {
     userId,
     initAuth,
     saveUserProfile,
+    updateNotificationHour,
     loadUserProfile,
     getCurrentUserId,
   }

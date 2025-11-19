@@ -118,6 +118,8 @@
   "settings": {
     "title": "Settings",
     "reminderTime": "Reminder Time",
+    "reminderTimeUpdated": "Reminder time updated successfully",
+    "reminderTimeError": "Failed to update reminder time",
     "subscription": "Subscription",
     "subscriptionFree": "Free",
     "subscriptionPremium": "Premium",

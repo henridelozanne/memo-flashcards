@@ -23,7 +23,6 @@
 defineProps<{
   label: string
   value?: string
-  iconColor: string
 }>()
 
 defineEmits<{
