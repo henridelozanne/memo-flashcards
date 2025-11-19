@@ -124,6 +124,8 @@
     "subscriptionFree": "Free",
     "subscriptionPremium": "Premium",
     "language": "Language",
+    "languageUpdated": "Language updated successfully",
+    "languageError": "Failed to update language",
     "feedback": "Make a suggestion or report a bug",
     "featureRequest": "Request a feature",
     "bugReport": "Report a bug",

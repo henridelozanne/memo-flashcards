@@ -3,6 +3,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import Step1 from '~/pages/onboarding/step-1.vue'
 import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 import { createTestI18n } from '../helpers/i18n'
 
 describe('Step 1 - Name Input', () => {
@@ -73,8 +74,8 @@ describe('Step 1 - Name Input', () => {
     await input.trigger('keyup.enter')
   })
 
-  it('stores firstName in onboarding store', async () => {
-    const store = useOnboardingStore()
+  it('stores firstName in user profile store', async () => {
+    const userProfileStore = useUserProfileStore()
     const wrapper = mount(Step1, {
       global: {
         plugins: [createTestI18n()],
@@ -92,6 +93,6 @@ describe('Step 1 - Name Input', () => {
     const isValid = vm.validate()
 
     expect(isValid).toBe(true)
-    expect(store.firstName).toBe('Henri')
+    expect(userProfileStore.firstName).toBe('Henri')
   })
 })

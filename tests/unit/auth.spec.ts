@@ -182,6 +182,7 @@ describe('useSupabaseAuth', () => {
       situation: 'student',
       notificationHour: '09:00',
       hasCompletedOnboarding: true,
+      language: 'en',
     })
   })
 

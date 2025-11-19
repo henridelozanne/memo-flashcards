@@ -1,14 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useUserProfileStore } from './userProfile'
 
 export const useOnboardingStore = defineStore('onboarding', () => {
-  // État de l'onboarding
-  const firstName = ref<string>('')
-  const goal = ref<string>('')
-  const situation = ref<string>('')
-  const notificationHour = ref<string>('')
+  const userProfileStore = useUserProfileStore()
+
+  // État de l'onboarding uniquement
   const currentStep = ref<number>(1)
-  const hasCompletedOnboarding = ref<boolean | null>(null) // null = not checked yet
 
   // Nombre total d'étapes (10 steps + 1 welcome = 11 écrans, mais totalSteps = 10 pour la progress bar)
   const totalSteps = 10
@@ -33,13 +31,9 @@ export const useOnboardingStore = defineStore('onboarding', () => {
 
   // Réinitialiser l'onboarding
   function resetOnboarding() {
-    firstName.value = ''
-    goal.value = ''
-    situation.value = ''
-    notificationHour.value = ''
     currentStep.value = 1
-    hasCompletedOnboarding.value = false
     currentStepValidation.value = null
+    userProfileStore.resetProfile()
   }
 
   // Passer à l'étape suivante
@@ -62,45 +56,13 @@ export const useOnboardingStore = defineStore('onboarding', () => {
 
   // Marquer l'onboarding comme terminé
   function completeOnboarding() {
-    hasCompletedOnboarding.value = true
     currentStep.value = totalSteps
-  }
-
-  // Charger toutes les données utilisateur depuis Supabase
-  async function loadUserData(): Promise<void> {
-    // Only run once
-    if (hasCompletedOnboarding.value !== null) return
-
-    try {
-      // Lazy import to avoid circular dependencies
-      const useSupabaseAuth = (await import('~/composables/useSupabaseAuth')).default
-      const { loadUserProfile } = useSupabaseAuth()
-      const profile = await loadUserProfile()
-
-      if (profile) {
-        // Populate all fields from Supabase
-        firstName.value = profile.firstName
-        goal.value = profile.goal
-        situation.value = profile.situation
-        notificationHour.value = profile.notificationHour
-        hasCompletedOnboarding.value = profile.hasCompletedOnboarding
-      } else {
-        hasCompletedOnboarding.value = false
-      }
-    } catch (error) {
-      console.error('Error initializing onboarding status:', error)
-      hasCompletedOnboarding.value = false
-    }
+    userProfileStore.completeOnboarding()
   }
 
   return {
     // État
-    firstName,
-    goal,
-    situation,
-    notificationHour,
     currentStep,
-    hasCompletedOnboarding,
     totalSteps,
     currentStepValidation,
 
@@ -111,6 +73,5 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     nextStep,
     previousStep,
     completeOnboarding,
-    loadUserData,
   }
 })

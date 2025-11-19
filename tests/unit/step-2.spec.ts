@@ -3,6 +3,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import Step2 from '~/pages/onboarding/step-2.vue'
 import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 import { createTestI18n } from '../helpers/i18n'
 
 describe('Step 2 - Goal Selection', () => {
@@ -12,8 +13,8 @@ describe('Step 2 - Goal Selection', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia())
-    const store = useOnboardingStore()
-    store.firstName = 'Henri'
+    const userProfileStore = useUserProfileStore()
+    userProfileStore.firstName = 'Henri'
   })
 
   it('renders correctly', () => {

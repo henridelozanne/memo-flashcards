@@ -1,11 +1,11 @@
 import { ref, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 import useSupabaseAuth from '~/composables/useSupabaseAuth'
 
 export function useNotificationTime() {
   const { t } = useI18n()
-  const onboardingStore = useOnboardingStore()
+  const userProfileStore = useUserProfileStore()
   const { updateNotificationHour } = useSupabaseAuth()
 
   const timeInput = ref<HTMLInputElement | null>(null)
@@ -15,7 +15,7 @@ export function useNotificationTime() {
 
   // Ouvrir le time picker natif
   async function openTimePicker() {
-    selectedTime.value = onboardingStore.notificationHour || '08:00'
+    selectedTime.value = userProfileStore.notificationHour || '20:00'
     initialTime.value = selectedTime.value
 
     // Attendre que la valeur soit mise à jour dans le DOM avant d'ouvrir le picker

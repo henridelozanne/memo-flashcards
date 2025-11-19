@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 
 // Lazy import de supabase pour éviter les erreurs process côté client
 let supabaseInstance: any = null
@@ -69,15 +69,16 @@ export default function useSupabaseAuth() {
     }
 
     try {
-      const onboardingStore = useOnboardingStore()
+      const userProfileStore = useUserProfileStore()
       const supabase = await getSupabase()
 
       const { error: upsertError } = await supabase.from('user_profiles').upsert({
         id: userId.value,
-        first_name: onboardingStore.firstName,
-        goal: onboardingStore.goal,
-        situation: onboardingStore.situation,
-        notification_hour: onboardingStore.notificationHour,
+        first_name: userProfileStore.firstName,
+        goal: userProfileStore.goal,
+        situation: userProfileStore.situation,
+        notification_hour: userProfileStore.notificationHour,
+        language: userProfileStore.language,
         onboarding_completed_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
@@ -106,10 +107,35 @@ export default function useSupabaseAuth() {
       if (updateError) throw updateError
 
       // Update store
-      const onboardingStore = useOnboardingStore()
-      onboardingStore.notificationHour = notificationHour
+      const userProfileStore = useUserProfileStore()
+      userProfileStore.notificationHour = notificationHour
     } catch (e) {
       console.error('Error updating notification hour:', e)
+      throw e
+    }
+  }
+
+  async function updateLanguage(language: string) {
+    const currentUserId = await getCurrentUserId()
+
+    try {
+      const supabase = await getSupabase()
+
+      const { error: updateError } = await supabase
+        .from('user_profiles')
+        .update({
+          language,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', currentUserId)
+
+      if (updateError) throw updateError
+
+      // Update store
+      const userProfileStore = useUserProfileStore()
+      userProfileStore.language = language
+    } catch (e) {
+      console.error('Error updating language:', e)
       throw e
     }
   }
@@ -135,6 +161,7 @@ export default function useSupabaseAuth() {
         goal: data.goal || '',
         situation: data.situation || '',
         notificationHour: data.notification_hour || '20:00',
+        language: data.language || 'en',
         hasCompletedOnboarding: !!data.onboarding_completed_at,
       }
     } catch (e) {
@@ -148,6 +175,7 @@ export default function useSupabaseAuth() {
     initAuth,
     saveUserProfile,
     updateNotificationHour,
+    updateLanguage,
     loadUserProfile,
     getCurrentUserId,
   }

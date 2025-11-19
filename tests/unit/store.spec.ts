@@ -2,6 +2,7 @@ import { setActivePinia, createPinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import useAppStore from '~/store/app'
 import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 
 // Mock useSupabaseAuth composable
 const mockLoadUserProfile = vi.fn()
@@ -31,52 +32,17 @@ describe('app store', () => {
   })
 })
 
-describe('onboarding store', () => {
+describe('user profile store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
   })
 
-  it('initializes with null hasCompletedOnboarding', () => {
-    const store = useOnboardingStore()
+  it('initializes with default values', () => {
+    const store = useUserProfileStore()
     expect(store.hasCompletedOnboarding).toBeNull()
-  })
-
-  it('sets user data correctly', () => {
-    const store = useOnboardingStore()
-    store.firstName = 'John'
-    store.goal = 'Learn Spanish'
-    store.situation = 'Student'
-    store.notificationHour = '09:00'
-
-    expect(store.firstName).toBe('John')
-    expect(store.goal).toBe('Learn Spanish')
-    expect(store.situation).toBe('Student')
-    expect(store.notificationHour).toBe('09:00')
-  })
-
-  it('marks onboarding as completed', () => {
-    const store = useOnboardingStore()
-    expect(store.hasCompletedOnboarding).toBeNull()
-
-    store.completeOnboarding()
-
-    expect(store.hasCompletedOnboarding).toBe(true)
-  })
-
-  it('resets onboarding state', () => {
-    const store = useOnboardingStore()
-    store.firstName = 'John'
-    store.goal = 'Learn Spanish'
-    store.completeOnboarding()
-
-    store.resetOnboarding()
-
     expect(store.firstName).toBe('')
-    expect(store.goal).toBe('')
-    expect(store.situation).toBe('')
-    expect(store.notificationHour).toBe('')
-    expect(store.hasCompletedOnboarding).toBe(false)
+    expect(store.language).toBe('en')
   })
 
   it('should load all user data from Supabase when onboarding is completed', async () => {
@@ -85,9 +51,10 @@ describe('onboarding store', () => {
       goal: 'learn',
       situation: 'student',
       notificationHour: '09:00',
+      language: 'fr',
       hasCompletedOnboarding: true,
     })
-    const store = useOnboardingStore()
+    const store = useUserProfileStore()
 
     await store.loadUserData()
 
@@ -95,12 +62,13 @@ describe('onboarding store', () => {
     expect(store.goal).toBe('learn')
     expect(store.situation).toBe('student')
     expect(store.notificationHour).toBe('09:00')
+    expect(store.language).toBe('fr')
     expect(store.hasCompletedOnboarding).toBe(true)
   })
 
   it('should set hasCompletedOnboarding to false when no profile found', async () => {
     mockLoadUserProfile.mockResolvedValue(null)
-    const store = useOnboardingStore()
+    const store = useUserProfileStore()
 
     await store.loadUserData()
 
@@ -108,11 +76,55 @@ describe('onboarding store', () => {
   })
 
   it('should handle errors when loading user profile', async () => {
-    const store = useOnboardingStore()
+    const store = useUserProfileStore()
     mockLoadUserProfile.mockRejectedValue(new Error('Network error'))
 
     await store.loadUserData()
 
     expect(store.hasCompletedOnboarding).toBe(false)
+  })
+})
+
+describe('onboarding store', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    vi.clearAllMocks()
+  })
+
+  it('initializes with default values', () => {
+    const store = useOnboardingStore()
+    expect(store.currentStep).toBe(1)
+    expect(store.totalSteps).toBe(10)
+  })
+
+  it('navigates to next step', () => {
+    const store = useOnboardingStore()
+    expect(store.currentStep).toBe(1)
+
+    store.nextStep()
+
+    expect(store.currentStep).toBe(2)
+  })
+
+  it('navigates to previous step', () => {
+    const store = useOnboardingStore()
+    store.nextStep()
+    store.nextStep()
+    expect(store.currentStep).toBe(3)
+
+    store.previousStep()
+
+    expect(store.currentStep).toBe(2)
+  })
+
+  it('resets to first step', () => {
+    const store = useOnboardingStore()
+    store.nextStep()
+    store.nextStep()
+    expect(store.currentStep).toBe(3)
+
+    store.resetOnboarding()
+
+    expect(store.currentStep).toBe(1)
   })
 })

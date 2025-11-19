@@ -1,5 +1,5 @@
 import type { RouteLocationNormalized } from 'vue-router'
-import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 
 // @ts-expect-error - Auto-imported by Nuxt
 export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => {
@@ -8,15 +8,15 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
     return
   }
 
-  const onboardingStore = useOnboardingStore()
+  const userProfileStore = useUserProfileStore()
 
   // Load user data from Supabase if not already loaded
-  if (onboardingStore.hasCompletedOnboarding === null) {
-    await onboardingStore.loadUserData()
+  if (userProfileStore.hasCompletedOnboarding === null) {
+    await userProfileStore.loadUserData()
   }
 
   // Redirect to onboarding if not completed
-  if (!onboardingStore.hasCompletedOnboarding) {
+  if (!userProfileStore.hasCompletedOnboarding) {
     // @ts-expect-error - Auto-imported by Nuxt
     return navigateTo('/onboarding/welcome')
   }

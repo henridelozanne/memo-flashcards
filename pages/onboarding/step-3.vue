@@ -39,12 +39,14 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 
 const onboardingStore = useOnboardingStore()
+const userProfileStore = useUserProfileStore()
 const { t } = useI18n()
 
 // État local
-const selectedSituation = ref<string>(onboardingStore.situation || '')
+const selectedSituation = ref<string>(userProfileStore.situation || '')
 
 // Liste des options de situations
 const situationOptions = computed(() => [
@@ -69,7 +71,7 @@ function validate(): boolean {
   }
 
   // Sauvegarder dans le store
-  onboardingStore.situation = selectedSituation.value
+  userProfileStore.situation = selectedSituation.value
   return true
 }
 

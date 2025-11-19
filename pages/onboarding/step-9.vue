@@ -20,8 +20,10 @@
 import { LocalNotifications } from '@capacitor/local-notifications'
 import { ref, onMounted } from 'vue'
 import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 
 const onboardingStore = useOnboardingStore()
+const userProfileStore = useUserProfileStore()
 const timeInput = ref<HTMLInputElement | null>(null)
 const selectedTime = ref<string>('')
 
@@ -35,7 +37,7 @@ function getCurrentTime(): string {
 
 // Gérer le changement d'heure
 function handleTimeChange() {
-  onboardingStore.notificationHour = selectedTime.value
+  userProfileStore.notificationHour = selectedTime.value
 }
 
 // Demander la permission pour les notifications
@@ -66,7 +68,7 @@ onMounted(async () => {
 
   // Définir l'heure actuelle par défaut
   selectedTime.value = getCurrentTime()
-  onboardingStore.notificationHour = selectedTime.value
+  userProfileStore.notificationHour = selectedTime.value
 })
 
 defineOptions({ name: 'OnboardingStep9Page' })

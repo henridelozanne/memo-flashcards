@@ -33,11 +33,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 
 const onboardingStore = useOnboardingStore()
+const userProfileStore = useUserProfileStore()
 
 // État local
-const firstName = ref(onboardingStore.firstName || '')
+const firstName = ref(userProfileStore.firstName || '')
 const hasError = ref(false)
 
 // Fonction de validation
@@ -50,7 +52,7 @@ function validate(): boolean {
   }
 
   // Sauvegarder dans le store
-  onboardingStore.firstName = trimmedName
+  userProfileStore.firstName = trimmedName
   hasError.value = false
   return true
 }

@@ -30,11 +30,23 @@
       </SettingsItem>
 
       <!-- Langue -->
-      <SettingsItem :label="$t('settings.language')" :value="currentLanguage" @click="() => {}">
+      <SettingsItem :label="$t('settings.language')" :value="currentLanguage" @click="openLanguageSelector">
         <template #icon>
           <IconGlobe />
         </template>
       </SettingsItem>
+
+      <!-- Language selector invisible -->
+      <select
+        ref="languageSelect"
+        v-model="selectedLanguage"
+        class="pointer-events-none absolute opacity-0"
+        style="width: 1px; height: 1px"
+        @change="handleLanguageChange"
+      >
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+      </select>
 
       <!-- Demander une fonctionnalité -->
       <SettingsItem :label="$t('settings.featureRequest')" @click="$router.push('/feature-request')">
@@ -66,15 +78,20 @@
     </div>
 
     <!-- Status Message -->
-    <StatusMessage v-if="statusMessage" :message="statusMessage" class="mx-auto mt-4 max-w-2xl" />
+    <StatusMessage
+      v-if="statusMessage || languageStatusMessage"
+      :message="statusMessage || languageStatusMessage"
+      class="mx-auto mt-4 max-w-2xl"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 import { useNotificationTime } from '~/composables/useNotificationTime'
+import { useLanguageSelector } from '~/composables/useLanguageSelector'
 import { LANGUAGE_NAMES } from '~/constants/languages'
 import PageHeader from '~/components/PageHeader.vue'
 import StatusMessage from '~/components/StatusMessage.vue'
@@ -86,18 +103,25 @@ import IconBug from '~/components/icons/IconBug.vue'
 import IconTrash from '~/components/icons/IconTrash.vue'
 import IconDocument from '~/components/icons/IconDocument.vue'
 
-const { t, locale } = useI18n()
-const onboardingStore = useOnboardingStore()
+const { t } = useI18n()
+const userProfileStore = useUserProfileStore()
 const { timeInput, selectedTime, statusMessage, openTimePicker, handleTimeChange } = useNotificationTime()
+const {
+  languageSelect,
+  selectedLanguage,
+  statusMessage: languageStatusMessage,
+  openLanguageSelector,
+  handleLanguageChange,
+} = useLanguageSelector()
 
 // Heure de rappel actuelle
-const currentReminderTime = computed(() => onboardingStore.notificationHour || '08:00')
+const currentReminderTime = computed(() => userProfileStore.notificationHour || '20:00')
 
 // Statut d'abonnement (à adapter selon votre logique)
 const subscriptionStatus = computed(() => t('settings.subscriptionFree'))
 
 // Langue actuelle
-const currentLanguage = computed(() => LANGUAGE_NAMES[locale.value] || locale.value)
+const currentLanguage = computed(() => LANGUAGE_NAMES[userProfileStore.language] || userProfileStore.language)
 
 defineOptions({ name: 'SettingsPage' })
 </script>

@@ -3,9 +3,9 @@
     <div class="flex h-full flex-col items-center justify-center px-6">
       <!-- Titre -->
       <h1 class="slide-up-1 mb-8 max-w-md text-center text-3xl font-bold leading-tight text-[var(--color-black)]">
-        <span>{{ $t('onboarding.step10.title', { firstName: onboardingStore.firstName }).split(',')[0] }},</span>
+        <span>{{ $t('onboarding.step10.title', { firstName: userProfileStore.firstName }).split(',')[0] }},</span>
         <br />
-        <span>{{ $t('onboarding.step10.title', { firstName: onboardingStore.firstName }).split(',')[1] }}</span>
+        <span>{{ $t('onboarding.step10.title', { firstName: userProfileStore.firstName }).split(',')[1] }}</span>
       </h1>
 
       <!-- Message -->
@@ -32,9 +32,11 @@
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 
 const router = useRouter()
 const onboardingStore = useOnboardingStore()
+const userProfileStore = useUserProfileStore()
 
 onMounted(() => {
   onboardingStore.currentStep = 10

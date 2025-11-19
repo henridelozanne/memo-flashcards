@@ -4,7 +4,7 @@
     <div class="flex h-full flex-col pt-4">
       <!-- Titre avec prénom et retour à la ligne -->
       <h1 class="slide-up-1 mb-8 text-center text-2xl font-bold text-[var(--color-black)]">
-        {{ $t('onboarding.step2.title', { name: onboardingStore.firstName }) }}<br />
+        {{ $t('onboarding.step2.title', { name: userProfileStore.firstName }) }}<br />
         {{ $t('onboarding.step2.subtitle') }}
       </h1>
 
@@ -40,12 +40,14 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 
 const onboardingStore = useOnboardingStore()
+const userProfileStore = useUserProfileStore()
 const { t } = useI18n()
 
 // État local
-const selectedGoal = ref<string>(onboardingStore.goal || '')
+const selectedGoal = ref<string>(userProfileStore.goal || '')
 
 // Liste des options d'objectifs
 const goalOptions = computed(() => [
@@ -69,7 +71,7 @@ function validate(): boolean {
   }
 
   // Sauvegarder dans le store
-  onboardingStore.goal = selectedGoal.value
+  userProfileStore.goal = selectedGoal.value
   return true
 }
 
