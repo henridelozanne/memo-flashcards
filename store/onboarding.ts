@@ -66,17 +66,29 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     currentStep.value = totalSteps
   }
 
-  // Initialiser le statut d'onboarding depuis Supabase
-  async function initOnboardingStatus() {
+  // Charger toutes les données utilisateur depuis Supabase
+  async function loadUserData(): Promise<void> {
+    // Only run once
+    if (hasCompletedOnboarding.value !== null) return
+
     try {
       // Lazy import to avoid circular dependencies
       const useSupabaseAuth = (await import('~/composables/useSupabaseAuth')).default
-      const { checkOnboardingStatus } = useSupabaseAuth()
-      const isCompleted = await checkOnboardingStatus()
-      hasCompletedOnboarding.value = isCompleted
-    } catch (e) {
-      console.error('Error initializing onboarding status:', e)
-      // En cas d'erreur, on considère que l'onboarding n'est pas terminé
+      const { loadUserProfile } = useSupabaseAuth()
+      const profile = await loadUserProfile()
+
+      if (profile) {
+        // Populate all fields from Supabase
+        firstName.value = profile.firstName
+        goal.value = profile.goal
+        situation.value = profile.situation
+        notificationHour.value = profile.notificationHour
+        hasCompletedOnboarding.value = profile.hasCompletedOnboarding
+      } else {
+        hasCompletedOnboarding.value = false
+      }
+    } catch (error) {
+      console.error('Error initializing onboarding status:', error)
       hasCompletedOnboarding.value = false
     }
   }
@@ -99,6 +111,6 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     nextStep,
     previousStep,
     completeOnboarding,
-    initOnboardingStatus,
+    loadUserData,
   }
 })

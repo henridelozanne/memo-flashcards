@@ -10,9 +10,9 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
 
   const onboardingStore = useOnboardingStore()
 
-  // Only check once per session
+  // Load user data from Supabase if not already loaded
   if (onboardingStore.hasCompletedOnboarding === null) {
-    await onboardingStore.initOnboardingStatus()
+    await onboardingStore.loadUserData()
   }
 
   // Redirect to onboarding if not completed

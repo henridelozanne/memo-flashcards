@@ -83,7 +83,7 @@ describe('useSupabaseAuth', () => {
       error: null,
     })
 
-    const { initAuth, userId, error } = useSupabaseAuth()
+    const { initAuth, userId } = useSupabaseAuth()
     await initAuth()
 
     // Test the sequence of operations
@@ -92,7 +92,6 @@ describe('useSupabaseAuth', () => {
 
     // Verify userId is set correctly
     expect(userId.value).toBe(mockUserId)
-    expect(error.value).toBeNull()
   })
 
   it('uses existing session if available', async () => {
@@ -124,28 +123,27 @@ describe('useSupabaseAuth', () => {
       error: null,
     })
 
-    const { initAuth, userId, error } = useSupabaseAuth()
+    const { initAuth, userId } = useSupabaseAuth()
     await initAuth()
 
     expect(supabase.auth.getSession).toHaveBeenCalled()
     expect(supabase.auth.signInAnonymously).not.toHaveBeenCalled()
     expect(userId.value).toBe(mockUserId)
-    expect(error.value).toBeNull()
   })
 
-  it('falls back to local ID generation on auth error', async () => {
-    // Mock auth error
-    vi.mocked(supabase.auth.getSession).mockRejectedValueOnce(new Error('Network error'))
+  it('initAuth falls back to local UUID on error', async () => {
+    const { initAuth, userId } = useSupabaseAuth()
 
-    const { initAuth, userId, error } = useSupabaseAuth()
+    // Mock getSession to throw error
+    vi.mocked(supabase.auth.getSession).mockRejectedValueOnce(new Error('Auth failed'))
+
     await initAuth()
 
-    expect(error.value).toBeDefined()
-    expect(userId.value).toBeDefined() // Should have a fallback UUID
+    expect(userId.value).not.toBeNull()
     expect(userId.value?.length).toBeGreaterThan(0)
   })
 
-  it('checkOnboardingStatus returns true if onboarding completed', async () => {
+  it('loadUserProfile returns full user data when profile exists', async () => {
     // Mock session
     vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
       data: {
@@ -162,50 +160,32 @@ describe('useSupabaseAuth', () => {
 
     // Mock user_profiles query
     const mockSingle = vi.fn().mockResolvedValue({
-      data: { onboarding_completed_at: new Date().toISOString() },
-      error: null,
-    })
-    const mockEq = vi.fn().mockReturnValue({ single: mockSingle })
-    const mockSelect = vi.fn().mockReturnValue({ eq: mockEq })
-    vi.mocked(supabase.from).mockReturnValue({ select: mockSelect } as any)
-
-    const { checkOnboardingStatus } = useSupabaseAuth()
-    const result = await checkOnboardingStatus()
-
-    expect(result).toBe(true)
-  })
-
-  it('checkOnboardingStatus returns false if onboarding not completed', async () => {
-    // Mock session
-    vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
       data: {
-        session: {
-          user: { id: mockUserId },
-          access_token: 'token',
-          refresh_token: 'refresh',
-          expires_in: 3600,
-          token_type: 'bearer',
-        } as any,
+        first_name: 'John',
+        goal: 'learn',
+        situation: 'student',
+        notification_hour: '09:00',
+        onboarding_completed_at: new Date().toISOString(),
       },
       error: null,
     })
-
-    // Mock user_profiles query
-    const mockSingle = vi.fn().mockResolvedValue({
-      data: { onboarding_completed_at: null },
-      error: null,
-    })
     const mockEq = vi.fn().mockReturnValue({ single: mockSingle })
     const mockSelect = vi.fn().mockReturnValue({ eq: mockEq })
     vi.mocked(supabase.from).mockReturnValue({ select: mockSelect } as any)
 
-    const { checkOnboardingStatus } = useSupabaseAuth()
-    const result = await checkOnboardingStatus()
+    const { loadUserProfile } = useSupabaseAuth()
+    const result = await loadUserProfile()
 
-    expect(result).toBe(false)
+    expect(result).toEqual({
+      firstName: 'John',
+      goal: 'learn',
+      situation: 'student',
+      notificationHour: '09:00',
+      hasCompletedOnboarding: true,
+    })
   })
 
-  it('checkOnboardingStatus returns false on error', async () => {
+  it('loadUserProfile returns null if no profile found', async () => {
     // Mock session
     vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
       data: {
@@ -229,9 +209,22 @@ describe('useSupabaseAuth', () => {
     const mockSelect = vi.fn().mockReturnValue({ eq: mockEq })
     vi.mocked(supabase.from).mockReturnValue({ select: mockSelect } as any)
 
-    const { checkOnboardingStatus } = useSupabaseAuth()
-    const result = await checkOnboardingStatus()
+    const { loadUserProfile } = useSupabaseAuth()
+    const result = await loadUserProfile()
 
-    expect(result).toBe(false)
+    expect(result).toBeNull()
+  })
+
+  it('loadUserProfile returns null if no session', async () => {
+    // Mock no session
+    vi.mocked(supabase.auth.getSession).mockResolvedValueOnce({
+      data: { session: null },
+      error: null,
+    })
+
+    const { loadUserProfile } = useSupabaseAuth()
+    const result = await loadUserProfile()
+
+    expect(result).toBeNull()
   })
 })

@@ -4,10 +4,11 @@ import useAppStore from '~/store/app'
 import { useOnboardingStore } from '~/store/onboarding'
 
 // Mock useSupabaseAuth composable
-const mockCheckOnboardingStatus = vi.fn()
+const mockLoadUserProfile = vi.fn()
+
 vi.mock('@/composables/useSupabaseAuth', () => ({
   default: () => ({
-    checkOnboardingStatus: mockCheckOnboardingStatus,
+    loadUserProfile: mockLoadUserProfile,
   }),
 }))
 
@@ -78,31 +79,40 @@ describe('onboarding store', () => {
     expect(store.hasCompletedOnboarding).toBe(false)
   })
 
-  it('initOnboardingStatus checks Supabase and updates state', async () => {
-    mockCheckOnboardingStatus.mockResolvedValue(true)
+  it('should load all user data from Supabase when onboarding is completed', async () => {
+    mockLoadUserProfile.mockResolvedValue({
+      firstName: 'John',
+      goal: 'learn',
+      situation: 'student',
+      notificationHour: '09:00',
+      hasCompletedOnboarding: true,
+    })
     const store = useOnboardingStore()
 
-    await store.initOnboardingStatus()
+    await store.loadUserData()
 
+    expect(store.firstName).toBe('John')
+    expect(store.goal).toBe('learn')
+    expect(store.situation).toBe('student')
+    expect(store.notificationHour).toBe('09:00')
     expect(store.hasCompletedOnboarding).toBe(true)
   })
 
-  it('initOnboardingStatus handles false from Supabase', async () => {
-    mockCheckOnboardingStatus.mockResolvedValue(false)
+  it('should set hasCompletedOnboarding to false when no profile found', async () => {
+    mockLoadUserProfile.mockResolvedValue(null)
     const store = useOnboardingStore()
 
-    await store.initOnboardingStatus()
+    await store.loadUserData()
 
     expect(store.hasCompletedOnboarding).toBe(false)
   })
 
-  it('initOnboardingStatus handles errors gracefully', async () => {
-    mockCheckOnboardingStatus.mockRejectedValue(new Error('Network error'))
+  it('should handle errors when loading user profile', async () => {
     const store = useOnboardingStore()
+    mockLoadUserProfile.mockRejectedValue(new Error('Network error'))
 
-    await store.initOnboardingStatus()
+    await store.loadUserData()
 
-    // Should set to false on error (safer default)
     expect(store.hasCompletedOnboarding).toBe(false)
   })
 })

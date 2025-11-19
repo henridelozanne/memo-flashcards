@@ -89,7 +89,7 @@ export default function useSupabaseAuth() {
     }
   }
 
-  async function checkOnboardingStatus(): Promise<boolean> {
+  async function loadUserProfile() {
     try {
       const supabase = await getSupabase()
 
@@ -98,32 +98,32 @@ export default function useSupabaseAuth() {
         data: { session },
       } = await supabase.auth.getSession()
 
-      if (!session?.user?.id) return false
+      if (!session?.user?.id) return null
 
-      // Check if user profile exists with completed onboarding
-      const { data, error } = await supabase
-        .from('user_profiles')
-        .select('onboarding_completed_at')
-        .eq('id', session.user.id)
-        .single()
+      // Load full user profile
+      const { data, error } = await supabase.from('user_profiles').select('*').eq('id', session.user.id).single()
 
-      if (error || !data) return false
+      if (error || !data) return null
 
-      return !!data.onboarding_completed_at
+      return {
+        firstName: data.first_name || '',
+        goal: data.goal || '',
+        situation: data.situation || '',
+        notificationHour: data.notification_hour || '20:00',
+        hasCompletedOnboarding: !!data.onboarding_completed_at,
+      }
     } catch (e) {
-      console.error('Error checking onboarding status:', e)
-      return false
+      console.error('Error loading user profile:', e)
+      return null
     }
   }
 
   return {
     userId,
-    isLoading,
-    error,
     initAuth,
-    getCurrentUserId,
     saveUserProfile,
-    checkOnboardingStatus,
+    loadUserProfile,
+    getCurrentUserId,
   }
 }
 
