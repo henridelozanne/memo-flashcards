@@ -39,16 +39,6 @@
         {{ $t('common.cancel') }}
       </button>
       <button
-        v-if="showAddAnother"
-        type="button"
-        :disabled="isSubmitting"
-        class="flex-1 rounded-[15px] bg-[var(--color-light-purple)] px-4 py-2 text-[var(--color-primary)] transition hover:bg-[var(--color-accent-purple)] disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
-        data-testid="add-card-another"
-        @click="handleAddAnother"
-      >
-        {{ isSubmitting ? $t('common.loading') : $t('cards.addAnother') }}
-      </button>
-      <button
         type="submit"
         :disabled="isSubmitting"
         class="flex-1 rounded-[15px] bg-[var(--color-primary)] px-4 py-2 text-white transition hover:bg-[var(--color-dark-purple)] disabled:cursor-not-allowed disabled:bg-gray-400"
@@ -72,20 +62,17 @@ const props = withDefaults(
     back?: string
     isSubmitting?: boolean
     submitLabel?: string
-    showAddAnother?: boolean
   }>(),
   {
     front: '',
     back: '',
     isSubmitting: false,
     submitLabel: '',
-    showAddAnother: false,
   }
 )
 
 const emit = defineEmits<{
   (e: 'submit', front: string, back: string): void
-  (e: 'addAnother', front: string, back: string): void
   (e: 'cancel'): void
 }>()
 
@@ -127,13 +114,6 @@ function handleSubmit() {
   validateBack()
   if (frontError.value || backError.value) return
   emit('submit', localFront.value.trim(), localBack.value.trim())
-}
-
-function handleAddAnother() {
-  validateFront()
-  validateBack()
-  if (frontError.value || backError.value) return
-  emit('addAnother', localFront.value.trim(), localBack.value.trim())
 }
 
 // Reset form when props change (for edit mode)

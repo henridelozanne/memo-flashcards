@@ -21,9 +21,7 @@
           ref="cardFormRef"
           :is-submitting="isSubmitting"
           :submit-label="$t('common.add')"
-          :show-add-another="true"
           @submit="onSubmit"
-          @add-another="onAddAnother"
           @cancel="router.back()"
         />
       </div>
@@ -66,7 +64,7 @@ async function init() {
   collection.value = getCollection(collectionId)
 }
 
-async function handleCreateCard(front: string, back: string, addAnother: boolean) {
+async function onSubmit(front: string, back: string) {
   isSubmitting.value = true
   message.value = null
 
@@ -77,16 +75,12 @@ async function handleCreateCard(front: string, back: string, addAnother: boolean
       text: t('cards.createdSuccess') as string,
     }
 
-    if (addAnother) {
-      // Clear the message after 2 seconds and stay on the form
-      setTimeout(() => {
-        message.value = null
-      }, 2000)
-      // Reset form fields using exposed method
-      cardFormRef.value?.reset()
-    } else {
-      router.push(`/collections/${collectionId}/cards`)
-    }
+    // Clear the message after 2 seconds and stay on the form
+    setTimeout(() => {
+      message.value = null
+    }, 2000)
+    // Reset form fields using exposed method
+    cardFormRef.value?.reset()
   } catch (error) {
     message.value = {
       type: 'error',
@@ -95,14 +89,6 @@ async function handleCreateCard(front: string, back: string, addAnother: boolean
   } finally {
     isSubmitting.value = false
   }
-}
-
-async function onSubmit(front: string, back: string) {
-  await handleCreateCard(front, back, false)
-}
-
-async function onAddAnother(front: string, back: string) {
-  await handleCreateCard(front, back, true)
 }
 
 onMounted(init)
