@@ -58,9 +58,7 @@
       <!-- Texte explicatif avec mots en gras -->
       <div class="max-w-md space-y-3 px-6 text-justify text-base leading-relaxed text-gray-700">
         <p class="slide-up-4" v-html="formatText($t('onboarding.step4.explanation'))"></p>
-        <p class="slide-up-5" v-html="formatText($t('onboarding.step4.forgettingCurve'))"></p>
-        <p class="slide-up-6" v-html="formatText($t('onboarding.step4.solution'))"></p>
-        <p class="slide-up-7" v-html="formatText($t('onboarding.step4.spacedRepetition'))"></p>
+        <p class="slide-up-5" v-html="formatText($t('onboarding.step4.solution'))"></p>
       </div>
     </div>
   </NuxtLayout>
