@@ -14,7 +14,8 @@
         </button>
         <button
           :disabled="loading"
-          class="flex-1 rounded-md bg-red-600 px-4 py-2 text-white transition hover:bg-red-700 disabled:bg-gray-400"
+          class="flex-1 rounded-md px-4 py-2 text-white transition disabled:bg-gray-400"
+          style="background-color: var(--color-accent-red)"
           @click="$emit('confirm')"
         >
           <slot name="confirmLabel">{{ loading ? $t('common.processing') : confirmLabel }}</slot>

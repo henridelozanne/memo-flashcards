@@ -54,7 +54,8 @@
 
         <!-- Bouton supprimer -->
         <button
-          class="flex w-full items-center justify-center gap-2 rounded-md bg-red-100 px-4 py-2 text-red-700 transition hover:bg-red-200"
+          class="flex w-full items-center justify-center gap-2 rounded-md px-4 py-2 transition"
+          style="background-color: #ffe4e4; color: var(--color-accent-red)"
           data-testid="delete-card-btn"
           @click="confirmDelete"
         >

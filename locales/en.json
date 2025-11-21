@@ -130,6 +130,9 @@
     "featureRequest": "Request a feature",
     "bugReport": "Report a bug",
     "deleteData": "Delete My Data",
+    "deleteDataConfirmTitle": "Delete all my data",
+    "deleteDataConfirmMessage": "Are you sure you want to delete all your data? This action is irreversible and will delete all your collections and cards.",
+    "deleteDataConfirm": "Delete",
     "legalNotice": "Legal Notice"
   },
   "legal": {

@@ -130,6 +130,9 @@
     "featureRequest": "Demander une fonctionnalité",
     "bugReport": "Signaler un bug",
     "deleteData": "Supprimer mes données",
+    "deleteDataConfirmTitle": "Supprimer toutes mes données",
+    "deleteDataConfirmMessage": "Êtes-vous sûr de vouloir supprimer toutes vos données ? Cette action est irréversible et supprimera toutes vos collections et cartes.",
+    "deleteDataConfirm": "Supprimer",
     "legalNotice": "Mentions légales"
   },
   "legal": {

@@ -63,7 +63,7 @@
       </SettingsItem>
 
       <!-- Supprimer mes données -->
-      <SettingsItem :label="$t('settings.deleteData')" @click="() => {}">
+      <SettingsItem :label="$t('settings.deleteData')" @click="openDeleteConfirm">
         <template #icon>
           <IconTrash />
         </template>
@@ -83,6 +83,19 @@
       :message="statusMessage || languageStatusMessage"
       class="mx-auto mt-4 max-w-2xl"
     />
+
+    <!-- Delete confirmation modal -->
+    <ConfirmModal
+      :open="showDeleteConfirm"
+      :title="$t('settings.deleteDataConfirmTitle')"
+      :confirm-label="$t('settings.deleteDataConfirm')"
+      :cancel-label="$t('common.cancel')"
+      :loading="isDeleting"
+      @cancel="closeDeleteConfirm"
+      @confirm="handleDeleteData"
+    >
+      {{ $t('settings.deleteDataConfirmMessage') }}
+    </ConfirmModal>
   </div>
 </template>
 
@@ -92,9 +105,11 @@ import { useI18n } from 'vue-i18n'
 import { useUserProfileStore } from '~/store/userProfile'
 import { useNotificationTime } from '~/composables/useNotificationTime'
 import { useLanguageSelector } from '~/composables/useLanguageSelector'
+import { useDeleteData } from '~/composables/useDeleteData'
 import { LANGUAGE_NAMES } from '~/constants/languages'
 import PageHeader from '~/components/PageHeader.vue'
 import StatusMessage from '~/components/StatusMessage.vue'
+import ConfirmModal from '~/components/ConfirmModal.vue'
 import IconClock from '~/components/icons/IconClock.vue'
 import IconStar from '~/components/icons/IconStar.vue'
 import IconGlobe from '~/components/icons/IconGlobe.vue'
@@ -113,6 +128,7 @@ const {
   openLanguageSelector,
   handleLanguageChange,
 } = useLanguageSelector()
+const { showDeleteConfirm, isDeleting, openDeleteConfirm, closeDeleteConfirm, handleDeleteData } = useDeleteData()
 
 // Heure de rappel actuelle
 const currentReminderTime = computed(() => userProfileStore.notificationHour || '20:00')
