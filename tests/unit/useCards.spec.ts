@@ -24,6 +24,18 @@ vi.mock('uuid', () => ({
   },
 }))
 
+// Mock useSupabaseAuth
+vi.mock('~/composables/useSupabaseAuth', () => ({
+  default: () => ({
+    getCurrentUserId: vi.fn().mockResolvedValue('test-user-id'),
+  }),
+}))
+
+// Mock sync functions
+vi.mock('~/lib/sync', () => ({
+  syncCardsToRemote: vi.fn().mockResolvedValue(undefined),
+}))
+
 describe('useCards', () => {
   let composable: ReturnType<typeof useCards>
 
@@ -54,7 +66,7 @@ describe('useCards', () => {
       const now = Date.now()
       const mockCard = {
         id: 'mock-uuid-1',
-        user_id: 'default-user',
+        user_id: 'test-user-id',
         question: 'Test Question',
         answer: 'Test Answer',
         collection_id: 'test-collection',
@@ -73,7 +85,7 @@ describe('useCards', () => {
 
       expect(card).toEqual({
         id: 'mock-uuid-1',
-        user_id: 'default-user',
+        user_id: 'test-user-id',
         question: 'Test Question',
         answer: 'Test Answer',
         collection_id: 'test-collection',
@@ -86,10 +98,10 @@ describe('useCards', () => {
         total_reviews: 0,
       })
 
-      // Verify SQLite calls
+      // Verify SQLite calls with full INSERT statement
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
         expect.stringContaining('INSERT INTO cards'),
-        expect.arrayContaining(['mock-uuid-1', 'default-user', 'test-collection', 'Test Question', 'Test Answer', 1])
+        expect.arrayContaining(['mock-uuid-1', 'test-user-id', 'test-collection', 'Test Question', 'Test Answer'])
       )
     })
 
@@ -120,7 +132,7 @@ describe('useCards', () => {
 
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
         expect.stringContaining('INSERT INTO cards'),
-        expect.arrayContaining(['mock-uuid-1', 'default-user', 'test-collection', 'Trimmed Question', 'Trimmed Answer'])
+        expect.arrayContaining(['mock-uuid-1', 'test-user-id', 'test-collection', 'Trimmed Question', 'Trimmed Answer'])
       )
     })
   })

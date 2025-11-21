@@ -15,6 +15,18 @@ vi.mock('~/lib/sqlite', () => ({
   default: vi.fn(() => mockSqliteConnection),
 }))
 
+// Mock useSupabaseAuth
+vi.mock('~/composables/useSupabaseAuth', () => ({
+  default: () => ({
+    getCurrentUserId: vi.fn().mockResolvedValue('test-user-id'),
+  }),
+}))
+
+// Mock sync functions
+vi.mock('~/lib/sync', () => ({
+  syncCollectionsToRemote: vi.fn().mockResolvedValue(undefined),
+}))
+
 describe('useCollections Persistence', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -49,7 +61,7 @@ describe('useCollections Persistence', () => {
       'INSERT INTO collections (id, user_id, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
       expect.arrayContaining([
         expect.any(String), // id (UUID)
-        'default-user', // user_id
+        'test-user-id', // user_id
         collectionName, // name
         expect.any(Number), // created_at
         expect.any(Number), // updated_at
@@ -114,10 +126,17 @@ describe('useCollections Persistence', () => {
     const collectionId = 'test-id'
     await deleteCollection(collectionId)
 
-    // Verify soft delete UPDATE query was called
-    expect(mockSqliteConnection.run).toHaveBeenCalledWith(
-      'UPDATE collections SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL',
-      [expect.any(Number), collectionId]
+    // Verify soft delete UPDATE queries were called (cards first, then collection)
+    expect(mockSqliteConnection.run).toHaveBeenCalledTimes(2)
+    expect(mockSqliteConnection.run).toHaveBeenNthCalledWith(
+      1,
+      'UPDATE cards SET deleted_at = ?, updated_at = ? WHERE collection_id = ? AND deleted_at IS NULL',
+      [expect.any(Number), expect.any(Number), collectionId]
+    )
+    expect(mockSqliteConnection.run).toHaveBeenNthCalledWith(
+      2,
+      'UPDATE collections SET deleted_at = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
+      [expect.any(Number), expect.any(Number), collectionId]
     )
   })
 

@@ -86,8 +86,19 @@ export const useDailyReview = () => {
     await setAnsweredCardsCount(dailyReviewStore.answeredCardsCount + 1)
   }
 
+  // Fonction pour invalider le cache (utile après sync ou modifications)
+  const invalidateCache = async () => {
+    try {
+      await Preferences.remove({ key: 'dailyCardsDueTotal' })
+    } catch (error) {
+      console.error('Error invalidating cache:', error)
+    }
+  }
+
   return {
     initDailyReview,
     incrementAnsweredCardsCount,
+    invalidateCache,
+    setCardsDueTotalCount,
   }
 }

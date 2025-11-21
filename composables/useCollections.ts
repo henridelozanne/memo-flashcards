@@ -2,6 +2,8 @@ import { ref, readonly } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import type { Collection } from '~/lib/types'
 import { useDatabase } from './useDatabase'
+import { syncCollectionsToRemote } from '~/lib/sync'
+import useSupabaseAuth from './useSupabaseAuth'
 
 const collections = ref<Collection[]>([])
 const isLoading = ref(true)
@@ -32,9 +34,12 @@ export const useCollections = () => {
   const createCollection = async (name: string): Promise<Collection> => {
     error.value = null
     try {
+      const { getCurrentUserId } = useSupabaseAuth()
+      const userId = await getCurrentUserId()
+
       const newCollection: Collection = {
         id: uuidv4(),
-        user_id: 'default-user',
+        user_id: userId,
         name: name.trim(),
         created_at: Date.now(),
         updated_at: Date.now(),
@@ -58,6 +63,11 @@ export const useCollections = () => {
         newCollection.created_at,
         newCollection.updated_at,
       ])
+
+      // Sync to Supabase (non-blocking)
+      syncCollectionsToRemote().catch((err) => {
+        console.error('Failed to sync collection creation to remote:', err)
+      })
 
       await loadCollections()
       return newCollection
@@ -87,6 +97,11 @@ export const useCollections = () => {
         id,
       ])
 
+      // Sync to Supabase (non-blocking)
+      syncCollectionsToRemote().catch((err) => {
+        console.error('Failed to sync collection update to remote:', err)
+      })
+
       await loadCollections()
     } catch (e: any) {
       error.value = e.message || 'Erreur lors de la mise à jour'
@@ -101,10 +116,23 @@ export const useCollections = () => {
       const now = Date.now()
 
       // Supprimer d'abord toutes les cartes de la collection
-      await db.run('UPDATE cards SET deleted_at = ? WHERE collection_id = ? AND deleted_at IS NULL', [now, id])
+      await db.run('UPDATE cards SET deleted_at = ?, updated_at = ? WHERE collection_id = ? AND deleted_at IS NULL', [
+        now,
+        now,
+        id,
+      ])
 
       // Puis supprimer la collection
-      await db.run('UPDATE collections SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL', [now, id])
+      await db.run('UPDATE collections SET deleted_at = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL', [
+        now,
+        now,
+        id,
+      ])
+
+      // Sync to Supabase (non-blocking)
+      syncCollectionsToRemote().catch((err) => {
+        console.error('Failed to sync collection deletion to remote:', err)
+      })
 
       await loadCollections()
     } catch (e: any) {

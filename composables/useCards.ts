@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid'
 import type { Card } from '~/lib/types'
 import { useDatabase } from './useDatabase'
 import { useDailyReview } from './useDailyReview'
+import { syncCardsToRemote } from '~/lib/sync'
+import useSupabaseAuth from './useSupabaseAuth'
 
 const cards = ref<Card[]>([])
 const isLoading = ref(false)
@@ -55,13 +57,16 @@ export const useCards = () => {
       throw new Error('Le verso de la carte est obligatoire')
     }
 
+    const { getCurrentUserId } = useSupabaseAuth()
+    const userId = await getCurrentUserId()
+
     const now = Date.now()
     const card: Card = {
       id: uuidv4(),
       question: front.trim(),
       answer: back.trim(),
       collection_id: collectionId,
-      user_id: 'default-user',
+      user_id: userId,
       created_at: now,
       updated_at: now,
       compartment: 1,
@@ -104,6 +109,11 @@ export const useCards = () => {
     )
     cards.value = result
 
+    // Sync to Supabase (non-blocking)
+    syncCardsToRemote().catch((err) => {
+      console.error('Failed to sync card creation to remote:', err)
+    })
+
     return card
   }
 
@@ -144,6 +154,11 @@ export const useCards = () => {
       [existing.collection_id]
     )
     cards.value = result
+
+    // Sync to Supabase (non-blocking)
+    syncCardsToRemote().catch((err) => {
+      console.error('Failed to sync card update to remote:', err)
+    })
   }
 
   const deleteCard = async (id: string): Promise<void> => {
@@ -156,13 +171,14 @@ export const useCards = () => {
     if (!existing) throw new Error('Carte introuvable')
 
     // Marquer comme supprimée (soft delete)
+    const now = Date.now()
     await db.run(
       `
       UPDATE cards 
-      SET deleted_at = ?
+      SET deleted_at = ?, updated_at = ?
       WHERE id = ? AND deleted_at IS NULL
     `,
-      [Date.now(), id]
+      [now, now, id]
     )
 
     // Recharger les cartes pour la collection
@@ -175,6 +191,11 @@ export const useCards = () => {
       [existing.collection_id]
     )
     cards.value = result
+
+    // Sync to Supabase (non-blocking)
+    syncCardsToRemote().catch((err) => {
+      console.error('Failed to sync card deletion to remote:', err)
+    })
   }
 
   const getDueCards = async (collectionId: string) => {
@@ -272,6 +293,11 @@ export const useCards = () => {
     // Incrémenter le compteur de cartes répondues
     const { incrementAnsweredCardsCount } = useDailyReview()
     await incrementAnsweredCardsCount()
+
+    // Sync to Supabase (non-blocking)
+    syncCardsToRemote().catch((err) => {
+      console.error('Failed to sync card review to remote:', err)
+    })
   }
 
   const getCardsCount = async (collectionId: string): Promise<number> => {

@@ -5,6 +5,10 @@ import {
   isSyncNeeded,
   syncUserProfileToRemote,
   syncUserProfileFromRemote,
+  syncCollectionsToRemote,
+  syncCollectionsFromRemote,
+  syncCardsToRemote,
+  syncCardsFromRemote,
 } from '../../lib/sync'
 
 // Mock composables
@@ -84,6 +88,42 @@ describe('Sync module', () => {
 
     it('syncUserProfileFromRemote handles missing remote profile', async () => {
       await expect(syncUserProfileFromRemote()).resolves.not.toThrow()
+    })
+  })
+
+  describe('Collections Sync', () => {
+    it('syncCollectionsToRemote does not throw on success', async () => {
+      await expect(syncCollectionsToRemote()).resolves.not.toThrow()
+    })
+
+    it('syncCollectionsToRemote does not throw on error (non-blocking)', async () => {
+      await expect(syncCollectionsToRemote()).resolves.not.toThrow()
+    })
+
+    it('syncCollectionsFromRemote does not throw on success', async () => {
+      await expect(syncCollectionsFromRemote()).resolves.not.toThrow()
+    })
+
+    it('syncCollectionsFromRemote handles empty remote collections', async () => {
+      await expect(syncCollectionsFromRemote()).resolves.not.toThrow()
+    })
+  })
+
+  describe('Cards Sync', () => {
+    it('syncCardsToRemote does not throw on success', async () => {
+      await expect(syncCardsToRemote()).resolves.not.toThrow()
+    })
+
+    it('syncCardsToRemote does not throw on error (non-blocking)', async () => {
+      await expect(syncCardsToRemote()).resolves.not.toThrow()
+    })
+
+    it('syncCardsFromRemote does not throw on success', async () => {
+      await expect(syncCardsFromRemote()).resolves.not.toThrow()
+    })
+
+    it('syncCardsFromRemote handles empty remote cards', async () => {
+      await expect(syncCardsFromRemote()).resolves.not.toThrow()
     })
   })
 

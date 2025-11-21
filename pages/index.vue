@@ -23,17 +23,6 @@
 
     <!-- Collections grid -->
     <div v-if="!isLoading && !error" class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-      <!-- Test Data Button (Development only) -->
-      <div
-        data-testid="create-test-data"
-        class="order-last flex cursor-pointer flex-col items-center justify-center rounded-[15px] border-2 border-dashed p-6 transition"
-        style="background-color: var(--color-light-yellow-alt); border-color: var(--color-accent-yellow)"
-        @click="createTestData"
-      >
-        <span class="mb-2 text-4xl" style="color: var(--color-accent-yellow)">🧪</span>
-        <span class="text-center font-medium" style="color: var(--color-accent-orange)">Créer Données Test</span>
-      </div>
-
       <!-- Carte + Créer une collection -->
       <div
         data-testid="create-card"
@@ -92,19 +81,6 @@ const { initDailyReview } = useDailyReview()
 
 const collectionToDelete = ref<Collection | null>(null)
 const isDeleting = ref(false)
-
-// Fonction pour créer des données de test
-const createTestData = async () => {
-  try {
-    const { createTestData: createTestDataFn } = await import('~/lib/testData')
-    await createTestDataFn()
-    // Recharger les collections et le compteur de cartes
-    await loadCollections()
-    console.log('Données de test créées avec succès !')
-  } catch (err) {
-    console.error('Erreur lors de la création des données de test:', err)
-  }
-}
 
 onMounted(async () => {
   await loadCollections()

@@ -23,6 +23,18 @@ vi.mock('uuid', () => ({
   },
 }))
 
+// Mock useSupabaseAuth
+vi.mock('~/composables/useSupabaseAuth', () => ({
+  default: () => ({
+    getCurrentUserId: vi.fn().mockResolvedValue('test-user-id'),
+  }),
+}))
+
+// Mock sync functions
+vi.mock('~/lib/sync', () => ({
+  syncCollectionsToRemote: vi.fn().mockResolvedValue(undefined),
+}))
+
 describe('useCollections', () => {
   let composable: ReturnType<typeof useCollections>
 
@@ -50,7 +62,7 @@ describe('useCollections', () => {
       mockSqliteConnection.all.mockResolvedValue([
         {
           id: 'mock-uuid-1',
-          user_id: 'default-user',
+          user_id: 'test-user-id',
           name: 'Test Collection',
           created_at: expect.any(Number),
           updated_at: expect.any(Number),
@@ -61,7 +73,7 @@ describe('useCollections', () => {
 
       expect(collection).toEqual({
         id: 'mock-uuid-1',
-        user_id: 'default-user',
+        user_id: 'test-user-id',
         name: 'Test Collection',
         created_at: expect.any(Number),
         updated_at: expect.any(Number),
@@ -74,7 +86,7 @@ describe('useCollections', () => {
       )
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
         'INSERT INTO collections (id, user_id, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-        ['mock-uuid-1', 'default-user', 'Test Collection', expect.any(Number), expect.any(Number)]
+        ['mock-uuid-1', 'test-user-id', 'Test Collection', expect.any(Number), expect.any(Number)]
       )
     })
 
@@ -109,10 +121,17 @@ describe('useCollections', () => {
     it('should soft delete a collection', async () => {
       await composable.deleteCollection('test-id')
 
-      // Verify SQLite calls
-      expect(mockSqliteConnection.run).toHaveBeenCalledWith(
-        'UPDATE collections SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL',
-        [expect.any(Number), 'test-id']
+      // Verify SQLite calls - should delete cards first, then collection
+      expect(mockSqliteConnection.run).toHaveBeenCalledTimes(2)
+      expect(mockSqliteConnection.run).toHaveBeenNthCalledWith(
+        1,
+        'UPDATE cards SET deleted_at = ?, updated_at = ? WHERE collection_id = ? AND deleted_at IS NULL',
+        [expect.any(Number), expect.any(Number), 'test-id']
+      )
+      expect(mockSqliteConnection.run).toHaveBeenNthCalledWith(
+        2,
+        'UPDATE collections SET deleted_at = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
+        [expect.any(Number), expect.any(Number), 'test-id']
       )
     })
   })
