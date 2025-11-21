@@ -19,7 +19,7 @@ import BackgroundEffects from '~/components/BackgroundEffects.vue'
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
-  min-height: 100vh;
+  height: 100vh;
   background: white;
   position: relative;
 }
@@ -28,15 +28,6 @@ import BackgroundEffects from '~/components/BackgroundEffects.vue'
   position: relative;
   z-index: 1;
   isolation: isolate;
-}
-
-/* Ensure the viewport meta tag is properly configured */
-@supports (padding: max(0px)) {
-  .app-container {
-    padding-top: max(env(safe-area-inset-top), 0px);
-    padding-bottom: max(env(safe-area-inset-bottom), 0px);
-    padding-left: max(env(safe-area-inset-left), 0px);
-    padding-right: max(env(safe-area-inset-right), 0px);
-  }
+  height: 100%;
 }
 </style>

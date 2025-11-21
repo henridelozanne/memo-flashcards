@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen p-6">
+  <div class="h-full p-6">
     <!-- Header with settings button -->
     <PageHeader title="Remember" test-id="heading-collections">
       <template #actions>

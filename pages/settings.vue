@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen p-6">
+  <div class="h-full p-6">
     <!-- Header -->
     <PageHeader :title="$t('settings.title')" :back-button-visible="true" @back="$router.back()" />
 
