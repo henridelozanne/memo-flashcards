@@ -1,5 +1,6 @@
 import type { RouteLocationNormalized } from 'vue-router'
 import { useUserProfileStore } from '~/store/userProfile'
+import { syncUserProfileFromRemote, syncUserProfileToRemote } from '~/lib/sync'
 
 // @ts-expect-error - Auto-imported by Nuxt
 export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => {
@@ -10,8 +11,25 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
 
   const userProfileStore = useUserProfileStore()
 
-  // Load user data from Supabase if not already loaded
+  // Load user data from SQLite (with bidirectional sync)
   if (userProfileStore.hasCompletedOnboarding === null) {
+    // Sync from remote to local (blocking)
+    try {
+      await syncUserProfileFromRemote()
+    } catch (error) {
+      console.error('[MIDDLEWARE] Failed to sync profile from remote at startup:', error)
+      // Continue anyway - user might be offline
+    }
+
+    // Sync from local to remote if local is newer (non-blocking)
+    try {
+      await syncUserProfileToRemote()
+    } catch (error) {
+      console.error('[MIDDLEWARE] Failed to sync profile to remote at startup:', error)
+      // Continue anyway - user might be offline
+    }
+
+    // Load from local SQLite
     await userProfileStore.loadUserData()
   }
 

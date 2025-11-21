@@ -48,6 +48,20 @@ export interface Meta {
   value: unknown
 }
 
+// User profile
+export interface UserProfile {
+  id: string
+  user_id: string
+  first_name: string
+  goal: string
+  situation: string
+  notification_hour: string
+  language: string
+  onboarding_completed_at: number | null
+  created_at: number
+  updated_at: number
+}
+
 // User choice for review responses
 export interface UserChoice {
   value: boolean

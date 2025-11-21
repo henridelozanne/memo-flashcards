@@ -76,7 +76,9 @@ describe('SettingsItem', () => {
     })
 
     const button = wrapper.find('button')
-    expect(button.classes()).toContain('rounded-xl')
+    expect(button.classes()).toContain('rounded-[15px]')
     expect(button.classes()).toContain('flex')
+    expect(button.classes()).toContain('border')
+    expect(button.classes()).toContain('shadow-[0px_4px_32px_#0000000a]')
   })
 })

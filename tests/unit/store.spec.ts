@@ -4,12 +4,18 @@ import useAppStore from '~/store/app'
 import { useOnboardingStore } from '~/store/onboarding'
 import { useUserProfileStore } from '~/store/userProfile'
 
-// Mock useSupabaseAuth composable
+// Mock useUserProfile composable
 const mockLoadUserProfile = vi.fn()
+
+vi.mock('@/composables/useUserProfile', () => ({
+  useUserProfile: () => ({
+    loadUserProfile: mockLoadUserProfile,
+  }),
+}))
 
 vi.mock('@/composables/useSupabaseAuth', () => ({
   default: () => ({
-    loadUserProfile: mockLoadUserProfile,
+    getCurrentUserId: vi.fn().mockResolvedValue('user-123'),
   }),
 }))
 
@@ -45,14 +51,18 @@ describe('user profile store', () => {
     expect(store.language).toBe('en')
   })
 
-  it('should load all user data from Supabase when onboarding is completed', async () => {
+  it('should load all user data from SQLite when onboarding is completed', async () => {
     mockLoadUserProfile.mockResolvedValue({
-      firstName: 'John',
+      id: 'profile-123',
+      user_id: 'user-123',
+      first_name: 'John',
       goal: 'learn',
       situation: 'student',
-      notificationHour: '09:00',
+      notification_hour: '09:00',
       language: 'fr',
-      hasCompletedOnboarding: true,
+      onboarding_completed_at: Date.now(),
+      created_at: Date.now(),
+      updated_at: Date.now(),
     })
     const store = useUserProfileStore()
 

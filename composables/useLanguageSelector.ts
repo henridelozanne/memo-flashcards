@@ -2,11 +2,14 @@ import { ref, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserProfileStore } from '~/store/userProfile'
 import useSupabaseAuth from '~/composables/useSupabaseAuth'
+import { useUserProfile } from '~/composables/useUserProfile'
+import { syncUserProfileToRemote } from '~/lib/sync'
 
 export function useLanguageSelector() {
   const { t, locale } = useI18n()
   const userProfileStore = useUserProfileStore()
-  const { updateLanguage } = useSupabaseAuth()
+  const { getCurrentUserId } = useSupabaseAuth()
+  const { updateLanguage: updateLanguageLocal } = useUserProfile()
 
   const languageSelect = ref<HTMLSelectElement | null>(null)
   const selectedLanguage = ref<string>('')
@@ -42,10 +45,21 @@ export function useLanguageSelector() {
     if (selectedLanguage.value === initialLanguage.value) return
 
     try {
-      await updateLanguage(selectedLanguage.value)
+      const userId = await getCurrentUserId()
+
+      // Update in SQLite local
+      await updateLanguageLocal(userId, selectedLanguage.value)
+
+      // Update store
+      userProfileStore.language = selectedLanguage.value
 
       // Changer la locale de l'application
       locale.value = selectedLanguage.value
+
+      // Sync to Supabase (non-blocking)
+      syncUserProfileToRemote().catch((err) => {
+        console.error('Failed to sync language to remote:', err)
+      })
 
       statusMessage.value = {
         type: 'success',

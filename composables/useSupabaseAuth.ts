@@ -63,83 +63,6 @@ export default function useSupabaseAuth() {
     return userId.value
   }
 
-  async function saveUserProfile() {
-    if (!userId.value) {
-      throw new Error('User ID not available')
-    }
-
-    try {
-      const userProfileStore = useUserProfileStore()
-      const supabase = await getSupabase()
-
-      const { error: upsertError } = await supabase.from('user_profiles').upsert({
-        id: userId.value,
-        first_name: userProfileStore.firstName,
-        goal: userProfileStore.goal,
-        situation: userProfileStore.situation,
-        notification_hour: userProfileStore.notificationHour,
-        language: userProfileStore.language,
-        onboarding_completed_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-
-      if (upsertError) throw upsertError
-    } catch (e) {
-      // Don't throw - allow onboarding to complete even if save fails
-      console.error('Error saving user profile:', e)
-    }
-  }
-
-  async function updateNotificationHour(notificationHour: string) {
-    const currentUserId = await getCurrentUserId()
-
-    try {
-      const supabase = await getSupabase()
-
-      const { error: updateError } = await supabase
-        .from('user_profiles')
-        .update({
-          notification_hour: notificationHour,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', currentUserId)
-
-      if (updateError) throw updateError
-
-      // Update store
-      const userProfileStore = useUserProfileStore()
-      userProfileStore.notificationHour = notificationHour
-    } catch (e) {
-      console.error('Error updating notification hour:', e)
-      throw e
-    }
-  }
-
-  async function updateLanguage(language: string) {
-    const currentUserId = await getCurrentUserId()
-
-    try {
-      const supabase = await getSupabase()
-
-      const { error: updateError } = await supabase
-        .from('user_profiles')
-        .update({
-          language,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', currentUserId)
-
-      if (updateError) throw updateError
-
-      // Update store
-      const userProfileStore = useUserProfileStore()
-      userProfileStore.language = language
-    } catch (e) {
-      console.error('Error updating language:', e)
-      throw e
-    }
-  }
-
   async function loadUserProfile() {
     try {
       const supabase = await getSupabase()
@@ -173,9 +96,6 @@ export default function useSupabaseAuth() {
   return {
     userId,
     initAuth,
-    saveUserProfile,
-    updateNotificationHour,
-    updateLanguage,
     loadUserProfile,
     getCurrentUserId,
   }

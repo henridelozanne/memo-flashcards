@@ -60,6 +60,21 @@ export const useDatabase = () => {
         correct_answers INTEGER NOT NULL DEFAULT 0,
         total_reviews INTEGER NOT NULL DEFAULT 0
       );
+
+      CREATE TABLE IF NOT EXISTS user_profiles (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        first_name TEXT,
+        goal TEXT,
+        situation TEXT,
+        notification_hour TEXT DEFAULT '20:00',
+        language TEXT DEFAULT 'en',
+        onboarding_completed_at INTEGER,
+        created_at INTEGER NOT NULL,
+        updated_at INTEGER NOT NULL
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_user_profiles_user_id ON user_profiles(user_id);
     `)
 
     return connection

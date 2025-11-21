@@ -11,7 +11,7 @@ export const useUserProfileStore = defineStore('userProfile', () => {
   const language = ref<string>('en')
   const hasCompletedOnboarding = ref<boolean | null>(null) // null = not checked yet
 
-  // Charger toutes les données utilisateur depuis Supabase
+  // Charger toutes les données utilisateur depuis SQLite local
   async function loadUserData(): Promise<void> {
     // Only run once
     if (hasCompletedOnboarding.value !== null) return
@@ -19,17 +19,21 @@ export const useUserProfileStore = defineStore('userProfile', () => {
     try {
       // Lazy import to avoid circular dependencies
       const useSupabaseAuth = (await import('~/composables/useSupabaseAuth')).default
-      const { loadUserProfile } = useSupabaseAuth()
-      const profile = await loadUserProfile()
+      const { getCurrentUserId } = useSupabaseAuth()
+      const currentUserId = await getCurrentUserId()
+
+      const { useUserProfile } = await import('~/composables/useUserProfile')
+      const { loadUserProfile } = useUserProfile()
+      const profile = await loadUserProfile(currentUserId)
 
       if (profile) {
-        // Populate all fields from Supabase
-        firstName.value = profile.firstName
+        // Populate all fields from SQLite
+        firstName.value = profile.first_name
         goal.value = profile.goal
         situation.value = profile.situation
-        notificationHour.value = profile.notificationHour
+        notificationHour.value = profile.notification_hour
         language.value = profile.language || detectSystemLanguage()
-        hasCompletedOnboarding.value = profile.hasCompletedOnboarding
+        hasCompletedOnboarding.value = !!profile.onboarding_completed_at
       } else {
         // Premier lancement : détecter la langue du système
         language.value = detectSystemLanguage()

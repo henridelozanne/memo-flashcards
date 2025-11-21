@@ -89,25 +89,44 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
+import { useUserProfileStore } from '~/store/userProfile'
 import useSupabaseAuth from '~/composables/useSupabaseAuth'
+import { useUserProfile } from '~/composables/useUserProfile'
+import { syncUserProfileToRemote } from '~/lib/sync'
 
 const router = useRouter()
 const onboardingStore = useOnboardingStore()
+const userProfileStore = useUserProfileStore()
 const selectedPlan = ref<'monthly' | 'lifetime' | null>(null)
-const { initAuth, saveUserProfile } = useSupabaseAuth()
+const { initAuth, getCurrentUserId } = useSupabaseAuth()
+const { saveUserProfile: saveUserProfileLocal } = useUserProfile()
 
 async function completeOnboarding() {
   try {
     // 1. Authentification silencieuse via Supabase
     await initAuth()
+    const userId = await getCurrentUserId()
 
-    // 2. Sauvegarder les données d'onboarding dans Supabase
-    await saveUserProfile()
+    // 2. Sauvegarder les données d'onboarding dans SQLite local
+    await saveUserProfileLocal({
+      userId,
+      firstName: userProfileStore.firstName,
+      goal: userProfileStore.goal,
+      situation: userProfileStore.situation,
+      notificationHour: userProfileStore.notificationHour,
+      language: userProfileStore.language,
+      onboardingCompletedAt: Date.now(),
+    })
 
     // 3. Marquer l'onboarding comme terminé
     onboardingStore.completeOnboarding()
 
-    // 4. Rediriger vers l'écran principal
+    // 4. Sync vers Supabase (non-bloquant)
+    syncUserProfileToRemote().catch((err) => {
+      console.error('Failed to sync profile to remote after onboarding:', err)
+    })
+
+    // 5. Rediriger vers l'écran principal
     router.push('/')
   } catch (e) {
     console.error('Error completing onboarding:', e)

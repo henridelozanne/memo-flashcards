@@ -2,11 +2,14 @@ import { ref, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserProfileStore } from '~/store/userProfile'
 import useSupabaseAuth from '~/composables/useSupabaseAuth'
+import { useUserProfile } from '~/composables/useUserProfile'
+import { syncUserProfileToRemote } from '~/lib/sync'
 
 export function useNotificationTime() {
   const { t } = useI18n()
   const userProfileStore = useUserProfileStore()
-  const { updateNotificationHour } = useSupabaseAuth()
+  const { getCurrentUserId } = useSupabaseAuth()
+  const { updateNotificationHour: updateNotificationHourLocal } = useUserProfile()
 
   const timeInput = ref<HTMLInputElement | null>(null)
   const selectedTime = ref<string>('')
@@ -42,7 +45,19 @@ export function useNotificationTime() {
     if (selectedTime.value === initialTime.value) return
 
     try {
-      await updateNotificationHour(selectedTime.value)
+      const userId = await getCurrentUserId()
+
+      // Update in SQLite local
+      await updateNotificationHourLocal(userId, selectedTime.value)
+
+      // Update store
+      userProfileStore.notificationHour = selectedTime.value
+
+      // Sync to Supabase (non-blocking)
+      syncUserProfileToRemote().catch((err) => {
+        console.error('Failed to sync notification hour to remote:', err)
+      })
+
       statusMessage.value = {
         type: 'success',
         text: t('settings.reminderTimeUpdated'),

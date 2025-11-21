@@ -1,5 +1,5 @@
 <template>
-    <button
+  <button
     class="relative z-10 flex w-full items-center rounded-[15px] border border-gray-100 p-4 shadow-[0px_4px_32px_#0000000a] transition hover:bg-[var(--color-gray-50)]"
     style="background-color: #ffffff"
     @click="$emit('click')"
