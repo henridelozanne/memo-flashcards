@@ -1,8 +1,5 @@
 <template>
-  <div class="onboarding-layout fixed inset-0 flex flex-col bg-white" style="padding-top: env(safe-area-inset-top)">
-    <!-- Fond d'écran avec effets -->
-    <BackgroundEffects />
-
+  <div class="onboarding-layout" style="padding-top: env(safe-area-inset-top)">
     <!-- Header fixe avec flèche retour et progress bar (masqué sur welcome) -->
     <div v-show="!isWelcomePage" class="relative z-10 flex-shrink-0 px-6 pb-4 pt-6">
       <div class="flex items-center justify-center" style="height: 24px">
@@ -113,6 +110,13 @@ defineOptions({ name: 'OnboardingLayout' })
 </script>
 
 <style scoped>
+.onboarding-layout {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;

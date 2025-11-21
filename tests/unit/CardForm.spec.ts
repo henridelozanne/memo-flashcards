@@ -121,61 +121,16 @@ describe('CardForm', () => {
     expect(wrapper.emitted('cancel')).toBeTruthy()
   })
 
-  it('shows "add another" button when showAddAnother is true', () => {
-    const wrapper = mount(CardForm, {
-      props: {
-        showAddAnother: true,
-      },
-      global: {
-        plugins: [i18n],
-      },
-    })
-
-    expect(wrapper.find('[data-testid="add-card-another"]').exists()).toBe(true)
-  })
-
-  it('hides "add another" button when showAddAnother is false', () => {
-    const wrapper = mount(CardForm, {
-      props: {
-        showAddAnother: false,
-      },
-      global: {
-        plugins: [i18n],
-      },
-    })
-
-    expect(wrapper.find('[data-testid="add-card-another"]').exists()).toBe(false)
-  })
-
-  it('emits addAnother event when add another button clicked', async () => {
-    const wrapper = mount(CardForm, {
-      props: {
-        showAddAnother: true,
-      },
-      global: {
-        plugins: [i18n],
-      },
-    })
-
-    await wrapper.find('[data-testid="front-input"]').setValue('Question')
-    await wrapper.find('[data-testid="back-input"]').setValue('Réponse')
-    await wrapper.find('[data-testid="add-card-another"]').trigger('click')
-
-    expect(wrapper.emitted('addAnother')).toBeTruthy()
-  })
-
   it('disables buttons when isSubmitting is true', () => {
     const wrapper = mount(CardForm, {
       props: {
         isSubmitting: true,
-        showAddAnother: true,
       },
       global: {
         plugins: [i18n],
       },
     })
 
-    expect(wrapper.find('[data-testid="add-card-another"]').attributes('disabled')).toBeDefined()
     expect(wrapper.find('[data-testid="add-card-submit"]').attributes('disabled')).toBeDefined()
   })
 

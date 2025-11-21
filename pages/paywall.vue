@@ -1,7 +1,5 @@
 <template>
   <div class="paywall-container flex min-h-screen flex-col">
-    <BackgroundEffects />
-
     <!-- Bouton fermer en haut à droite -->
     <button class="close-button relative z-10" @click="skipPaywall">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -165,7 +163,6 @@ defineOptions({ name: 'OnboardingPaywallPage' })
   position: absolute;
   top: 16px;
   right: 16px;
-  z-index: 10;
   padding: 8px;
   color: #374151;
   transition: color 0.2s;

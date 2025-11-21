@@ -1,8 +1,6 @@
 <template>
   <div class="relative min-h-screen p-6">
-    <BackgroundEffects />
-
-    <div class="relative z-10">
+    <div>
       <PageHeader :title="$t('settings.legalNotice')" back-button-visible @back="$router.back()" />
 
       <!-- Content -->
