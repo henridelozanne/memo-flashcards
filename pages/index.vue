@@ -1,7 +1,12 @@
 <template>
   <div class="h-full p-6">
-    <!-- Header with settings button -->
+    <!-- Header with stats and settings buttons -->
     <PageHeader title="Remember" test-id="heading-collections">
+      <template #leftActions>
+        <BaseButton variant="icon" aria-label="Statistics" @click="$router.push('/stats')">
+          <IconStats />
+        </BaseButton>
+      </template>
       <template #actions>
         <BaseButton variant="icon" aria-label="Settings" @click="$router.push('/settings')">
           <IconSettings />
@@ -71,6 +76,7 @@ import DailyReviewButton from '~/components/DailyReviewButton.vue'
 import PageHeader from '~/components/PageHeader.vue'
 import BaseButton from '~/components/Button.vue'
 import IconSettings from '~/components/icons/IconSettings.vue'
+import IconStats from '~/components/icons/IconStats.vue'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'HomePage' })
