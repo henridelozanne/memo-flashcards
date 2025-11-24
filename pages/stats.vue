@@ -78,14 +78,8 @@
 
         <!-- Rythme de révision -->
         <div v-else-if="currentTab === 'rhythm'" key="rhythm" class="space-y-4">
-          <div class="rounded-[15px] bg-[var(--color-white)] p-6 text-center shadow-[0px_4px_32px_#0000000a]">
-            <div class="mb-2 text-sm font-medium text-[var(--color-secondary)]">{{ $t('stats.currentStreak') }}</div>
-            <div class="py-8 text-[var(--color-secondary)]">{{ $t('stats.streakComponentComing') }}</div>
-          </div>
-
-          <div class="rounded-[15px] bg-[var(--color-white)] p-6 text-center shadow-[0px_4px_32px_#0000000a]">
-            <div class="mb-2 text-sm font-medium text-[var(--color-secondary)]">{{ $t('stats.monthCalendar') }}</div>
-            <div class="py-8 text-[var(--color-secondary)]">{{ $t('stats.calendarComing') }}</div>
+          <div class="rounded-[15px] bg-[var(--color-white)] p-6 shadow-[0px_4px_32px_#0000000a]">
+            <MonthCalendar />
           </div>
 
           <div class="rounded-[15px] bg-[var(--color-white)] p-4 shadow-[0px_4px_32px_#0000000a]">
@@ -142,6 +136,7 @@ import ProgressBar from '~/components/ProgressBar.vue'
 import ProgressCircle from '~/components/ProgressCircle.vue'
 import StatCard from '~/components/StatCard.vue'
 import CompartmentBarChart from '~/components/CompartmentBarChart.vue'
+import MonthCalendar from '~/components/MonthCalendar.vue'
 import { useStatistics } from '~/composables/useStatistics'
 
 defineOptions({ name: 'StatsPage' })

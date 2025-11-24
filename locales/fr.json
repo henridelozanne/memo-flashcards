@@ -1,7 +1,8 @@
 {
   "date": {
     "today": "Aujourd'hui",
-    "tomorrow": "Demain"
+    "tomorrow": "Demain",
+    "weekDays": ["L", "M", "M", "J", "V", "S", "D"]
   },
   "review": {
     "showAnswer": "Afficher la réponse",
