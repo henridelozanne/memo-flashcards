@@ -4,6 +4,25 @@ import { useDatabase } from '~/composables/useDatabase'
 
 vi.mock('~/composables/useDatabase')
 
+// Helper pour ajouter les mocks pour les statistiques de rythme (après overdueCards)
+function addRhythmStatsMocks(mockDb: any, hasFirstCard: boolean = false) {
+  // Mock pour first card date
+  mockDb.all.mockResolvedValueOnce([{ first_created: hasFirstCard ? Date.now() : null }])
+
+  if (hasFirstCard) {
+    // Mock pour days with review all time (seulement si firstCardDate existe)
+    mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+  }
+
+  // Mock pour days with review this month (toujours exécuté)
+  mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+
+  if (hasFirstCard) {
+    // Mock pour les dates de révision pour streaks (seulement si firstCardDate existe)
+    mockDb.all.mockResolvedValueOnce([])
+  }
+}
+
 describe('useStatistics', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -50,6 +69,8 @@ describe('useStatistics', () => {
       mockDb.all.mockResolvedValueOnce([{ count: 8 }])
       // Mock pour les cartes en retard
       mockDb.all.mockResolvedValueOnce([{ count: 3 }])
+      // Mocks pour les stats de rythme
+      addRhythmStatsMocks(mockDb, false)
 
       const { loadStatistics, overdueCards } = useStatistics()
       await loadStatistics()
@@ -88,6 +109,7 @@ describe('useStatistics', () => {
       mockDb.all.mockResolvedValueOnce([]) // compartiments
       mockDb.all.mockResolvedValueOnce([{ count: 8 }]) // coverage
       mockDb.all.mockResolvedValueOnce([{ count: 0 }]) // overdue (aucune car 9h > 00h00)
+      addRhythmStatsMocks(mockDb, false)
 
       const { loadStatistics, overdueCards } = useStatistics()
       await loadStatistics()
@@ -123,6 +145,7 @@ describe('useStatistics', () => {
       mockDb.all.mockResolvedValueOnce([]) // compartiments
       mockDb.all.mockResolvedValueOnce([{ count: 8 }]) // coverage
       mockDb.all.mockResolvedValueOnce([{ count: 2 }]) // overdue (hier à 23h < 00h00 aujourd'hui)
+      addRhythmStatsMocks(mockDb, false)
 
       const { loadStatistics, overdueCards } = useStatistics()
       await loadStatistics()
@@ -151,9 +174,10 @@ describe('useStatistics', () => {
       mockDb.all.mockResolvedValueOnce([{ count: 5 }])
       mockDb.all.mockResolvedValueOnce([{ count: 0 }])
       mockDb.all.mockResolvedValueOnce([{ count: 8 }])
-      mockDb.all.mockResolvedValueOnce([])
+      mockDb.all.mockResolvedValueOnce([]) // compartiments
       mockDb.all.mockResolvedValueOnce([{ count: 12 }]) // 12 cards reviewed at least once
-      mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+      mockDb.all.mockResolvedValueOnce([{ count: 0 }]) // overdue
+      addRhythmStatsMocks(mockDb, false)
 
       const { loadStatistics, globalCoverageRate } = useStatistics()
       await loadStatistics()
@@ -183,6 +207,7 @@ describe('useStatistics', () => {
       mockDb.all.mockResolvedValueOnce([])
       mockDb.all.mockResolvedValueOnce([{ count: 0 }])
       mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+      addRhythmStatsMocks(mockDb, false)
 
       const { loadStatistics, globalCoverageRate } = useStatistics()
       await loadStatistics()
@@ -218,6 +243,7 @@ describe('useStatistics', () => {
       ])
       mockDb.all.mockResolvedValueOnce([{ count: 12 }])
       mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+      addRhythmStatsMocks(mockDb, false)
 
       const { loadStatistics, compartmentData } = useStatistics()
       await loadStatistics()
@@ -250,6 +276,7 @@ describe('useStatistics', () => {
       mockDb.all.mockResolvedValueOnce([])
       mockDb.all.mockResolvedValueOnce([{ count: 12 }])
       mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+      addRhythmStatsMocks(mockDb, false)
 
       const { loadStatistics, globalSuccessRate } = useStatistics()
       await loadStatistics()
@@ -278,11 +305,199 @@ describe('useStatistics', () => {
       mockDb.all.mockResolvedValueOnce([])
       mockDb.all.mockResolvedValueOnce([{ count: 0 }])
       mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+      addRhythmStatsMocks(mockDb, false)
 
       const { loadStatistics, globalSuccessRate } = useStatistics()
       await loadStatistics()
 
       expect(globalSuccessRate.value).toBe(0)
+    })
+  })
+
+  describe('rhythm statistics', () => {
+    describe('daysWithReviewAllTime', () => {
+      it('calculates percentage of days with reviews since first card', async () => {
+        const mockDb = {
+          all: vi.fn(),
+        }
+
+        vi.mocked(useDatabase).mockReturnValue({
+          getDbConnection: vi.fn().mockResolvedValue(mockDb),
+        } as any)
+
+        const firstCardDate = new Date('2025-11-01T00:00:00').getTime() // 24 jours avant
+
+        // Setup mocks pour toutes les requêtes
+        mockDb.all.mockResolvedValueOnce([{ count: 20 }]) // totalCards
+        mockDb.all.mockResolvedValueOnce([{ count: 2 }]) // totalCollections
+        mockDb.all.mockResolvedValueOnce([{ count: 50 }]) // totalReviews
+        mockDb.all.mockResolvedValueOnce([{ count: 5 }]) // totalSessions
+        mockDb.all.mockResolvedValueOnce([{ total: 50, correct: 40 }]) // success rate
+        mockDb.all.mockResolvedValueOnce([{ count: 1 }]) // cartes créées aujourd'hui
+        mockDb.all.mockResolvedValueOnce([{ count: 5 }]) // cartes créées ce mois
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }]) // cartes révisées aujourd'hui
+        mockDb.all.mockResolvedValueOnce([{ count: 8 }]) // cartes révisées ce mois
+        mockDb.all.mockResolvedValueOnce([]) // compartiments
+        mockDb.all.mockResolvedValueOnce([{ count: 8 }]) // coverage
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }]) // overdue
+        mockDb.all.mockResolvedValueOnce([{ first_created: firstCardDate }]) // first card date
+        mockDb.all.mockResolvedValueOnce([{ count: 18 }]) // 18 jours distincts avec révision
+        mockDb.all.mockResolvedValueOnce([{ count: 10 }]) // jours ce mois
+        mockDb.all.mockResolvedValueOnce([]) // dates de révision pour streaks
+
+        const { loadStatistics, daysWithReviewAllTime } = useStatistics()
+        await loadStatistics()
+
+        // 18 jours avec révision sur 24 jours = 75%
+        expect(daysWithReviewAllTime.value).toBe(75)
+      })
+
+      it('returns 0 when no cards exist', async () => {
+        const mockDb = {
+          all: vi.fn(),
+        }
+
+        vi.mocked(useDatabase).mockReturnValue({
+          getDbConnection: vi.fn().mockResolvedValue(mockDb),
+        } as any)
+
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }]) // totalCards
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ total: 0, correct: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ first_created: null }]) // pas de première carte
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+
+        const { loadStatistics, daysWithReviewAllTime } = useStatistics()
+        await loadStatistics()
+
+        expect(daysWithReviewAllTime.value).toBe(0)
+      })
+    })
+
+    describe('daysWithReviewThisMonth', () => {
+      it('calculates percentage of days with reviews this month', async () => {
+        const mockDb = {
+          all: vi.fn(),
+        }
+
+        vi.mocked(useDatabase).mockReturnValue({
+          getDbConnection: vi.fn().mockResolvedValue(mockDb),
+        } as any)
+
+        const now = new Date('2025-11-24T10:00:00') // 24 jours écoulés en novembre
+        const firstCardDate = new Date('2025-11-01T00:00:00').getTime()
+
+        mockDb.all.mockResolvedValueOnce([{ count: 20 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 2 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 50 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 5 }])
+        mockDb.all.mockResolvedValueOnce([{ total: 50, correct: 40 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 1 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 5 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 8 }])
+        mockDb.all.mockResolvedValueOnce([])
+        mockDb.all.mockResolvedValueOnce([{ count: 8 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ first_created: firstCardDate }])
+        mockDb.all.mockResolvedValueOnce([{ count: 18 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 20 }]) // 20 jours distincts ce mois
+        mockDb.all.mockResolvedValueOnce([])
+
+        const { loadStatistics, daysWithReviewThisMonth } = useStatistics()
+        await loadStatistics()
+
+        // 20 jours avec révision sur 24 jours = 83%
+        expect(daysWithReviewThisMonth.value).toBe(83)
+      })
+    })
+
+    describe('streaks', () => {
+      it('calculates longest streak with reviews', async () => {
+        const mockDb = {
+          all: vi.fn(),
+        }
+
+        vi.mocked(useDatabase).mockReturnValue({
+          getDbConnection: vi.fn().mockResolvedValue(mockDb),
+        } as any)
+
+        const firstCardDate = new Date('2025-11-01T00:00:00').getTime()
+
+        mockDb.all.mockResolvedValueOnce([{ count: 20 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 2 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 50 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 5 }])
+        mockDb.all.mockResolvedValueOnce([{ total: 50, correct: 40 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 1 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 5 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 8 }])
+        mockDb.all.mockResolvedValueOnce([])
+        mockDb.all.mockResolvedValueOnce([{ count: 8 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ first_created: firstCardDate }])
+        mockDb.all.mockResolvedValueOnce([{ count: 18 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 20 }])
+        mockDb.all.mockResolvedValueOnce([
+          { review_date: '2025-11-01' },
+          { review_date: '2025-11-02' },
+          { review_date: '2025-11-03' },
+          { review_date: '2025-11-05' },
+          { review_date: '2025-11-06' },
+          { review_date: '2025-11-07' },
+          { review_date: '2025-11-08' },
+          { review_date: '2025-11-09' },
+        ])
+
+        const { loadStatistics, longestStreakWith, longestStreakWithout } = useStatistics()
+        await loadStatistics()
+
+        // Plus longue série : 01-03 (3 jours) puis 05-09 (5 jours) = 5 jours max
+        expect(longestStreakWith.value).toBe(5)
+        // Plus longue série sans : 04 (1 jour) = 1 jour max (pas de calcul après 09 car lastpour allDaysResult vide après)
+        expect(longestStreakWithout.value).toBeGreaterThan(0)
+      })
+
+      it('returns 0 for streaks when no reviews exist', async () => {
+        const mockDb = {
+          all: vi.fn(),
+        }
+
+        vi.mocked(useDatabase).mockReturnValue({
+          getDbConnection: vi.fn().mockResolvedValue(mockDb),
+        } as any)
+
+        mockDb.all.mockResolvedValueOnce([{ count: 20 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 2 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ total: 0, correct: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ first_created: null }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+
+        const { loadStatistics, longestStreakWith, longestStreakWithout } = useStatistics()
+        await loadStatistics()
+
+        expect(longestStreakWith.value).toBe(0)
+        expect(longestStreakWithout.value).toBe(0)
+      })
     })
   })
 })

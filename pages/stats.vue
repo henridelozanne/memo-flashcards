@@ -92,19 +92,27 @@
             <div class="mb-3 text-sm text-[var(--color-secondary)]">
               {{ $t('stats.daysWithReviewAllTime') }}
             </div>
-            <ProgressBar :current="76" :total="100" />
+            <ProgressBar :current="daysWithReviewAllTime" :total="100" :full-width="true" :show-tooltip="true" />
           </div>
 
           <div class="rounded-[15px] bg-[var(--color-white)] p-4 shadow-[0px_4px_32px_#0000000a]">
             <div class="mb-3 text-sm text-[var(--color-secondary)]">
               {{ $t('stats.daysWithReviewThisMonth') }}
             </div>
-            <ProgressBar :current="88" :total="100" />
+            <ProgressBar :current="daysWithReviewThisMonth" :total="100" :full-width="true" :show-tooltip="true" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <StatCard :label="$t('stats.longestStreakWith')" :value="14" :subtitle="$t('stats.days')" />
-            <StatCard :label="$t('stats.longestStreakWithout')" :value="5" :subtitle="$t('stats.days')" />
+            <StatCard
+              :label="$t('stats.longestStreakWith')"
+              :value="longestStreakWith"
+              :subtitle="longestStreakWith <= 1 ? $t('stats.day') : $t('stats.days')"
+            />
+            <StatCard
+              :label="$t('stats.longestStreakWithout')"
+              :value="longestStreakWithout"
+              :subtitle="longestStreakWithout <= 1 ? $t('stats.day') : $t('stats.days')"
+            />
           </div>
         </div>
 
@@ -157,6 +165,10 @@ const {
   compartmentData,
   globalCoverageRate,
   overdueCards,
+  daysWithReviewAllTime,
+  daysWithReviewThisMonth,
+  longestStreakWith,
+  longestStreakWithout,
   loadStatistics,
 } = useStatistics()
 

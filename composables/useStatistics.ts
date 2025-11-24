@@ -14,6 +14,10 @@ export const useStatistics = () => {
   const compartmentData = ref<number[]>([0, 0, 0, 0, 0])
   const globalCoverageRate = ref(0)
   const overdueCards = ref(0)
+  const daysWithReviewAllTime = ref(0)
+  const daysWithReviewThisMonth = ref(0)
+  const longestStreakWith = ref(0)
+  const longestStreakWithout = ref(0)
 
   const loadStatistics = async () => {
     const { getDbConnection } = useDatabase()
@@ -115,6 +119,80 @@ export const useStatistics = () => {
       [startOfToday]
     )
     overdueCards.value = overdueResult[0]?.count || 0
+
+    // Get days with review all time
+    // Count distinct days where at least one review was done
+    const firstCardResult = await db.all<{ first_created: number }>(
+      'SELECT MIN(created_at) as first_created FROM cards WHERE deleted_at IS NULL'
+    )
+    const firstCardDate = firstCardResult[0]?.first_created
+
+    if (firstCardDate) {
+      const daysSinceFirstCard = Math.floor((now.getTime() - firstCardDate) / (1000 * 60 * 60 * 24)) + 1
+      const daysWithReviewResult = await db.all<{ count: number }>(
+        `SELECT COUNT(DISTINCT DATE(reviewed_at / 1000, 'unixepoch')) as count 
+         FROM review_logs 
+         WHERE user_id = ?`,
+        ['default-user']
+      )
+      const daysWithReview = daysWithReviewResult[0]?.count || 0
+      daysWithReviewAllTime.value = daysSinceFirstCard > 0 ? Math.round((daysWithReview / daysSinceFirstCard) * 100) : 0
+    }
+
+    // Get days with review this month
+    const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime()
+    const currentDay = now.getDate()
+
+    const daysWithReviewThisMonthResult = await db.all<{ count: number }>(
+      `SELECT COUNT(DISTINCT DATE(reviewed_at / 1000, 'unixepoch')) as count 
+       FROM review_logs 
+       WHERE user_id = ? AND reviewed_at >= ?`,
+      ['default-user', startOfCurrentMonth]
+    )
+    const daysWithReviewCount = daysWithReviewThisMonthResult[0]?.count || 0
+    daysWithReviewThisMonth.value = currentDay > 0 ? Math.round((daysWithReviewCount / currentDay) * 100) : 0
+
+    // Calculate streaks (longest with and without reviews)
+    const allDaysResult = await db.all<{ review_date: string }>(
+      `SELECT DISTINCT DATE(reviewed_at / 1000, 'unixepoch') as review_date 
+       FROM review_logs 
+       WHERE user_id = ?
+       ORDER BY review_date`,
+      ['default-user']
+    )
+
+    if (firstCardDate && allDaysResult.length > 0) {
+      const reviewDates = new Set(allDaysResult.map((r) => r.review_date))
+      let currentStreakWith = 0
+      let maxStreakWith = 0
+      let currentStreakWithout = 0
+      let maxStreakWithout = 0
+
+      const startDate = new Date(firstCardDate)
+      const endDate = new Date(now)
+
+      for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+        const dateStr = d.toISOString().split('T')[0]
+
+        if (reviewDates.has(dateStr)) {
+          currentStreakWith++
+          maxStreakWith = Math.max(maxStreakWith, currentStreakWith)
+          if (currentStreakWithout > 0) {
+            maxStreakWithout = Math.max(maxStreakWithout, currentStreakWithout)
+            currentStreakWithout = 0
+          }
+        } else {
+          currentStreakWithout++
+          if (currentStreakWith > 0) {
+            maxStreakWith = Math.max(maxStreakWith, currentStreakWith)
+            currentStreakWith = 0
+          }
+        }
+      }
+
+      longestStreakWith.value = maxStreakWith
+      longestStreakWithout.value = maxStreakWithout
+    }
   }
 
   return {
@@ -130,6 +208,10 @@ export const useStatistics = () => {
     compartmentData,
     globalCoverageRate,
     overdueCards,
+    daysWithReviewAllTime,
+    daysWithReviewThisMonth,
+    longestStreakWith,
+    longestStreakWithout,
     loadStatistics,
   }
 }
