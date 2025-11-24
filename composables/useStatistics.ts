@@ -11,6 +11,7 @@ export const useStatistics = () => {
   const cardsReviewedThisMonth = ref(0)
   const cardsCreatedToday = ref(0)
   const cardsReviewedToday = ref(0)
+  const compartmentData = ref<number[]>([0, 0, 0, 0, 0])
 
   const loadStatistics = async () => {
     const { getDbConnection } = useDatabase()
@@ -83,6 +84,18 @@ export const useStatistics = () => {
       ['default-user', startOfDay]
     )
     cardsReviewedToday.value = cardsReviewedTodayResult[0]?.count || 0
+
+    // Get cards by compartment
+    const compartmentResults = await db.all<{ compartment: number; count: number }>(
+      'SELECT compartment, COUNT(*) as count FROM cards WHERE deleted_at IS NULL GROUP BY compartment ORDER BY compartment'
+    )
+    const newCompartmentData = [0, 0, 0, 0, 0]
+    compartmentResults.forEach((row) => {
+      if (row.compartment >= 1 && row.compartment <= 5) {
+        newCompartmentData[row.compartment - 1] = row.count
+      }
+    })
+    compartmentData.value = newCompartmentData
   }
 
   return {
@@ -95,6 +108,7 @@ export const useStatistics = () => {
     cardsReviewedThisMonth,
     cardsCreatedToday,
     cardsReviewedToday,
+    compartmentData,
     loadStatistics,
   }
 }

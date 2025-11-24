@@ -50,11 +50,11 @@
 
         <!-- Progression -->
         <div v-else-if="currentTab === 'progress'" key="progress" class="space-y-4">
-          <div class="rounded-[15px] bg-[var(--color-white)] p-6 text-center shadow-[0px_4px_32px_#0000000a]">
-            <div class="mb-2 text-sm font-medium text-[var(--color-secondary)]">
+          <div class="rounded-[15px] bg-[var(--color-white)] p-6 shadow-[0px_4px_32px_#0000000a]">
+            <div class="mb-4 text-sm font-medium text-[var(--color-secondary)]">
               {{ $t('stats.cardsByCompartment') }}
             </div>
-            <div class="py-8 text-[var(--color-secondary)]">{{ $t('stats.barChartComing') }}</div>
+            <CompartmentBarChart :compartment-data="compartmentData" />
           </div>
         </div>
 
@@ -114,6 +114,7 @@ import { ref, type ComponentPublicInstance, onMounted } from 'vue'
 import PageHeader from '~/components/PageHeader.vue'
 import ProgressBar from '~/components/ProgressBar.vue'
 import StatCard from '~/components/StatCard.vue'
+import CompartmentBarChart from '~/components/CompartmentBarChart.vue'
 import { useStatistics } from '~/composables/useStatistics'
 
 defineOptions({ name: 'StatsPage' })
@@ -134,6 +135,7 @@ const {
   cardsReviewedThisMonth,
   cardsCreatedToday,
   cardsReviewedToday,
+  compartmentData,
   loadStatistics,
 } = useStatistics()
 
