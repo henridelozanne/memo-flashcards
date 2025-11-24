@@ -26,16 +26,21 @@
       <!-- Jours du mois -->
       <div
         v-for="day in daysInMonth"
-        :key="day"
-        class="aspect-square rounded-lg relative"
+        :key="`${animationKey}-${day}`"
+        class="relative aspect-square rounded-lg day-cell"
         :class="getDayClass(day)"
+        :style="{ animationDelay: `${(day - 1) * 15}ms` }"
       >
         <div class="flex h-full items-center justify-center">
           <span class="text-xs">{{ day }}</span>
         </div>
         <svg
-          v-if="reviewDates.has(`${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`)"
-          class="absolute top-0.5 right-0.5"
+          v-if="
+            reviewDates.has(
+              `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+            )
+          "
+          class="absolute right-0.5 top-0.5"
           width="12"
           height="12"
           viewBox="0 0 24 24"
@@ -61,6 +66,7 @@ defineOptions({ name: 'MonthCalendar' })
 const { tm } = useI18n()
 const currentDate = ref(new Date())
 const reviewDates = ref<Set<string>>(new Set())
+const animationKey = ref(0)
 
 const weekDays = computed(() => tm('date.weekDays') as string[])
 
@@ -92,7 +98,9 @@ function getDayClass(day: number) {
   const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
   const today = new Date()
   const isToday =
-    date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
   const isFuture = date > today
   const hasReview = reviewDates.value.has(dateStr)
 
@@ -134,11 +142,13 @@ async function loadReviewDates() {
 
 function previousMonth() {
   currentDate.value = new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() - 1, 1)
+  animationKey.value += 1
   loadReviewDates()
 }
 
 function nextMonth() {
   currentDate.value = new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() + 1, 1)
+  animationKey.value += 1
   loadReviewDates()
 }
 
@@ -150,5 +160,20 @@ onMounted(() => {
 <style scoped>
 .month-calendar {
   width: 100%;
+}
+
+.day-cell {
+  animation: scaleIn 0.3s ease-out both;
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 </style>
