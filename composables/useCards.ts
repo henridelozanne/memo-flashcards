@@ -5,6 +5,7 @@ import { useDatabase } from './useDatabase'
 import { useDailyReview } from './useDailyReview'
 import { syncCardsToRemote } from '~/lib/sync'
 import useSupabaseAuth from './useSupabaseAuth'
+import { appConfig } from '~/config/app'
 
 const cards = ref<Card[]>([])
 const isLoading = ref(false)
@@ -70,7 +71,8 @@ export const useCards = () => {
       created_at: now,
       updated_at: now,
       compartment: 1,
-      next_review_at: now + 24 * 60 * 60 * 1000, // Tomorrow
+      // Si immediateReviewForNewCards est activé, la prochaine révision est maintenant, sinon demain
+      next_review_at: appConfig.immediateReviewForNewCards ? now : now + 24 * 60 * 60 * 1000,
       archived: false,
       correct_answers: 0,
       total_reviews: 0,

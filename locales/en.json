@@ -108,6 +108,8 @@
     "totalSessions": "Total sessions",
     "globalSuccessRate": "Global success rate",
     "cardsCreatedThisMonth": "Cards created this month",
+    "cardsReviewedThisMonth": "Cards reviewed this month",
+    "cardsCreatedToday": "Cards created today",
     "cardsReviewedToday": "Cards reviewed today",
     "cardsByCompartment": "Distribution by compartment",
     "barChartComing": "Bar chart coming soon",

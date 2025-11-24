@@ -38,6 +38,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
+import { useDailyReview } from '~/composables/useDailyReview'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'CreateCardPage' })
@@ -47,6 +48,7 @@ const router = useRouter()
 const { t } = useI18n()
 const { collections, loadCollections, getCollection } = useCollections()
 const { createCard } = useCards()
+const { invalidateCache, setCardsDueTotalCount } = useDailyReview()
 
 const collectionId = String(route.params.id)
 const collection = ref<Collection | null>(null)
@@ -70,6 +72,11 @@ async function onSubmit(front: string, back: string) {
 
   try {
     await createCard(front, back, collectionId)
+
+    // Invalider le cache et recalculer le nombre de cartes dues
+    await invalidateCache()
+    await setCardsDueTotalCount()
+
     message.value = {
       type: 'success',
       text: t('cards.createdSuccess') as string,

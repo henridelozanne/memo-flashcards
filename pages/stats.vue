@@ -26,20 +26,25 @@
         <!-- Activité générale -->
         <div v-if="currentTab === 'activity'" key="activity" class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
-            <StatCard :label="$t('stats.totalCards')" :value="324" />
-            <StatCard :label="$t('stats.totalCollections')" :value="18" />
-            <StatCard :label="$t('stats.totalReviews')" :value="1184" />
-            <StatCard :label="$t('stats.totalSessions')" :value="78" />
+            <StatCard :label="$t('stats.totalCards')" :value="totalCards" />
+            <StatCard :label="$t('stats.totalCollections')" :value="totalCollections" />
+            <StatCard :label="$t('stats.totalReviews')" :value="totalReviews" />
+            <StatCard :label="$t('stats.totalSessions')" :value="totalSessions" />
           </div>
 
           <div class="rounded-[15px] bg-[var(--color-white)] p-4 shadow-[0px_4px_32px_#0000000a]">
-            <div class="mb-3 text-sm text-[var(--color-secondary)]">{{ $t('stats.globalSuccessRate') }}</div>
-            <ProgressBar :current="82" :total="100" />
+            <div class="mb-4 text-sm text-[var(--color-secondary)]">{{ $t('stats.globalSuccessRate') }}</div>
+            <ProgressBar :current="globalSuccessRate" :total="100" :full-width="true" :show-tooltip="true" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <StatCard :label="$t('stats.cardsCreatedThisMonth')" :value="42" />
-            <StatCard :label="$t('stats.cardsReviewedToday')" :value="26" />
+            <StatCard :label="$t('stats.cardsCreatedToday')" :value="cardsCreatedToday" />
+            <StatCard :label="$t('stats.cardsReviewedToday')" :value="cardsReviewedToday" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <StatCard :label="$t('stats.cardsCreatedThisMonth')" :value="cardsCreatedThisMonth" />
+            <StatCard :label="$t('stats.cardsReviewedThisMonth')" :value="cardsReviewedThisMonth" />
           </div>
         </div>
 
@@ -105,10 +110,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type ComponentPublicInstance } from 'vue'
+import { ref, type ComponentPublicInstance, onMounted } from 'vue'
 import PageHeader from '~/components/PageHeader.vue'
 import ProgressBar from '~/components/ProgressBar.vue'
 import StatCard from '~/components/StatCard.vue'
+import { useStatistics } from '~/composables/useStatistics'
 
 defineOptions({ name: 'StatsPage' })
 
@@ -117,12 +123,30 @@ const tabsContainer = ref<HTMLElement | null>(null)
 const tabRefs = ref<Record<string, HTMLElement | null>>({})
 const slideDirection = ref<'slide-left' | 'slide-right'>('slide-right')
 
+// Stats data
+const {
+  totalCards,
+  totalCollections,
+  totalReviews,
+  totalSessions,
+  globalSuccessRate,
+  cardsCreatedThisMonth,
+  cardsReviewedThisMonth,
+  cardsCreatedToday,
+  cardsReviewedToday,
+  loadStatistics,
+} = useStatistics()
+
 const tabs = [
   { id: 'activity', label: 'stats.tabs.activity' },
   { id: 'progress', label: 'stats.tabs.progress' },
   { id: 'rhythm', label: 'stats.tabs.rhythm' },
   { id: 'habits', label: 'stats.tabs.habits' },
 ]
+
+onMounted(async () => {
+  await loadStatistics()
+})
 
 function setTabRef(tabId: string, el: Element | ComponentPublicInstance | null) {
   if (el) {

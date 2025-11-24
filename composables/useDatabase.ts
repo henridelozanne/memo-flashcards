@@ -75,6 +75,31 @@ export const useDatabase = () => {
       );
 
       CREATE INDEX IF NOT EXISTS idx_user_profiles_user_id ON user_profiles(user_id);
+
+      CREATE TABLE IF NOT EXISTS review_sessions (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL DEFAULT 'default-user',
+        started_at INTEGER NOT NULL,
+        ended_at INTEGER,
+        cards_reviewed INTEGER NOT NULL DEFAULT 0,
+        correct_count INTEGER NOT NULL DEFAULT 0,
+        wrong_count INTEGER NOT NULL DEFAULT 0
+      );
+
+      CREATE TABLE IF NOT EXISTS review_logs (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL DEFAULT 'default-user',
+        card_id TEXT NOT NULL,
+        session_id TEXT NOT NULL,
+        result TEXT NOT NULL,
+        reviewed_at INTEGER NOT NULL,
+        FOREIGN KEY (card_id) REFERENCES cards(id),
+        FOREIGN KEY (session_id) REFERENCES review_sessions(id)
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_review_logs_session_id ON review_logs(session_id);
+      CREATE INDEX IF NOT EXISTS idx_review_logs_card_id ON review_logs(card_id);
+      CREATE INDEX IF NOT EXISTS idx_review_logs_reviewed_at ON review_logs(reviewed_at);
     `)
 
     return connection

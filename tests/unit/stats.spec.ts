@@ -65,7 +65,11 @@ describe('Stats Page', () => {
         },
       },
     })
-    expect(wrapper.html()).toContain('324')
+    // Vérifier que l'onglet activity est actif par défaut (a le fond primaire)
+    const tabs = wrapper.findAll('button')
+    const activeTab = tabs.find((tab) => tab.classes().includes('bg-[var(--color-primary)]'))
+    expect(activeTab).toBeDefined()
+    expect(activeTab?.text()).toContain('Activité')
   })
 
   it('switches tabs when clicking', async () => {

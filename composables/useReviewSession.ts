@@ -1,6 +1,8 @@
 import { ref, computed } from 'vue'
 import { useCards } from './useCards'
+import { useDatabase } from './useDatabase'
 import type { Card } from '~/lib/types'
+import { v4 as uuidv4 } from 'uuid'
 
 interface ReviewSessionConfig {
   getCards: () => Promise<Card[]>
@@ -10,6 +12,7 @@ interface ReviewSessionConfig {
 
 export function useReviewSession(config: ReviewSessionConfig) {
   const { applyAnswer } = useCards()
+  const { getDbConnection } = useDatabase()
 
   const cards = ref<Card[]>([])
   const currentIndex = ref(0)
@@ -19,6 +22,7 @@ export function useReviewSession(config: ReviewSessionConfig) {
   const cardsReviewedCount = ref(0)
   const total = ref(0)
   const isLoading = ref(true)
+  const sessionId = ref<string | null>(null)
 
   const currentCard = computed(() => cards.value[currentIndex.value])
   const successRate = computed(() =>
@@ -30,16 +34,33 @@ export function useReviewSession(config: ReviewSessionConfig) {
       isLoading.value = true
       cards.value = await config.getCards()
       total.value = cards.value.length
+
+      // Créer une session de révision
+      const db = await getDbConnection()
+      const id = uuidv4()
+      const now = Date.now()
+      await db.run('INSERT INTO review_sessions (id, user_id, started_at) VALUES (?, ?, ?)', [id, 'default-user', now])
+      sessionId.value = id
     } finally {
       isLoading.value = false
     }
   }
 
   async function answer(choice: boolean) {
-    if (!currentCard.value) return
+    if (!currentCard.value || !sessionId.value) return
 
     // Appliquer la réponse Leitner
     await applyAnswer(currentCard.value, choice)
+
+    // Logger la réponse
+    const db = await getDbConnection()
+    const logId = uuidv4()
+    const now = Date.now()
+    const result = choice ? 'correct' : 'wrong'
+    await db.run(
+      'INSERT INTO review_logs (id, user_id, card_id, session_id, result, reviewed_at) VALUES (?, ?, ?, ?, ?, ?)',
+      [logId, 'default-user', currentCard.value.id, sessionId.value, result, now]
+    )
 
     // Compter les statistiques
     cardsReviewedCount.value += 1
@@ -52,6 +73,14 @@ export function useReviewSession(config: ReviewSessionConfig) {
     } else {
       // Fin de session
       sessionFinished.value = true
+
+      // Terminer la session dans la base de données
+      const endedAt = Date.now()
+      const wrongCount = cardsReviewedCount.value - goodCount.value
+      await db.run(
+        'UPDATE review_sessions SET ended_at = ?, cards_reviewed = ?, correct_count = ?, wrong_count = ? WHERE id = ?',
+        [endedAt, cardsReviewedCount.value, goodCount.value, wrongCount, sessionId.value]
+      )
     }
   }
 
