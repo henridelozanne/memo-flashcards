@@ -66,7 +66,8 @@ const weekDays = computed(() => tm('date.weekDays') as string[])
 
 const monthYearLabel = computed(() => {
   const options: Intl.DateTimeFormatOptions = { month: 'long', year: 'numeric' }
-  return currentDate.value.toLocaleDateString('fr-FR', options)
+  const label = currentDate.value.toLocaleDateString('fr-FR', options)
+  return label.charAt(0).toUpperCase() + label.slice(1)
 })
 
 const daysInMonth = computed(() => {
