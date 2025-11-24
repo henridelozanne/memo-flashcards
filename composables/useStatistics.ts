@@ -12,6 +12,8 @@ export const useStatistics = () => {
   const cardsCreatedToday = ref(0)
   const cardsReviewedToday = ref(0)
   const compartmentData = ref<number[]>([0, 0, 0, 0, 0])
+  const globalCoverageRate = ref(0)
+  const overdueCards = ref(0)
 
   const loadStatistics = async () => {
     const { getDbConnection } = useDatabase()
@@ -96,6 +98,23 @@ export const useStatistics = () => {
       }
     })
     compartmentData.value = newCompartmentData
+
+    // Get global coverage rate (cards reviewed at least once)
+    const reviewedCardsResult = await db.all<{ count: number }>(
+      'SELECT COUNT(DISTINCT card_id) as count FROM review_logs WHERE user_id = ?',
+      ['default-user']
+    )
+    const reviewedCount = reviewedCardsResult[0]?.count || 0
+    globalCoverageRate.value = totalCards.value > 0 ? Math.round((reviewedCount / totalCards.value) * 100) : 0
+
+    // Get overdue cards (cards whose next_review_at is before today, not counting today)
+    // We compare dates only, not time
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
+    const overdueResult = await db.all<{ count: number }>(
+      'SELECT COUNT(*) as count FROM cards WHERE deleted_at IS NULL AND next_review_at < ?',
+      [startOfToday]
+    )
+    overdueCards.value = overdueResult[0]?.count || 0
   }
 
   return {
@@ -109,6 +128,8 @@ export const useStatistics = () => {
     cardsCreatedToday,
     cardsReviewedToday,
     compartmentData,
+    globalCoverageRate,
+    overdueCards,
     loadStatistics,
   }
 }

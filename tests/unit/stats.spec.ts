@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'
+import { createPinia } from 'pinia'
 import StatsPage from '~/pages/stats.vue'
 import messages from '~/locales'
 
@@ -14,11 +15,13 @@ describe('Stats Page', () => {
   it('renders correctly', () => {
     const wrapper = mount(StatsPage, {
       global: {
-        plugins: [i18n],
+        plugins: [i18n, createPinia()],
         stubs: {
           PageHeader: true,
           ProgressBar: true,
           StatCard: true,
+          CompartmentBarChart: true,
+          ProgressCircle: true,
         },
       },
     })
@@ -28,11 +31,13 @@ describe('Stats Page', () => {
   it('displays stats title', () => {
     const wrapper = mount(StatsPage, {
       global: {
-        plugins: [i18n],
+        plugins: [i18n, createPinia()],
         stubs: {
           PageHeader: true,
           ProgressBar: true,
           StatCard: true,
+          CompartmentBarChart: true,
+          ProgressCircle: true,
         },
       },
     })
@@ -42,11 +47,13 @@ describe('Stats Page', () => {
   it('has 4 tabs', () => {
     const wrapper = mount(StatsPage, {
       global: {
-        plugins: [i18n],
+        plugins: [i18n, createPinia()],
         stubs: {
           PageHeader: true,
           ProgressBar: true,
           StatCard: true,
+          CompartmentBarChart: true,
+          ProgressCircle: true,
         },
       },
     })
@@ -57,11 +64,13 @@ describe('Stats Page', () => {
   it('displays activity tab by default', () => {
     const wrapper = mount(StatsPage, {
       global: {
-        plugins: [i18n],
+        plugins: [i18n, createPinia()],
         stubs: {
           PageHeader: true,
           ProgressBar: true,
           StatCard: true,
+          CompartmentBarChart: true,
+          ProgressCircle: true,
         },
       },
     })
@@ -75,27 +84,31 @@ describe('Stats Page', () => {
   it('switches tabs when clicking', async () => {
     const wrapper = mount(StatsPage, {
       global: {
-        plugins: [i18n],
+        plugins: [i18n, createPinia()],
         stubs: {
           PageHeader: true,
           ProgressBar: true,
           StatCard: true,
+          CompartmentBarChart: true,
+          ProgressCircle: true,
         },
       },
     })
     const tabs = wrapper.findAll('button')
     await tabs[1].trigger('click')
-    expect(wrapper.html()).toContain('Bar chart à venir')
+    expect(wrapper.html()).toContain('Répartition par compartiment')
   })
 
   it('displays progress tab content', async () => {
     const wrapper = mount(StatsPage, {
       global: {
-        plugins: [i18n],
+        plugins: [i18n, createPinia()],
         stubs: {
           PageHeader: true,
           ProgressBar: true,
           StatCard: true,
+          CompartmentBarChart: true,
+          ProgressCircle: true,
         },
       },
     })
@@ -107,11 +120,13 @@ describe('Stats Page', () => {
   it('displays rhythm tab content', async () => {
     const wrapper = mount(StatsPage, {
       global: {
-        plugins: [i18n],
+        plugins: [i18n, createPinia()],
         stubs: {
           PageHeader: true,
           ProgressBar: true,
           StatCard: true,
+          CompartmentBarChart: true,
+          ProgressCircle: true,
         },
       },
     })
@@ -123,11 +138,13 @@ describe('Stats Page', () => {
   it('displays habits tab content', async () => {
     const wrapper = mount(StatsPage, {
       global: {
-        plugins: [i18n],
+        plugins: [i18n, createPinia()],
         stubs: {
           PageHeader: true,
           ProgressBar: true,
           StatCard: true,
+          CompartmentBarChart: true,
+          ProgressCircle: true,
         },
       },
     })

@@ -56,6 +56,24 @@
             </div>
             <CompartmentBarChart :compartment-data="compartmentData" />
           </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="rounded-[15px] bg-[var(--color-white)] p-4 shadow-[0px_4px_32px_#0000000a]">
+              <div class="mb-3 text-sm text-[var(--color-secondary)]">{{ $t('stats.globalCoverage') }}</div>
+              <div class="flex justify-center">
+                <ProgressCircle
+                  :current="globalCoverageRate"
+                  :total="100"
+                  :show-percentage="true"
+                  color-variant="purple"
+                />
+              </div>
+              <div class="mt-3 text-center text-xs text-[var(--color-secondary)]">
+                {{ $t('stats.globalCoverageTooltip', { percentage: globalCoverageRate }) }}
+              </div>
+            </div>
+            <StatCard :label="$t('stats.overdueCards')" :value="overdueCards" />
+          </div>
         </div>
 
         <!-- Rythme de révision -->
@@ -113,6 +131,7 @@
 import { ref, type ComponentPublicInstance, onMounted } from 'vue'
 import PageHeader from '~/components/PageHeader.vue'
 import ProgressBar from '~/components/ProgressBar.vue'
+import ProgressCircle from '~/components/ProgressCircle.vue'
 import StatCard from '~/components/StatCard.vue'
 import CompartmentBarChart from '~/components/CompartmentBarChart.vue'
 import { useStatistics } from '~/composables/useStatistics'
@@ -136,6 +155,8 @@ const {
   cardsCreatedToday,
   cardsReviewedToday,
   compartmentData,
+  globalCoverageRate,
+  overdueCards,
   loadStatistics,
 } = useStatistics()
 
