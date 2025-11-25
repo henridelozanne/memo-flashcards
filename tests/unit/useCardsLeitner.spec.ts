@@ -77,7 +77,6 @@ describe('useCards - Leitner System', () => {
       expect(dueCards).toEqual(mockDueCards)
       expect(mockSqliteConnection.all).toHaveBeenCalledWith(expect.stringContaining('SELECT * FROM cards'), [
         'test-collection',
-        expect.any(Number),
       ])
     })
 
@@ -108,10 +107,10 @@ describe('useCards - Leitner System', () => {
 
       expect(cardsToday).toEqual(mockCardsToday)
 
-      // Verify SQL query looks for cards due now (no collection filter)
+      // Verify SQL query uses DATE() for date-only comparison
       const callArgs = mockSqliteConnection.all.mock.calls[0]
-      expect(callArgs[0]).toContain('next_review_at <= ?')
-      expect(callArgs[1]).toHaveLength(1) // just the current timestamp
+      expect(callArgs[0]).toContain('DATE(next_review_at')
+      expect(callArgs[1]).toHaveLength(0) // no parameters, DATE('now') is used in SQL
     })
   })
 

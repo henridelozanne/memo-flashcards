@@ -131,7 +131,12 @@ export const useStatistics = () => {
     const firstCardDate = firstCardResult[0]?.first_created
 
     if (firstCardDate) {
-      const daysSinceFirstCard = Math.floor((now.getTime() - firstCardDate) / (1000 * 60 * 60 * 24)) + 1
+      // Calculate number of distinct calendar days from first card to today
+      const firstDate = new Date(firstCardDate)
+      const firstDateOnly = new Date(firstDate.getFullYear(), firstDate.getMonth(), firstDate.getDate())
+      const todayOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      const daysSinceFirstCard = Math.floor((todayOnly.getTime() - firstDateOnly.getTime()) / (1000 * 60 * 60 * 24)) + 1
+
       const daysWithReviewResult = await db.all<{ count: number }>(
         `SELECT COUNT(DISTINCT DATE(reviewed_at / 1000, 'unixepoch')) as count 
          FROM review_logs 

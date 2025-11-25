@@ -7,7 +7,7 @@
     <div class="flex-shrink-0 px-6 pb-2 pt-6">
       <PageHeader :title="$t('dailyReview.title')" back-button-visible @back="goBack">
         <template #actions>
-          <ProgressCircle :is-from-page-header="true" />
+          <ProgressCircle :is-from-page-header="true" color-variant="purple" />
         </template>
       </PageHeader>
     </div>

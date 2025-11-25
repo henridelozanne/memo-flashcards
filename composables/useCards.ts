@@ -201,7 +201,6 @@ export const useCards = () => {
   }
 
   const getDueCards = async (collectionId: string) => {
-    const now = Date.now()
     try {
       const db = await getDbConnection()
       const result = await db.all<Card>(
@@ -209,12 +208,12 @@ export const useCards = () => {
       SELECT * FROM cards 
       WHERE collection_id = ?
       AND deleted_at IS NULL 
-      AND next_review_at <= ? 
+      AND DATE(next_review_at / 1000, 'unixepoch') <= DATE('now')
       AND compartment < 5
       AND archived = 0
       ORDER BY next_review_at ASC, created_at ASC
     `,
-        [collectionId, now]
+        [collectionId]
       )
       return result
     } catch (e: any) {
@@ -244,20 +243,18 @@ export const useCards = () => {
   }
 
   const getCardsDueToday = async () => {
-    const now = Date.now()
-
     try {
       const db = await getDbConnection()
       const result = await db.all<Card>(
         `
       SELECT * FROM cards 
       WHERE deleted_at IS NULL 
-      AND next_review_at <= ? 
+      AND DATE(next_review_at / 1000, 'unixepoch') <= DATE('now')
       AND compartment < 5
       AND archived = 0
       ORDER BY next_review_at ASC, created_at ASC
     `,
-        [now]
+        []
       )
       return result
     } catch (e: any) {
