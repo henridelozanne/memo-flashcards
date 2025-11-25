@@ -22,6 +22,12 @@ function addRhythmStatsMocks(mockDb: any, hasFirstCard: boolean = false) {
 
   // Mock pour hourly review data (toujours exécuté)
   mockDb.all.mockResolvedValueOnce([])
+
+  // Mock pour avg time per session (toujours exécuté)
+  mockDb.all.mockResolvedValueOnce([{ avg_duration: 0 }])
+
+  // Mock pour total time in review (toujours exécuté)
+  mockDb.all.mockResolvedValueOnce([{ total_duration: 0 }])
 }
 
 describe('useStatistics', () => {
@@ -355,6 +361,8 @@ describe('useStatistics', () => {
         mockDb.all.mockResolvedValueOnce([{ count: 10 }]) // jours ce mois
         mockDb.all.mockResolvedValueOnce([]) // dates de révision pour streaks
         mockDb.all.mockResolvedValueOnce([]) // hourly review data
+        mockDb.all.mockResolvedValueOnce([{ avg_duration: 0 }]) // avg time per session
+        mockDb.all.mockResolvedValueOnce([{ total_duration: 0 }]) // total time in review
 
         const { loadStatistics, daysWithReviewAllTime } = useStatistics()
         await loadStatistics()
@@ -390,6 +398,8 @@ describe('useStatistics', () => {
         mockDb.all.mockResolvedValueOnce([{ count: 0 }]) // days with review this month
         mockDb.all.mockResolvedValueOnce([]) // dates de révision pour streaks
         mockDb.all.mockResolvedValueOnce([]) // hourly review data
+        mockDb.all.mockResolvedValueOnce([{ avg_duration: 0 }]) // avg time per session
+        mockDb.all.mockResolvedValueOnce([{ total_duration: 0 }]) // total time in review
 
         const { loadStatistics, daysWithReviewAllTime } = useStatistics()
         await loadStatistics()
@@ -431,6 +441,8 @@ describe('useStatistics', () => {
         mockDb.all.mockResolvedValueOnce([{ count: 20 }]) // 20 jours distincts ce mois
         mockDb.all.mockResolvedValueOnce([])
         mockDb.all.mockResolvedValueOnce([]) // hourly review data
+        mockDb.all.mockResolvedValueOnce([{ avg_duration: 0 }]) // avg time per session
+        mockDb.all.mockResolvedValueOnce([{ total_duration: 0 }]) // total time in review
 
         const { loadStatistics, daysWithReviewThisMonth } = useStatistics()
         await loadStatistics()
@@ -480,6 +492,8 @@ describe('useStatistics', () => {
           { review_date: '2025-11-09' },
         ])
         mockDb.all.mockResolvedValueOnce([]) // hourly review data
+        mockDb.all.mockResolvedValueOnce([{ avg_duration: 0 }]) // avg time per session
+        mockDb.all.mockResolvedValueOnce([{ total_duration: 0 }]) // total time in review
 
         const { loadStatistics, longestStreakWith, longestStreakWithout } = useStatistics()
         await loadStatistics()
@@ -515,6 +529,8 @@ describe('useStatistics', () => {
         mockDb.all.mockResolvedValueOnce([{ count: 0 }]) // days with review this month
         mockDb.all.mockResolvedValueOnce([]) // dates de révision pour streaks
         mockDb.all.mockResolvedValueOnce([]) // hourly review data
+        mockDb.all.mockResolvedValueOnce([{ avg_duration: 0 }]) // avg time per session
+        mockDb.all.mockResolvedValueOnce([{ total_duration: 0 }]) // total time in review
 
         const { loadStatistics, longestStreakWith, longestStreakWithout } = useStatistics()
         await loadStatistics()

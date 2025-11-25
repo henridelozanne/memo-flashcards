@@ -120,8 +120,8 @@
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <StatCard :label="$t('stats.avgTimePerReview')" :value="'47s'" />
-            <StatCard :label="$t('stats.totalTimeInReview')" :value="'2h36'" />
+            <StatCard :label="$t('stats.avgTimePerReview')" :value="formattedAvgTime" />
+            <StatCard :label="$t('stats.totalTimeInReview')" :value="formattedTotalTime" />
           </div>
         </div>
       </Transition>
@@ -130,7 +130,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type ComponentPublicInstance, onMounted } from 'vue'
+import { ref, computed, type ComponentPublicInstance, onMounted } from 'vue'
 import PageHeader from '~/components/PageHeader.vue'
 import ProgressBar from '~/components/ProgressBar.vue'
 import ProgressCircle from '~/components/ProgressCircle.vue'
@@ -166,6 +166,8 @@ const {
   longestStreakWith,
   longestStreakWithout,
   hourlyReviewData,
+  avgTimePerSession,
+  totalTimeInReview,
   loadStatistics,
 } = useStatistics()
 
@@ -175,6 +177,25 @@ const tabs = [
   { id: 'rhythm', label: 'stats.tabs.rhythm' },
   { id: 'habits', label: 'stats.tabs.habits' },
 ]
+
+// Format time duration in seconds to human readable format
+const formatDuration = (seconds: number): string => {
+  if (seconds === 0) return '0s'
+
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const secs = seconds % 60
+
+  const parts = []
+  if (hours > 0) parts.push(`${hours}h`)
+  if (minutes > 0) parts.push(`${minutes}min`)
+  if (secs > 0 && hours === 0) parts.push(`${secs}s`)
+
+  return parts.join(' ') || '0s'
+}
+
+const formattedAvgTime = computed(() => formatDuration(avgTimePerSession.value))
+const formattedTotalTime = computed(() => formatDuration(totalTimeInReview.value))
 
 onMounted(async () => {
   await loadStatistics()

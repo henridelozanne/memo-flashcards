@@ -19,6 +19,8 @@ export const useStatistics = () => {
   const longestStreakWith = ref(0)
   const longestStreakWithout = ref(0)
   const hourlyReviewData = ref<number[]>(Array(24).fill(0))
+  const avgTimePerSession = ref(0) // in seconds
+  const totalTimeInReview = ref(0) // in seconds
 
   const loadStatistics = async () => {
     const { getDbConnection } = useDatabase()
@@ -211,6 +213,24 @@ export const useStatistics = () => {
       hourlyData[hour] = row.count
     })
     hourlyReviewData.value = hourlyData
+
+    // Get average time per review session (in seconds)
+    const avgTimeResult = await db.all<{ avg_duration: number }>(
+      `SELECT AVG((ended_at - started_at) / 1000.0) as avg_duration 
+       FROM review_sessions 
+       WHERE user_id = ? AND ended_at IS NOT NULL`,
+      ['default-user']
+    )
+    avgTimePerSession.value = Math.round(avgTimeResult[0]?.avg_duration || 0)
+
+    // Get total time in review (in seconds)
+    const totalTimeResult = await db.all<{ total_duration: number }>(
+      `SELECT SUM((ended_at - started_at) / 1000.0) as total_duration 
+       FROM review_sessions 
+       WHERE user_id = ? AND ended_at IS NOT NULL`,
+      ['default-user']
+    )
+    totalTimeInReview.value = Math.round(totalTimeResult[0]?.total_duration || 0)
   }
 
   return {
@@ -231,6 +251,8 @@ export const useStatistics = () => {
     longestStreakWith,
     longestStreakWithout,
     hourlyReviewData,
+    avgTimePerSession,
+    totalTimeInReview,
     loadStatistics,
   }
 }
