@@ -106,8 +106,8 @@
         <!-- Message de célébration -->
         <div class="celebration-message">
           <div class="celebration-icon">🎉</div>
-          <div class="celebration-text">7 jours d'affilée !</div>
-          <div class="celebration-subtext">Continue comme ça</div>
+          <div class="celebration-text">{{ $t('onboarding.step8.celebration') }}</div>
+          <div class="celebration-subtext">{{ $t('onboarding.step8.keepItUp') }}</div>
         </div>
       </div>
     </div>

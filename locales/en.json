@@ -275,7 +275,9 @@
       "title": "Your cards progress through levels with each correct answer"
     },
     "step8": {
-      "title": "Review what you need, every day, nothing more"
+      "title": "Review what you need, every day, nothing more",
+      "celebration": "7 days in a row!",
+      "keepItUp": "Keep it up"
     },
     "step9": {
       "title": "What time would you like to be notified?"

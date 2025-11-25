@@ -275,7 +275,9 @@
       "title": "Tes cartes progressent de niveau à chaque bonne réponse"
     },
     "step8": {
-      "title": "Chaque jour, révise ce qu'il faut, rien de plus"
+      "title": "Chaque jour, révise ce qu'il faut, rien de plus",
+      "celebration": "7 jours d'affilée !",
+      "keepItUp": "Continue comme ça"
     },
     "step9": {
       "title": "À quelle heure souhaites-tu être notifié ?"
