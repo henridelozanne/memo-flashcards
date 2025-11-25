@@ -13,6 +13,7 @@ export const useStatistics = () => {
   const cardsReviewedToday = ref(0)
   const compartmentData = ref<number[]>([0, 0, 0, 0, 0])
   const globalCoverageRate = ref(0)
+  const masteredCards = ref(0)
   const overdueCards = ref(0)
   const daysWithReviewAllTime = ref(0)
   const daysWithReviewThisMonth = ref(0)
@@ -105,6 +106,9 @@ export const useStatistics = () => {
       }
     })
     compartmentData.value = newCompartmentData
+
+    // Get mastered cards (compartment 5)
+    masteredCards.value = newCompartmentData[4]
 
     // Get global coverage rate (cards reviewed at least once)
     const reviewedCardsResult = await db.all<{ count: number }>(
@@ -250,6 +254,7 @@ export const useStatistics = () => {
     cardsReviewedToday,
     compartmentData,
     globalCoverageRate,
+    masteredCards,
     overdueCards,
     daysWithReviewAllTime,
     daysWithReviewThisMonth,

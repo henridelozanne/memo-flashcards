@@ -115,6 +115,8 @@
     "cardsByCompartment": "Distribution by compartment",
     "globalCoverage": "Global coverage rate",
     "globalCoverageTooltip": "{percentage}% of cards have already been reviewed at least once.",
+    "masteredCards": "Mastered cards",
+    "masteredCardsSubtitle": "In the last compartment",
     "overdueCards": "Overdue cards",
     "barChartComing": "Bar chart coming soon",
     "currentStreak": "Current streak",

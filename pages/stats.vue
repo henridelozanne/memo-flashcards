@@ -72,7 +72,14 @@
                 {{ $t('stats.globalCoverageTooltip', { percentage: globalCoverageRate }) }}
               </div>
             </div>
-            <StatCard :label="$t('stats.overdueCards')" :value="overdueCards" />
+            <div class="flex flex-col gap-4">
+              <StatCard
+                :label="$t('stats.masteredCards')"
+                :value="masteredCards"
+                :subtitle="$t('stats.masteredCardsSubtitle')"
+              />
+              <StatCard :label="$t('stats.overdueCards')" :value="overdueCards" />
+            </div>
           </div>
         </div>
 
@@ -160,6 +167,7 @@ const {
   cardsReviewedToday,
   compartmentData,
   globalCoverageRate,
+  masteredCards,
   overdueCards,
   daysWithReviewAllTime,
   daysWithReviewThisMonth,

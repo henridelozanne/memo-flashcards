@@ -115,6 +115,8 @@
     "cardsByCompartment": "Répartition par compartiment",
     "globalCoverage": "Taux de couverture global",
     "globalCoverageTooltip": "{percentage}% des cartes ont déjà été révisées au moins une fois.",
+    "masteredCards": "Cartes maîtrisées",
+    "masteredCardsSubtitle": "Dans le dernier compartiment",
     "overdueCards": "Cartes en retard",
     "barChartComing": "Bar chart à venir",
     "currentStreak": "Streak actuel",
