@@ -17,10 +17,11 @@ function addRhythmStatsMocks(mockDb: any, hasFirstCard: boolean = false) {
   // Mock pour days with review this month (toujours exécuté)
   mockDb.all.mockResolvedValueOnce([{ count: 0 }])
 
-  if (hasFirstCard) {
-    // Mock pour les dates de révision pour streaks (seulement si firstCardDate existe)
-    mockDb.all.mockResolvedValueOnce([])
-  }
+  // Mock pour les dates de révision pour streaks (toujours exécuté)
+  mockDb.all.mockResolvedValueOnce([])
+
+  // Mock pour hourly review data (toujours exécuté)
+  mockDb.all.mockResolvedValueOnce([])
 }
 
 describe('useStatistics', () => {
@@ -30,7 +31,10 @@ describe('useStatistics', () => {
 
   describe('overdueCards calculation', () => {
     it('counts cards with next_review_at before today (date only, not time)', async () => {
-      const now = new Date('2025-11-24T10:00:00') // 24 nov 2025 à 10h
+      // Mock system time to 2025-11-24 10:00:00
+      vi.useFakeTimers()
+      vi.setSystemTime(new Date('2025-11-24T10:00:00'))
+
       const startOfToday = new Date(2025, 10, 24, 0, 0, 0).getTime() // 24 nov 2025 à 00h00
 
       const mockDb = {
@@ -81,6 +85,8 @@ describe('useStatistics', () => {
         [startOfToday]
       )
       expect(overdueCards.value).toBe(3)
+
+      vi.useRealTimers()
     })
 
     it('does not count cards scheduled for today as overdue', async () => {
@@ -317,6 +323,10 @@ describe('useStatistics', () => {
   describe('rhythm statistics', () => {
     describe('daysWithReviewAllTime', () => {
       it('calculates percentage of days with reviews since first card', async () => {
+        // Mock system time to 2025-11-24 10:00:00
+        vi.useFakeTimers()
+        vi.setSystemTime(new Date('2025-11-24T10:00:00'))
+
         const mockDb = {
           all: vi.fn(),
         }
@@ -344,12 +354,15 @@ describe('useStatistics', () => {
         mockDb.all.mockResolvedValueOnce([{ count: 18 }]) // 18 jours distincts avec révision
         mockDb.all.mockResolvedValueOnce([{ count: 10 }]) // jours ce mois
         mockDb.all.mockResolvedValueOnce([]) // dates de révision pour streaks
+        mockDb.all.mockResolvedValueOnce([]) // hourly review data
 
         const { loadStatistics, daysWithReviewAllTime } = useStatistics()
         await loadStatistics()
 
         // 18 jours avec révision sur 24 jours = 75%
         expect(daysWithReviewAllTime.value).toBe(75)
+
+        vi.useRealTimers()
       })
 
       it('returns 0 when no cards exist', async () => {
@@ -374,7 +387,9 @@ describe('useStatistics', () => {
         mockDb.all.mockResolvedValueOnce([{ count: 0 }])
         mockDb.all.mockResolvedValueOnce([{ count: 0 }])
         mockDb.all.mockResolvedValueOnce([{ first_created: null }]) // pas de première carte
-        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }]) // days with review this month
+        mockDb.all.mockResolvedValueOnce([]) // dates de révision pour streaks
+        mockDb.all.mockResolvedValueOnce([]) // hourly review data
 
         const { loadStatistics, daysWithReviewAllTime } = useStatistics()
         await loadStatistics()
@@ -385,6 +400,10 @@ describe('useStatistics', () => {
 
     describe('daysWithReviewThisMonth', () => {
       it('calculates percentage of days with reviews this month', async () => {
+        // Mock system time to 2025-11-24 10:00:00
+        vi.useFakeTimers()
+        vi.setSystemTime(new Date('2025-11-24T10:00:00'))
+
         const mockDb = {
           all: vi.fn(),
         }
@@ -393,7 +412,6 @@ describe('useStatistics', () => {
           getDbConnection: vi.fn().mockResolvedValue(mockDb),
         } as any)
 
-        const now = new Date('2025-11-24T10:00:00') // 24 jours écoulés en novembre
         const firstCardDate = new Date('2025-11-01T00:00:00').getTime()
 
         mockDb.all.mockResolvedValueOnce([{ count: 20 }])
@@ -412,12 +430,15 @@ describe('useStatistics', () => {
         mockDb.all.mockResolvedValueOnce([{ count: 18 }])
         mockDb.all.mockResolvedValueOnce([{ count: 20 }]) // 20 jours distincts ce mois
         mockDb.all.mockResolvedValueOnce([])
+        mockDb.all.mockResolvedValueOnce([]) // hourly review data
 
         const { loadStatistics, daysWithReviewThisMonth } = useStatistics()
         await loadStatistics()
 
         // 20 jours avec révision sur 24 jours = 83%
         expect(daysWithReviewThisMonth.value).toBe(83)
+
+        vi.useRealTimers()
       })
     })
 
@@ -458,6 +479,7 @@ describe('useStatistics', () => {
           { review_date: '2025-11-08' },
           { review_date: '2025-11-09' },
         ])
+        mockDb.all.mockResolvedValueOnce([]) // hourly review data
 
         const { loadStatistics, longestStreakWith, longestStreakWithout } = useStatistics()
         await loadStatistics()
@@ -490,7 +512,9 @@ describe('useStatistics', () => {
         mockDb.all.mockResolvedValueOnce([{ count: 0 }])
         mockDb.all.mockResolvedValueOnce([{ count: 0 }])
         mockDb.all.mockResolvedValueOnce([{ first_created: null }])
-        mockDb.all.mockResolvedValueOnce([{ count: 0 }])
+        mockDb.all.mockResolvedValueOnce([{ count: 0 }]) // days with review this month
+        mockDb.all.mockResolvedValueOnce([]) // dates de révision pour streaks
+        mockDb.all.mockResolvedValueOnce([]) // hourly review data
 
         const { loadStatistics, longestStreakWith, longestStreakWithout } = useStatistics()
         await loadStatistics()

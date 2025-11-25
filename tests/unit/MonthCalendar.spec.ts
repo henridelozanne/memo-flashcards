@@ -44,7 +44,7 @@ describe('MonthCalendar', () => {
     const wrapper = mount(MonthCalendar)
     await flushPromises()
 
-    expect(wrapper.text()).toContain('novembre 2025')
+    expect(wrapper.text()).toContain('Novembre 2025')
   })
 
   it('renders weekday headers in French', async () => {
@@ -152,13 +152,13 @@ describe('MonthCalendar', () => {
     const wrapper = mount(MonthCalendar)
     await flushPromises()
 
-    expect(wrapper.text()).toContain('novembre 2025')
+    expect(wrapper.text()).toContain('Novembre 2025')
 
     const leftButton = wrapper.findAll('button')[0]
     await leftButton.trigger('click')
     await flushPromises()
 
-    expect(wrapper.text()).toContain('octobre 2025')
+    expect(wrapper.text()).toContain('Octobre 2025')
     expect(mockDb.all).toHaveBeenCalledTimes(2) // Initial load + navigation
   })
 
@@ -168,13 +168,13 @@ describe('MonthCalendar', () => {
     const wrapper = mount(MonthCalendar)
     await flushPromises()
 
-    expect(wrapper.text()).toContain('novembre 2025')
+    expect(wrapper.text()).toContain('Novembre 2025')
 
     const rightButton = wrapper.findAll('button')[1]
     await rightButton.trigger('click')
     await flushPromises()
 
-    expect(wrapper.text()).toContain('décembre 2025')
+    expect(wrapper.text()).toContain('Décembre 2025')
     expect(mockDb.all).toHaveBeenCalledTimes(2) // Initial load + navigation
   })
 

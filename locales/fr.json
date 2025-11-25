@@ -127,6 +127,7 @@
     "longestStreakWithout": "Plus longue série sans révision",
     "days": "jours",
     "day": "jour",
+    "session": "aucune session | {count} session | {count} sessions",
     "reviewsByHour": "Répartition des reviews par heure (24h)",
     "barChart24hComing": "Bar chart 24h à venir",
     "avgTimePerReview": "Temps moyen par review",

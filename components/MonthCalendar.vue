@@ -27,7 +27,7 @@
       <div
         v-for="day in daysInMonth"
         :key="`${animationKey}-${day}`"
-        class="relative aspect-square rounded-lg day-cell"
+        class="day-cell relative aspect-square rounded-lg"
         :class="getDayClass(day)"
         :style="{ animationDelay: `${(day - 1) * 15}ms` }"
       >

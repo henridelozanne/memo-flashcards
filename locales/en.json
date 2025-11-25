@@ -127,6 +127,7 @@
     "longestStreakWithout": "Longest streak without review",
     "days": "days",
     "day": "day",
+    "session": "no sessions | {count} session | {count} sessions",
     "reviewsByHour": "Reviews by hour (24h)",
     "barChart24hComing": "24h bar chart coming soon",
     "avgTimePerReview": "Avg time per review",

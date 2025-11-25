@@ -18,6 +18,7 @@ export const useStatistics = () => {
   const daysWithReviewThisMonth = ref(0)
   const longestStreakWith = ref(0)
   const longestStreakWithout = ref(0)
+  const hourlyReviewData = ref<number[]>(Array(24).fill(0))
 
   const loadStatistics = async () => {
     const { getDbConnection } = useDatabase()
@@ -193,6 +194,23 @@ export const useStatistics = () => {
       longestStreakWith.value = maxStreakWith
       longestStreakWithout.value = maxStreakWithout
     }
+
+    // Get hourly review distribution (sessions, not individual reviews)
+    const hourlyResult = await db.all<{ hour: string; count: number }>(
+      `SELECT strftime('%H', datetime(started_at / 1000, 'unixepoch', 'localtime')) as hour, COUNT(*) as count 
+       FROM review_sessions 
+       WHERE user_id = ? AND ended_at IS NOT NULL
+       GROUP BY hour`,
+      ['default-user']
+    )
+
+    // Initialize with zeros for all 24 hours
+    const hourlyData = Array(24).fill(0)
+    hourlyResult.forEach((row) => {
+      const hour = parseInt(row.hour, 10)
+      hourlyData[hour] = row.count
+    })
+    hourlyReviewData.value = hourlyData
   }
 
   return {
@@ -212,6 +230,7 @@ export const useStatistics = () => {
     daysWithReviewThisMonth,
     longestStreakWith,
     longestStreakWithout,
+    hourlyReviewData,
     loadStatistics,
   }
 }
