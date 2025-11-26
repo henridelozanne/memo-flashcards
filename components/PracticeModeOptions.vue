@@ -2,7 +2,12 @@
   <div class="practice-options">
     <div class="option-item">
       <label class="option-label">
-        <input v-model="localOptions.mostFailed" type="checkbox" class="option-checkbox" />
+        <input
+          :checked="modelValue.mostFailed"
+          type="checkbox"
+          class="option-checkbox"
+          @change="updateOption('mostFailed', ($event.target as HTMLInputElement).checked)"
+        />
         <span>{{ $t('practiceMode.mostFailed') }}</span>
       </label>
       <p class="option-description">{{ $t('practiceMode.mostFailedDesc') }}</p>
@@ -10,7 +15,12 @@
 
     <div class="option-item">
       <label class="option-label">
-        <input v-model="localOptions.onlyDue" type="checkbox" class="option-checkbox" />
+        <input
+          :checked="modelValue.onlyDue"
+          type="checkbox"
+          class="option-checkbox"
+          @change="updateOption('onlyDue', ($event.target as HTMLInputElement).checked)"
+        />
         <span>{{ $t('practiceMode.onlyDue') }}</span>
       </label>
       <p class="option-description">{{ $t('practiceMode.onlyDueDesc') }}</p>
@@ -18,7 +28,12 @@
 
     <div class="option-item">
       <label class="option-label">
-        <input v-model="localOptions.onlyNew" type="checkbox" class="option-checkbox" />
+        <input
+          :checked="modelValue.onlyNew"
+          type="checkbox"
+          class="option-checkbox"
+          @change="updateOption('onlyNew', ($event.target as HTMLInputElement).checked)"
+        />
         <span>{{ $t('practiceMode.onlyNew') }}</span>
       </label>
       <p class="option-description">{{ $t('practiceMode.onlyNewDesc') }}</p>
@@ -26,7 +41,12 @@
 
     <div class="option-item">
       <label class="option-label">
-        <input v-model="localOptions.excludeNew" type="checkbox" class="option-checkbox" />
+        <input
+          :checked="modelValue.excludeNew"
+          type="checkbox"
+          class="option-checkbox"
+          @change="updateOption('excludeNew', ($event.target as HTMLInputElement).checked)"
+        />
         <span>{{ $t('practiceMode.excludeNew') }}</span>
       </label>
       <p class="option-description">{{ $t('practiceMode.excludeNewDesc') }}</p>
@@ -34,7 +54,12 @@
 
     <div class="option-item">
       <label class="option-label">
-        <input v-model="localOptions.swapQuestionAnswer" type="checkbox" class="option-checkbox" />
+        <input
+          :checked="modelValue.swapQuestionAnswer"
+          type="checkbox"
+          class="option-checkbox"
+          @change="updateOption('swapQuestionAnswer', ($event.target as HTMLInputElement).checked)"
+        />
         <span>{{ $t('practiceMode.swapQuestionAnswer') }}</span>
       </label>
       <p class="option-description">{{ $t('practiceMode.swapQuestionAnswerDesc') }}</p>
@@ -43,8 +68,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-
 export interface PracticeModeOptions {
   mostFailed: boolean
   onlyDue: boolean
@@ -64,23 +87,24 @@ const emit = defineEmits<{
 
 defineOptions({ name: 'PracticeModeOptions' })
 
-const localOptions = ref<PracticeModeOptions>({ ...props.modelValue })
+function updateOption(key: keyof PracticeModeOptions, value: boolean) {
+  const newOptions = {
+    ...props.modelValue,
+    [key]: value,
+  }
 
-watch(
-  localOptions,
-  (newValue) => {
-    emit('update:modelValue', newValue)
-  },
-  { deep: true }
-)
+  // Si on coche "onlyNew", on décoche "excludeNew"
+  if (key === 'onlyNew' && value === true) {
+    newOptions.excludeNew = false
+  }
 
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    localOptions.value = { ...newValue }
-  },
-  { deep: true }
-)
+  // Si on coche "excludeNew", on décoche "onlyNew"
+  if (key === 'excludeNew' && value === true) {
+    newOptions.onlyNew = false
+  }
+
+  emit('update:modelValue', newOptions)
+}
 </script>
 
 <style scoped>
@@ -106,9 +130,6 @@ watch(
   font-weight: 500;
   color: #1f2937;
   -webkit-tap-highlight-color: transparent !important;
-  -webkit-touch-callout: none !important;
-  -webkit-user-select: none !important;
-  user-select: none !important;
 }
 
 .option-checkbox {
@@ -116,6 +137,7 @@ watch(
   height: 20px;
   cursor: pointer;
   accent-color: var(--color-primary);
+  flex-shrink: 0;
 }
 
 .option-description {

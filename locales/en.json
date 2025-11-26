@@ -123,7 +123,7 @@
     "subtitle": "Won't affect your statistics or review schedule",
     "options": "Practice options",
     "mostFailed": "Most often failed cards",
-    "mostFailedDesc": "Focus on cards that need the most attention",
+    "mostFailedDesc": "Review the 25% most difficult cards",
     "onlyDue": "Review only cards due",
     "onlyDueDesc": "Practice only cards scheduled for today",
     "onlyNew": "Review only new cards",

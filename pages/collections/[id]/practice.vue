@@ -54,10 +54,63 @@ const { loadCards, cards } = useCards()
 
 const collectionId = String(route.params.id)
 
-// Fonction pour récupérer toutes les cartes de la collection
+// Parse practice options from query params
+const practiceOptions = {
+  mostFailed: route.query.mostFailed === '1',
+  onlyDue: route.query.onlyDue === '1',
+  onlyNew: route.query.onlyNew === '1',
+  excludeNew: route.query.excludeNew === '1',
+  swapQuestionAnswer: route.query.swapQuestionAnswer === '1',
+}
+
+// Fonction pour récupérer et filtrer les cartes selon les options
 async function getCollectionCards() {
   await loadCards(collectionId)
-  return [...cards.value]
+  let filteredCards = [...cards.value]
+
+  const now = Date.now()
+
+  // Filter: only due cards
+  if (practiceOptions.onlyDue) {
+    filteredCards = filteredCards.filter((card) => card.next_review_at <= now)
+  }
+
+  // Filter: only new cards (never reviewed)
+  if (practiceOptions.onlyNew) {
+    filteredCards = filteredCards.filter((card) => card.total_reviews === 0)
+  }
+
+  // Filter: exclude new cards
+  if (practiceOptions.excludeNew) {
+    filteredCards = filteredCards.filter((card) => card.total_reviews > 0)
+  }
+
+  // Filter: most failed (top 25%)
+  if (practiceOptions.mostFailed) {
+    // Calculate fail rate for each card and sort
+    const cardsWithFailRate = filteredCards
+      .filter((card) => card.total_reviews > 0) // Only cards that have been reviewed
+      .map((card) => ({
+        card,
+        failRate: (card.total_reviews - card.correct_answers) / card.total_reviews,
+      }))
+      .sort((a, b) => b.failRate - a.failRate)
+
+    // Take top 25%
+    const top25PercentCount = Math.max(1, Math.ceil(cardsWithFailRate.length * 0.25))
+    filteredCards = cardsWithFailRate.slice(0, top25PercentCount).map((item) => item.card)
+  }
+
+  // Swap question and answer if requested
+  if (practiceOptions.swapQuestionAnswer) {
+    filteredCards = filteredCards.map((card) => ({
+      ...card,
+      question: card.answer,
+      answer: card.question,
+    }))
+  }
+
+  return filteredCards
 }
 
 const {

@@ -220,7 +220,19 @@ function editCard(cardId: string) {
 }
 
 function startPracticeMode() {
-  router.push(`/collections/${collectionId}/practice`)
+  const params = new URLSearchParams()
+  if (practiceOptions.value.mostFailed) params.set('mostFailed', '1')
+  if (practiceOptions.value.onlyDue) params.set('onlyDue', '1')
+  if (practiceOptions.value.onlyNew) params.set('onlyNew', '1')
+  if (practiceOptions.value.excludeNew) params.set('excludeNew', '1')
+  if (practiceOptions.value.swapQuestionAnswer) params.set('swapQuestionAnswer', '1')
+
+  const queryString = params.toString()
+  const url = queryString
+    ? `/collections/${collectionId}/practice?${queryString}`
+    : `/collections/${collectionId}/practice`
+
+  router.push(url)
 }
 
 function formatDate(date: Date): string {

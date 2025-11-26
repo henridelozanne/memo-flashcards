@@ -205,12 +205,41 @@ describe('PracticeModeOptions', () => {
 
     const checkboxes = wrapper.findAll('input[type="checkbox"]')
 
-    await checkboxes[0].setValue(true)
-    await checkboxes[2].setValue(true)
-    await checkboxes[4].setValue(true)
+    // Cocher mostFailed (index 0)
+    ;(checkboxes[0].element as HTMLInputElement).checked = true
+    await checkboxes[0].trigger('change')
+
+    // Mettre à jour les props pour refléter le changement (comme le ferait le parent)
+    await wrapper.setProps({
+      modelValue: {
+        mostFailed: true,
+        onlyDue: false,
+        onlyNew: false,
+        excludeNew: false,
+        swapQuestionAnswer: false,
+      },
+    })
+
+    // Cocher onlyNew (index 2)
+    ;(checkboxes[2].element as HTMLInputElement).checked = true
+    await checkboxes[2].trigger('change')
+
+    await wrapper.setProps({
+      modelValue: {
+        mostFailed: true,
+        onlyDue: false,
+        onlyNew: true,
+        excludeNew: false,
+        swapQuestionAnswer: false,
+      },
+    })
+
+    // Cocher swapQuestionAnswer (index 4)
+    ;(checkboxes[4].element as HTMLInputElement).checked = true
+    await checkboxes[4].trigger('change')
 
     const emitted = wrapper.emitted('update:modelValue') as any[]
-    expect(emitted.length).toBeGreaterThan(0)
+    expect(emitted.length).toBe(3) // Devrait avoir 3 événements
 
     // Vérifier le dernier état émis
     const lastEmitted = emitted[emitted.length - 1][0]
