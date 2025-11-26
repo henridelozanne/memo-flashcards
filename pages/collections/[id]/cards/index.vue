@@ -33,6 +33,32 @@
                 {{ $t('cards.lastAdded') }} {{ formatDate(lastCardDate) }}
               </p>
             </div>
+
+            <!-- Bouton Practice Mode -->
+            <div class="flex flex-col gap-2">
+              <div class="flex items-center gap-2">
+                <button type="button" class="practice-button">
+                  <IconDumbbell />
+                  {{ $t('practiceMode.button') }}
+                </button>
+                <button type="button" class="options-toggle-button" @click="showPracticeOptions = !showPracticeOptions">
+                  <IconSettings />
+                </button>
+              </div>
+              <p class="text-center text-xs text-gray-500">
+                {{ $t('practiceMode.subtitle') }}
+              </p>
+            </div>
+
+            <!-- Options Practice Mode -->
+            <Transition name="practice-options">
+              <div v-if="showPracticeOptions" class="mt-2">
+                <p class="mb-3 text-sm font-medium text-gray-700">
+                  {{ $t('practiceMode.options') }}
+                </p>
+                <PracticeModeOptions v-model="practiceOptions" />
+              </div>
+            </Transition>
           </div>
         </div>
 
@@ -75,6 +101,9 @@ import { useCards } from '~/composables/useCards'
 import CardItem from '~/components/CardItem.vue'
 import CreateCardItem from '~/components/CreateCardItem.vue'
 import Select, { type SelectOption } from '~/components/Select.vue'
+import PracticeModeOptions from '~/components/PracticeModeOptions.vue'
+import IconSettings from '~/components/icons/IconSettings.vue'
+import IconDumbbell from '~/components/icons/IconDumbbell.vue'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'CollectionCardsPage' })
@@ -95,6 +124,14 @@ const collectionId = String(route.params.id)
 const collection = ref<Collection | null>(null)
 const lastCardDate = ref<Date | null>(null)
 const sortBy = ref('newestFirst')
+const showPracticeOptions = ref(false)
+const practiceOptions = ref({
+  mostFailed: false,
+  onlyDue: false,
+  onlyNew: false,
+  excludeNew: false,
+  swapQuestionAnswer: false,
+})
 
 const sortOptions = computed<SelectOption[]>(() => [
   { label: t('cards.sort.newestFirst'), value: 'newestFirst' },
@@ -192,3 +229,74 @@ function formatDate(date: Date): string {
 
 onMounted(init)
 </script>
+
+<style scoped>
+/* Bouton Practice Mode */
+.practice-button {
+  width: 100%;
+  padding: 12px 24px;
+  background: white;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.practice-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.practice-button:active {
+  transform: translateY(0);
+}
+
+.options-toggle-button {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent !important;
+  padding: 4px;
+}
+
+.options-toggle-button:active {
+  transform: scale(0.95);
+}
+
+/* Transitions pour les options */
+.practice-options-enter-active,
+.practice-options-leave-active {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.practice-options-enter-from,
+.practice-options-leave-to {
+  opacity: 0;
+  max-height: 0;
+  transform: translateY(-10px);
+}
+
+.practice-options-enter-to,
+.practice-options-leave-from {
+  opacity: 1;
+  max-height: 500px;
+  transform: translateY(0);
+}
+</style>

@@ -94,6 +94,17 @@
     "nextReview": "Next review",
     "compartment": "Compartment: {n}/{total}",
     "correctAnswers": "Correct answers: {correct}/{total}",
+    "practice": {
+      "title": "Practice Mode",
+      "button": "Practice this collection",
+      "subtitle": "No impact on your statistics or review schedule",
+      "options": "Practice options",
+      "mostFailed": "Most often failed cards",
+      "onlyDue": "Only cards that are due",
+      "onlyNew": "Only new cards",
+      "excludeNew": "Exclude new cards",
+      "swapQA": "Swap question and answer"
+    },
     "sort": {
       "newestFirst": "Newest first",
       "oldestFirst": "Oldest first",
@@ -105,6 +116,22 @@
       "mostFailed": "Most often failed",
       "leastFailed": "Least often failed"
     }
+  },
+  "practiceMode": {
+    "title": "Practice Mode",
+    "button": "Practice mode",
+    "subtitle": "Won't affect your statistics or review schedule",
+    "options": "Practice options",
+    "mostFailed": "Most often failed cards",
+    "mostFailedDesc": "Focus on cards that need the most attention",
+    "onlyDue": "Study only due cards",
+    "onlyDueDesc": "Practice only cards scheduled for today",
+    "onlyNew": "Study only new cards",
+    "onlyNewDesc": "Discover cards you've never reviewed",
+    "excludeNew": "Exclude new cards",
+    "excludeNewDesc": "Practice without cards you've never reviewed",
+    "swapQuestionAnswer": "Swap question and answer",
+    "swapQuestionAnswerDesc": "Test yourself in the other direction"
   },
   "stats": {
     "title": "Statistics",

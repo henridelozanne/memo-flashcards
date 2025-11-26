@@ -94,6 +94,17 @@
     "nextReview": "Prochaine révision",
     "compartment": "Compartiment : {n}/{total}",
     "correctAnswers": "Réponses correctes : {correct}/{total}",
+    "practice": {
+      "title": "Mode entraînement",
+      "button": "S'entraîner sur cette collection",
+      "subtitle": "Sans impact sur vos statistiques ni votre plan de révision",
+      "options": "Options d'entraînement",
+      "mostFailed": "Cartes les plus souvent ratées",
+      "onlyDue": "Seulement les cartes dues",
+      "onlyNew": "Seulement les nouvelles cartes",
+      "excludeNew": "Exclure les nouvelles cartes",
+      "swapQA": "Inverser question et réponse"
+    },
     "sort": {
       "newestFirst": "Plus récentes",
       "oldestFirst": "Plus anciennes",
@@ -105,6 +116,22 @@
       "mostFailed": "Les plus souvent ratées",
       "leastFailed": "Les moins souvent ratées"
     }
+  },
+  "practiceMode": {
+    "title": "Mode entraînement",
+    "button": "Mode entraînement",
+    "subtitle": "N'affecte ni vos statistiques ni votre progression",
+    "options": "Options d'entraînement",
+    "mostFailed": "Cartes les plus souvent ratées",
+    "mostFailedDesc": "Concentrez-vous sur les cartes qui nécessitent le plus d'attention",
+    "onlyDue": "Réviser uniquement les cartes dues",
+    "onlyDueDesc": "Pratiquer seulement les cartes prévues pour aujourd'hui",
+    "onlyNew": "Réviser uniquement les nouvelles cartes",
+    "onlyNewDesc": "Découvrir les cartes jamais révisées",
+    "excludeNew": "Exclure les nouvelles cartes",
+    "excludeNewDesc": "Pratiquer sans les cartes jamais révisées",
+    "swapQuestionAnswer": "Inverser question et réponse",
+    "swapQuestionAnswerDesc": "Testez-vous dans l'autre sens"
   },
   "stats": {
     "title": "Statistiques",
