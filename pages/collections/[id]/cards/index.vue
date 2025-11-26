@@ -104,6 +104,8 @@ const sortOptions = computed<SelectOption[]>(() => [
   { label: t('cards.sort.nextReview'), value: 'nextReview' },
   { label: t('cards.sort.compartmentAsc'), value: 'compartmentAsc' },
   { label: t('cards.sort.compartmentDesc'), value: 'compartmentDesc' },
+  { label: t('cards.sort.mostFailed'), value: 'mostFailed' },
+  { label: t('cards.sort.leastFailed'), value: 'leastFailed' },
 ])
 
 const sortedCards = computed(() => {
@@ -130,6 +132,24 @@ const sortedCards = computed(() => {
 
     case 'compartmentDesc':
       return cardsCopy.sort((a, b) => b.compartment - a.compartment)
+
+    case 'mostFailed': {
+      // Tri par taux d'échec décroissant (plus souvent ratées en premier)
+      return cardsCopy.sort((a, b) => {
+        const failRateA = a.total_reviews > 0 ? (a.total_reviews - a.correct_answers) / a.total_reviews : 0
+        const failRateB = b.total_reviews > 0 ? (b.total_reviews - b.correct_answers) / b.total_reviews : 0
+        return failRateB - failRateA
+      })
+    }
+
+    case 'leastFailed': {
+      // Tri par taux d'échec croissant (moins souvent ratées en premier)
+      return cardsCopy.sort((a, b) => {
+        const failRateA = a.total_reviews > 0 ? (a.total_reviews - a.correct_answers) / a.total_reviews : 0
+        const failRateB = b.total_reviews > 0 ? (b.total_reviews - b.correct_answers) / b.total_reviews : 0
+        return failRateA - failRateB
+      })
+    }
 
     default:
       return cardsCopy

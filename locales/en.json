@@ -101,7 +101,9 @@
       "alphabeticalZA": "Alphabetical (Z → A)",
       "nextReview": "Next to review",
       "compartmentAsc": "Compartment ascending (1 → 5)",
-      "compartmentDesc": "Compartment descending (5 → 1)"
+      "compartmentDesc": "Compartment descending (5 → 1)",
+      "mostFailed": "Most often failed",
+      "leastFailed": "Least often failed"
     }
   },
   "stats": {

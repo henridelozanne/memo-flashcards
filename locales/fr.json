@@ -101,7 +101,9 @@
       "alphabeticalZA": "Ordre alphabétique (Z → A)",
       "nextReview": "Prochaines à réviser",
       "compartmentAsc": "Compartiment croissant (1 → 5)",
-      "compartmentDesc": "Compartiment décroissant (5 → 1)"
+      "compartmentDesc": "Compartiment décroissant (5 → 1)",
+      "mostFailed": "Les plus souvent ratées",
+      "leastFailed": "Les moins souvent ratées"
     }
   },
   "stats": {

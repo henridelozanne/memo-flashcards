@@ -159,4 +159,64 @@ describe('Card Sorting', () => {
     expect(sorted[1].next_review_at).toBeLessThan(now)
     expect(sorted[2].next_review_at).toBeGreaterThan(now)
   })
+
+  it('sorts by most failed (highest fail rate first)', () => {
+    const cardsWithFailRate = [
+      { ...cards[0], total_reviews: 10, correct_answers: 8 }, // 20% fail rate
+      { ...cards[1], total_reviews: 10, correct_answers: 3 }, // 70% fail rate
+      { ...cards[2], total_reviews: 10, correct_answers: 9 }, // 10% fail rate
+    ]
+
+    const sorted = [...cardsWithFailRate].sort((a, b) => {
+      const failRateA = a.total_reviews > 0 ? (a.total_reviews - a.correct_answers) / a.total_reviews : 0
+      const failRateB = b.total_reviews > 0 ? (b.total_reviews - b.correct_answers) / b.total_reviews : 0
+      return failRateB - failRateA
+    })
+
+    expect(sorted[0].correct_answers).toBe(3) // 70% fail rate
+    expect(sorted[1].correct_answers).toBe(8) // 20% fail rate
+    expect(sorted[2].correct_answers).toBe(9) // 10% fail rate
+  })
+
+  it('sorts by least failed (lowest fail rate first)', () => {
+    const cardsWithFailRate = [
+      { ...cards[0], total_reviews: 10, correct_answers: 8 }, // 20% fail rate
+      { ...cards[1], total_reviews: 10, correct_answers: 3 }, // 70% fail rate
+      { ...cards[2], total_reviews: 10, correct_answers: 9 }, // 10% fail rate
+    ]
+
+    const sorted = [...cardsWithFailRate].sort((a, b) => {
+      const failRateA = a.total_reviews > 0 ? (a.total_reviews - a.correct_answers) / a.total_reviews : 0
+      const failRateB = b.total_reviews > 0 ? (b.total_reviews - b.correct_answers) / b.total_reviews : 0
+      return failRateA - failRateB
+    })
+
+    expect(sorted[0].correct_answers).toBe(9) // 10% fail rate
+    expect(sorted[1].correct_answers).toBe(8) // 20% fail rate
+    expect(sorted[2].correct_answers).toBe(3) // 70% fail rate
+  })
+
+  it('handles cards with zero reviews when sorting by fail rate', () => {
+    const cardsWithZeroReviews = [
+      { ...cards[0], total_reviews: 10, correct_answers: 5 }, // 50% fail rate
+      { ...cards[1], total_reviews: 0, correct_answers: 0 }, // 0% fail rate (no reviews)
+      { ...cards[2], total_reviews: 10, correct_answers: 2 }, // 80% fail rate
+    ]
+
+    const sorted = [...cardsWithZeroReviews].sort((a, b) => {
+      const failRateA = a.total_reviews > 0 ? (a.total_reviews - a.correct_answers) / a.total_reviews : 0
+      const failRateB = b.total_reviews > 0 ? (b.total_reviews - b.correct_answers) / b.total_reviews : 0
+      return failRateB - failRateA
+    })
+
+    expect(sorted[0].id).toBe('3') // 80% fail rate
+    expect(sorted[1].id).toBe('1') // 50% fail rate
+    expect(sorted[2].id).toBe('2') // 0% fail rate (no reviews)
+  })
+
+  it('correctly calculates fail rate', () => {
+    const card = { ...cards[0], total_reviews: 20, correct_answers: 15 }
+    const failRate = (card.total_reviews - card.correct_answers) / card.total_reviews
+    expect(failRate).toBe(0.25) // 25% fail rate (5 failed out of 20)
+  })
 })
