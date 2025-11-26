@@ -14,7 +14,7 @@
       class="mt-6 rounded-[15px] bg-[var(--color-primary)] px-6 py-2 text-base font-medium text-white shadow-sm transition hover:bg-[var(--color-dark-purple)]"
       @click="$emit('back')"
     >
-      {{ $t('review.backToCollections') }}
+      {{ returnLabel || $t('review.backToCollections') }}
     </button>
   </div>
 </template>
@@ -23,6 +23,7 @@
 defineProps({
   cardsReviewedCount: { type: Number, required: true },
   successRate: { type: Number, required: true },
+  returnLabel: { type: String, default: '' },
 })
 defineEmits(['back'])
 </script>

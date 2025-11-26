@@ -118,20 +118,21 @@
     }
   },
   "practiceMode": {
-    "title": "Practice Mode",
+    "title": "Training",
     "button": "Practice mode",
     "subtitle": "Won't affect your statistics or review schedule",
     "options": "Practice options",
     "mostFailed": "Most often failed cards",
     "mostFailedDesc": "Focus on cards that need the most attention",
-    "onlyDue": "Study only due cards",
+    "onlyDue": "Review only cards due",
     "onlyDueDesc": "Practice only cards scheduled for today",
-    "onlyNew": "Study only new cards",
-    "onlyNewDesc": "Discover cards you've never reviewed",
+    "onlyNew": "Review only new cards",
+    "onlyNewDesc": "Discover cards never reviewed",
     "excludeNew": "Exclude new cards",
-    "excludeNewDesc": "Practice without cards you've never reviewed",
+    "excludeNewDesc": "Practice without cards never reviewed",
     "swapQuestionAnswer": "Swap question and answer",
-    "swapQuestionAnswerDesc": "Test yourself in the other direction"
+    "swapQuestionAnswerDesc": "Test yourself in the other direction",
+    "returnToCollection": "Return to collection"
   },
   "stats": {
     "title": "Statistics",

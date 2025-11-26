@@ -37,7 +37,7 @@
             <!-- Bouton Practice Mode -->
             <div class="flex flex-col gap-2">
               <div class="flex items-center gap-2">
-                <button type="button" class="practice-button">
+                <button type="button" class="practice-button" @click="startPracticeMode">
                   <IconDumbbell />
                   {{ $t('practiceMode.button') }}
                 </button>
@@ -217,6 +217,10 @@ function createCard() {
 
 function editCard(cardId: string) {
   router.push(`/collections/${collectionId}/cards/${cardId}/edit`)
+}
+
+function startPracticeMode() {
+  router.push(`/collections/${collectionId}/practice`)
 }
 
 function formatDate(date: Date): string {

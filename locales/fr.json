@@ -118,7 +118,7 @@
     }
   },
   "practiceMode": {
-    "title": "Mode entraînement",
+    "title": "Entraînement",
     "button": "Mode entraînement",
     "subtitle": "N'affecte ni vos statistiques ni votre progression",
     "options": "Options d'entraînement",
@@ -131,7 +131,8 @@
     "excludeNew": "Exclure les nouvelles cartes",
     "excludeNewDesc": "Pratiquer sans les cartes jamais révisées",
     "swapQuestionAnswer": "Inverser question et réponse",
-    "swapQuestionAnswerDesc": "Testez-vous dans l'autre sens"
+    "swapQuestionAnswerDesc": "Testez-vous dans l'autre sens",
+    "returnToCollection": "Retourner à la collection"
   },
   "stats": {
     "title": "Statistiques",

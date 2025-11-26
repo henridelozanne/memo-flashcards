@@ -204,14 +204,14 @@ describe('PracticeModeOptions', () => {
     })
 
     const checkboxes = wrapper.findAll('input[type="checkbox"]')
-    
+
     await checkboxes[0].setValue(true)
     await checkboxes[2].setValue(true)
     await checkboxes[4].setValue(true)
 
     const emitted = wrapper.emitted('update:modelValue') as any[]
     expect(emitted.length).toBeGreaterThan(0)
-    
+
     // Vérifier le dernier état émis
     const lastEmitted = emitted[emitted.length - 1][0]
     expect(lastEmitted.mostFailed).toBe(true)

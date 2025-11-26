@@ -1,6 +1,6 @@
 <template>
   <div class="relative mb-6 flex h-8 items-center">
-    <div class="absolute left-0">
+    <div class="absolute left-0 flex h-full items-center">
       <BackButton v-if="backButtonVisible" @click="handleBackClick" />
       <slot v-else name="leftActions" />
     </div>
