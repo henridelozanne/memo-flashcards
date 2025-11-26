@@ -1,8 +1,10 @@
 <template>
   <div
-    class="review-session-layout fixed inset-0 flex flex-col bg-gray-50"
+    class="review-session-layout fixed inset-0 flex flex-col"
+    :class="sessionFinished ? 'with-animated-bg' : ''"
     style="padding-top: env(safe-area-inset-top)"
   >
+    <AnimatedSunburst v-if="sessionFinished" />
     <!-- Header fixe -->
     <div class="flex-shrink-0 px-6 pb-2 pt-6">
       <PageHeader :title="$t('dailyReview.title')" back-button-visible @back="goBack">
@@ -23,13 +25,10 @@
             @answer="answer"
           />
         </div>
-        <!-- End of session -->
-        <ReviewSessionEnd
-          v-else
-          :cards-reviewed-count="cardsReviewedCount"
-          :success-rate="successRate"
-          @back="goToFinish"
-        />
+        <!-- End of session - Centered on viewport -->
+        <div v-else class="session-end-overlay">
+          <ReviewSessionEnd :cards-reviewed-count="cardsReviewedCount" :success-rate="successRate" @back="goToFinish" />
+        </div>
       </transition>
     </div>
   </div>
@@ -75,6 +74,28 @@ defineOptions({ name: 'DailyReviewPage' })
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.with-animated-bg {
+  overflow: hidden;
+}
+
+.review-session-layout > *:not(.animated-sunburst) {
+  position: relative;
+  z-index: 1;
+}
+
+.session-end-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 10;
 }
 </style>
 
