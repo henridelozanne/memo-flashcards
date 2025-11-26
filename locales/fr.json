@@ -93,7 +93,16 @@
     "notFound": "Carte introuvable",
     "nextReview": "Prochaine révision",
     "compartment": "Compartiment : {n}/{total}",
-    "correctAnswers": "Réponses correctes : {correct}/{total}"
+    "correctAnswers": "Réponses correctes : {correct}/{total}",
+    "sort": {
+      "newestFirst": "Plus récentes",
+      "oldestFirst": "Plus anciennes",
+      "alphabeticalAZ": "Ordre alphabétique (A → Z)",
+      "alphabeticalZA": "Ordre alphabétique (Z → A)",
+      "nextReview": "Prochaines à réviser",
+      "compartmentAsc": "Compartiment croissant (1 → 5)",
+      "compartmentDesc": "Compartiment décroissant (5 → 1)"
+    }
   },
   "stats": {
     "title": "Statistiques",

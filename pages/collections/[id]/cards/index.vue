@@ -43,9 +43,23 @@
           </div>
         </div>
 
-        <div v-else class="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          <CreateCardItem @click="createCard" />
-          <CardItem v-for="card in cards" :key="card.id" :card="card" data-testid="card-item" @click="editCard" />
+        <div v-else>
+          <!-- Barre de tri -->
+          <div class="mb-4 flex justify-end">
+            <Select v-model="sortBy" :options="sortOptions" />
+          </div>
+
+          <!-- Grille de cartes -->
+          <div class="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            <CreateCardItem @click="createCard" />
+            <CardItem
+              v-for="card in sortedCards"
+              :key="card.id"
+              :card="card"
+              data-testid="card-item"
+              @click="editCard"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -55,16 +69,19 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
 import CardItem from '~/components/CardItem.vue'
 import CreateCardItem from '~/components/CreateCardItem.vue'
+import Select, { type SelectOption } from '~/components/Select.vue'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'CollectionCardsPage' })
 
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
 const {
   collections,
   isLoading: isLoadingCollection,
@@ -77,6 +94,47 @@ const { cards, isLoading: isLoadingCards, error: cardsError, loadCards, getLastC
 const collectionId = String(route.params.id)
 const collection = ref<Collection | null>(null)
 const lastCardDate = ref<Date | null>(null)
+const sortBy = ref('newestFirst')
+
+const sortOptions = computed<SelectOption[]>(() => [
+  { label: t('cards.sort.newestFirst'), value: 'newestFirst' },
+  { label: t('cards.sort.oldestFirst'), value: 'oldestFirst' },
+  { label: t('cards.sort.alphabeticalAZ'), value: 'alphabeticalAZ' },
+  { label: t('cards.sort.alphabeticalZA'), value: 'alphabeticalZA' },
+  { label: t('cards.sort.nextReview'), value: 'nextReview' },
+  { label: t('cards.sort.compartmentAsc'), value: 'compartmentAsc' },
+  { label: t('cards.sort.compartmentDesc'), value: 'compartmentDesc' },
+])
+
+const sortedCards = computed(() => {
+  const cardsCopy = [...cards.value]
+
+  switch (sortBy.value) {
+    case 'newestFirst':
+      return cardsCopy.sort((a, b) => b.created_at - a.created_at)
+
+    case 'oldestFirst':
+      return cardsCopy.sort((a, b) => a.created_at - b.created_at)
+
+    case 'alphabeticalAZ':
+      return cardsCopy.sort((a, b) => a.question.toLowerCase().localeCompare(b.question.toLowerCase()))
+
+    case 'alphabeticalZA':
+      return cardsCopy.sort((a, b) => b.question.toLowerCase().localeCompare(a.question.toLowerCase()))
+
+    case 'nextReview':
+      return cardsCopy.sort((a, b) => a.next_review_at - b.next_review_at)
+
+    case 'compartmentAsc':
+      return cardsCopy.sort((a, b) => a.compartment - b.compartment)
+
+    case 'compartmentDesc':
+      return cardsCopy.sort((a, b) => b.compartment - a.compartment)
+
+    default:
+      return cardsCopy
+  }
+})
 
 const error = computed(() => collectionError.value || cardsError.value)
 

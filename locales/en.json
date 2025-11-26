@@ -93,7 +93,16 @@
     "notFound": "Card not found",
     "nextReview": "Next review",
     "compartment": "Compartment: {n}/{total}",
-    "correctAnswers": "Correct answers: {correct}/{total}"
+    "correctAnswers": "Correct answers: {correct}/{total}",
+    "sort": {
+      "newestFirst": "Newest first",
+      "oldestFirst": "Oldest first",
+      "alphabeticalAZ": "Alphabetical (A → Z)",
+      "alphabeticalZA": "Alphabetical (Z → A)",
+      "nextReview": "Next to review",
+      "compartmentAsc": "Compartment ascending (1 → 5)",
+      "compartmentDesc": "Compartment descending (5 → 1)"
+    }
   },
   "stats": {
     "title": "Statistics",
