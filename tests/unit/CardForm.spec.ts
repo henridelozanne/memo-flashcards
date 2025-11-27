@@ -14,6 +14,7 @@ const i18n = createI18n({
         back: 'Verso',
         backPlaceholder: 'Réponse',
         addAnother: 'Ajouter une autre',
+        richTextMode: 'Texte enrichi',
       },
       form: {
         frontRequired: 'Le recto est requis',

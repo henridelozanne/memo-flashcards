@@ -81,6 +81,7 @@
     "back": "Verso",
     "frontPlaceholder": "Question ou terme à retenir",
     "backPlaceholder": "Réponse ou définition",
+    "richTextMode": "Texte enrichi",
     "addAnother": "Ajouter une autre",
     "createdSuccess": "Carte ajoutée avec succès !",
     "createdError": "Erreur lors de l'ajout de la carte",

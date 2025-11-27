@@ -81,6 +81,7 @@
     "back": "Back",
     "frontPlaceholder": "Question or term to remember",
     "backPlaceholder": "Answer or definition",
+    "richTextMode": "Rich text",
     "addAnother": "Add another",
     "createdSuccess": "Card added successfully!",
     "createdError": "Error while adding the card",

@@ -1,16 +1,50 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-6">
-      <label for="front" class="mb-2 block text-sm font-medium text-gray-700"> {{ $t('cards.front') }} * </label>
-      <TipTapEditor v-model="localFront" :placeholder="$t('cards.frontPlaceholder')" data-testid="front-input" />
+      <div class="mb-2 flex items-center justify-between">
+        <label for="front" class="text-sm font-medium text-gray-700"> {{ $t('cards.front') }} * </label>
+        <RichTextToggle v-model="isRichTextFront" :label="$t('cards.richTextMode')" />
+      </div>
+      <TipTapEditor
+        v-if="isRichTextFront"
+        v-model="localFront"
+        :placeholder="$t('cards.frontPlaceholder')"
+        data-testid="front-input"
+      />
+      <input
+        v-else
+        id="front"
+        v-model="localFront"
+        type="text"
+        :placeholder="$t('cards.frontPlaceholder')"
+        class="w-full rounded-[15px] border border-gray-300 px-4 py-2 focus:border-[var(--color-primary)] focus:outline-none"
+        data-testid="front-input"
+      />
       <p v-if="frontError" class="mt-1 text-sm text-[var(--color-accent-red)]">
         {{ frontError }}
       </p>
     </div>
 
     <div class="mb-6">
-      <label for="back" class="mb-2 block text-sm font-medium text-gray-700"> {{ $t('cards.back') }} * </label>
-      <TipTapEditor v-model="localBack" :placeholder="$t('cards.backPlaceholder')" data-testid="back-input" />
+      <div class="mb-2 flex items-center justify-between">
+        <label for="back" class="text-sm font-medium text-gray-700"> {{ $t('cards.back') }} * </label>
+        <RichTextToggle v-model="isRichTextBack" :label="$t('cards.richTextMode')" />
+      </div>
+      <TipTapEditor
+        v-if="isRichTextBack"
+        v-model="localBack"
+        :placeholder="$t('cards.backPlaceholder')"
+        data-testid="back-input"
+      />
+      <textarea
+        v-else
+        id="back"
+        v-model="localBack"
+        :placeholder="$t('cards.backPlaceholder')"
+        rows="4"
+        class="w-full rounded-[15px] border border-gray-300 px-4 py-2 focus:border-[var(--color-primary)] focus:outline-none"
+        data-testid="back-input"
+      ></textarea>
       <p v-if="backError" class="mt-1 text-sm text-[var(--color-accent-red)]">{{ backError }}</p>
     </div>
 
@@ -38,6 +72,7 @@
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import TipTapEditor from '~/components/TipTapEditor.vue'
+import RichTextToggle from '~/components/RichTextToggle.vue'
 
 const { t } = useI18n()
 
@@ -65,6 +100,8 @@ const localFront = ref(props.front ?? '')
 const localBack = ref(props.back ?? '')
 const frontError = ref<string | null>(null)
 const backError = ref<string | null>(null)
+const isRichTextFront = ref(false)
+const isRichTextBack = ref(false)
 
 // Expose a reset method for parent to call
 defineExpose({
