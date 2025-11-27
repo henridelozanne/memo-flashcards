@@ -2,15 +2,7 @@
   <form @submit.prevent="handleSubmit">
     <div class="mb-6">
       <label for="front" class="mb-2 block text-sm font-medium text-gray-700"> {{ $t('cards.front') }} * </label>
-      <input
-        id="front"
-        v-model="localFront"
-        type="text"
-        class="w-full rounded-[15px] border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-        :class="{ 'border-[var(--color-accent-red)]': frontError }"
-        :placeholder="$t('cards.frontPlaceholder')"
-        data-testid="front-input"
-      />
+      <TipTapEditor v-model="localFront" :placeholder="$t('cards.frontPlaceholder')" data-testid="front-input" />
       <p v-if="frontError" class="mt-1 text-sm text-[var(--color-accent-red)]">
         {{ frontError }}
       </p>
@@ -18,15 +10,7 @@
 
     <div class="mb-6">
       <label for="back" class="mb-2 block text-sm font-medium text-gray-700"> {{ $t('cards.back') }} * </label>
-      <textarea
-        id="back"
-        v-model="localBack"
-        rows="4"
-        class="w-full rounded-[15px] border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-        :class="{ 'border-[var(--color-accent-red)]': backError }"
-        :placeholder="$t('cards.backPlaceholder')"
-        data-testid="back-input"
-      ></textarea>
+      <TipTapEditor v-model="localBack" :placeholder="$t('cards.backPlaceholder')" data-testid="back-input" />
       <p v-if="backError" class="mt-1 text-sm text-[var(--color-accent-red)]">{{ backError }}</p>
     </div>
 
@@ -53,6 +37,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import TipTapEditor from '~/components/TipTapEditor.vue'
 
 const { t } = useI18n()
 

@@ -7,9 +7,7 @@
           <div
             class="flip-card-front flex h-full w-full flex-col items-center justify-center rounded-[15px] bg-white p-6 text-center shadow-[0px_4px_32px_#0000000a]"
           >
-            <div class="line-clamp-6 break-words text-lg font-medium text-gray-900">
-              {{ currentCard.question }}
-            </div>
+            <div class="line-clamp-6 break-words text-lg font-medium text-gray-900" v-html="sanitizedQuestion"></div>
             <button
               class="mt-8 rounded-[15px] bg-[var(--color-light-purple)] px-6 py-2 text-base font-medium text-[var(--color-primary)] shadow-sm transition hover:bg-[var(--color-accent-purple)] focus:outline-none"
               @click="$emit('show-back')"
@@ -21,12 +19,11 @@
           <div
             class="flip-card-back absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center rounded-[15px] bg-white p-6 text-center shadow-[0px_4px_32px_#0000000a]"
           >
-            <div class="mb-4 line-clamp-6 break-words text-lg font-medium text-gray-900">
-              {{ currentCard.question }}
-            </div>
-            <div class="line-clamp-8 mb-8 break-words text-base text-gray-700">
-              {{ currentCard.answer }}
-            </div>
+            <div
+              class="mb-4 line-clamp-6 break-words text-lg font-medium text-gray-900"
+              v-html="sanitizedQuestion"
+            ></div>
+            <div class="line-clamp-8 mb-8 break-words text-base text-gray-700" v-html="sanitizedAnswer"></div>
             <div class="mt-auto flex justify-between gap-2">
               <button
                 v-for="(choice, index) in userChoices"
@@ -49,17 +46,23 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { Card, UserChoice } from '~/lib/types'
+import { sanitizeHtml } from '~/utils/sanitize'
 
 const userChoices: UserChoice[] = [
   { value: false, label: 'review.again' },
   { value: true, label: 'review.good' },
 ]
 
-defineProps<{
+const props = defineProps<{
   currentCard: Card | null
   isBackVisible: boolean
 }>()
+
+const sanitizedQuestion = computed(() => (props.currentCard ? sanitizeHtml(props.currentCard.question) : ''))
+
+const sanitizedAnswer = computed(() => (props.currentCard ? sanitizeHtml(props.currentCard.answer) : ''))
 
 defineEmits<{
   'show-back': []
@@ -99,5 +102,33 @@ defineEmits<{
 .flip-card-back {
   transform: rotateY(-180deg);
   z-index: 3;
+}
+
+:deep(ul) {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+:deep(ol) {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+:deep(li) {
+  margin: 0.25em 0;
+}
+
+:deep(h2) {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 1em 0 0.5em;
+}
+
+:deep(h3) {
+  font-size: 1.25em;
+  font-weight: bold;
+  margin: 0.8em 0 0.4em;
 }
 </style>
