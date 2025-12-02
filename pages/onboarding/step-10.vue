@@ -33,16 +33,21 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
 import { useUserProfileStore } from '~/store/userProfile'
+import { useNotifications } from '~/composables/useNotifications'
 
 const router = useRouter()
 const onboardingStore = useOnboardingStore()
 const userProfileStore = useUserProfileStore()
+const { scheduleDailyNotification } = useNotifications()
 
 onMounted(() => {
   onboardingStore.currentStep = 10
 
   // Rediriger vers le paywall au lieu de passer à l'étape suivante
-  onboardingStore.registerStepValidation(() => {
+  onboardingStore.registerStepValidation(async () => {
+    // Planifier la notification quotidienne
+    await scheduleDailyNotification()
+
     router.push('/paywall')
     return false // Empêcher la navigation automatique
   })

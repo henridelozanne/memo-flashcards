@@ -4,12 +4,14 @@ import { useUserProfileStore } from '~/store/userProfile'
 import useSupabaseAuth from '~/composables/useSupabaseAuth'
 import { useUserProfile } from '~/composables/useUserProfile'
 import { syncUserProfileToRemote } from '~/lib/sync'
+import { useNotifications } from '~/composables/useNotifications'
 
 export function useNotificationTime() {
   const { t } = useI18n()
   const userProfileStore = useUserProfileStore()
   const { getCurrentUserId } = useSupabaseAuth()
   const { updateNotificationHour: updateNotificationHourLocal } = useUserProfile()
+  const { updateDailyNotification } = useNotifications()
 
   const timeInput = ref<HTMLInputElement | null>(null)
   const selectedTime = ref<string>('')
@@ -57,6 +59,14 @@ export function useNotificationTime() {
       syncUserProfileToRemote().catch((err) => {
         console.error('Failed to sync notification hour to remote:', err)
       })
+
+      // Mettre à jour la notification quotidienne
+      try {
+        await updateDailyNotification()
+      } catch (notifError) {
+        console.error('Error updating notification:', notifError)
+        // Ne pas bloquer le reste si la notification échoue
+      }
 
       statusMessage.value = {
         type: 'success',
