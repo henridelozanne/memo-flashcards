@@ -34,17 +34,50 @@ import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
 import { useUserProfileStore } from '~/store/userProfile'
 import { useNotifications } from '~/composables/useNotifications'
+import useSupabaseAuth from '~/composables/useSupabaseAuth'
+import { useUserProfile } from '~/composables/useUserProfile'
+import { syncUserProfileToRemote } from '~/lib/sync'
 
 const router = useRouter()
 const onboardingStore = useOnboardingStore()
 const userProfileStore = useUserProfileStore()
 const { scheduleDailyNotification } = useNotifications()
+const { initAuth, getCurrentUserId } = useSupabaseAuth()
+const { saveUserProfile: saveUserProfileLocal } = useUserProfile()
 
 onMounted(() => {
   onboardingStore.currentStep = 10
 
   // Terminer l'onboarding et rediriger vers la page d'accueil
   onboardingStore.registerStepValidation(async () => {
+    try {
+      // TODO: Supprimer cette logique quand le paywall sera rétabli
+      // Cette logique était dans paywall.vue mais le paywall est bypassé pour l'instant
+
+      // 1. Authentification silencieuse via Supabase
+      await initAuth()
+      const userId = await getCurrentUserId()
+
+      // 2. Sauvegarder les données d'onboarding dans SQLite local
+      await saveUserProfileLocal({
+        userId,
+        firstName: userProfileStore.firstName,
+        goal: userProfileStore.goal,
+        situation: userProfileStore.situation,
+        notificationHour: userProfileStore.notificationHour,
+        language: userProfileStore.language,
+        onboardingCompletedAt: Date.now(),
+      })
+
+      // 3. Sync vers Supabase (non-bloquant)
+      syncUserProfileToRemote().catch(() => {
+        // Sync error handled silently
+      })
+    } catch (e) {
+      console.error('[ONBOARDING] Error during auth/profile save:', e)
+      // Continuer malgré l'erreur pour ne pas bloquer l'utilisateur
+    }
+
     // Planifier la notification quotidienne
     await scheduleDailyNotification()
 
