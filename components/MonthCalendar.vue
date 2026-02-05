@@ -137,7 +137,6 @@ async function loadReviewDates() {
   )
 
   reviewDates.value = new Set(result.map((r) => r.review_date))
-  console.log('Review dates for', monthYearLabel.value, ':', Array.from(reviewDates.value))
 }
 
 function previousMonth() {

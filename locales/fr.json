@@ -215,6 +215,13 @@
     "subscription": "Abonnement",
     "subscriptionFree": "Gratuit",
     "subscriptionPremium": "Premium",
+    "subscriptionActive": "Actif",
+    "subscriptionTrialActive": "Essai gratuit actif",
+    "restorePurchases": "Restaurer les achats",
+    "restoringPurchases": "Restauration en cours...",
+    "restorePurchasesSuccess": "Achats restaurés avec succès !",
+    "restorePurchasesNone": "Aucun achat à restaurer",
+    "restorePurchasesError": "Erreur lors de la restauration",
     "language": "Langue",
     "languageUpdated": "Langue mise à jour avec succès",
     "languageError": "Échec de la mise à jour de la langue",
@@ -223,7 +230,7 @@
     "bugReport": "Signaler un bug",
     "deleteData": "Supprimer mes données",
     "deleteDataConfirmTitle": "Supprimer toutes mes données",
-    "deleteDataConfirmMessage": "Êtes-vous sûr de vouloir supprimer toutes vos données ? Cette action est irréversible et supprimera toutes vos collections et cartes.",
+    "deleteDataConfirmMessage": "Êtes-vous sûr de vouloir supprire toutes vos données ? Cette action est irréversible et supprimera toutes vos collections et cartes.",
     "deleteDataConfirm": "Supprimer",
     "legalNotice": "Mentions légales"
   },
@@ -358,7 +365,7 @@
       "benefit4": "Support prioritaire pour les abonnés",
       "monthly": {
         "title": "Mensuel",
-        "price": "2,99€ / mois",
+        "price": "123456,99€ / mois",
         "subtitle": "Idéal pour tester",
         "renewal": "Renouvellement automatique"
       },

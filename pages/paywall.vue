@@ -44,7 +44,7 @@
             {{ $t('onboarding.paywall.monthly.title') }}
           </div>
           <div class="mb-2 text-base font-semibold text-[var(--color-black)]">
-            {{ $t('onboarding.paywall.monthly.price') }}
+            {{ monthlyPrice || $t('onboarding.paywall.monthly.price') }}
           </div>
           <div class="mb-2 text-sm text-gray-600">{{ $t('onboarding.paywall.monthly.subtitle') }}</div>
           <div class="mb-4 text-sm text-gray-600">{{ $t('onboarding.paywall.monthly.renewal') }}</div>
@@ -54,7 +54,7 @@
         </div>
 
         <!-- À vie -->
-        <div class="subscription-card" :class="{ selected: selectedPlan === 'lifetime' }">
+        <!-- <div class="subscription-card" :class="{ selected: selectedPlan === 'lifetime' }">
           <div class="mb-2 text-2xl">⭐</div>
           <div class="mb-3 text-lg font-bold text-[var(--color-black)]">
             {{ $t('onboarding.paywall.lifetime.title') }}
@@ -67,30 +67,31 @@
           <button class="subscribe-button mt-auto" @click="selectPlan('lifetime')">
             {{ $t('onboarding.paywall.chooseOffer') }}
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
 
     <!-- CTA fixé en bas -->
-    <div class="fixed bottom-0 left-0 right-0 z-10 bg-white px-6 pb-8 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
+    <!-- <div class="fixed bottom-0 left-0 right-0 z-10 bg-white px-6 pb-8 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
       <button class="trial-button w-full" @click="startFreeTrial">
         {{ $t('onboarding.paywall.freeTrial') }}
       </button>
       <p class="mt-3 text-center text-sm text-gray-500">
         {{ $t('onboarding.paywall.disclaimer') }}
       </p>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
 import { useUserProfileStore } from '~/store/userProfile'
 import useSupabaseAuth from '~/composables/useSupabaseAuth'
 import { useUserProfile } from '~/composables/useUserProfile'
 import { syncUserProfileToRemote } from '~/lib/sync'
+import { useSubscription } from '~/composables/useSubscription'
 
 const router = useRouter()
 const onboardingStore = useOnboardingStore()
@@ -98,6 +99,24 @@ const userProfileStore = useUserProfileStore()
 const selectedPlan = ref<'monthly' | 'lifetime' | null>(null)
 const { initAuth, getCurrentUserId } = useSupabaseAuth()
 const { saveUserProfile: saveUserProfileLocal } = useUserProfile()
+const { getOfferings, purchasePackage } = useSubscription()
+const monthlyPrice = ref('')
+const monthlyPackageRef = ref<unknown>(null)
+
+onMounted(async () => {
+  try {
+    const offerings = await getOfferings()
+    const monthlyPackage = offerings?.current?.availablePackages?.find((pkg: unknown) =>
+      (pkg as { identifier?: string })?.identifier?.includes('monthly')
+    )
+    if (monthlyPackage) {
+      monthlyPrice.value = monthlyPackage.product.priceString
+      monthlyPackageRef.value = monthlyPackage
+    }
+  } catch (e) {
+    // Erreur silencieuse pour le chargement des prix
+  }
+})
 
 async function completeOnboarding() {
   try {
@@ -120,31 +139,39 @@ async function completeOnboarding() {
     onboardingStore.completeOnboarding()
 
     // 4. Sync vers Supabase (non-bloquant)
-    syncUserProfileToRemote().catch((err) => {
-      console.error('Failed to sync profile to remote after onboarding:', err)
+    syncUserProfileToRemote().catch(() => {
+      // Sync error handled silently
     })
 
     // 5. Rediriger vers l'écran principal
     router.push('/')
   } catch (e) {
-    console.error('Error completing onboarding:', e)
     // Continuer malgré l'erreur pour ne pas bloquer l'utilisateur
     onboardingStore.completeOnboarding()
     router.push('/')
   }
 }
 
-function selectPlan(plan: 'monthly' | 'lifetime') {
-  selectedPlan.value = plan
-  // TODO: Implémenter la logique d'achat
-  console.log('Plan sélectionné:', plan)
+async function selectPlan(plan: 'monthly' | 'lifetime') {
+  if (plan === 'monthly' && monthlyPackageRef.value) {
+    selectedPlan.value = plan
+    try {
+      const result = await purchasePackage(monthlyPackageRef.value)
+
+      if (result) {
+        await completeOnboarding()
+      }
+    } catch (e) {
+      // Erreur d'achat gérée silencieusement
+    }
+  } else {
+    selectedPlan.value = plan
+  }
 }
 
-function startFreeTrial() {
-  // TODO: Implémenter la logique d'essai gratuit
-  console.log("Démarrage de l'essai gratuit")
-  completeOnboarding()
-}
+// function startFreeTrial() {
+//   completeOnboarding()
+// }
 
 function skipPaywall() {
   // L'utilisateur ferme le paywall sans souscrire

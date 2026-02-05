@@ -209,23 +209,30 @@
   },
   "settings": {
     "title": "Settings",
-    "reminderTime": "Reminder Time",
+    "reminderTime": "Reminder time",
     "reminderTimeUpdated": "Reminder time updated successfully",
     "reminderTimeError": "Failed to update reminder time",
     "subscription": "Subscription",
     "subscriptionFree": "Free",
     "subscriptionPremium": "Premium",
+    "subscriptionActive": "Active",
+    "subscriptionTrialActive": "Free trial active",
+    "restorePurchases": "Restore purchases",
+    "restoringPurchases": "Restoring...",
+    "restorePurchasesSuccess": "Purchases restored successfully!",
+    "restorePurchasesNone": "No purchases to restore",
+    "restorePurchasesError": "Error restoring purchases",
     "language": "Language",
     "languageUpdated": "Language updated successfully",
     "languageError": "Failed to update language",
     "feedback": "Make a suggestion or report a bug",
     "featureRequest": "Request a feature",
     "bugReport": "Report a bug",
-    "deleteData": "Delete My Data",
+    "deleteData": "Delete my data",
     "deleteDataConfirmTitle": "Delete all my data",
     "deleteDataConfirmMessage": "Are you sure you want to delete all your data? This action is irreversible and will delete all your collections and cards.",
     "deleteDataConfirm": "Delete",
-    "legalNotice": "Legal Notice"
+    "legalNotice": "Legal notice"
   },
   "legal": {
     "editor": {

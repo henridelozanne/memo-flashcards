@@ -4,6 +4,15 @@ import { createI18n } from 'vue-i18n'
 import { setActivePinia, createPinia } from 'pinia'
 import SettingsPage from '@/pages/settings.vue'
 
+// Mock useRuntimeConfig
+vi.mock('nuxt/app', () => ({
+  useRuntimeConfig: () => ({
+    public: {
+      revenuecatApiKey: 'test-api-key',
+    },
+  }),
+}))
+
 // Mock router
 const mockPush = vi.fn()
 const mockBack = vi.fn()

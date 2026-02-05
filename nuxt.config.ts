@@ -13,6 +13,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       web3formsKey: process.env.WEB3FORMS_KEY,
+      revenuecatApiKey: process.env.REVENUECAT_API_KEY_IOS,
     },
   },
   alias: {

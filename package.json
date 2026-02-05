@@ -18,6 +18,7 @@
     "@capacitor/local-notifications": "^7.0.3",
     "@capacitor/preferences": "^7.0.2",
     "@pinia/nuxt": "^0.4.0",
+    "@revenuecat/purchases-capacitor": "^11.2.16",
     "@supabase/supabase-js": "^2.75.0",
     "@tiptap/extension-code-block": "^3.11.0",
     "@tiptap/extension-image": "^3.11.0",
@@ -35,6 +36,7 @@
     "vue-i18n": "^9.2.0"
   },
   "devDependencies": {
+    "@capacitor/cli": "^7.4.5",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vitejs/plugin-vue": "^4.0.0",

@@ -12,7 +12,15 @@
     </div>
     <div class="flex flex-shrink-0 items-center gap-2">
       <span v-if="value" class="text-sm text-gray-500">{{ value }}</span>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg 
+        v-if="showArrow"
+        width="20" 
+        height="20" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="2"
+      >
         <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </div>
@@ -20,10 +28,16 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  label: string
-  value?: string
-}>()
+withDefaults(
+  defineProps<{
+    label: string
+    value?: string
+    showArrow?: boolean
+  }>(),
+  {
+    showArrow: true,
+  }
+)
 
 defineEmits<{
   click: []

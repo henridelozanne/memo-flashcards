@@ -43,8 +43,6 @@ export async function syncUserProfileToRemote(): Promise<void> {
     // 4. Compare timestamps and decide what to do
     if (!remoteProfile || localProfile.updated_at > new Date(remoteProfile.updated_at).getTime()) {
       // Local is more recent or remote doesn't exist → push to Supabase
-      console.log('Syncing local profile to Supabase (local is newer)')
-
       const { error: upsertError } = await supabase.from('user_profiles').upsert({
         id: userId,
         first_name: localProfile.first_name,
@@ -59,10 +57,7 @@ export async function syncUserProfileToRemote(): Promise<void> {
       })
 
       if (upsertError) throw upsertError
-      console.log('Profile synced to Supabase successfully')
-    } else {
-      console.log('Remote profile is up to date, no sync needed')
-    }
+    } 
   } catch (error) {
     console.error('Error syncing profile to remote (non-blocking):', error)
     // Don't throw - this is non-blocking
@@ -101,7 +96,6 @@ export async function syncUserProfileFromRemote(): Promise<void> {
     }
 
     if (!remoteProfile) {
-      console.log('No remote profile found')
       return
     }
 
@@ -111,8 +105,6 @@ export async function syncUserProfileFromRemote(): Promise<void> {
 
     if (remoteUpdatedAt > localUpdatedAt) {
       // Remote is more recent → pull to SQLite
-      console.log('Syncing remote profile to local (remote is newer)')
-
       await saveUserProfile({
         userId,
         firstName: remoteProfile.first_name || '',
@@ -125,12 +117,8 @@ export async function syncUserProfileFromRemote(): Promise<void> {
           : undefined,
       })
 
-      console.log('Profile synced from Supabase successfully')
-    } else {
-      console.log('Local profile is up to date, no sync needed')
     }
   } catch (error) {
-    console.error('Error syncing profile from remote:', error)
     throw error // This one is blocking, so we throw
   }
 }
@@ -192,7 +180,6 @@ export async function syncCollectionsToRemote(): Promise<void> {
     if (toUpsert.length > 0) {
       const { error: upsertError } = await supabase.from('collections').upsert(toUpsert)
       if (upsertError) throw upsertError
-      console.log(`Synced ${toUpsert.length} collection(s) to Supabase`)
     }
   } catch (error) {
     console.error('Error syncing collections to remote (non-blocking):', error)
@@ -276,7 +263,6 @@ export async function syncCollectionsFromRemote(): Promise<void> {
       }
     }
 
-    console.log('Collections synced from Supabase successfully')
   } catch (error) {
     console.error('Error syncing collections from remote:', error)
     throw error
@@ -344,7 +330,6 @@ export async function syncCardsToRemote(): Promise<void> {
     if (toUpsert.length > 0) {
       const { error: upsertError } = await supabase.from('cards').upsert(toUpsert)
       if (upsertError) throw upsertError
-      console.log(`Synced ${toUpsert.length} card(s) to Supabase`)
     }
   } catch (error) {
     console.error('Error syncing cards to remote (non-blocking):', error)
@@ -442,7 +427,6 @@ export async function syncCardsFromRemote(): Promise<void> {
       }
     }
 
-    console.log('Cards synced from Supabase successfully')
   } catch (error) {
     console.error('Error syncing cards from remote:', error)
     throw error

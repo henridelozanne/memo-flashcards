@@ -20,13 +20,15 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
 
   // Load user data from SQLite (with bidirectional sync)
   if (userProfileStore.hasCompletedOnboarding === null) {
-    // Sync user profile from remote to local (blocking)
+    // Wrap all sync operations in a try-catch to prevent blocking the app
     try {
-      await syncUserProfileFromRemote()
-    } catch (error) {
-      console.error('[MIDDLEWARE] Failed to sync profile from remote at startup:', error)
-      // Continue anyway - user might be offline
-    }
+      // Sync user profile from remote to local (blocking)
+      try {
+        await syncUserProfileFromRemote()
+      } catch (error) {
+        console.error('[MIDDLEWARE] Failed to sync profile from remote at startup:', error)
+        // Continue anyway - user might be offline
+      }
 
     // Sync user profile from local to remote if local is newer (non-blocking)
     try {
@@ -73,8 +75,22 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
       console.error('[MIDDLEWARE] Failed to invalidate daily review cache:', error)
     }
 
-    // Load from local SQLite
-    await userProfileStore.loadUserData()
+    // Load from local SQLite - this should never fail
+    try {
+      await userProfileStore.loadUserData()
+    } catch (error) {
+      console.error('[MIDDLEWARE] Failed to load user data from SQLite:', error)
+      // If this fails, something is seriously wrong - but don't block the app
+    }
+    } catch (globalError) {
+      console.error('[MIDDLEWARE] Critical error during sync initialization:', globalError)
+      // Even if everything fails, try to load local data
+      try {
+        await userProfileStore.loadUserData()
+      } catch (e) {
+        console.error('[MIDDLEWARE] Could not load any user data:', e)
+      }
+    }
   }
 
   // Redirect to onboarding if not completed

@@ -27,7 +27,6 @@ export const useNotifications = () => {
       // Vérifier la permission
       const permission = await LocalNotifications.checkPermissions()
       if (permission.display !== 'granted') {
-        console.log('Notification permission not granted')
         return
       }
 
@@ -46,7 +45,6 @@ export const useNotifications = () => {
 
       // Ne planifier que s'il y a des cartes à réviser
       if (cardsToReview.length === 0) {
-        console.log('No cards to review, notification not scheduled')
         return
       }
 
@@ -79,8 +77,6 @@ export const useNotifications = () => {
           },
         ],
       })
-
-      console.log(`Notification scheduled for ${scheduledTime.toLocaleString()}`)
     } catch (error) {
       console.error('Error scheduling notification:', error)
     }
@@ -94,7 +90,6 @@ export const useNotifications = () => {
       const pending = await LocalNotifications.getPending()
       if (pending.notifications.length > 0) {
         await LocalNotifications.cancel({ notifications: [{ id: 1 }] })
-        console.log('All notifications cancelled')
       }
     } catch (error) {
       console.error('Error cancelling notifications:', error)
