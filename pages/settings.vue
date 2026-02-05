@@ -22,8 +22,8 @@
         @blur="handleTimeChange"
       />
 
-      <!-- Abonnement -->
-      <SettingsItem
+      <!-- Abonnement - Temporairement masqué pour v1.0 -->
+      <!-- <SettingsItem
         :label="$t('settings.subscription')"
         :value="subscriptionStatus"
         :show-arrow="false"
@@ -32,10 +32,10 @@
         <template #icon>
           <IconStar />
         </template>
-      </SettingsItem>
+      </SettingsItem> -->
 
-      <!-- Restaurer les achats -->
-      <SettingsItem
+      <!-- Restaurer les achats - Temporairement masqué pour v1.0 -->
+      <!-- <SettingsItem
         v-if="!subscriptionStore.isSubscribed"
         :label="$t('settings.restorePurchases')"
         @click="handleRestorePurchases"
@@ -43,7 +43,7 @@
         <template #icon>
           <IconRefresh />
         </template>
-      </SettingsItem>
+      </SettingsItem> -->
 
       <!-- Langue -->
       <SettingsItem :label="$t('settings.language')" :value="currentLanguage" @click="openLanguageSelector">
@@ -95,8 +95,8 @@
 
     <!-- Status Message -->
     <StatusMessage
-      v-if="statusMessage || languageStatusMessage || restoreStatusMessage"
-      :message="statusMessage || languageStatusMessage || restoreStatusMessage"
+      v-if="statusMessage || languageStatusMessage"
+      :message="statusMessage || languageStatusMessage"
       class="mx-auto mt-4 max-w-2xl"
     />
 
@@ -129,18 +129,18 @@ import PageHeader from '~/components/PageHeader.vue'
 import StatusMessage from '~/components/StatusMessage.vue'
 import ConfirmModal from '~/components/ConfirmModal.vue'
 import IconClock from '~/components/icons/IconClock.vue'
-import IconStar from '~/components/icons/IconStar.vue'
+// import IconStar from '~/components/icons/IconStar.vue' // v1.0: Temporairement masqué
 import IconGlobe from '~/components/icons/IconGlobe.vue'
 import IconFeatureRequest from '~/components/icons/IconFeatureRequest.vue'
 import IconBug from '~/components/icons/IconBug.vue'
 import IconTrash from '~/components/icons/IconTrash.vue'
 import IconDocument from '~/components/icons/IconDocument.vue'
-import IconRefresh from '~/components/icons/IconRefresh.vue'
+// import IconRefresh from '~/components/icons/IconRefresh.vue' // v1.0: Temporairement masqué
 
 const { t } = useI18n()
 const userProfileStore = useUserProfileStore()
-const subscriptionStore = useSubscriptionStore()
-const { restorePurchases } = useSubscription()
+// const subscriptionStore = useSubscriptionStore() // v1.0: Temporairement masqué
+// const { restorePurchases } = useSubscription() // v1.0: Temporairement masqué
 const { selectedTime, statusMessage, openTimePicker, handleTimeChange } = useNotificationTime()
 const {
   selectedLanguage,
@@ -150,51 +150,51 @@ const {
 } = useLanguageSelector()
 const { showDeleteConfirm, isDeleting, openDeleteConfirm, closeDeleteConfirm, handleDeleteData } = useDeleteData()
 
-const restoreStatusMessage = ref<{ type: 'success' | 'error'; text: string } | null>(null)
+// const restoreStatusMessage = ref<{ type: 'success' | 'error'; text: string } | null>(null) // v1.0: Temporairement masqué
 
 // Heure de rappel actuelle
 const currentReminderTime = computed(() => userProfileStore.notificationHour || '20:00')
 
-// Statut d'abonnement
-const subscriptionStatus = computed(() => {
-  if (subscriptionStore.isSubscribed) {
-    const plan = subscriptionStore.currentPlan
-    if (subscriptionStore.isInFreeTrial) {
-      return t('settings.subscriptionTrialActive')
-    }
-    return plan ? t('settings.subscriptionActive', { plan }) : t('settings.subscriptionActive')
-  }
-  return t('settings.subscriptionFree')
-})
+// Statut d'abonnement - v1.0: Temporairement masqué
+// const subscriptionStatus = computed(() => {
+//   if (subscriptionStore.isSubscribed) {
+//     const plan = subscriptionStore.currentPlan
+//     if (subscriptionStore.isInFreeTrial) {
+//       return t('settings.subscriptionTrialActive')
+//     }
+//     return plan ? t('settings.subscriptionActive', { plan }) : t('settings.subscriptionActive')
+//   }
+//   return t('settings.subscriptionFree')
+// })
 
 // Langue actuelle
 const currentLanguage = computed(() => LANGUAGE_NAMES[userProfileStore.language] || userProfileStore.language)
 
-// Restaurer les achats
-async function handleRestorePurchases() {
-  try {
-    restoreStatusMessage.value = { type: 'success', text: t('settings.restoringPurchases') }
-    const customerInfo = await restorePurchases()
+// Restaurer les achats - v1.0: Temporairement masqué
+// async function handleRestorePurchases() {
+//   try {
+//     restoreStatusMessage.value = { type: 'success', text: t('settings.restoringPurchases') }
+//     const customerInfo = await restorePurchases()
 
-    if (customerInfo && subscriptionStore.isSubscribed) {
-      restoreStatusMessage.value = { type: 'success', text: t('settings.restorePurchasesSuccess') }
-    } else {
-      restoreStatusMessage.value = { type: 'success', text: t('settings.restorePurchasesNone') }
-    }
+//     if (customerInfo && subscriptionStore.isSubscribed) {
+//       restoreStatusMessage.value = { type: 'success', text: t('settings.restorePurchasesSuccess') }
+//     } else {
+//       restoreStatusMessage.value = { type: 'success', text: t('settings.restorePurchasesNone') }
+//     }
 
-    // Clear message after 3 seconds
-    setTimeout(() => {
-      restoreStatusMessage.value = null
-    }, 3000)
-  } catch (error) {
-    console.error('Failed to restore purchases:', error)
-    restoreStatusMessage.value = { type: 'error', text: t('settings.restorePurchasesError') }
+//     // Clear message after 3 seconds
+//     setTimeout(() => {
+//       restoreStatusMessage.value = null
+//     }, 3000)
+//   } catch (error) {
+//     console.error('Failed to restore purchases:', error)
+//     restoreStatusMessage.value = { type: 'error', text: t('settings.restorePurchasesError') }
 
-    setTimeout(() => {
-      restoreStatusMessage.value = null
-    }, 3000)
-  }
-}
+//     setTimeout(() => {
+//       restoreStatusMessage.value = null
+//     }, 3000)
+//   }
+// }
 
 defineOptions({ name: 'SettingsPage' })
 </script>

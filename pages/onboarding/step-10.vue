@@ -43,12 +43,16 @@ const { scheduleDailyNotification } = useNotifications()
 onMounted(() => {
   onboardingStore.currentStep = 10
 
-  // Rediriger vers le paywall au lieu de passer à l'étape suivante
+  // Terminer l'onboarding et rediriger vers la page d'accueil
   onboardingStore.registerStepValidation(async () => {
     // Planifier la notification quotidienne
     await scheduleDailyNotification()
 
-    router.push('/paywall')
+    // Marquer l'onboarding comme terminé
+    onboardingStore.completeOnboarding()
+
+    // Rediriger vers la page d'accueil
+    router.push('/')
     return false // Empêcher la navigation automatique
   })
 })
