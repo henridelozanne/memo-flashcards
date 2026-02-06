@@ -1,0 +1,386 @@
+{
+  "date": {
+    "today": "Hoje",
+    "tomorrow": "Amanhã",
+    "weekDays": ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
+  },
+  "review": {
+    "showAnswer": "Mostrar resposta",
+    "good": "✅ Lembrei bem",
+    "again": "❌ Preciso revisar",
+    "sessionFinished": "Sessão concluída!",
+    "congrats": "Parabéns, você concluiu sua revisão!",
+    "cardsReviewed": "Cartões revisados: {count}",
+    "successRate": "Taxa de sucesso: {percent}%",
+    "backToCollections": "Voltar às coleções",
+    "noCard": "Nenhum cartão para revisar.",
+    "loadingCards": "Carregando cartões...",
+    "noCardsAvailable": "Nenhum cartão disponível no momento."
+  },
+  "dailyReview": {
+    "title": "Cartões de hoje",
+    "reviewToday": "Nenhum cartão para revisar hoje | Revisar {count} cartões hoje",
+    "sessionFinished": "Sessão de hoje concluída!",
+    "finishSession": "Concluir",
+    "cardsReviewed": "Cartões revisados: {count}",
+    "successRate": "Taxa de sucesso: {percent}%",
+    "streakValidated": "Sequência validada!",
+    "streakNotValidated": "Sequência não validada",
+    "currentStreak": "Sequência atual: {days} dias",
+    "needMoreCards": "Revise pelo menos 10 cartões para validar sua sequência",
+    "backToCollections": "Voltar às coleções"
+  },
+  "notifications": {
+    "message1": "Seus cartões estão esperando por você, {firstName}! 🎯",
+    "message2": "Mantenha sua sequência! 🔥",
+    "message3": "Sua memória precisa de você, {firstName}! 🧠",
+    "message4": "Pequeno lembrete, {firstName} 🚀",
+    "message5": "Pronto para revisar? 📚",
+    "message6": "Não esqueça seus objetivos, {firstName}! 🎓",
+    "message7": "Pouco a pouco, você está construindo bases sólidas 🧱",
+    "message8": "Que tal quebrar seu recorde hoje, {firstName}? 🏆",
+    "message9": "Mais uma sessão e pronto. Vamos lá! ⚡",
+    "message10": "Não é preciso ser perfeito, apenas consistente 📈",
+    "message11": "Hora de revisar, {firstName}",
+    "message12": "Alguns minutos são suficientes para progredir ⏱️",
+    "message13": "Uma pequena sessão hoje?",
+    "message14": "Sua sessão de hoje está pronta, {firstName}",
+    "message15": "Cartões esperando para serem revisados 📋",
+    "message16": "Continue seu progresso, {firstName} ➡️",
+    "message17": "Sua rotina de revisão está esperando por você",
+    "message18": "Não esqueça seus cartões hoje, {firstName}",
+    "message19": "É um bom momento para revisar seus cartões ⌛",
+    "message20": "Sua memória melhora com a prática 🧠",
+    "message21": "Pequeno lembrete para manter o ritmo, {firstName} 🔄",
+    "message22": "Estudar agora aproxima você de seus objetivos 🎯"
+  },
+  "app": { "name": "Remember" },
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "add": "Adicionar",
+    "delete": "Excluir",
+    "loading": "Carregando...",
+    "retry": "Tentar novamente",
+    "back": "Voltar",
+    "backButton": "Voltar",
+    "premium": "Premium",
+    "help": "Ajuda",
+    "loadingCollections": "Carregando coleções...",
+    "createCollection": "Criar coleção",
+    "confirm": "Confirmar",
+    "processing": "Processando..."
+  },
+  "collections": {
+    "collection": "Coleção",
+    "collections": "Coleções",
+    "myCollections": "Minhas coleções",
+    "editTitle": "Modificar coleção",
+    "notFound": "Coleção não encontrada",
+    "updatedSuccess": "Coleção atualizada com sucesso",
+    "updatedError": "Erro ao atualizar coleção",
+    "createTitle": "Criar coleção",
+    "createdSuccess": "Coleção criada com sucesso!",
+    "createdError": "Erro ao criar coleção",
+    "deleteTitle": "Excluir coleção",
+    "deleteConfirm": "Tem certeza de que deseja excluir a coleção \"{name}\"?",
+    "deleteWarning": "Esta ação é irreversível.",
+    "nameLabel": "Nome da coleção",
+    "namePlaceholder": "Ex: Vocabulário em inglês",
+    "submitting": "Processando...",
+    "edit": "Modificar",
+    "create": "Criar"
+  },
+  "cards": {
+    "card": "Cartão",
+    "cards": "Cartões",
+    "cardCount": "{count} cartões",
+    "lastAdded": "Último adicionado",
+    "addCard": "Adicionar cartão",
+    "createCard": "Criar cartão",
+    "createTitle": "Adicionar cartão",
+    "editTitle": "Modificar cartão",
+    "front": "Frente",
+    "back": "Verso",
+    "frontPlaceholder": "Pergunta ou termo",
+    "backPlaceholder": "Resposta ou definição",
+    "richTextMode": "Texto rico",
+    "addAnother": "Adicionar outro",
+    "createdSuccess": "Cartão adicionado com sucesso!",
+    "createdError": "Erro ao adicionar cartão",
+    "updatedSuccess": "Cartão modificado com sucesso",
+    "updatedError": "Erro ao modificar cartão",
+    "deleteConfirm": "Excluir este cartão",
+    "deleteMessage": "Tem certeza de que deseja excluir este cartão?",
+    "deletedSuccess": "Cartão excluído com sucesso",
+    "deletedError": "Erro ao excluir cartão",
+    "notFound": "Cartão não encontrado",
+    "nextReview": "Próxima revisão",
+    "compartment": "Caixa: {n}/{total}",
+    "correctAnswers": "Respostas corretas: {correct}/{total}",
+    "practice": {
+      "title": "Modo de prática",
+      "button": "Praticar nesta coleção",
+      "subtitle": "Não afeta suas estatísticas e cronograma de revisão",
+      "options": "Opções de prática",
+      "mostFailed": "Cartões mais errados",
+      "onlyDue": "Apenas cartões a revisar",
+      "onlyNew": "Apenas novos cartões",
+      "excludeNew": "Excluir novos cartões",
+      "swapQA": "Trocar pergunta e resposta"
+    },
+    "sort": {
+      "newestFirst": "Mais recentes",
+      "oldestFirst": "Mais antigos",
+      "alphabeticalAZ": "Alfabético (A → Z)",
+      "alphabeticalZA": "Alfabético (Z → A)",
+      "nextReview": "Próxima revisão",
+      "compartmentAsc": "Caixa crescente (1 → 5)",
+      "compartmentDesc": "Caixa decrescente (5 → 1)",
+      "mostFailed": "Mais errados",
+      "leastFailed": "Menos errados"
+    }
+  },
+  "practiceMode": {
+    "title": "Prática",
+    "button": "Modo de prática",
+    "subtitle": "Não afeta suas estatísticas e progresso",
+    "options": "Opções de prática",
+    "mostFailed": "Cartões mais errados",
+    "mostFailedDesc": "Revise os 25% dos cartões mais difíceis",
+    "onlyDue": "Apenas revisar cartões a revisar",
+    "onlyDueDesc": "Pratique apenas os cartões programados para hoje",
+    "onlyNew": "Apenas revisar novos cartões",
+    "onlyNewDesc": "Descubra cartões nunca revisados",
+    "excludeNew": "Excluir novos cartões",
+    "excludeNewDesc": "Pratique sem incluir cartões nunca revisados",
+    "swapQuestionAnswer": "Trocar pergunta e resposta",
+    "swapQuestionAnswerDesc": "Teste-se na direção oposta",
+    "returnToCollection": "Voltar à coleção"
+  },
+  "stats": {
+    "title": "Estatísticas",
+    "tabs": {
+      "activity": "Atividade",
+      "progress": "Progresso",
+      "rhythm": "Ritmo",
+      "habits": "Hábitos"
+    },
+    "totalCards": "Total de cartões",
+    "totalCollections": "Total de coleções",
+    "totalReviews": "Total de revisões",
+    "totalSessions": "Total de sessões",
+    "globalSuccessRate": "Taxa de sucesso global",
+    "cardsCreatedThisMonth": "Cartões criados este mês",
+    "cardsReviewedThisMonth": "Cartões revisados este mês",
+    "cardsCreatedToday": "Cartões criados hoje",
+    "cardsReviewedToday": "Cartões revisados hoje",
+    "cardsByCompartment": "Número de cartões por caixa",
+    "globalCoverage": "Cobertura global",
+    "globalCoverageTooltip": "{percentage}% dos cartões foram revisados pelo menos uma vez.",
+    "masteredCards": "Cartões dominados",
+    "masteredCardsSubtitle": "Na última caixa",
+    "overdueCards": "Cartões atrasados",
+    "barChartComing": "Gráfico de barras em breve",
+    "currentStreak": "Sequência atual",
+    "streakComponentComing": "Componente de sequência em breve",
+    "monthCalendar": "Calendário mensal",
+    "calendarComing": "Calendário em breve",
+    "daysWithReviewAllTime": "Porcentagem de dias com revisão (todo o tempo)",
+    "daysWithReviewThisMonth": "Porcentagem de dias com revisão (este mês)",
+    "longestStreakWith": "Maior sequência com revisão",
+    "longestStreakWithout": "Maior sequência sem revisão",
+    "days": "dias",
+    "day": "dia",
+    "session": "Nenhuma sessão | {count} sessão | {count} sessões",
+    "reviewsByHour": "Distribuição de revisões por hora (24h)",
+    "barChart24hComing": "Gráfico de barras 24h em breve",
+    "avgTimePerReview": "Tempo médio por revisão",
+    "totalTimeInReview": "Tempo total em revisão"
+  },
+  "form": {
+    "nameRequired": "O nome não pode estar vazio.",
+    "emailRequired": "O e-mail não pode estar vazio.",
+    "emailInvalid": "E-mail inválido.",
+    "messageRequired": "A mensagem não pode estar vazia.",
+    "frontRequired": "A frente não pode estar vazia.",
+    "backRequired": "O verso não pode estar vazio."
+  },
+  "settings": {
+    "title": "Configurações",
+    "reminderTime": "Horário do lembrete",
+    "reminderTimeUpdated": "Horário do lembrete atualizado com sucesso",
+    "reminderTimeError": "Falha ao atualizar o horário do lembrete",
+    "subscription": "Assinatura",
+    "subscriptionFree": "Gratuito",
+    "subscriptionPremium": "Premium",
+    "subscriptionActive": "Ativo",
+    "subscriptionTrialActive": "Teste ativo",
+    "restorePurchases": "Restaurar compras",
+    "restoringPurchases": "Restaurando...",
+    "restorePurchasesSuccess": "Compras restauradas com sucesso!",
+    "restorePurchasesNone": "Nenhuma compra para restaurar",
+    "restorePurchasesError": "Erro ao restaurar",
+    "language": "Idioma",
+    "languageUpdated": "Idioma atualizado com sucesso",
+    "languageError": "Falha ao atualizar o idioma",
+    "feedback": "Fazer sugestão ou relatar bug",
+    "featureRequest": "Solicitar funcionalidade",
+    "bugReport": "Relatar bug",
+    "deleteData": "Excluir meus dados",
+    "deleteDataConfirmTitle": "Excluir todos os meus dados",
+    "deleteDataConfirmMessage": "Tem certeza de que deseja excluir todos os seus dados? Esta ação é irreversível e excluirá todas as suas coleções e cartões.",
+    "deleteDataConfirm": "Excluir",
+    "legalNotice": "Aviso legal"
+  },
+  "legal": {
+    "editor": {
+      "title": "Editor do aplicativo",
+      "description": "O aplicativo Remember é publicado por Henri Delozanne, desenvolvedor independente baseado na França. Para qualquer dúvida, você pode entrar em contato conosco por e-mail:",
+      "address": "Um endereço profissional está disponível mediante solicitação."
+    },
+    "hosting": {
+      "title": "Hospedagem",
+      "description": "Os dados do aplicativo são hospedados pelo Supabase, um provedor de serviços em nuvem seguro baseado na Europa e nos Estados Unidos.",
+      "privacy": "As informações armazenadas estão relacionadas apenas ao uso do aplicativo e não são compartilhadas ou vendidas a terceiros."
+    },
+    "personalData": {
+      "title": "Dados pessoais",
+      "collection": "O aplicativo Remember coleta apenas os dados necessários para seu funcionamento normal (cartões, progresso, preferências).",
+      "ads": "Nenhum dado é usado para fins publicitários.",
+      "deletion": "Você pode solicitar a exclusão de seus dados pessoais a qualquer momento entrando em contato conosco."
+    },
+    "distribution": {
+      "title": "Plataformas de distribuição",
+      "platforms": "O aplicativo é distribuído através da App Store (Apple) e Google Play Store (Android).",
+      "policies": "Essas plataformas podem coletar certos dados técnicos de acordo com suas próprias políticas de privacidade."
+    },
+    "intellectualProperty": {
+      "title": "Propriedade intelectual",
+      "copyright": "Todo o conteúdo do aplicativo Remember (textos, visuais, funcionalidades) é protegido por direitos autorais.",
+      "prohibition": "Qualquer reprodução não autorizada é proibida."
+    },
+    "termsOfUse": {
+      "title": "Termos de uso",
+      "version": "O aplicativo é oferecido em uma versão gratuita com opções pagas.",
+      "compliance": "Os usuários se comprometem a respeitar e cumprir o uso legal."
+    }
+  },
+  "contact": {
+    "name": "Nome",
+    "namePlaceholder": "Seu nome",
+    "email": "E-mail",
+    "emailPlaceholder": "Seu e-mail",
+    "message": "Mensagem",
+    "featureRequestPlaceholder": "Descreva a funcionalidade que você gostaria de ver no Remember...",
+    "bugReportPlaceholder": "Descreva o problema que você encontrou...",
+    "send": "Enviar",
+    "sendError": "Erro ao enviar a mensagem.",
+    "success": "Mensagem enviada!",
+    "successMessage": "Obrigado pelo seu feedback. Responderemos o mais rápido possível."
+  },
+  "onboarding": {
+    "appName": "Remember",
+    "welcome": {
+      "tagline1": "Aprendizado duradouro.",
+      "tagline2": "Apenas alguns minutos por dia."
+    },
+    "step1": {
+      "title": "Qual é o seu nome?",
+      "placeholder": "Seu nome",
+      "error": "Por favor, insira seu nome para continuar"
+    },
+    "step2": {
+      "title": "Bem-vindo {name}!",
+      "subtitle": "Qual é o seu objetivo?",
+      "goals": {
+        "learnLanguage": "Aprender um idioma",
+        "reviseClasses": "Revisar aulas",
+        "memorizeFactsScience": "Memorizar fatos históricos ou científicos",
+        "learnVocabulary": "Aprender vocabulário profissional",
+        "developCulture": "Desenvolver cultura geral",
+        "other": "Outro"
+      }
+    },
+    "step3": {
+      "title": "Qual é a sua situação?",
+      "situations": {
+        "student": "Estudante",
+        "highSchool": "Ensino médio",
+        "employed": "Empregado",
+        "retraining": "Reconversão/aprendizado",
+        "selfLearner": "Autodidata",
+        "jobSeeking": "Procurando emprego",
+        "other": "Outro"
+      }
+    },
+    "step4": {
+      "title": "Por que você esquece...",
+      "subtitle": "...e como evitar!",
+      "explanation": "Após alguns dias, se você não revisar, seu cérebro esquece a maior parte do que aprendeu.",
+      "solution": "Felizmente, há uma solução simples: **revisar no momento certo**. Este é o princípio da **repetição espaçada** usado por este aplicativo.",
+      "timeLabel": "Tempo (dias)",
+      "retentionLabel": "Retenção",
+      "originalLearning": "Aprendizado<br>inicial",
+      "firstReview": "1ª revisão",
+      "secondReview": "2ª revisão",
+      "fourthReview": "4ª revisão"
+    },
+    "step5": {
+      "title": "Isso está comprovado",
+      "text1": "Nosso algoritmo é baseado em repetição espaçada, uma técnica",
+      "highlight": "4,8 vezes mais eficaz",
+      "text2": "do que o aprendizado tradicional para memória duradoura.",
+      "studyCaption": "Estudo \"Repeat before Forgetting\", Harvard Medical School, 2017"
+    },
+    "step6": {
+      "title": "Crie cartões claros, eficazes e fáceis de lembrar",
+      "card1Question": "Olá",
+      "card2Question": "Data da Revolução Francesa",
+      "card2Answer": "1789",
+      "card3Question": "Ponto de ebulição da água",
+      "card3Answer": "100°C"
+    },
+    "step7": {
+      "title": "Seus cartões sobem de nível a cada resposta correta"
+    },
+    "step8": {
+      "title": "Revise todos os dias o necessário, nem mais nem menos",
+      "celebration": "7 dias seguidos!",
+      "keepItUp": "Continue assim"
+    },
+    "step9": {
+      "title": "Em que horário você deseja receber a notificação?"
+    },
+    "step10": {
+      "title": "Tudo pronto, {firstName}!",
+      "subtitle": "Você está pronto para começar a aprender com o Remember"
+    },
+    "paywall": {
+      "title": "Libere seu potencial",
+      "benefit1": "Criação ilimitada de cartões e coleções",
+      "benefit2": "Estatísticas avançadas de aprendizado",
+      "benefit3": "Acesso antecipado a novos recursos",
+      "benefit4": "Suporte prioritário para assinantes",
+      "monthly": {
+        "title": "Mensal",
+        "price": "123456,99€ / mês",
+        "subtitle": "Ideal para testar",
+        "renewal": "Renovação automática"
+      },
+      "lifetime": {
+        "title": "Vitalício",
+        "price": "Pagamento único de 49,99€",
+        "subtitle": "Acesso premium vitalício",
+        "renewal": "Sem renovação"
+      },
+      "chooseOffer": "Escolher esta oferta",
+      "freeTrial": "Teste grátis de 7 dias",
+      "disclaimer": "Sem compromisso. Você pode cancelar a qualquer momento."
+    },
+    "continue": "Continuar",
+    "start": "Começar",
+    "letsGo": "Vamos lá"
+  }
+}

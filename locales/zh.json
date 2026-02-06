@@ -1,0 +1,386 @@
+{
+  "date": {
+    "today": "今天",
+    "tomorrow": "明天",
+    "weekDays": ["一", "二", "三", "四", "五", "六", "日"]
+  },
+  "review": {
+    "showAnswer": "显示答案",
+    "good": "✅ 记得很好",
+    "again": "❌ 需要复习",
+    "sessionFinished": "学习结束！",
+    "congrats": "恭喜完成本次复习！",
+    "cardsReviewed": "已复习卡片：{count}",
+    "successRate": "正确率：{percent}%",
+    "backToCollections": "返回收藏",
+    "noCard": "没有需要复习的卡片。",
+    "loadingCards": "加载卡片中...",
+    "noCardsAvailable": "暂时没有可用的卡片。"
+  },
+  "dailyReview": {
+    "title": "今日卡片",
+    "reviewToday": "今天没有需要复习的卡片 | 今天复习 {count} 张卡片",
+    "sessionFinished": "今日学习完成！",
+    "finishSession": "完成",
+    "cardsReviewed": "已复习卡片：{count}",
+    "successRate": "成功率：{percent}%",
+    "streakValidated": "连续记录已验证！",
+    "streakNotValidated": "连续记录未验证",
+    "currentStreak": "当前连续：{days} 天",
+    "needMoreCards": "至少复习10张卡片以验证您的连续记录",
+    "backToCollections": "返回收藏"
+  },
+  "notifications": {
+    "message1": "您的卡片在等您，{firstName}！🎯",
+    "message2": "保持您的连续记录！🔥",
+    "message3": "您的记忆需要您，{firstName}！🧠",
+    "message4": "小小提醒，{firstName} 🚀",
+    "message5": "准备好复习了吗？📚",
+    "message6": "别忘了您的目标，{firstName}！🎓",
+    "message7": "一点一点，您在建立坚实的基础 🧱",
+    "message8": "今天打破您的记录如何，{firstName}？🏆",
+    "message9": "一次学习就完成了。加油！⚡",
+    "message10": "不需要完美，只需坚持 📈",
+    "message11": "该复习了，{firstName}",
+    "message12": "几分钟就足以进步 ⏱️",
+    "message13": "今天来一次小学习？",
+    "message14": "您今天的学习已准备好，{firstName}",
+    "message15": "有卡片准备好复习了 📋",
+    "message16": "继续您的进步，{firstName} ➡️",
+    "message17": "您的复习例程在等您",
+    "message18": "今天别忘了您的卡片，{firstName}",
+    "message19": "现在是复习您的卡片的好时机 ⌛",
+    "message20": "您的记忆通过练习会更好 🧠",
+    "message21": "小提醒保持节奏，{firstName} 🔄",
+    "message22": "现在学习让您更接近目标 🎯"
+  },
+  "app": { "name": "Remember" },
+  "common": {
+    "ok": "确定",
+    "cancel": "取消",
+    "save": "保存",
+    "add": "添加",
+    "delete": "删除",
+    "loading": "加载中...",
+    "retry": "重试",
+    "back": "返回",
+    "backButton": "返回",
+    "premium": "高级版",
+    "help": "帮助",
+    "loadingCollections": "加载收藏中...",
+    "createCollection": "创建收藏",
+    "confirm": "确认",
+    "processing": "处理中..."
+  },
+  "collections": {
+    "collection": "收藏",
+    "collections": "收藏",
+    "myCollections": "我的收藏",
+    "editTitle": "修改收藏",
+    "notFound": "未找到收藏",
+    "updatedSuccess": "收藏更新成功",
+    "updatedError": "收藏更新错误",
+    "createTitle": "创建收藏",
+    "createdSuccess": "收藏创建成功！",
+    "createdError": "收藏创建错误",
+    "deleteTitle": "删除收藏",
+    "deleteConfirm": "您确定要删除收藏\"{name}\"吗？",
+    "deleteWarning": "此操作不可逆。",
+    "nameLabel": "收藏名称",
+    "namePlaceholder": "例如：英语词汇",
+    "submitting": "处理中...",
+    "edit": "修改",
+    "create": "创建"
+  },
+  "cards": {
+    "card": "卡片",
+    "cards": "卡片",
+    "cardCount": "{count} 张卡片",
+    "lastAdded": "最后添加于",
+    "addCard": "添加卡片",
+    "createCard": "创建卡片",
+    "createTitle": "添加卡片",
+    "editTitle": "修改卡片",
+    "front": "正面",
+    "back": "背面",
+    "frontPlaceholder": "问题或术语",
+    "backPlaceholder": "答案或定义",
+    "richTextMode": "富文本",
+    "addAnother": "添加另一张",
+    "createdSuccess": "卡片添加成功！",
+    "createdError": "卡片添加错误",
+    "updatedSuccess": "卡片修改成功",
+    "updatedError": "卡片修改错误",
+    "deleteConfirm": "删除此卡片",
+    "deleteMessage": "您确定要删除此卡片吗？",
+    "deletedSuccess": "卡片删除成功",
+    "deletedError": "卡片删除错误",
+    "notFound": "未找到卡片",
+    "nextReview": "下次复习",
+    "compartment": "间隔：{n}/{total}",
+    "correctAnswers": "正确答案：{correct}/{total}",
+    "practice": {
+      "title": "练习模式",
+      "button": "在此收藏上练习",
+      "subtitle": "不影响您的统计和复习计划",
+      "options": "练习选项",
+      "mostFailed": "最常错误的卡片",
+      "onlyDue": "仅应复习的卡片",
+      "onlyNew": "仅新卡片",
+      "excludeNew": "排除新卡片",
+      "swapQA": "交换问题和答案"
+    },
+    "sort": {
+      "newestFirst": "最新",
+      "oldestFirst": "最旧",
+      "alphabeticalAZ": "字母顺序（A → Z）",
+      "alphabeticalZA": "字母顺序（Z → A）",
+      "nextReview": "即将复习",
+      "compartmentAsc": "间隔递增（1 → 5）",
+      "compartmentDesc": "间隔递减（5 → 1）",
+      "mostFailed": "最常错误",
+      "leastFailed": "最少错误"
+    }
+  },
+  "practiceMode": {
+    "title": "练习",
+    "button": "练习模式",
+    "subtitle": "不影响您的统计和进度",
+    "options": "练习选项",
+    "mostFailed": "最常错误的卡片",
+    "mostFailedDesc": "复习25%最困难的卡片",
+    "onlyDue": "仅复习应复习的卡片",
+    "onlyDueDesc": "仅练习今天计划的卡片",
+    "onlyNew": "仅复习新卡片",
+    "onlyNewDesc": "发现从未复习过的卡片",
+    "excludeNew": "排除新卡片",
+    "excludeNewDesc": "练习时不包括从未复习过的卡片",
+    "swapQuestionAnswer": "交换问题和答案",
+    "swapQuestionAnswerDesc": "反方向测试自己",
+    "returnToCollection": "返回收藏"
+  },
+  "stats": {
+    "title": "统计",
+    "tabs": {
+      "activity": "活动",
+      "progress": "进度",
+      "rhythm": "节奏",
+      "habits": "习惯"
+    },
+    "totalCards": "总卡片数",
+    "totalCollections": "总收藏数",
+    "totalReviews": "总复习次数",
+    "totalSessions": "总学习次数",
+    "globalSuccessRate": "总体成功率",
+    "cardsCreatedThisMonth": "本月创建的卡片",
+    "cardsReviewedThisMonth": "本月复习的卡片",
+    "cardsCreatedToday": "今天创建的卡片",
+    "cardsReviewedToday": "今天复习的卡片",
+    "cardsByCompartment": "按间隔的卡片数",
+    "globalCoverage": "总体覆盖率",
+    "globalCoverageTooltip": "{percentage}%的卡片至少被复习过一次。",
+    "masteredCards": "已掌握的卡片",
+    "masteredCardsSubtitle": "在最后间隔中",
+    "overdueCards": "过期卡片",
+    "barChartComing": "柱状图即将推出",
+    "currentStreak": "当前连续",
+    "streakComponentComing": "连续组件即将推出",
+    "monthCalendar": "月历",
+    "calendarComing": "日历即将推出",
+    "daysWithReviewAllTime": "有复习的天数百分比（所有时间）",
+    "daysWithReviewThisMonth": "有复习的天数百分比（本月）",
+    "longestStreakWith": "最长连续复习",
+    "longestStreakWithout": "最长连续未复习",
+    "days": "天",
+    "day": "天",
+    "session": "无学习 | {count} 次学习",
+    "reviewsByHour": "按小时的复习分布（24小时）",
+    "barChart24hComing": "24小时柱状图即将推出",
+    "avgTimePerReview": "每次复习平均时间",
+    "totalTimeInReview": "总复习时间"
+  },
+  "form": {
+    "nameRequired": "名称不能为空。",
+    "emailRequired": "电子邮件不能为空。",
+    "emailInvalid": "电子邮件无效。",
+    "messageRequired": "消息不能为空。",
+    "frontRequired": "正面不能为空。",
+    "backRequired": "背面不能为空。"
+  },
+  "settings": {
+    "title": "设置",
+    "reminderTime": "提醒时间",
+    "reminderTimeUpdated": "提醒时间更新成功",
+    "reminderTimeError": "更新提醒时间失败",
+    "subscription": "订阅",
+    "subscriptionFree": "免费",
+    "subscriptionPremium": "高级版",
+    "subscriptionActive": "活跃",
+    "subscriptionTrialActive": "试用版活跃",
+    "restorePurchases": "恢复购买",
+    "restoringPurchases": "恢复中...",
+    "restorePurchasesSuccess": "购买恢复成功！",
+    "restorePurchasesNone": "没有购买需要恢复",
+    "restorePurchasesError": "恢复时出错",
+    "language": "语言",
+    "languageUpdated": "语言更新成功",
+    "languageError": "更新语言失败",
+    "feedback": "提出建议或报告错误",
+    "featureRequest": "请求功能",
+    "bugReport": "报告错误",
+    "deleteData": "删除我的数据",
+    "deleteDataConfirmTitle": "删除所有我的数据",
+    "deleteDataConfirmMessage": "您确定要删除所有数据吗？此操作不可逆，将删除所有收藏和卡片。",
+    "deleteDataConfirm": "删除",
+    "legalNotice": "法律声明"
+  },
+  "legal": {
+    "editor": {
+      "title": "应用发布者",
+      "description": "Remember应用由位于法国的独立开发者Henri Delozanne发布。如有任何问题，可通过电子邮件联系我们：",
+      "address": "专业地址可根据要求提供。"
+    },
+    "hosting": {
+      "title": "托管",
+      "description": "应用数据由Supabase托管，这是一个位于欧洲和美国的安全云服务提供商。",
+      "privacy": "存储的信息仅与应用使用相关，不会共享或出售给第三方。"
+    },
+    "personalData": {
+      "title": "个人数据",
+      "collection": "Remember应用仅收集其正常运行所必需的数据（卡片、进度、偏好）。",
+      "ads": "不会将任何数据用于广告目的。",
+      "deletion": "您可以随时联系我们请求删除您的个人数据。"
+    },
+    "distribution": {
+      "title": "分发平台",
+      "platforms": "该应用通过App Store（Apple）和Google Play Store（Android）分发。",
+      "policies": "这些平台可能根据自己的隐私政策收集某些技术数据。"
+    },
+    "intellectualProperty": {
+      "title": "知识产权",
+      "copyright": "Remember应用的所有内容（文本、视觉效果、功能）均受版权保护。",
+      "prohibition": "禁止任何未经授权的复制。"
+    },
+    "termsOfUse": {
+      "title": "使用条款",
+      "version": "该应用提供免费版本和付费选项。",
+      "compliance": "用户承诺尊重并遵守法律使用。"
+    }
+  },
+  "contact": {
+    "name": "姓名",
+    "namePlaceholder": "您的姓名",
+    "email": "电子邮件",
+    "emailPlaceholder": "您的电子邮件",
+    "message": "消息",
+    "featureRequestPlaceholder": "描述您希望在Remember中看到的功能...",
+    "bugReportPlaceholder": "描述您遇到的问题...",
+    "send": "发送",
+    "sendError": "发送消息时出错。",
+    "success": "消息已发送！",
+    "successMessage": "感谢您的反馈。我们会尽快回复您。"
+  },
+  "onboarding": {
+    "appName": "Remember",
+    "welcome": {
+      "tagline1": "持久学习。",
+      "tagline2": "每天只需几分钟。"
+    },
+    "step1": {
+      "title": "您叫什么名字？",
+      "placeholder": "您的名字",
+      "error": "请输入您的名字以继续"
+    },
+    "step2": {
+      "title": "欢迎{name}！",
+      "subtitle": "您的目标是什么？",
+      "goals": {
+        "learnLanguage": "学习一门语言",
+        "reviseClasses": "复习课程",
+        "memorizeFactsScience": "记忆历史或科学事实",
+        "learnVocabulary": "学习专业词汇",
+        "developCulture": "发展综合文化",
+        "other": "其他"
+      }
+    },
+    "step3": {
+      "title": "您的情况是什么？",
+      "situations": {
+        "student": "学生",
+        "highSchool": "中学生",
+        "employed": "在职",
+        "retraining": "再培训/学习",
+        "selfLearner": "自学者",
+        "jobSeeking": "求职",
+        "other": "其他"
+      }
+    },
+    "step4": {
+      "title": "您为什么会忘记...",
+      "subtitle": "...以及如何避免！",
+      "explanation": "几天后，如果您不复习，您的大脑会忘记您学到的大部分内容。",
+      "solution": "幸运的是，有一个简单的解决方案：**在正确的时间复习**。这就是本应用使用的**间隔重复**原理。",
+      "timeLabel": "时间（天）",
+      "retentionLabel": "保留",
+      "originalLearning": "初始<br>学习",
+      "firstReview": "第1次复习",
+      "secondReview": "第2次复习",
+      "fourthReview": "第4次复习"
+    },
+    "step5": {
+      "title": "这已被证明",
+      "text1": "我们的算法基于间隔重复，这种方法比传统学习",
+      "highlight": "高效4.8倍",
+      "text2": "用于持久记忆。",
+      "studyCaption": "研究\"Repeat before Forgetting\"，哈佛医学院，2017"
+    },
+    "step6": {
+      "title": "创建清晰、有效和易记的卡片",
+      "card1Question": "你好",
+      "card2Question": "法国大革命的日期",
+      "card2Answer": "1789",
+      "card3Question": "水的沸点",
+      "card3Answer": "100°C"
+    },
+    "step7": {
+      "title": "您的卡片在每次正确答案后升级"
+    },
+    "step8": {
+      "title": "每天复习必要的内容，不多不少",
+      "celebration": "连续7天！",
+      "keepItUp": "继续保持"
+    },
+    "step9": {
+      "title": "您希望在什么时间收到通知？"
+    },
+    "step10": {
+      "title": "一切准备就绪，{firstName}！",
+      "subtitle": "您现在准备好开始使用Remember学习了"
+    },
+    "paywall": {
+      "title": "释放您的潜力",
+      "benefit1": "无限制创建卡片和收藏",
+      "benefit2": "高级学习统计",
+      "benefit3": "提前访问新功能",
+      "benefit4": "订阅者优先支持",
+      "monthly": {
+        "title": "月度",
+        "price": "123456,99€ / 月",
+        "subtitle": "适合测试",
+        "renewal": "自动续订"
+      },
+      "lifetime": {
+        "title": "终身",
+        "price": "一次性支付49,99€",
+        "subtitle": "终身高级访问",
+        "renewal": "无续订"
+      },
+      "chooseOffer": "选择此优惠",
+      "freeTrial": "免费试用7天",
+      "disclaimer": "无承诺。您可以随时取消。"
+    },
+    "continue": "继续",
+    "start": "开始",
+    "letsGo": "开始吧"
+  }
+}

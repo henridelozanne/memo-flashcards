@@ -1,0 +1,386 @@
+{
+  "date": {
+    "today": "今日",
+    "tomorrow": "明日",
+    "weekDays": ["月", "火", "水", "木", "金", "土", "日"]
+  },
+  "review": {
+    "showAnswer": "答えを表示",
+    "good": "✅ よく覚えています",
+    "again": "❌ もう一度復習",
+    "sessionFinished": "セッション終了！",
+    "congrats": "おめでとうございます、復習が完了しました！",
+    "cardsReviewed": "復習したカード：{count}",
+    "successRate": "成功率：{percent}%",
+    "backToCollections": "コレクションに戻る",
+    "noCard": "復習するカードがありません。",
+    "loadingCards": "カードを読み込み中...",
+    "noCardsAvailable": "現在利用可能なカードはありません。"
+  },
+  "dailyReview": {
+    "title": "今日のカード",
+    "reviewToday": "今日復習するカードはありません | 今日 {count} 枚のカードを復習",
+    "sessionFinished": "今日のセッション完了！",
+    "finishSession": "完了",
+    "cardsReviewed": "復習したカード：{count}",
+    "successRate": "成功率：{percent}%",
+    "streakValidated": "連続記録が確認されました！",
+    "streakNotValidated": "連続記録が確認されていません",
+    "currentStreak": "現在の連続：{days} 日",
+    "needMoreCards": "連続記録を確認するには、少なくとも10枚のカードを復習してください",
+    "backToCollections": "コレクションに戻る"
+  },
+  "notifications": {
+    "message1": "カードがあなたを待っています、{firstName}！🎯",
+    "message2": "連続記録を維持しましょう！🔥",
+    "message3": "あなたの記憶があなたを必要としています、{firstName}！🧠",
+    "message4": "小さなリマインダー、{firstName} 🚀",
+    "message5": "復習の準備はできていますか？📚",
+    "message6": "目標を忘れないで、{firstName}！🎓",
+    "message7": "少しずつ、確実な基礎を築いています 🧱",
+    "message8": "今日は記録を更新しませんか、{firstName}？🏆",
+    "message9": "あと一回のセッションです。がんばって！⚡",
+    "message10": "完璧である必要はありません、一貫性が大切です 📈",
+    "message11": "復習の時間です、{firstName}",
+    "message12": "数分で進歩できます ⏱️",
+    "message13": "今日は小さなセッションはいかがですか？",
+    "message14": "あなたの今日のセッションが準備できています、{firstName}",
+    "message15": "復習を待っているカードがあります 📋",
+    "message16": "進歩を続けましょう、{firstName} ➡️",
+    "message17": "復習のルーティンがあなたを待っています",
+    "message18": "今日のカードを忘れないで、{firstName}",
+    "message19": "カードを復習する良い時間です ⌛",
+    "message20": "練習することで記憶が改善されます 🧠",
+    "message21": "リズムを維持するための小さなリマインダー、{firstName} 🔄",
+    "message22": "今学習すれば目標に近づきます 🎯"
+  },
+  "app": { "name": "Remember" },
+  "common": {
+    "ok": "OK",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "add": "追加",
+    "delete": "削除",
+    "loading": "読み込み中...",
+    "retry": "再試行",
+    "back": "戻る",
+    "backButton": "戻る",
+    "premium": "プレミアム",
+    "help": "ヘルプ",
+    "loadingCollections": "コレクションを読み込み中...",
+    "createCollection": "コレクションを作成",
+    "confirm": "確認",
+    "processing": "処理中..."
+  },
+  "collections": {
+    "collection": "コレクション",
+    "collections": "コレクション",
+    "myCollections": "マイコレクション",
+    "editTitle": "コレクションを編集",
+    "notFound": "コレクションが見つかりません",
+    "updatedSuccess": "コレクションが正常に更新されました",
+    "updatedError": "コレクションの更新エラー",
+    "createTitle": "コレクションを作成",
+    "createdSuccess": "コレクションが正常に作成されました！",
+    "createdError": "コレクションの作成エラー",
+    "deleteTitle": "コレクションを削除",
+    "deleteConfirm": "コレクション「{name}」を削除してもよろしいですか？",
+    "deleteWarning": "この操作は元に戻せません。",
+    "nameLabel": "コレクション名",
+    "namePlaceholder": "例：英語の語彙",
+    "submitting": "処理中...",
+    "edit": "編集",
+    "create": "作成"
+  },
+  "cards": {
+    "card": "カード",
+    "cards": "カード",
+    "cardCount": "{count} 枚のカード",
+    "lastAdded": "最後に追加",
+    "addCard": "カードを追加",
+    "createCard": "カードを作成",
+    "createTitle": "カードを追加",
+    "editTitle": "カードを編集",
+    "front": "表面",
+    "back": "裏面",
+    "frontPlaceholder": "質問または用語",
+    "backPlaceholder": "答えまたは定義",
+    "richTextMode": "リッチテキスト",
+    "addAnother": "別のカードを追加",
+    "createdSuccess": "カードが正常に追加されました！",
+    "createdError": "カードの追加エラー",
+    "updatedSuccess": "カードが正常に変更されました",
+    "updatedError": "カードの変更エラー",
+    "deleteConfirm": "このカードを削除",
+    "deleteMessage": "このカードを削除してもよろしいですか？",
+    "deletedSuccess": "カードが正常に削除されました",
+    "deletedError": "カードの削除エラー",
+    "notFound": "カードが見つかりません",
+    "nextReview": "次の復習",
+    "compartment": "ボックス：{n}/{total}",
+    "correctAnswers": "正解：{correct}/{total}",
+    "practice": {
+      "title": "練習モード",
+      "button": "このコレクションで練習",
+      "subtitle": "統計と復習スケジュールに影響しません",
+      "options": "練習オプション",
+      "mostFailed": "最も間違えたカード",
+      "onlyDue": "復習予定のカードのみ",
+      "onlyNew": "新しいカードのみ",
+      "excludeNew": "新しいカードを除外",
+      "swapQA": "質問と答えを入れ替える"
+    },
+    "sort": {
+      "newestFirst": "最新",
+      "oldestFirst": "最古",
+      "alphabeticalAZ": "アルファベット順（A → Z）",
+      "alphabeticalZA": "アルファベット順（Z → A）",
+      "nextReview": "次の復習順",
+      "compartmentAsc": "ボックス昇順（1 → 5）",
+      "compartmentDesc": "ボックス降順（5 → 1）",
+      "mostFailed": "最も間違えた",
+      "leastFailed": "最も間違えなかった"
+    }
+  },
+  "practiceMode": {
+    "title": "練習",
+    "button": "練習モード",
+    "subtitle": "統計と進捗に影響しません",
+    "options": "練習オプション",
+    "mostFailed": "最も間違えたカード",
+    "mostFailedDesc": "最も難しいカードの25%を復習",
+    "onlyDue": "復習予定のカードのみ",
+    "onlyDueDesc": "今日予定されているカードのみを練習",
+    "onlyNew": "新しいカードのみを復習",
+    "onlyNewDesc": "まだ復習していないカードを発見",
+    "excludeNew": "新しいカードを除外",
+    "excludeNewDesc": "まだ復習していないカードを含めずに練習",
+    "swapQuestionAnswer": "質問と答えを入れ替える",
+    "swapQuestionAnswerDesc": "逆方向で自分をテスト",
+    "returnToCollection": "コレクションに戻る"
+  },
+  "stats": {
+    "title": "統計",
+    "tabs": {
+      "activity": "アクティビティ",
+      "progress": "進捗",
+      "rhythm": "リズム",
+      "habits": "習慣"
+    },
+    "totalCards": "総カード数",
+    "totalCollections": "総コレクション数",
+    "totalReviews": "総復習回数",
+    "totalSessions": "総セッション数",
+    "globalSuccessRate": "全体の成功率",
+    "cardsCreatedThisMonth": "今月作成したカード",
+    "cardsReviewedThisMonth": "今月復習したカード",
+    "cardsCreatedToday": "今日作成したカード",
+    "cardsReviewedToday": "今日復習したカード",
+    "cardsByCompartment": "ボックス別のカード数",
+    "globalCoverage": "全体のカバレッジ",
+    "globalCoverageTooltip": "カードの{percentage}%が少なくとも一度復習されています。",
+    "masteredCards": "マスターしたカード",
+    "masteredCardsSubtitle": "最後のボックス内",
+    "overdueCards": "期限切れのカード",
+    "barChartComing": "棒グラフは近日公開",
+    "currentStreak": "現在の連続",
+    "streakComponentComing": "連続コンポーネントは近日公開",
+    "monthCalendar": "月間カレンダー",
+    "calendarComing": "カレンダーは近日公開",
+    "daysWithReviewAllTime": "復習した日数の割合（全期間）",
+    "daysWithReviewThisMonth": "復習した日数の割合（今月）",
+    "longestStreakWith": "最長連続復習",
+    "longestStreakWithout": "最長連続未復習",
+    "days": "日",
+    "day": "日",
+    "session": "セッションなし | {count} セッション",
+    "reviewsByHour": "時間別の復習分布（24時間）",
+    "barChart24hComing": "24時間棒グラフは近日公開",
+    "avgTimePerReview": "復習あたりの平均時間",
+    "totalTimeInReview": "総復習時間"
+  },
+  "form": {
+    "nameRequired": "名前を空にすることはできません。",
+    "emailRequired": "メールアドレスを空にすることはできません。",
+    "emailInvalid": "メールアドレスが無効です。",
+    "messageRequired": "メッセージを空にすることはできません。",
+    "frontRequired": "表面を空にすることはできません。",
+    "backRequired": "裏面を空にすることはできません。"
+  },
+  "settings": {
+    "title": "設定",
+    "reminderTime": "リマインダー時間",
+    "reminderTimeUpdated": "リマインダー時間が正常に更新されました",
+    "reminderTimeError": "リマインダー時間の更新に失敗しました",
+    "subscription": "サブスクリプション",
+    "subscriptionFree": "無料",
+    "subscriptionPremium": "プレミアム",
+    "subscriptionActive": "アクティブ",
+    "subscriptionTrialActive": "トライアルアクティブ",
+    "restorePurchases": "購入を復元",
+    "restoringPurchases": "復元中...",
+    "restorePurchasesSuccess": "購入が正常に復元されました！",
+    "restorePurchasesNone": "復元する購入はありません",
+    "restorePurchasesError": "復元中にエラーが発生しました",
+    "language": "言語",
+    "languageUpdated": "言語が正常に更新されました",
+    "languageError": "言語の更新に失敗しました",
+    "feedback": "提案またはバグを報告",
+    "featureRequest": "機能リクエスト",
+    "bugReport": "バグを報告",
+    "deleteData": "データを削除",
+    "deleteDataConfirmTitle": "すべてのデータを削除",
+    "deleteDataConfirmMessage": "すべてのデータを削除してもよろしいですか？この操作は元に戻せず、すべてのコレクションとカードが削除されます。",
+    "deleteDataConfirm": "削除",
+    "legalNotice": "法的通知"
+  },
+  "legal": {
+    "editor": {
+      "title": "アプリ発行者",
+      "description": "Rememberアプリは、フランスに拠点を置く個人開発者Henri Delozanneによって発行されています。ご質問がある場合は、メールでお問い合わせください：",
+      "address": "専門的な住所はリクエストに応じて提供されます。"
+    },
+    "hosting": {
+      "title": "ホスティング",
+      "description": "アプリデータは、ヨーロッパとアメリカに拠点を置くセキュアなクラウドサービスプロバイダーであるSupabaseによってホストされています。",
+      "privacy": "保存される情報はアプリの使用に関連するもののみで、第三者と共有または販売されることはありません。"
+    },
+    "personalData": {
+      "title": "個人データ",
+      "collection": "Rememberアプリは、正常な動作に必要なデータ（カード、進捗、設定）のみを収集します。",
+      "ads": "データが広告目的で使用されることはありません。",
+      "deletion": "個人データの削除をいつでもリクエストできます。"
+    },
+    "distribution": {
+      "title": "配信プラットフォーム",
+      "platforms": "このアプリは、App Store（Apple）およびGoogle Play Store（Android）を通じて配信されます。",
+      "policies": "これらのプラットフォームは、独自のプライバシーポリシーに従って特定の技術データを収集する場合があります。"
+    },
+    "intellectualProperty": {
+      "title": "知的財産",
+      "copyright": "Rememberアプリのすべてのコンテンツ（テキスト、ビジュアル、機能）は著作権で保護されています。",
+      "prohibition": "無許可の複製は禁止されています。"
+    },
+    "termsOfUse": {
+      "title": "利用規約",
+      "version": "このアプリは無料版と有料オプションで提供されています。",
+      "compliance": "ユーザーは法的な使用を尊重し、遵守することを約束します。"
+    }
+  },
+  "contact": {
+    "name": "名前",
+    "namePlaceholder": "あなたの名前",
+    "email": "メールアドレス",
+    "emailPlaceholder": "あなたのメールアドレス",
+    "message": "メッセージ",
+    "featureRequestPlaceholder": "Rememberに追加してほしい機能を説明してください...",
+    "bugReportPlaceholder": "発生した問題を説明してください...",
+    "send": "送信",
+    "sendError": "メッセージの送信中にエラーが発生しました。",
+    "success": "メッセージが送信されました！",
+    "successMessage": "フィードバックをありがとうございます。できるだけ早く返信いたします。"
+  },
+  "onboarding": {
+    "appName": "Remember",
+    "welcome": {
+      "tagline1": "持続的な学習。",
+      "tagline2": "1日数分だけ。"
+    },
+    "step1": {
+      "title": "お名前は？",
+      "placeholder": "あなたの名前",
+      "error": "続行するには名前を入力してください"
+    },
+    "step2": {
+      "title": "ようこそ{name}！",
+      "subtitle": "あなたの目標は何ですか？",
+      "goals": {
+        "learnLanguage": "言語を学ぶ",
+        "reviseClasses": "授業を復習する",
+        "memorizeFactsScience": "歴史または科学の事実を記憶する",
+        "learnVocabulary": "専門用語を学ぶ",
+        "developCulture": "総合的な文化を発展させる",
+        "other": "その他"
+      }
+    },
+    "step3": {
+      "title": "あなたの状況は？",
+      "situations": {
+        "student": "学生",
+        "highSchool": "高校生",
+        "employed": "就業中",
+        "retraining": "再訓練/学習中",
+        "selfLearner": "独学者",
+        "jobSeeking": "求職中",
+        "other": "その他"
+      }
+    },
+    "step4": {
+      "title": "なぜ忘れるのか...",
+      "subtitle": "...そしてどうやって避けるか！",
+      "explanation": "数日後、復習しなければ、脳は学んだことのほとんどを忘れてしまいます。",
+      "solution": "幸いなことに、簡単な解決策があります：**適切なタイミングで復習する**こと。これが、このアプリが使用する**間隔反復**の原理です。",
+      "timeLabel": "時間（日）",
+      "retentionLabel": "保持",
+      "originalLearning": "最初の<br>学習",
+      "firstReview": "1回目の復習",
+      "secondReview": "2回目の復習",
+      "fourthReview": "4回目の復習"
+    },
+    "step5": {
+      "title": "これは証明されています",
+      "text1": "私たちのアルゴリズムは間隔反復に基づいており、これは従来の学習よりも",
+      "highlight": "4.8倍効率的",
+      "text2": "な方法で、持続的な記憶に役立ちます。",
+      "studyCaption": "研究「Repeat before Forgetting」、ハーバード医学大学院、2017年"
+    },
+    "step6": {
+      "title": "明確で効果的で覚えやすいカードを作成",
+      "card1Question": "こんにちは",
+      "card2Question": "フランス革命の日付",
+      "card2Answer": "1789年",
+      "card3Question": "水の沸点",
+      "card3Answer": "100°C"
+    },
+    "step7": {
+      "title": "正解するたびにカードがレベルアップ"
+    },
+    "step8": {
+      "title": "毎日必要なことだけを復習、それ以上でもそれ以下でもなく",
+      "celebration": "7日間連続！",
+      "keepItUp": "継続しましょう"
+    },
+    "step9": {
+      "title": "通知を受け取る時間は？"
+    },
+    "step10": {
+      "title": "準備完了、{firstName}！",
+      "subtitle": "Rememberで学習を開始する準備が整いました"
+    },
+    "paywall": {
+      "title": "あなたの潜在能力を解放",
+      "benefit1": "無制限のカードとコレクションの作成",
+      "benefit2": "高度な学習統計",
+      "benefit3": "新機能への早期アクセス",
+      "benefit4": "サブスクライバー優先サポート",
+      "monthly": {
+        "title": "月額",
+        "price": "123456,99€ / 月",
+        "subtitle": "テストに最適",
+        "renewal": "自動更新"
+      },
+      "lifetime": {
+        "title": "生涯",
+        "price": "一回限りの支払い49,99€",
+        "subtitle": "生涯プレミアムアクセス",
+        "renewal": "更新なし"
+      },
+      "chooseOffer": "このオファーを選択",
+      "freeTrial": "7日間無料トライアル",
+      "disclaimer": "コミットメントなし。いつでもキャンセルできます。"
+    },
+    "continue": "続ける",
+    "start": "開始",
+    "letsGo": "始めましょう"
+  }
+}
