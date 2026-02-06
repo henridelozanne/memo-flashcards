@@ -206,7 +206,7 @@ describe('Legal Page', () => {
       },
     })
 
-    const emailLink = wrapper.find('a[href="mailto:henri.delozanne.pro@gmail.com"]')
+    const emailLink = wrapper.find('a[href="mailto:memo.flashcards.contact@gmail.com"]')
     expect(emailLink.exists()).toBe(true)
   })
 })
