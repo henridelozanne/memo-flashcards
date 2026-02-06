@@ -27,9 +27,14 @@ export function useDeleteData() {
       const { getCurrentUserId } = useSupabaseAuth()
       const userId = await getCurrentUserId()
 
-      // 3. Delete all data from SQLite
+      // 3. Delete all data from SQLite (respecter l'ordre des foreign keys)
+      // Supprimer d'abord les review_logs liées aux cards de l'utilisateur
+      // (même si leur user_id est NULL à cause de la migration)
+      await db.run('DELETE FROM review_logs WHERE card_id IN (SELECT id FROM cards WHERE user_id = ?)', [userId])
+      await db.run('DELETE FROM review_sessions WHERE user_id = ?', [userId])
       await db.run('DELETE FROM cards WHERE user_id = ?', [userId])
       await db.run('DELETE FROM collections WHERE user_id = ?', [userId])
+      await db.run('DELETE FROM user_profiles WHERE user_id = ?', [userId])
 
       // 4. Delete all data from Supabase
       const { supabase } = await import('~/lib/supabase')
