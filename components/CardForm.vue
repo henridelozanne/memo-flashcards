@@ -100,8 +100,15 @@ const localFront = ref(props.front ?? '')
 const localBack = ref(props.back ?? '')
 const frontError = ref<string | null>(null)
 const backError = ref<string | null>(null)
-const isRichTextFront = ref(false)
-const isRichTextBack = ref(false)
+
+// Détecte automatiquement si le contenu contient du HTML
+function hasHtmlContent(text: string): boolean {
+  const htmlTags = /<\/?[a-z][\s\S]*>/i
+  return htmlTags.test(text)
+}
+
+const isRichTextFront = ref(hasHtmlContent(props.front ?? ''))
+const isRichTextBack = ref(hasHtmlContent(props.back ?? ''))
 
 // Expose a reset method for parent to call
 defineExpose({
@@ -146,6 +153,10 @@ watch(
     localBack.value = props.back ?? ''
     frontError.value = null
     backError.value = null
+
+    // Réactiver automatiquement le mode rich text si le contenu contient du HTML
+    isRichTextFront.value = hasHtmlContent(props.front ?? '')
+    isRichTextBack.value = hasHtmlContent(props.back ?? '')
   },
   { immediate: true }
 )
