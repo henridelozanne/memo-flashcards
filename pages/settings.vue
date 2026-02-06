@@ -116,14 +116,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
+// import { useI18n } from 'vue-i18n'
 import { useUserProfileStore } from '~/store/userProfile'
-import { useSubscriptionStore } from '~/store/subscription'
+// import { useSubscriptionStore } from '~/store/subscription'
 import { useNotificationTime } from '~/composables/useNotificationTime'
 import { useLanguageSelector } from '~/composables/useLanguageSelector'
 import { useDeleteData } from '~/composables/useDeleteData'
-import { useSubscription } from '~/composables/useSubscription'
+// import { useSubscription } from '~/composables/useSubscription'
 import { LANGUAGE_NAMES } from '~/constants/languages'
 import PageHeader from '~/components/PageHeader.vue'
 import StatusMessage from '~/components/StatusMessage.vue'
@@ -137,12 +137,12 @@ import IconTrash from '~/components/icons/IconTrash.vue'
 import IconDocument from '~/components/icons/IconDocument.vue'
 // import IconRefresh from '~/components/icons/IconRefresh.vue' // v1.0: Temporairement masqué
 
-const { t } = useI18n()
 const userProfileStore = useUserProfileStore()
 // const subscriptionStore = useSubscriptionStore() // v1.0: Temporairement masqué
 // const { restorePurchases } = useSubscription() // v1.0: Temporairement masqué
-const { selectedTime, statusMessage, openTimePicker, handleTimeChange } = useNotificationTime()
+const { timeInput, selectedTime, statusMessage, openTimePicker, handleTimeChange } = useNotificationTime()
 const {
+  languageSelect,
   selectedLanguage,
   statusMessage: languageStatusMessage,
   openLanguageSelector,
