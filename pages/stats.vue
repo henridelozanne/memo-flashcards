@@ -84,7 +84,7 @@
         </div>
 
         <!-- Rythme de révision -->
-        <div v-else-if="currentTab === 'rhythm'" key="rhythm" class="space-y-4">
+        <div v-else-if="currentTab === 'rhythm'" key="rhythm" class="space-y-4 pb-6">
           <div class="rounded-[15px] bg-[var(--color-white)] p-6 shadow-[0px_4px_32px_#0000000a]">
             <MonthCalendar />
           </div>

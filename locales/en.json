@@ -176,7 +176,7 @@
     "cardsReviewedThisMonth": "Cards reviewed this month",
     "cardsCreatedToday": "Cards created today",
     "cardsReviewedToday": "Cards reviewed today",
-    "cardsByCompartment": "Distribution by compartment",
+    "cardsByCompartment": "Cards quantity by compartment",
     "globalCoverage": "Global coverage rate",
     "globalCoverageTooltip": "{percentage}% of cards have already been reviewed at least once.",
     "masteredCards": "Mastered cards",
