@@ -21,9 +21,11 @@ import { LocalNotifications } from '@capacitor/local-notifications'
 import { ref, onMounted } from 'vue'
 import { useOnboardingStore } from '~/store/onboarding'
 import { useUserProfileStore } from '~/store/userProfile'
+import { useNotifications } from '~/composables/useNotifications'
 
 const onboardingStore = useOnboardingStore()
 const userProfileStore = useUserProfileStore()
+const { scheduleDailyNotification } = useNotifications()
 const timeInput = ref<HTMLInputElement | null>(null)
 const selectedTime = ref<string>('')
 
@@ -58,7 +60,12 @@ onboardingStore.registerStepValidation(async () => {
   }
 
   // Demander la permission pour les notifications
-  await requestNotificationPermission()
+  const hasPermission = await requestNotificationPermission()
+
+  // Planifier la notification quotidienne si la permission est accordée
+  if (hasPermission) {
+    await scheduleDailyNotification()
+  }
 
   return true
 })

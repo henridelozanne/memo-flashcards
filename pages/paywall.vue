@@ -48,8 +48,8 @@
           </div>
           <div class="mb-2 text-sm text-gray-600">{{ $t('onboarding.paywall.monthly.subtitle') }}</div>
           <div class="mb-4 text-sm text-gray-600">{{ $t('onboarding.paywall.monthly.renewal') }}</div>
-          <button class="subscribe-button mt-auto" @click="selectPlan('monthly')">
-            {{ $t('onboarding.paywall.chooseOffer') }}
+          <button class="subscribe-button mt-auto" :disabled="isPurchasing" @click="selectPlan('monthly')">
+            {{ isPurchasing ? `⏳ ${$t('onboarding.paywall.purchasing')}` : $t('onboarding.paywall.chooseOffer') }}
           </button>
         </div>
 
@@ -84,6 +84,7 @@
 </template>
 
 <script setup lang="ts">
+import type { PurchasesPackage } from '@revenuecat/purchases-capacitor'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
@@ -101,20 +102,21 @@ const { initAuth, getCurrentUserId } = useSupabaseAuth()
 const { saveUserProfile: saveUserProfileLocal } = useUserProfile()
 const { getOfferings, purchasePackage } = useSubscription()
 const monthlyPrice = ref('')
-const monthlyPackageRef = ref<unknown>(null)
+const monthlyPackageRef = ref<PurchasesPackage | null>(null)
+const isPurchasing = ref(false)
 
 onMounted(async () => {
   try {
     const offerings = await getOfferings()
-    const monthlyPackage = offerings?.current?.availablePackages?.find((pkg: unknown) =>
-      (pkg as { identifier?: string })?.identifier?.includes('monthly')
+    const monthlyPackage = offerings?.current?.availablePackages?.find((pkg: PurchasesPackage) =>
+      pkg.identifier?.includes('monthly')
     )
     if (monthlyPackage) {
       monthlyPrice.value = monthlyPackage.product.priceString
       monthlyPackageRef.value = monthlyPackage
     }
   } catch (e) {
-    // Erreur silencieuse pour le chargement des prix
+    console.error('Error loading offerings:', e)
   }
 })
 
@@ -155,14 +157,26 @@ async function completeOnboarding() {
 async function selectPlan(plan: 'monthly' | 'lifetime') {
   if (plan === 'monthly' && monthlyPackageRef.value) {
     selectedPlan.value = plan
+    isPurchasing.value = true
+
     try {
-      const result = await purchasePackage(monthlyPackageRef.value)
+      // Timeout de 30 secondes pour détecter si ça bloque
+      const purchasePromise = purchasePackage(monthlyPackageRef.value)
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Purchase timeout after 30s')), 30000)
+      )
+
+      const result = await Promise.race([purchasePromise, timeoutPromise])
 
       if (result) {
         await completeOnboarding()
+      } else {
+        isPurchasing.value = false
       }
-    } catch (e) {
-      // Erreur d'achat gérée silencieusement
+    } catch (e: any) {
+      console.error('❌ Purchase error:', e)
+
+      isPurchasing.value = false
     }
   } else {
     selectedPlan.value = plan

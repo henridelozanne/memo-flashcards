@@ -96,7 +96,7 @@ describe('Stats Page', () => {
     })
     const tabs = wrapper.findAll('button')
     await tabs[1].trigger('click')
-    expect(wrapper.html()).toContain('Répartition par compartiment')
+    expect(wrapper.html()).toContain('Nombre de cartes par compartiment')
   })
 
   it('displays progress tab content', async () => {
@@ -114,7 +114,7 @@ describe('Stats Page', () => {
     })
     const tabs = wrapper.findAll('button')
     await tabs[1].trigger('click')
-    expect(wrapper.html()).toContain('Répartition par compartiment')
+    expect(wrapper.html()).toContain('Nombre de cartes par compartiment')
   })
 
   it('displays rhythm tab content', async () => {

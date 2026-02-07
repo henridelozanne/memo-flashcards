@@ -77,9 +77,13 @@ export const useSubscription = () => {
 
       let customerInfo
       try {
-        const result = await Purchases.purchasePackage({ aPackage: packageToPurchase })
+        // Créer un objet propre sans proxy Vue
+        const cleanPackage = JSON.parse(JSON.stringify(packageToPurchase))
+
+        const result = await Purchases.purchasePackage({ aPackage: cleanPackage })
         customerInfo = result.customerInfo
       } catch (innerError) {
+        console.error('❌ Purchases.purchasePackage ERROR:', innerError)
         throw innerError
       }
 
@@ -90,11 +94,14 @@ export const useSubscription = () => {
 
       return customerInfo
     } catch (error: any) {
+      console.error('⚠️ purchasePackage CATCH:', error)
       // User cancelled purchase
       if (error?.code === 'PURCHASE_CANCELLED') {
+        console.log('🚫 User cancelled purchase')
         return null
       }
 
+      console.error('❌ Rethrowing error:', error)
       throw error
     } finally {
       subscriptionStore.setLoading(false)
