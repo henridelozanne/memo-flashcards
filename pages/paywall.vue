@@ -54,20 +54,20 @@
         </div>
 
         <!-- À vie -->
-        <!-- <div class="subscription-card" :class="{ selected: selectedPlan === 'lifetime' }">
+        <div class="subscription-card" :class="{ selected: selectedPlan === 'lifetime' }">
           <div class="mb-2 text-2xl">⭐</div>
           <div class="mb-3 text-lg font-bold text-[var(--color-black)]">
             {{ $t('onboarding.paywall.lifetime.title') }}
           </div>
           <div class="mb-2 text-base font-semibold text-[var(--color-black)]">
-            {{ $t('onboarding.paywall.lifetime.price') }}
+            {{ lifetimePrice || $t('onboarding.paywall.lifetime.price') }}
           </div>
           <div class="mb-2 text-sm text-gray-600">{{ $t('onboarding.paywall.lifetime.subtitle') }}</div>
           <div class="mb-4 text-sm text-gray-600">{{ $t('onboarding.paywall.lifetime.renewal') }}</div>
-          <button class="subscribe-button mt-auto" @click="selectPlan('lifetime')">
-            {{ $t('onboarding.paywall.chooseOffer') }}
+          <button class="subscribe-button mt-auto" :disabled="isPurchasing" @click="selectPlan('lifetime')">
+            {{ isPurchasing ? `⏳ ${$t('onboarding.paywall.purchasing')}` : $t('onboarding.paywall.chooseOffer') }}
           </button>
-        </div> -->
+        </div>
       </div>
     </div>
 
@@ -103,6 +103,8 @@ const { saveUserProfile: saveUserProfileLocal } = useUserProfile()
 const { getOfferings, purchasePackage } = useSubscription()
 const monthlyPrice = ref('')
 const monthlyPackageRef = ref<PurchasesPackage | null>(null)
+const lifetimePrice = ref('')
+const lifetimePackageRef = ref<PurchasesPackage | null>(null)
 const isPurchasing = ref(false)
 
 onMounted(async () => {
@@ -114,6 +116,14 @@ onMounted(async () => {
     if (monthlyPackage) {
       monthlyPrice.value = monthlyPackage.product.priceString
       monthlyPackageRef.value = monthlyPackage
+    }
+
+    const lifetimePackage = offerings?.current?.availablePackages?.find((pkg: PurchasesPackage) =>
+      pkg.identifier?.includes('lifetime')
+    )
+    if (lifetimePackage) {
+      lifetimePrice.value = lifetimePackage.product.priceString
+      lifetimePackageRef.value = lifetimePackage
     }
   } catch (e) {
     console.error('Error loading offerings:', e)
@@ -155,31 +165,34 @@ async function completeOnboarding() {
 }
 
 async function selectPlan(plan: 'monthly' | 'lifetime') {
-  if (plan === 'monthly' && monthlyPackageRef.value) {
+  const packageToPurchase = plan === 'monthly' ? monthlyPackageRef.value : lifetimePackageRef.value
+
+  if (!packageToPurchase) {
     selectedPlan.value = plan
-    isPurchasing.value = true
+    return
+  }
 
-    try {
-      // Timeout de 30 secondes pour détecter si ça bloque
-      const purchasePromise = purchasePackage(monthlyPackageRef.value)
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Purchase timeout after 30s')), 30000)
-      )
+  selectedPlan.value = plan
+  isPurchasing.value = true
 
-      const result = await Promise.race([purchasePromise, timeoutPromise])
+  try {
+    // Timeout de 30 secondes pour détecter si ça bloque
+    const purchasePromise = purchasePackage(packageToPurchase)
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Purchase timeout after 30s')), 30000)
+    )
 
-      if (result) {
-        await completeOnboarding()
-      } else {
-        isPurchasing.value = false
-      }
-    } catch (e: any) {
-      console.error('❌ Purchase error:', e)
+    const result = await Promise.race([purchasePromise, timeoutPromise])
 
+    if (result) {
+      await completeOnboarding()
+    } else {
       isPurchasing.value = false
     }
-  } else {
-    selectedPlan.value = plan
+  } catch (e: any) {
+    console.error('❌ Purchase error:', e)
+
+    isPurchasing.value = false
   }
 }
 
