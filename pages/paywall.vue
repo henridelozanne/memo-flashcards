@@ -72,14 +72,14 @@
     </div>
 
     <!-- CTA fixé en bas -->
-    <!-- <div class="fixed bottom-0 left-0 right-0 z-10 bg-white px-6 pb-8 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
-      <button class="trial-button w-full" @click="startFreeTrial">
-        {{ $t('onboarding.paywall.freeTrial') }}
+    <div class="fixed bottom-0 left-0 right-0 z-10 bg-white px-6 pb-8 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
+      <button class="trial-button w-full" :disabled="isPurchasing" @click="selectPlan('monthly_free_trial')">
+        {{ isPurchasing ? `⏳ ${$t('onboarding.paywall.purchasing')}` : $t('onboarding.paywall.freeTrial') }}
       </button>
       <p class="mt-3 text-center text-sm text-gray-500">
         {{ $t('onboarding.paywall.disclaimer') }}
       </p>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -97,25 +97,35 @@ import { useSubscription } from '~/composables/useSubscription'
 const router = useRouter()
 const onboardingStore = useOnboardingStore()
 const userProfileStore = useUserProfileStore()
-const selectedPlan = ref<'monthly' | 'lifetime' | null>(null)
+const selectedPlan = ref<'monthly' | 'monthly_free_trial' | 'lifetime' | null>(null)
 const { initAuth, getCurrentUserId } = useSupabaseAuth()
 const { saveUserProfile: saveUserProfileLocal } = useUserProfile()
 const { getOfferings, purchasePackage } = useSubscription()
 const monthlyPrice = ref('')
 const monthlyPackageRef = ref<PurchasesPackage | null>(null)
+const monthlyTrialPackageRef = ref<PurchasesPackage | null>(null)
 const lifetimePrice = ref('')
 const lifetimePackageRef = ref<PurchasesPackage | null>(null)
 const isPurchasing = ref(false)
+const MONTHLY_PRODUCT_ID = 'memo_pro_monthly'
+const MONTHLY_FREE_TRIAL_PRODUCT_ID = 'memo_pro_monthly_free_trial'
 
 onMounted(async () => {
   try {
     const offerings = await getOfferings()
-    const monthlyPackage = offerings?.current?.availablePackages?.find((pkg: PurchasesPackage) =>
-      pkg.identifier?.includes('monthly')
+    const monthlyPackage = offerings?.current?.availablePackages?.find(
+      (pkg: PurchasesPackage) => pkg.product.identifier === MONTHLY_PRODUCT_ID
     )
     if (monthlyPackage) {
       monthlyPrice.value = monthlyPackage.product.priceString
       monthlyPackageRef.value = monthlyPackage
+    }
+
+    const monthlyTrialPackage = offerings?.current?.availablePackages?.find(
+      (pkg: PurchasesPackage) => pkg.product.identifier === MONTHLY_FREE_TRIAL_PRODUCT_ID
+    )
+    if (monthlyTrialPackage) {
+      monthlyTrialPackageRef.value = monthlyTrialPackage
     }
 
     const lifetimePackage = offerings?.current?.availablePackages?.find((pkg: PurchasesPackage) =>
@@ -164,8 +174,13 @@ async function completeOnboarding() {
   }
 }
 
-async function selectPlan(plan: 'monthly' | 'lifetime') {
-  const packageToPurchase = plan === 'monthly' ? monthlyPackageRef.value : lifetimePackageRef.value
+async function selectPlan(plan: 'monthly' | 'monthly_free_trial' | 'lifetime') {
+  const packageToPurchase =
+    {
+      monthly: monthlyPackageRef.value,
+      monthly_free_trial: monthlyTrialPackageRef.value,
+      lifetime: lifetimePackageRef.value,
+    }[plan] || null
 
   if (!packageToPurchase) {
     selectedPlan.value = plan
@@ -195,10 +210,6 @@ async function selectPlan(plan: 'monthly' | 'lifetime') {
     isPurchasing.value = false
   }
 }
-
-// function startFreeTrial() {
-//   completeOnboarding()
-// }
 
 function skipPaywall() {
   // L'utilisateur ferme le paywall sans souscrire
