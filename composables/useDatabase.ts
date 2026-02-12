@@ -70,6 +70,10 @@ export const useDatabase = () => {
         notification_hour TEXT DEFAULT '20:00',
         language TEXT DEFAULT 'en',
         onboarding_completed_at INTEGER,
+        subscription_status TEXT DEFAULT 'free',
+        subscription_product_id TEXT,
+        subscription_expires_at INTEGER,
+        subscription_updated_at INTEGER,
         created_at INTEGER NOT NULL,
         updated_at INTEGER NOT NULL
       );

@@ -58,6 +58,10 @@ export interface UserProfile {
   notification_hour: string
   language: string
   onboarding_completed_at: number | null
+  subscription_status?: 'free' | 'monthly' | 'monthly_trial' | 'lifetime'
+  subscription_product_id?: string | null
+  subscription_expires_at?: number | null
+  subscription_updated_at?: number | null
   created_at: number
   updated_at: number
 }

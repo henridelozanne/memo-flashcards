@@ -53,11 +53,19 @@ export async function syncUserProfileToRemote(): Promise<void> {
         onboarding_completed_at: localProfile.onboarding_completed_at
           ? new Date(localProfile.onboarding_completed_at).toISOString()
           : null,
+        subscription_status: localProfile.subscription_status || 'free',
+        subscription_product_id: localProfile.subscription_product_id || null,
+        subscription_expires_at: localProfile.subscription_expires_at
+          ? new Date(localProfile.subscription_expires_at).toISOString()
+          : null,
+        subscription_updated_at: localProfile.subscription_updated_at
+          ? new Date(localProfile.subscription_updated_at).toISOString()
+          : null,
         updated_at: new Date(localProfile.updated_at).toISOString(),
       })
 
       if (upsertError) throw upsertError
-    } 
+    }
   } catch (error) {
     console.error('Error syncing profile to remote (non-blocking):', error)
     // Don't throw - this is non-blocking
@@ -115,8 +123,15 @@ export async function syncUserProfileFromRemote(): Promise<void> {
         onboardingCompletedAt: remoteProfile.onboarding_completed_at
           ? new Date(remoteProfile.onboarding_completed_at).getTime()
           : undefined,
+        subscriptionStatus: remoteProfile.subscription_status || 'free',
+        subscriptionProductId: remoteProfile.subscription_product_id || null,
+        subscriptionExpiresAt: remoteProfile.subscription_expires_at
+          ? new Date(remoteProfile.subscription_expires_at).getTime()
+          : null,
+        subscriptionUpdatedAt: remoteProfile.subscription_updated_at
+          ? new Date(remoteProfile.subscription_updated_at).getTime()
+          : null,
       })
-
     }
   } catch (error) {
     throw error // This one is blocking, so we throw
@@ -262,7 +277,6 @@ export async function syncCollectionsFromRemote(): Promise<void> {
         }
       }
     }
-
   } catch (error) {
     console.error('Error syncing collections from remote:', error)
     throw error
@@ -426,7 +440,6 @@ export async function syncCardsFromRemote(): Promise<void> {
         }
       }
     }
-
   } catch (error) {
     console.error('Error syncing cards from remote:', error)
     throw error

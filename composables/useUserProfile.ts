@@ -43,6 +43,10 @@ export const useUserProfile = () => {
     notificationHour: string
     language: string
     onboardingCompletedAt?: number
+    subscriptionStatus?: 'free' | 'monthly' | 'monthly_trial' | 'lifetime'
+    subscriptionProductId?: string | null
+    subscriptionExpiresAt?: number | null
+    subscriptionUpdatedAt?: number | null
   }): Promise<void> => {
     error.value = null
 
@@ -54,11 +58,26 @@ export const useUserProfile = () => {
       const existing = await db.get<UserProfile>('SELECT * FROM user_profiles WHERE user_id = ? LIMIT 1', [data.userId])
 
       if (existing) {
+        const subscriptionStatus = data.subscriptionStatus ?? existing.subscription_status ?? 'free'
+        const subscriptionProductId =
+          data.subscriptionProductId !== undefined
+            ? data.subscriptionProductId
+            : (existing.subscription_product_id ?? null)
+        const subscriptionExpiresAt =
+          data.subscriptionExpiresAt !== undefined
+            ? data.subscriptionExpiresAt
+            : (existing.subscription_expires_at ?? null)
+        const subscriptionUpdatedAt =
+          data.subscriptionUpdatedAt !== undefined
+            ? data.subscriptionUpdatedAt
+            : (existing.subscription_updated_at ?? now)
+
         // Update existing profile
         await db.run(
           `UPDATE user_profiles 
            SET first_name = ?, goal = ?, situation = ?, notification_hour = ?, 
-               language = ?, onboarding_completed_at = ?, updated_at = ?
+               language = ?, onboarding_completed_at = ?, subscription_status = ?,
+               subscription_product_id = ?, subscription_expires_at = ?, subscription_updated_at = ?, updated_at = ?
            WHERE user_id = ?`,
           [
             data.firstName,
@@ -67,6 +86,10 @@ export const useUserProfile = () => {
             data.notificationHour,
             data.language,
             data.onboardingCompletedAt || existing.onboarding_completed_at,
+            subscriptionStatus,
+            subscriptionProductId,
+            subscriptionExpiresAt,
+            subscriptionUpdatedAt,
             now,
             data.userId,
           ]
@@ -77,8 +100,9 @@ export const useUserProfile = () => {
         await db.run(
           `INSERT INTO user_profiles 
            (id, user_id, first_name, goal, situation, notification_hour, language, 
-            onboarding_completed_at, created_at, updated_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            onboarding_completed_at, subscription_status, subscription_product_id, subscription_expires_at,
+            subscription_updated_at, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             profileId,
             data.userId,
@@ -88,6 +112,10 @@ export const useUserProfile = () => {
             data.notificationHour,
             data.language,
             data.onboardingCompletedAt || null,
+            data.subscriptionStatus || 'free',
+            data.subscriptionProductId || null,
+            data.subscriptionExpiresAt || null,
+            data.subscriptionUpdatedAt || now,
             now,
             now,
           ]
@@ -149,6 +177,45 @@ export const useUserProfile = () => {
     }
   }
 
+  /**
+   * Update subscription status fields in SQLite local database
+   */
+  const updateSubscriptionStatus = async (data: {
+    userId: string
+    subscriptionStatus: 'free' | 'monthly' | 'monthly_trial' | 'lifetime'
+    subscriptionProductId?: string | null
+    subscriptionExpiresAt?: number | null
+    subscriptionUpdatedAt?: number | null
+  }): Promise<void> => {
+    error.value = null
+
+    try {
+      const db = await getDbConnection()
+      const now = Date.now()
+
+      await db.run(
+        `UPDATE user_profiles
+         SET subscription_status = ?, subscription_product_id = ?,
+             subscription_expires_at = ?, subscription_updated_at = ?, updated_at = ?
+         WHERE user_id = ?`,
+        [
+          data.subscriptionStatus,
+          data.subscriptionProductId || null,
+          data.subscriptionExpiresAt || null,
+          data.subscriptionUpdatedAt || now,
+          now,
+          data.userId,
+        ]
+      )
+
+      await loadUserProfile(data.userId)
+    } catch (e: any) {
+      error.value = e.message || 'Error updating subscription status'
+      console.error('Error updating subscription status in SQLite:', e)
+      throw e
+    }
+  }
+
   return {
     userProfile,
     isLoading,
@@ -157,5 +224,6 @@ export const useUserProfile = () => {
     saveUserProfile,
     updateNotificationHour,
     updateLanguage,
+    updateSubscriptionStatus,
   }
 }

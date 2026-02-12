@@ -8,8 +8,71 @@ import {
 import { useSubscriptionStore } from '~/store/subscription'
 import { useRuntimeConfig } from 'nuxt/app'
 
+const MONTHLY_PRODUCT_ID = 'memo_pro_monthly'
+const MONTHLY_FREE_TRIAL_PRODUCT_ID = 'memo_pro_monthly_free_trial'
+const LIFETIME_PRODUCT_ID = 'memo_pro_lifetime'
+
 export const useSubscription = () => {
   const subscriptionStore = useSubscriptionStore()
+
+  const deriveSubscriptionSnapshot = (customerInfo: CustomerInfo) => {
+    const activeEntitlements = Object.values(customerInfo.entitlements.active)
+    if (activeEntitlements.length === 0) {
+      return {
+        status: 'free' as const,
+        productId: null,
+        expiresAt: null,
+      }
+    }
+
+    const entitlement = activeEntitlements[0]
+    const productId = entitlement?.productIdentifier || null
+    const expiresAt = entitlement?.expirationDate ? new Date(entitlement.expirationDate).getTime() : null
+
+    if (productId === LIFETIME_PRODUCT_ID) {
+      return {
+        status: 'lifetime' as const,
+        productId,
+        expiresAt: null,
+      }
+    }
+
+    if (entitlement?.periodType === 'TRIAL') {
+      return {
+        status: 'monthly_trial' as const,
+        productId: productId || MONTHLY_FREE_TRIAL_PRODUCT_ID,
+        expiresAt,
+      }
+    }
+
+    return {
+      status: 'monthly' as const,
+      productId: productId || MONTHLY_PRODUCT_ID,
+      expiresAt,
+    }
+  }
+
+  const updateLocalSubscriptionStatus = async (customerInfo: CustomerInfo) => {
+    try {
+      const { status, productId, expiresAt } = deriveSubscriptionSnapshot(customerInfo)
+      const useSupabaseAuth = (await import('~/composables/useSupabaseAuth')).default
+      const { getCurrentUserId } = useSupabaseAuth()
+      const userId = await getCurrentUserId()
+
+      const { useUserProfile } = await import('~/composables/useUserProfile')
+      const { updateSubscriptionStatus } = useUserProfile()
+
+      await updateSubscriptionStatus({
+        userId,
+        subscriptionStatus: status,
+        subscriptionProductId: productId,
+        subscriptionExpiresAt: expiresAt,
+        subscriptionUpdatedAt: Date.now(),
+      })
+    } catch (error) {
+      console.warn('Failed to update local subscription status:', error)
+    }
+  }
 
   /**
    * Initialize RevenueCat SDK
@@ -91,6 +154,7 @@ export const useSubscription = () => {
       const isSubscribed = checkCustomerInfoForActiveSubscription(customerInfo)
       subscriptionStore.setSubscribed(isSubscribed)
       subscriptionStore.setCustomerInfo(customerInfo)
+      await updateLocalSubscriptionStatus(customerInfo)
 
       return customerInfo
     } catch (error: any) {
@@ -122,6 +186,7 @@ export const useSubscription = () => {
       const isSubscribed = checkCustomerInfoForActiveSubscription(customerInfo)
       subscriptionStore.setSubscribed(isSubscribed)
       subscriptionStore.setCustomerInfo(customerInfo)
+      await updateLocalSubscriptionStatus(customerInfo)
 
       return customerInfo
     } catch (error) {
@@ -143,6 +208,7 @@ export const useSubscription = () => {
 
       subscriptionStore.setSubscribed(isSubscribed)
       subscriptionStore.setCustomerInfo(customerInfo)
+      await updateLocalSubscriptionStatus(customerInfo)
 
       return isSubscribed
     } catch (error) {

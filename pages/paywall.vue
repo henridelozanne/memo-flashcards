@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import type { PurchasesPackage } from '@revenuecat/purchases-capacitor'
+import type { PurchasesPackage, CustomerInfo } from '@revenuecat/purchases-capacitor'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
@@ -109,6 +109,7 @@ const lifetimePackageRef = ref<PurchasesPackage | null>(null)
 const isPurchasing = ref(false)
 const MONTHLY_PRODUCT_ID = 'memo_pro_monthly'
 const MONTHLY_FREE_TRIAL_PRODUCT_ID = 'memo_pro_monthly_free_trial'
+const LIFETIME_PRODUCT_ID = 'memo_pro_lifetime'
 
 onMounted(async () => {
   try {
@@ -140,7 +141,28 @@ onMounted(async () => {
   }
 })
 
-async function completeOnboarding() {
+function getSubscriptionSnapshot(plan: 'monthly' | 'monthly_free_trial' | 'lifetime', customerInfo?: CustomerInfo) {
+  const entitlements = customerInfo ? Object.values(customerInfo.entitlements.active) : []
+  const entitlement = entitlements[0]
+  const productId = entitlement?.productIdentifier || null
+  const expiresAt = entitlement?.expirationDate ? new Date(entitlement.expirationDate).getTime() : null
+
+  if (productId === LIFETIME_PRODUCT_ID || plan === 'lifetime') {
+    return { status: 'lifetime' as const, productId: LIFETIME_PRODUCT_ID, expiresAt: null }
+  }
+
+  if (entitlement?.periodType === 'TRIAL' || plan === 'monthly_free_trial') {
+    return { status: 'monthly_trial' as const, productId: MONTHLY_FREE_TRIAL_PRODUCT_ID, expiresAt }
+  }
+
+  return { status: 'monthly' as const, productId: MONTHLY_PRODUCT_ID, expiresAt }
+}
+
+async function completeOnboarding(subscriptionSnapshot?: {
+  status: 'free' | 'monthly' | 'monthly_trial' | 'lifetime'
+  productId?: string | null
+  expiresAt?: number | null
+}) {
   try {
     // 1. Authentification silencieuse via Supabase
     await initAuth()
@@ -155,6 +177,10 @@ async function completeOnboarding() {
       notificationHour: userProfileStore.notificationHour,
       language: userProfileStore.language,
       onboardingCompletedAt: Date.now(),
+      subscriptionStatus: subscriptionSnapshot?.status || 'free',
+      subscriptionProductId: subscriptionSnapshot?.productId || null,
+      subscriptionExpiresAt: subscriptionSnapshot?.expiresAt || null,
+      subscriptionUpdatedAt: Date.now(),
     })
 
     // 3. Marquer l'onboarding comme terminé
@@ -168,6 +194,7 @@ async function completeOnboarding() {
     // 5. Rediriger vers l'écran principal
     router.push('/')
   } catch (e) {
+    console.error('❌ completeOnboarding error:', e)
     // Continuer malgré l'erreur pour ne pas bloquer l'utilisateur
     onboardingStore.completeOnboarding()
     router.push('/')
@@ -197,23 +224,32 @@ async function selectPlan(plan: 'monthly' | 'monthly_free_trial' | 'lifetime') {
       setTimeout(() => reject(new Error('Purchase timeout after 30s')), 30000)
     )
 
-    const result = await Promise.race([purchasePromise, timeoutPromise])
+    const result = (await Promise.race([purchasePromise, timeoutPromise])) as CustomerInfo | null
 
     if (result) {
-      await completeOnboarding()
+      const snapshot = getSubscriptionSnapshot(plan, result)
+      await completeOnboarding({
+        status: snapshot.status,
+        productId: snapshot.productId,
+        expiresAt: snapshot.expiresAt,
+      })
     } else {
       isPurchasing.value = false
     }
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('❌ Purchase error:', e)
 
     isPurchasing.value = false
   }
 }
 
-function skipPaywall() {
-  // L'utilisateur ferme le paywall sans souscrire
-  completeOnboarding()
+async function skipPaywall() {
+  try {
+    // L'utilisateur ferme le paywall sans souscrire
+    await completeOnboarding({ status: 'free', productId: null, expiresAt: null })
+  } catch (error) {
+    console.error('❌ skipPaywall error:', error)
+  }
 }
 
 defineOptions({ name: 'OnboardingPaywallPage' })
@@ -231,6 +267,7 @@ defineOptions({ name: 'OnboardingPaywallPage' })
   padding: 8px;
   color: #374151;
   transition: color 0.2s;
+  z-index: 20;
 }
 
 .close-button:hover {
