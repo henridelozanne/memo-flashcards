@@ -5,8 +5,11 @@ import {
   PurchasesPackage,
   CustomerInfo,
 } from '@revenuecat/purchases-capacitor'
+import { computed, ref } from 'vue'
 import { useSubscriptionStore } from '~/store/subscription'
 import { useRuntimeConfig } from 'nuxt/app'
+import { useUserProfile } from '~/composables/useUserProfile'
+import useSupabaseAuth from '~/composables/useSupabaseAuth'
 
 const MONTHLY_PRODUCT_ID = 'memo_pro_monthly'
 const MONTHLY_FREE_TRIAL_PRODUCT_ID = 'memo_pro_monthly_free_trial'
@@ -261,7 +264,70 @@ export const useSubscription = () => {
     }
   }
 
+  // ============================================
+  // Accès premium et limitations
+  // ============================================
+
+  const localStatus = ref<'free' | 'monthly' | 'monthly_trial' | 'lifetime'>('free')
+
+  /**
+   * Vérifie si l'utilisateur a accès au premium
+   * Un utilisateur a accès au premium s'il est :
+   * - En essai gratuit (monthly_trial)
+   * - Abonné mensuel (monthly)
+   * - Abonné à vie (lifetime)
+   *
+   * On vérifie d'abord le store RevenueCat, puis le profil local en fallback
+   */
+  const isPremium = computed(() => {
+    // Si le store RevenueCat indique premium, c'est la source de vérité
+    if (subscriptionStore.hasPremiumAccess) {
+      return true
+    }
+
+    // Sinon, vérifier le statut local
+    return localStatus.value !== 'free'
+  })
+
+  /**
+   * Vérifie le statut d'abonnement depuis le profil local
+   */
+  async function checkLocalSubscriptionStatus(): Promise<'free' | 'monthly' | 'monthly_trial' | 'lifetime'> {
+    try {
+      const { getCurrentUserId } = useSupabaseAuth()
+      const { loadUserProfile } = useUserProfile()
+      const userId = await getCurrentUserId()
+      const profile = await loadUserProfile(userId)
+
+      const status = (profile?.subscription_status as 'free' | 'monthly' | 'monthly_trial' | 'lifetime') || 'free'
+      localStatus.value = status
+      return status
+    } catch (error) {
+      console.error('Error checking local subscription status:', error)
+      localStatus.value = 'free'
+      return 'free'
+    }
+  }
+
+  /**
+   * Vérifie si l'utilisateur est sur le plan gratuit
+   */
+  const isFree = computed(() => !isPremium.value)
+
+  /**
+   * Limites pour les utilisateurs gratuits
+   */
+  const FREE_LIMITS = {
+    MAX_COLLECTIONS: 2,
+    // Possibilité d'ajouter d'autres limites plus tard :
+    // MAX_CARDS_PER_COLLECTION: 50,
+  }
+
+  // Charger le statut local au démarrage
+  checkLocalSubscriptionStatus()
+
   return {
+    // RevenueCat core
     initRevenueCat,
     getOfferings,
     purchasePackage,
@@ -269,5 +335,10 @@ export const useSubscription = () => {
     checkSubscriptionStatus,
     setUserId,
     logoutUser,
+    // Accès premium et limitations
+    isPremium,
+    isFree,
+    FREE_LIMITS,
+    checkLocalSubscriptionStatus,
   }
 }

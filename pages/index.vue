@@ -33,7 +33,7 @@
         data-testid="create-card"
         class="order-last flex cursor-pointer flex-col items-center justify-center rounded-[15px] border-2 border-dashed bg-[var(--color-white)] p-6 transition hover:bg-[var(--color-light-purple)]"
         style="border-color: var(--color-accent-purple)"
-        @click="$router.push('/collections/create')"
+        @click="handleCreateCollection"
       >
         <span class="mb-2 text-4xl text-[var(--color-accent-purple)]">+</span>
         <span class="text-center font-medium text-[var(--color-primary)]">{{ $t('common.createCollection') }}</span>
@@ -64,6 +64,13 @@
       <br />
       <span class="text-sm text-[var(--color-gray-500)]">{{ $t('collections.deleteWarning') }}</span>
     </ConfirmModal>
+
+    <!-- Modal de limitation gratuite -->
+    <UpgradeModal
+      :is-open="showUpgradeModal"
+      :description="$t('upgrade.collectionLimit')"
+      @close="showUpgradeModal = false"
+    />
   </div>
 </template>
 
@@ -72,11 +79,13 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useDailyReview } from '~/composables/useDailyReview'
+import { useSubscription } from '~/composables/useSubscription'
 import DailyReviewButton from '~/components/DailyReviewButton.vue'
 import PageHeader from '~/components/PageHeader.vue'
 import BaseButton from '~/components/Button.vue'
 import IconSettings from '~/components/icons/IconSettings.vue'
 import IconStats from '~/components/icons/IconStats.vue'
+import UpgradeModal from '~/components/UpgradeModal.vue'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'HomePage' })
@@ -84,19 +93,32 @@ defineOptions({ name: 'HomePage' })
 const router = useRouter()
 const { collections, isLoading, error, loadCollections, deleteCollection } = useCollections()
 const { initDailyReview } = useDailyReview()
+const { isFree, FREE_LIMITS } = useSubscription()
 
 const collectionToDelete = ref<Collection | null>(null)
 const isDeleting = ref(false)
+const showUpgradeModal = ref(false)
 
 onMounted(async () => {
   await loadCollections()
-  // await createTestData()
   await initDailyReview()
 })
 
 // Navigation vers l'édition
 function editCollection(id: string) {
   router.push(`/collections/${id}/edit`)
+}
+
+// Gestion de la création de collection avec limitation
+function handleCreateCollection() {
+  // Si l'utilisateur est gratuit et a atteint la limite
+  if (isFree.value && collections.value.length >= FREE_LIMITS.MAX_COLLECTIONS) {
+    showUpgradeModal.value = true
+    return
+  }
+
+  // Sinon, naviguer vers la page de création
+  router.push('/collections/create')
 }
 
 // Confirmation de suppression

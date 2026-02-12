@@ -280,6 +280,12 @@
     "success": "消息已发送！",
     "successMessage": "感谢您的反馈。我们会尽快回复您。"
   },
+  "upgrade": {
+    "limitReached": "已达限制",
+    "collectionLimit": "免费计划允许创建最多2个集合。升级到高级版以创建无限集合。",
+    "upgradeToPremium": "升级到高级版",
+    "later": "稍后"
+  },
   "onboarding": {
     "appName": "Remember",
     "welcome": {

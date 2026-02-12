@@ -280,6 +280,12 @@
     "success": "メッセージが送信されました！",
     "successMessage": "フィードバックをありがとうございます。できるだけ早く返信いたします。"
   },
+  "upgrade": {
+    "limitReached": "上限に達しました",
+    "collectionLimit": "無料プランでは最大2つのコレクションを作成できます。プレミアムにアップグレードするとコレクションを無制限に作成できます。",
+    "upgradeToPremium": "プレミアムにアップグレード",
+    "later": "後で"
+  },
   "onboarding": {
     "appName": "Remember",
     "welcome": {

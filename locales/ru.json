@@ -280,6 +280,12 @@
     "success": "Сообщение отправлено!",
     "successMessage": "Спасибо за ваш отзыв. Мы ответим вам в ближайшее время."
   },
+  "upgrade": {
+    "limitReached": "Лимит достигнут",
+    "collectionLimit": "Бесплатный план позволяет создать до 2 коллекций. Перейдите на Premium для неограниченных коллекций.",
+    "upgradeToPremium": "Перейти на Premium",
+    "later": "Позже"
+  },
   "onboarding": {
     "appName": "Remember",
     "welcome": {

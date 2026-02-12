@@ -280,6 +280,12 @@
     "success": "Message sent!",
     "successMessage": "Thank you for your feedback. We will get back to you as soon as possible."
   },
+  "upgrade": {
+    "limitReached": "Limit Reached",
+    "collectionLimit": "The free plan allows you to create up to 2 collections. Upgrade to Premium for unlimited collections.",
+    "upgradeToPremium": "Upgrade to Premium",
+    "later": "Later"
+  },
   "onboarding": {
     "appName": "Remember",
     "welcome": {

@@ -280,6 +280,12 @@
     "success": "¡Mensaje enviado!",
     "successMessage": "Gracias por tu comentario. Te responderemos lo antes posible."
   },
+  "upgrade": {
+    "limitReached": "Límite alcanzado",
+    "collectionLimit": "El plan gratuito permite crear hasta 2 colecciones. Actualiza a Premium para crear colecciones ilimitadas.",
+    "upgradeToPremium": "Actualizar a Premium",
+    "later": "Más tarde"
+  },
   "onboarding": {
     "appName": "Remember",
     "welcome": {
