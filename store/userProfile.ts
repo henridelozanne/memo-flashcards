@@ -8,7 +8,7 @@ export const useUserProfileStore = defineStore('userProfile', () => {
   const goal = ref<string>('')
   const situation = ref<string>('')
   const notificationHour = ref<string>('')
-  const language = ref<string>('en')
+  const language = ref<string>(detectSystemLanguage())
   const hasCompletedOnboarding = ref<boolean | null>(null) // null = not checked yet
 
   // Charger toutes les données utilisateur depuis SQLite local
@@ -52,7 +52,7 @@ export const useUserProfileStore = defineStore('userProfile', () => {
     goal.value = ''
     situation.value = ''
     notificationHour.value = ''
-    language.value = 'en'
+    language.value = detectSystemLanguage()
     hasCompletedOnboarding.value = false
   }
 

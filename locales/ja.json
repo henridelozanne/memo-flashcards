@@ -378,7 +378,8 @@
       "chooseOffer": "このオファーを選択",
       "purchasing": "処理中...",
       "freeTrial": "7日間無料トライアル",
-      "disclaimer": "コミットメントなし。いつでもキャンセルできます。"
+      "disclaimer": "コミットメントなし。いつでもキャンセルできます。",
+      "privacyPolicy": "プライバシーポリシー"
     },
     "continue": "続ける",
     "start": "開始",

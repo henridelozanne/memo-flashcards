@@ -79,6 +79,9 @@
       <p class="mt-3 text-center text-sm text-gray-500">
         {{ $t('onboarding.paywall.disclaimer') }}
       </p>
+      <p class="mt-2 text-center text-xs text-gray-400">
+        <a href="/legal" class="underline">{{ $t('onboarding.paywall.privacyPolicy') }}</a>
+      </p>
     </div>
   </div>
 </template>

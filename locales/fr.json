@@ -378,7 +378,8 @@
       "chooseOffer": "Choisir cette offre",
       "purchasing": "En cours...",
       "freeTrial": "Essayer gratuitement pendant 7 jours",
-      "disclaimer": "Sans engagement. Vous pouvez annuler à tout moment."
+      "disclaimer": "Sans engagement. Vous pouvez annuler à tout moment.",
+      "privacyPolicy": "Politique de confidentialité"
     },
     "continue": "Continuer",
     "start": "Commencer",

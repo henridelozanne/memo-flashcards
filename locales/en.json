@@ -378,7 +378,8 @@
       "chooseOffer": "Choose this offer",
       "purchasing": "Processing...",
       "freeTrial": "Try free for 7 days",
-      "disclaimer": "No commitment. You can cancel anytime."
+      "disclaimer": "No commitment. You can cancel anytime.",
+      "privacyPolicy": "Privacy Policy"
     },
     "continue": "Continue",
     "start": "Get started",
