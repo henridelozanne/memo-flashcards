@@ -3,4 +3,7 @@ export default {
   appName: 'Memo Flashcards',
   webDir: '.output/public',
   server: { cleartext: true },
+  ios: {
+    contentInset: 'never',
+  },
 }
