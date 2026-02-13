@@ -6,7 +6,7 @@
   >
     <AnimatedSunburst v-if="sessionFinished" />
     <!-- Header fixe -->
-    <div class="flex-shrink-0 px-6 pb-2 pt-6">
+    <div class="header-container flex-shrink-0 px-6 pb-2 pt-6" :class="{ 'header-with-backdrop': sessionFinished }">
       <PageHeader :title="$t('dailyReview.title')" back-button-visible @back="goBack">
         <template #actions>
           <ProgressCircle :is-from-page-header="true" color-variant="purple" />
@@ -80,9 +80,26 @@ defineOptions({ name: 'DailyReviewPage' })
   overflow: hidden;
 }
 
-.review-session-layout > *:not(.animated-sunburst) {
+.review-session-layout > *:not(.animated-sunburst):not(.header-container) {
   position: relative;
   z-index: 1;
+}
+
+.header-container {
+  position: relative;
+  z-index: 20;
+}
+
+.header-with-backdrop {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 0 0 20px 20px;
+  border-top: 1px solid var(--color-primary);
+  border-bottom: 1px solid var(--color-primary);
+  margin: 0 -1.5rem;
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
 }
 
 .session-end-overlay {
