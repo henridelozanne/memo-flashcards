@@ -63,7 +63,7 @@ import { useDatabase } from '~/composables/useDatabase'
 
 defineOptions({ name: 'MonthCalendar' })
 
-const { tm } = useI18n()
+const { tm, locale } = useI18n()
 const currentDate = ref(new Date())
 const reviewDates = ref<Set<string>>(new Set())
 const animationKey = ref(0)
@@ -72,7 +72,7 @@ const weekDays = computed(() => tm('date.weekDays') as string[])
 
 const monthYearLabel = computed(() => {
   const options: Intl.DateTimeFormatOptions = { month: 'long', year: 'numeric' }
-  const label = currentDate.value.toLocaleDateString('fr-FR', options)
+  const label = currentDate.value.toLocaleDateString(locale.value, options)
   return label.charAt(0).toUpperCase() + label.slice(1)
 })
 
