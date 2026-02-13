@@ -197,7 +197,8 @@
     "reviewsByHour": "Répartition des reviews par heure (24h)",
     "barChart24hComing": "Bar chart 24h à venir",
     "avgTimePerReview": "Temps moyen par révision",
-    "totalTimeInReview": "Temps total en révision"
+    "totalTimeInReview": "Temps total en révision",
+    "upgradeToUnlock": "Passer au Premium"
   },
   "form": {
     "nameRequired": "Le nom ne peut pas être vide.",
@@ -285,6 +286,7 @@
     "collectionLimit": "Le plan gratuit permet de créer jusqu'à 1 collection. Passe au Premium pour créer des collections illimitées.",
     "cardLimit": "Le plan gratuit permet de créer jusqu'à 70 cartes. Passe au Premium pour créer des cartes illimitées.",
     "practiceOptionsLimit": "Les options d'entraînement sont réservées aux utilisateurs Premium. Passe au Premium pour personnaliser tes sessions d'entraînement.",
+    "statsLimit": "Les statistiques avancées sont réservées aux utilisateurs Premium. Passe au Premium pour accéder à toutes les statistiques de progression.",
     "upgradeToPremium": "Passer au Premium",
     "later": "Plus tard"
   },

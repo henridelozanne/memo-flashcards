@@ -197,7 +197,8 @@
     "reviewsByHour": "Review sessions by hour (24h)",
     "barChart24hComing": "24h bar chart coming soon",
     "avgTimePerReview": "Avg time per session",
-    "totalTimeInReview": "Total time in review"
+    "totalTimeInReview": "Total time in review",
+    "upgradeToUnlock": "Upgrade to unlock"
   },
   "form": {
     "nameRequired": "The name cannot be empty.",
@@ -285,6 +286,7 @@
     "collectionLimit": "The free plan allows you to create up to 1 collection. Upgrade to Premium for unlimited collections.",
     "cardLimit": "The free plan allows you to create up to 70 cards. Upgrade to Premium for unlimited cards.",
     "practiceOptionsLimit": "Practice options are reserved for Premium users. Upgrade to Premium to customize your training sessions.",
+    "statsLimit": "Advanced statistics are reserved for Premium users. Upgrade to Premium to access all progression statistics.",
     "upgradeToPremium": "Upgrade to Premium",
     "later": "Later"
   },

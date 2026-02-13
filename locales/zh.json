@@ -197,7 +197,8 @@
     "reviewsByHour": "按小时的复习分布（24小时）",
     "barChart24hComing": "24小时柱状图即将推出",
     "avgTimePerReview": "每次复习平均时间",
-    "totalTimeInReview": "总复习时间"
+    "totalTimeInReview": "总复习时间",
+    "upgradeToUnlock": "升级以解锁"
   },
   "form": {
     "nameRequired": "名称不能为空。",
@@ -285,6 +286,7 @@
     "collectionLimit": "免费计划允许创建最多1个集合。升级到高级版以创建无限集合。",
     "cardLimit": "免费计划允许创建最多70张卡片。升级到高级版以创建无限卡片。",
     "practiceOptionsLimit": "练习选项仅限高级用户使用。升级到高级版以自定义您的训练课程。",
+    "statsLimit": "高级统计信息仅限高级用户使用。升级到高级版以访问所有进度统计信息。",
     "upgradeToPremium": "升级到高级版",
     "later": "稍后"
   },

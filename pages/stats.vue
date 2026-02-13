@@ -38,47 +38,88 @@
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <StatCard :label="$t('stats.cardsCreatedToday')" :value="cardsCreatedToday" />
-            <StatCard :label="$t('stats.cardsReviewedToday')" :value="cardsReviewedToday" />
+            <StatCard
+              :label="$t('stats.cardsCreatedToday')"
+              :value="cardsCreatedToday"
+              :locked="isFree"
+              @unlock-required="handleUnlockRequired"
+            />
+            <StatCard
+              :label="$t('stats.cardsReviewedToday')"
+              :value="cardsReviewedToday"
+              :locked="isFree"
+              @unlock-required="handleUnlockRequired"
+            />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <StatCard :label="$t('stats.cardsCreatedThisMonth')" :value="cardsCreatedThisMonth" />
-            <StatCard :label="$t('stats.cardsReviewedThisMonth')" :value="cardsReviewedThisMonth" />
+            <StatCard
+              :label="$t('stats.cardsCreatedThisMonth')"
+              :value="cardsCreatedThisMonth"
+              :locked="isFree"
+              @unlock-required="handleUnlockRequired"
+            />
+            <StatCard
+              :label="$t('stats.cardsReviewedThisMonth')"
+              :value="cardsReviewedThisMonth"
+              :locked="isFree"
+              @unlock-required="handleUnlockRequired"
+            />
           </div>
         </div>
 
         <!-- Progression -->
         <div v-else-if="currentTab === 'progress'" key="progress" class="space-y-4">
-          <div class="rounded-[15px] bg-[var(--color-white)] p-6 shadow-[0px_4px_32px_#0000000a]">
+          <div
+            class="locked-stat-card rounded-[15px] bg-[var(--color-white)] p-6 shadow-[0px_4px_32px_#0000000a]"
+            :class="{ locked: isFree }"
+            @click="isFree && handleUnlockRequired()"
+          >
             <div class="mb-4 text-sm font-medium text-[var(--color-secondary)]">
               {{ $t('stats.cardsByCompartment') }}
             </div>
-            <CompartmentBarChart :compartment-data="compartmentData" />
+            <div :class="{ 'blur-overlay': isFree }">
+              <CompartmentBarChart :compartment-data="compartmentData" />
+            </div>
+            <UnlockMessage v-if="isFree" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <div class="rounded-[15px] bg-[var(--color-white)] p-4 shadow-[0px_4px_32px_#0000000a]">
+            <div
+              class="locked-stat-card rounded-[15px] bg-[var(--color-white)] p-4 shadow-[0px_4px_32px_#0000000a]"
+              :class="{ locked: isFree }"
+              @click="isFree && handleUnlockRequired()"
+            >
               <div class="mb-3 text-sm text-[var(--color-secondary)]">{{ $t('stats.globalCoverage') }}</div>
-              <div class="flex justify-center">
-                <ProgressCircle
-                  :current="globalCoverageRate"
-                  :total="100"
-                  :show-percentage="true"
-                  color-variant="purple"
-                />
+              <div :class="{ 'blur-overlay': isFree }">
+                <div class="flex justify-center">
+                  <ProgressCircle
+                    :current="globalCoverageRate"
+                    :total="100"
+                    :show-percentage="true"
+                    color-variant="purple"
+                  />
+                </div>
+                <div class="mt-3 text-center text-xs text-[var(--color-secondary)]">
+                  {{ $t('stats.globalCoverageTooltip', { percentage: globalCoverageRate }) }}
+                </div>
               </div>
-              <div class="mt-3 text-center text-xs text-[var(--color-secondary)]">
-                {{ $t('stats.globalCoverageTooltip', { percentage: globalCoverageRate }) }}
-              </div>
+              <UnlockMessage v-if="isFree" />
             </div>
             <div class="flex flex-col gap-4">
               <StatCard
                 :label="$t('stats.masteredCards')"
                 :value="masteredCards"
                 :subtitle="$t('stats.masteredCardsSubtitle')"
+                :locked="isFree"
+                @unlock-required="handleUnlockRequired"
               />
-              <StatCard :label="$t('stats.overdueCards')" :value="overdueCards" />
+              <StatCard
+                :label="$t('stats.overdueCards')"
+                :value="overdueCards"
+                :locked="isFree"
+                @unlock-required="handleUnlockRequired"
+              />
             </div>
           </div>
         </div>
@@ -89,18 +130,32 @@
             <MonthCalendar />
           </div>
 
-          <div class="rounded-[15px] bg-[var(--color-white)] p-4 shadow-[0px_4px_32px_#0000000a]">
+          <div
+            class="locked-stat-card rounded-[15px] bg-[var(--color-white)] p-4 shadow-[0px_4px_32px_#0000000a]"
+            :class="{ locked: isFree }"
+            @click="isFree && handleUnlockRequired()"
+          >
             <div class="mb-3 text-sm text-[var(--color-secondary)]">
               {{ $t('stats.daysWithReviewAllTime') }}
             </div>
-            <ProgressBar :current="daysWithReviewAllTime" :total="100" :full-width="true" :show-tooltip="true" />
+            <div :class="{ 'blur-overlay': isFree }">
+              <ProgressBar :current="daysWithReviewAllTime" :total="100" :full-width="true" :show-tooltip="true" />
+            </div>
+            <UnlockMessage v-if="isFree" />
           </div>
 
-          <div class="rounded-[15px] bg-[var(--color-white)] p-4 shadow-[0px_4px_32px_#0000000a]">
+          <div
+            class="locked-stat-card rounded-[15px] bg-[var(--color-white)] p-4 shadow-[0px_4px_32px_#0000000a]"
+            :class="{ locked: isFree }"
+            @click="isFree && handleUnlockRequired()"
+          >
             <div class="mb-3 text-sm text-[var(--color-secondary)]">
               {{ $t('stats.daysWithReviewThisMonth') }}
             </div>
-            <ProgressBar :current="daysWithReviewThisMonth" :total="100" :full-width="true" :show-tooltip="true" />
+            <div :class="{ 'blur-overlay': isFree }">
+              <ProgressBar :current="daysWithReviewThisMonth" :total="100" :full-width="true" :show-tooltip="true" />
+            </div>
+            <UnlockMessage v-if="isFree" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
@@ -108,31 +163,59 @@
               :label="$t('stats.longestStreakWith')"
               :value="longestStreakWith"
               :subtitle="longestStreakWith <= 1 ? $t('stats.day') : $t('stats.days')"
+              :locked="isFree"
+              @unlock-required="handleUnlockRequired"
             />
             <StatCard
               :label="$t('stats.longestStreakWithout')"
               :value="longestStreakWithout"
               :subtitle="longestStreakWithout <= 1 ? $t('stats.day') : $t('stats.days')"
+              :locked="isFree"
+              @unlock-required="handleUnlockRequired"
             />
           </div>
         </div>
 
         <!-- Habitudes -->
         <div v-else-if="currentTab === 'habits'" key="habits" class="space-y-4">
-          <div class="rounded-[15px] bg-[var(--color-white)] p-6 shadow-[0px_4px_32px_#0000000a]">
+          <div
+            class="locked-stat-card rounded-[15px] bg-[var(--color-white)] p-6 shadow-[0px_4px_32px_#0000000a]"
+            :class="{ locked: isFree }"
+            @click="isFree && handleUnlockRequired()"
+          >
             <div class="mb-4 text-sm font-medium text-[var(--color-secondary)]">
               {{ $t('stats.reviewsByHour') }}
             </div>
-            <HourlyReviewChart :hourly-data="hourlyReviewData" />
+            <div :class="{ 'blur-overlay': isFree }">
+              <HourlyReviewChart :hourly-data="hourlyReviewData" />
+            </div>
+            <UnlockMessage v-if="isFree" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <StatCard :label="$t('stats.avgTimePerReview')" :value="formattedAvgTime" />
-            <StatCard :label="$t('stats.totalTimeInReview')" :value="formattedTotalTime" />
+            <StatCard
+              :label="$t('stats.avgTimePerReview')"
+              :value="formattedAvgTime"
+              :locked="isFree"
+              @unlock-required="handleUnlockRequired"
+            />
+            <StatCard
+              :label="$t('stats.totalTimeInReview')"
+              :value="formattedTotalTime"
+              :locked="isFree"
+              @unlock-required="handleUnlockRequired"
+            />
           </div>
         </div>
       </Transition>
     </div>
+
+    <!-- Modal de limitation gratuite -->
+    <UpgradeModal
+      :is-open="showUpgradeModal"
+      :description="$t('upgrade.statsLimit')"
+      @close="showUpgradeModal = false"
+    />
   </div>
 </template>
 
@@ -145,7 +228,9 @@ import StatCard from '~/components/StatCard.vue'
 import CompartmentBarChart from '~/components/CompartmentBarChart.vue'
 import HourlyReviewChart from '~/components/HourlyReviewChart.vue'
 import MonthCalendar from '~/components/MonthCalendar.vue'
+import UnlockMessage from '~/components/UnlockMessage.vue'
 import { useStatistics } from '~/composables/useStatistics'
+import { useSubscription } from '~/composables/useSubscription'
 
 defineOptions({ name: 'StatsPage' })
 
@@ -153,6 +238,7 @@ const currentTab = ref('activity')
 const tabsContainer = ref<HTMLElement | null>(null)
 const tabRefs = ref<Record<string, HTMLElement | null>>({})
 const slideDirection = ref<'slide-left' | 'slide-right'>('slide-right')
+const showUpgradeModal = ref(false)
 
 // Stats data
 const {
@@ -178,6 +264,8 @@ const {
   totalTimeInReview,
   loadStatistics,
 } = useStatistics()
+
+const { isFree } = useSubscription()
 
 const tabs = [
   { id: 'activity', label: 'stats.tabs.activity' },
@@ -209,6 +297,10 @@ onMounted(async () => {
   await loadStatistics()
 })
 
+function handleUnlockRequired() {
+  showUpgradeModal.value = true
+}
+
 function setTabRef(tabId: string, el: Element | ComponentPublicInstance | null) {
   if (el) {
     tabRefs.value[tabId] = el as HTMLElement
@@ -233,6 +325,25 @@ function selectTab(tabId: string) {
 </script>
 
 <style scoped>
+.locked-stat-card {
+  position: relative;
+}
+
+.locked-stat-card.locked {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.locked-stat-card.locked:active {
+  transform: scale(0.98);
+}
+
+.blur-overlay {
+  filter: blur(8px);
+  user-select: none;
+  pointer-events: none;
+}
+
 /* Slide left animation (going to next tab) */
 .slide-left-enter-active {
   transition: all 0.3s ease;
