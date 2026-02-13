@@ -318,7 +318,7 @@ export const useSubscription = () => {
    * Limites pour les utilisateurs gratuits
    */
   const FREE_LIMITS = {
-    MAX_COLLECTIONS: 2,
+    MAX_COLLECTIONS: 1,
     // Possibilité d'ajouter d'autres limites plus tard :
     // MAX_CARDS_PER_COLLECTION: 50,
   }

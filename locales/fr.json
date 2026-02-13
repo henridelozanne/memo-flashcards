@@ -282,7 +282,7 @@
   },
   "upgrade": {
     "limitReached": "Limite atteinte",
-    "collectionLimit": "Le plan gratuit permet de créer jusqu'à 2 collections. Passe au Premium pour créer des collections illimitées.",
+    "collectionLimit": "Le plan gratuit permet de créer jusqu'à 1 collection. Passe au Premium pour créer des collections illimitées.",
     "upgradeToPremium": "Passer au Premium",
     "later": "Plus tard"
   },

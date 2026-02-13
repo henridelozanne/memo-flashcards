@@ -282,7 +282,7 @@
   },
   "upgrade": {
     "limitReached": "Limite atingido",
-    "collectionLimit": "O plano gratuito permite criar até 2 coleções. Atualize para Premium para criar coleções ilimitadas.",
+    "collectionLimit": "O plano gratuito permite criar até 1 coleção. Atualize para Premium para criar coleções ilimitadas.",
     "upgradeToPremium": "Atualizar para Premium",
     "later": "Mais tarde"
   },

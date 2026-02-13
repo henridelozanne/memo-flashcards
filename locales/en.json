@@ -282,7 +282,7 @@
   },
   "upgrade": {
     "limitReached": "Limit Reached",
-    "collectionLimit": "The free plan allows you to create up to 2 collections. Upgrade to Premium for unlimited collections.",
+    "collectionLimit": "The free plan allows you to create up to 1 collection. Upgrade to Premium for unlimited collections.",
     "upgradeToPremium": "Upgrade to Premium",
     "later": "Later"
   },
