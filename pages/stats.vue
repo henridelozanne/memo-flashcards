@@ -21,7 +21,7 @@
     </div>
 
     <!-- Tab Content -->
-    <div class="relative">
+    <div ref="contentContainer" class="relative touch-pan-y">
       <Transition :name="slideDirection" mode="out-in">
         <!-- Activité générale -->
         <div v-if="currentTab === 'activity'" key="activity" class="space-y-4">
@@ -221,6 +221,7 @@
 
 <script setup lang="ts">
 import { ref, computed, type ComponentPublicInstance, onMounted } from 'vue'
+import { useSwipe } from '@vueuse/core'
 import PageHeader from '~/components/PageHeader.vue'
 import ProgressBar from '~/components/ProgressBar.vue'
 import ProgressCircle from '~/components/ProgressCircle.vue'
@@ -236,6 +237,7 @@ defineOptions({ name: 'StatsPage' })
 
 const currentTab = ref('activity')
 const tabsContainer = ref<HTMLElement | null>(null)
+const contentContainer = ref<HTMLElement | null>(null)
 const tabRefs = ref<Record<string, HTMLElement | null>>({})
 const slideDirection = ref<'slide-left' | 'slide-right'>('slide-right')
 const showUpgradeModal = ref(false)
@@ -293,10 +295,6 @@ const formatDuration = (seconds: number): string => {
 const formattedAvgTime = computed(() => formatDuration(avgTimePerSession.value))
 const formattedTotalTime = computed(() => formatDuration(totalTimeInReview.value))
 
-onMounted(async () => {
-  await loadStatistics()
-})
-
 function handleUnlockRequired() {
   showUpgradeModal.value = true
 }
@@ -322,6 +320,36 @@ function selectTab(tabId: string) {
     tabElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
   }
 }
+
+function goToNextTab() {
+  const currentIndex = tabs.findIndex((t) => t.id === currentTab.value)
+  if (currentIndex < tabs.length - 1) {
+    selectTab(tabs[currentIndex + 1].id)
+  }
+}
+
+function goToPreviousTab() {
+  const currentIndex = tabs.findIndex((t) => t.id === currentTab.value)
+  if (currentIndex > 0) {
+    selectTab(tabs[currentIndex - 1].id)
+  }
+}
+
+// Swipe navigation
+const { direction } = useSwipe(contentContainer, {
+  threshold: 50,
+  onSwipeEnd() {
+    if (direction.value === 'left') {
+      goToNextTab()
+    } else if (direction.value === 'right') {
+      goToPreviousTab()
+    }
+  },
+})
+
+onMounted(async () => {
+  await loadStatistics()
+})
 </script>
 
 <style scoped>
