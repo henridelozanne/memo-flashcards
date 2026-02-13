@@ -283,6 +283,7 @@
   "upgrade": {
     "limitReached": "已达限制",
     "collectionLimit": "免费计划允许创建最多1个集合。升级到高级版以创建无限集合。",
+    "cardLimit": "免费计划允许创建最多70张卡片。升级到高级版以创建无限卡片。",
     "upgradeToPremium": "升级到高级版",
     "later": "稍后"
   },

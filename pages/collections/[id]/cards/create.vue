@@ -28,6 +28,13 @@
 
       <!-- Message de succès/erreur -->
       <StatusMessage :message="message" />
+
+      <!-- Modal de limitation gratuite -->
+      <UpgradeModal
+        :is-open="showUpgradeModal"
+        :description="$t('upgrade.cardLimit')"
+        @close="showUpgradeModal = false"
+      />
     </div>
   </div>
 </template>
@@ -38,6 +45,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
+import { useSubscription } from '~/composables/useSubscription'
 import { useDailyReview } from '~/composables/useDailyReview'
 import type { Collection } from '~/lib/types'
 
@@ -47,7 +55,8 @@ const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 const { collections, loadCollections, getCollection } = useCollections()
-const { createCard } = useCards()
+const { createCard, getTotalCardsCount } = useCards()
+const { isFree, FREE_LIMITS } = useSubscription()
 const { invalidateCache, setCardsDueTotalCount } = useDailyReview()
 
 const collectionId = String(route.params.id)
@@ -55,6 +64,7 @@ const collection = ref<Collection | null>(null)
 const isSubmitting = ref(false)
 const message = ref<{ type: 'success' | 'error'; text: string } | null>(null)
 const cardFormRef = ref()
+const showUpgradeModal = ref(false)
 
 async function init() {
   // Charger les collections si nécessaire
@@ -71,6 +81,16 @@ async function onSubmit(front: string, back: string) {
   message.value = null
 
   try {
+    // Vérifier la limite pour les utilisateurs gratuits
+    if (isFree.value) {
+      const totalCards = await getTotalCardsCount()
+      if (totalCards >= FREE_LIMITS.MAX_CARDS) {
+        showUpgradeModal.value = true
+        isSubmitting.value = false
+        return
+      }
+    }
+
     await createCard(front, back, collectionId)
 
     // Invalider le cache et recalculer le nombre de cartes dues

@@ -313,6 +313,17 @@ export const useCards = () => {
     }
   }
 
+  const getTotalCardsCount = async (): Promise<number> => {
+    try {
+      const db = await getDbConnection()
+      const result = await db.get<{ count: number }>('SELECT COUNT(*) as count FROM cards WHERE deleted_at IS NULL')
+      return result?.count || 0
+    } catch (e) {
+      console.error('Erreur lors du comptage total des cartes:', e)
+      return 0
+    }
+  }
+
   const getLastCardDate = async (collectionId: string): Promise<Date | null> => {
     try {
       const db = await getDbConnection()
@@ -344,6 +355,7 @@ export const useCards = () => {
     updateCard,
     deleteCard,
     getCardsCount,
+    getTotalCardsCount,
     getLastCardDate,
     getDueCards,
     getAllCardsFromCollection,

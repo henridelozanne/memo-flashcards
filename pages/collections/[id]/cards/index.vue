@@ -88,6 +88,13 @@
           </div>
         </div>
       </div>
+
+      <!-- Modal de limitation gratuite -->
+      <UpgradeModal
+        :is-open="showUpgradeModal"
+        :description="$t('upgrade.cardLimit')"
+        @close="showUpgradeModal = false"
+      />
     </div>
   </div>
 </template>
@@ -98,6 +105,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
+import { useSubscription } from '~/composables/useSubscription'
 import CardItem from '~/components/CardItem.vue'
 import CreateCardItem from '~/components/CreateCardItem.vue'
 import Select, { type SelectOption } from '~/components/Select.vue'
@@ -118,13 +126,22 @@ const {
   loadCollections,
   getCollection,
 } = useCollections()
-const { cards, isLoading: isLoadingCards, error: cardsError, loadCards, getLastCardDate } = useCards()
+const {
+  cards,
+  isLoading: isLoadingCards,
+  error: cardsError,
+  loadCards,
+  getLastCardDate,
+  getTotalCardsCount,
+} = useCards()
+const { isFree, FREE_LIMITS } = useSubscription()
 
 const collectionId = String(route.params.id)
 const collection = ref<Collection | null>(null)
 const lastCardDate = ref<Date | null>(null)
 const sortBy = ref('newestFirst')
 const showPracticeOptions = ref(false)
+const showUpgradeModal = ref(false)
 const practiceOptions = ref({
   mostFailed: false,
   onlyDue: false,
@@ -212,7 +229,18 @@ async function init() {
 }
 
 function createCard() {
-  router.push(`/collections/${collectionId}/cards/create`)
+  // Vérifier la limite pour les utilisateurs gratuits
+  if (isFree.value) {
+    getTotalCardsCount().then((totalCards) => {
+      if (totalCards >= FREE_LIMITS.MAX_CARDS) {
+        showUpgradeModal.value = true
+        return
+      }
+      router.push(`/collections/${collectionId}/cards/create`)
+    })
+  } else {
+    router.push(`/collections/${collectionId}/cards/create`)
+  }
 }
 
 function editCard(cardId: string) {

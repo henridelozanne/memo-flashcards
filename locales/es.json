@@ -283,6 +283,7 @@
   "upgrade": {
     "limitReached": "Límite alcanzado",
     "collectionLimit": "El plan gratuito permite crear hasta 1 colección. Actualiza a Premium para crear colecciones ilimitadas.",
+    "cardLimit": "El plan gratuito permite crear hasta 70 tarjetas. Actualiza a Premium para crear tarjetas ilimitadas.",
     "upgradeToPremium": "Actualizar a Premium",
     "later": "Más tarde"
   },
