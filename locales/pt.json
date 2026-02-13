@@ -284,6 +284,7 @@
     "limitReached": "Limite atingido",
     "collectionLimit": "O plano gratuito permite criar até 1 coleção. Atualize para Premium para criar coleções ilimitadas.",
     "cardLimit": "O plano gratuito permite criar até 70 cartões. Atualize para Premium para criar cartões ilimitados.",
+    "practiceOptionsLimit": "As opções de treino são reservadas para usuários Premium. Atualize para Premium para personalizar suas sessões de treino.",
     "upgradeToPremium": "Atualizar para Premium",
     "later": "Mais tarde"
   },

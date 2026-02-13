@@ -284,6 +284,7 @@
     "limitReached": "Limit Reached",
     "collectionLimit": "The free plan allows you to create up to 1 collection. Upgrade to Premium for unlimited collections.",
     "cardLimit": "The free plan allows you to create up to 70 cards. Upgrade to Premium for unlimited cards.",
+    "practiceOptionsLimit": "Practice options are reserved for Premium users. Upgrade to Premium to customize your training sessions.",
     "upgradeToPremium": "Upgrade to Premium",
     "later": "Later"
   },

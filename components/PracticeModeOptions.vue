@@ -6,7 +6,7 @@
           :checked="modelValue.mostFailed"
           type="checkbox"
           class="option-checkbox"
-          @change="updateOption('mostFailed', ($event.target as HTMLInputElement).checked)"
+          @click="handleClick('mostFailed', $event)"
         />
         <span>{{ $t('practiceMode.mostFailed') }}</span>
       </label>
@@ -19,7 +19,7 @@
           :checked="modelValue.onlyDue"
           type="checkbox"
           class="option-checkbox"
-          @change="updateOption('onlyDue', ($event.target as HTMLInputElement).checked)"
+          @click="handleClick('onlyDue', $event)"
         />
         <span>{{ $t('practiceMode.onlyDue') }}</span>
       </label>
@@ -32,7 +32,7 @@
           :checked="modelValue.onlyNew"
           type="checkbox"
           class="option-checkbox"
-          @change="updateOption('onlyNew', ($event.target as HTMLInputElement).checked)"
+          @click="handleClick('onlyNew', $event)"
         />
         <span>{{ $t('practiceMode.onlyNew') }}</span>
       </label>
@@ -45,7 +45,7 @@
           :checked="modelValue.excludeNew"
           type="checkbox"
           class="option-checkbox"
-          @change="updateOption('excludeNew', ($event.target as HTMLInputElement).checked)"
+          @click="handleClick('excludeNew', $event)"
         />
         <span>{{ $t('practiceMode.excludeNew') }}</span>
       </label>
@@ -58,7 +58,7 @@
           :checked="modelValue.swapQuestionAnswer"
           type="checkbox"
           class="option-checkbox"
-          @change="updateOption('swapQuestionAnswer', ($event.target as HTMLInputElement).checked)"
+          @click="handleClick('swapQuestionAnswer', $event)"
         />
         <span>{{ $t('practiceMode.swapQuestionAnswer') }}</span>
       </label>
@@ -78,28 +78,39 @@ export interface PracticeModeOptions {
 
 interface Props {
   modelValue: PracticeModeOptions
+  isFree?: boolean
 }
 
 const props = defineProps<Props>()
 const emit = defineEmits<{
   'update:modelValue': [value: PracticeModeOptions]
+  'premium-required': []
 }>()
 
 defineOptions({ name: 'PracticeModeOptions' })
 
-function updateOption(key: keyof PracticeModeOptions, value: boolean) {
+function handleClick(key: keyof PracticeModeOptions, event: Event) {
+  const newValue = !props.modelValue[key]
+
+  // Si l'utilisateur est gratuit et essaie de cocher une option, empêcher et afficher le modal
+  if (props.isFree && newValue === true) {
+    event.preventDefault()
+    emit('premium-required')
+    return
+  }
+
   const newOptions = {
     ...props.modelValue,
-    [key]: value,
+    [key]: newValue,
   }
 
   // Si on coche "onlyNew", on décoche "excludeNew"
-  if (key === 'onlyNew' && value === true) {
+  if (key === 'onlyNew' && newValue === true) {
     newOptions.excludeNew = false
   }
 
   // Si on coche "excludeNew", on décoche "onlyNew"
-  if (key === 'excludeNew' && value === true) {
+  if (key === 'excludeNew' && newValue === true) {
     newOptions.onlyNew = false
   }
 

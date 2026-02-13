@@ -53,10 +53,17 @@
             <!-- Options Practice Mode -->
             <Transition name="practice-options">
               <div v-if="showPracticeOptions" class="mt-2">
-                <p class="mb-3 text-sm font-medium text-gray-700">
-                  {{ $t('practiceMode.options') }}
-                </p>
-                <PracticeModeOptions v-model="practiceOptions" />
+                <div class="mb-3 flex items-center justify-between">
+                  <p class="text-sm font-medium text-gray-700">
+                    {{ $t('practiceMode.options') }}
+                  </p>
+                  <IconStar v-if="isFree" class="h-4 w-4 text-yellow-500" />
+                </div>
+                <PracticeModeOptions
+                  v-model="practiceOptions"
+                  :is-free="isFree"
+                  @premium-required="handlePremiumRequired"
+                />
               </div>
             </Transition>
           </div>
@@ -92,7 +99,7 @@
       <!-- Modal de limitation gratuite -->
       <UpgradeModal
         :is-open="showUpgradeModal"
-        :description="$t('upgrade.cardLimit')"
+        :description="$t(upgradeModalMessage)"
         @close="showUpgradeModal = false"
       />
     </div>
@@ -112,6 +119,7 @@ import Select, { type SelectOption } from '~/components/Select.vue'
 import PracticeModeOptions from '~/components/PracticeModeOptions.vue'
 import IconSettings from '~/components/icons/IconSettings.vue'
 import IconDumbbell from '~/components/icons/IconDumbbell.vue'
+import IconStar from '~/components/icons/IconStar.vue'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'CollectionCardsPage' })
@@ -142,6 +150,7 @@ const lastCardDate = ref<Date | null>(null)
 const sortBy = ref('newestFirst')
 const showPracticeOptions = ref(false)
 const showUpgradeModal = ref(false)
+const upgradeModalMessage = ref('upgrade.cardLimit')
 const practiceOptions = ref({
   mostFailed: false,
   onlyDue: false,
@@ -233,6 +242,7 @@ function createCard() {
   if (isFree.value) {
     getTotalCardsCount().then((totalCards) => {
       if (totalCards >= FREE_LIMITS.MAX_CARDS) {
+        upgradeModalMessage.value = 'upgrade.cardLimit'
         showUpgradeModal.value = true
         return
       }
@@ -241,6 +251,11 @@ function createCard() {
   } else {
     router.push(`/collections/${collectionId}/cards/create`)
   }
+}
+
+function handlePremiumRequired() {
+  upgradeModalMessage.value = 'upgrade.practiceOptionsLimit'
+  showUpgradeModal.value = true
 }
 
 function editCard(cardId: string) {

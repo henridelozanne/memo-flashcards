@@ -284,6 +284,7 @@
     "limitReached": "Limite atteinte",
     "collectionLimit": "Le plan gratuit permet de créer jusqu'à 1 collection. Passe au Premium pour créer des collections illimitées.",
     "cardLimit": "Le plan gratuit permet de créer jusqu'à 70 cartes. Passe au Premium pour créer des cartes illimitées.",
+    "practiceOptionsLimit": "Les options d'entraînement sont réservées aux utilisateurs Premium. Passe au Premium pour personnaliser tes sessions d'entraînement.",
     "upgradeToPremium": "Passer au Premium",
     "later": "Plus tard"
   },
