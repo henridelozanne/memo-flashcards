@@ -3,6 +3,7 @@ import { useCards } from './useCards'
 import { useDatabase } from './useDatabase'
 import type { Card } from '~/lib/types'
 import { v4 as uuidv4 } from 'uuid'
+import { usePosthog } from './usePosthog'
 
 interface ReviewSessionConfig {
   getCards: () => Promise<Card[]>
@@ -49,6 +50,13 @@ export function useReviewSession(config: ReviewSessionConfig) {
         ])
         sessionId.value = id
       }
+
+      // Track event
+      const posthog = usePosthog()
+      posthog.capture('review_session_started', {
+        cards_count: total.value,
+        is_practice_mode: isPracticeMode,
+      })
     } finally {
       isLoading.value = false
     }
@@ -96,6 +104,16 @@ export function useReviewSession(config: ReviewSessionConfig) {
           [endedAt, cardsReviewedCount.value, goodCount.value, wrongCount, sessionId.value]
         )
       }
+
+      // Track event
+      const posthog = usePosthog()
+      posthog.capture('review_session_completed', {
+        cards_reviewed: cardsReviewedCount.value,
+        correct_count: goodCount.value,
+        wrong_count: cardsReviewedCount.value - goodCount.value,
+        success_rate: successRate.value,
+        is_practice_mode: isPracticeMode,
+      })
     }
   }
 

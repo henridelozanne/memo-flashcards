@@ -5,6 +5,7 @@ import useSupabaseAuth from '~/composables/useSupabaseAuth'
 import { useUserProfile } from '~/composables/useUserProfile'
 import { syncUserProfileToRemote } from '~/lib/sync'
 import { useNotifications } from '~/composables/useNotifications'
+import { usePosthog } from '~/composables/usePosthog'
 
 export function useNotificationTime() {
   const { t } = useI18n()
@@ -72,6 +73,13 @@ export function useNotificationTime() {
         type: 'success',
         text: t('settings.reminderTimeUpdated'),
       }
+
+      // Track event
+      const posthog = usePosthog()
+      posthog.capture('notification_time_changed', {
+        new_time: selectedTime.value,
+        previous_time: initialTime.value,
+      })
 
       // Masquer le message après 3 secondes
       setTimeout(() => {

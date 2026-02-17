@@ -15,7 +15,9 @@ export default defineNuxtConfig({
     public: {
       web3formsKey: process.env.WEB3FORMS_KEY,
       revenuecatApiKey: process.env.REVENUECAT_API_KEY_IOS,
-      sentryDsn: process.env.SENTRY_DSN,
+      sentryDsn: process.env.NUXT_PUBLIC_SENTRY_DSN,
+      posthogKey: process.env.NUXT_PUBLIC_POSTHOG_KEY,
+      posthogHost: process.env.NUXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com',
       appVersion: packageJson.version,
     },
   },

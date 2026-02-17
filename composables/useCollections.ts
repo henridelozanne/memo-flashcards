@@ -4,6 +4,7 @@ import type { Collection } from '~/lib/types'
 import { useDatabase } from './useDatabase'
 import { syncCollectionsToRemote } from '~/lib/sync'
 import useSupabaseAuth from './useSupabaseAuth'
+import { usePosthog } from './usePosthog'
 
 const collections = ref<Collection[]>([])
 const isLoading = ref(true)
@@ -70,6 +71,14 @@ export const useCollections = () => {
       })
 
       await loadCollections()
+
+      // Track event
+      const posthog = usePosthog()
+      posthog.capture('collection_created', {
+        collection_id: newCollection.id,
+        collection_name_length: newCollection.name.length,
+      })
+
       return newCollection
     } catch (e: any) {
       error.value = e.message || 'Erreur lors de la création'
@@ -103,6 +112,13 @@ export const useCollections = () => {
       })
 
       await loadCollections()
+
+      // Track event
+      const posthog = usePosthog()
+      posthog.capture('collection_updated', {
+        collection_id: id,
+        new_name_length: name.length,
+      })
     } catch (e: any) {
       error.value = e.message || 'Erreur lors de la mise à jour'
       throw e
@@ -135,6 +151,12 @@ export const useCollections = () => {
       })
 
       await loadCollections()
+
+      // Track event
+      const posthog = usePosthog()
+      posthog.capture('collection_deleted', {
+        collection_id: id,
+      })
     } catch (e: any) {
       error.value = e.message || 'Erreur lors de la suppression'
       throw e

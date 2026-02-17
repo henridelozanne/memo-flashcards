@@ -4,6 +4,7 @@ import { useUserProfileStore } from '~/store/userProfile'
 import useSupabaseAuth from '~/composables/useSupabaseAuth'
 import { useUserProfile } from '~/composables/useUserProfile'
 import { syncUserProfileToRemote } from '~/lib/sync'
+import { usePosthog } from '~/composables/usePosthog'
 
 export function useLanguageSelector() {
   const { t, locale } = useI18n()
@@ -65,6 +66,13 @@ export function useLanguageSelector() {
         type: 'success',
         text: t('settings.languageUpdated'),
       }
+
+      // Track event
+      const posthog = usePosthog()
+      posthog.capture('language_changed', {
+        previous_language: initialLanguage.value,
+        new_language: selectedLanguage.value,
+      })
 
       // Masquer le message après 3 secondes
       setTimeout(() => {

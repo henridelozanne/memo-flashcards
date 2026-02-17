@@ -189,6 +189,19 @@ async function completeOnboarding(subscriptionSnapshot?: {
     // 3. Marquer l'onboarding comme terminé
     onboardingStore.completeOnboarding()
 
+    // Track event
+    const { usePosthog } = await import('~/composables/usePosthog')
+    const posthog = usePosthog()
+    posthog.capture('onboarding_completed', {
+      subscription_status: subscriptionSnapshot?.status || 'free',
+      subscription_product_id: subscriptionSnapshot?.productId || null,
+      first_name: userProfileStore.firstName,
+      goal: userProfileStore.goal,
+      situation: userProfileStore.situation,
+      language: userProfileStore.language,
+      notification_hour: userProfileStore.notificationHour,
+    })
+
     // 4. Sync vers Supabase (non-bloquant)
     syncUserProfileToRemote().catch(() => {
       // Sync error handled silently

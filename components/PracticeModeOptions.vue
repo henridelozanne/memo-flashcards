@@ -68,6 +68,8 @@
 </template>
 
 <script setup lang="ts">
+import { usePosthog } from '~/composables/usePosthog'
+
 export interface PracticeModeOptions {
   mostFailed: boolean
   onlyDue: boolean
@@ -113,6 +115,13 @@ function handleClick(key: keyof PracticeModeOptions, event: Event) {
   if (key === 'excludeNew' && newValue === true) {
     newOptions.onlyNew = false
   }
+
+  // Track event
+  const posthog = usePosthog()
+  posthog.capture('practice_mode_option_changed', {
+    option: key,
+    value: newValue,
+  })
 
   emit('update:modelValue', newOptions)
 }

@@ -6,6 +6,7 @@ import { useDailyReview } from './useDailyReview'
 import { syncCardsToRemote } from '~/lib/sync'
 import useSupabaseAuth from './useSupabaseAuth'
 import { appConfig } from '~/config/app'
+import { usePosthog } from './usePosthog'
 
 const cards = ref<Card[]>([])
 const isLoading = ref(false)
@@ -116,6 +117,14 @@ export const useCards = () => {
       console.error('Failed to sync card creation to remote:', err)
     })
 
+    // Track event
+    const posthog = usePosthog()
+    posthog.capture('card_created', {
+      collection_id: collectionId,
+      compartment: card.compartment,
+      immediate_review: appConfig.immediateReviewForNewCards,
+    })
+
     return card
   }
 
@@ -161,6 +170,13 @@ export const useCards = () => {
     syncCardsToRemote().catch((err) => {
       console.error('Failed to sync card update to remote:', err)
     })
+
+    // Track event
+    const posthog = usePosthog()
+    posthog.capture('card_updated', {
+      card_id: id,
+      collection_id: existing.collection_id,
+    })
   }
 
   const deleteCard = async (id: string): Promise<void> => {
@@ -197,6 +213,14 @@ export const useCards = () => {
     // Sync to Supabase (non-blocking)
     syncCardsToRemote().catch((err) => {
       console.error('Failed to sync card deletion to remote:', err)
+    })
+
+    // Track event
+    const posthog = usePosthog()
+    posthog.capture('card_deleted', {
+      card_id: id,
+      collection_id: existing.collection_id,
+      compartment: existing.compartment,
     })
   }
 
@@ -296,6 +320,17 @@ export const useCards = () => {
     // Sync to Supabase (non-blocking)
     syncCardsToRemote().catch((err) => {
       console.error('Failed to sync card review to remote:', err)
+    })
+
+    // Track event
+    const posthog = usePosthog()
+    posthog.capture('review_answer', {
+      card_id: card.id,
+      collection_id: card.collection_id,
+      was_correct: response,
+      compartment_before: card.compartment,
+      compartment_after: compartment,
+      total_reviews: (card.total_reviews || 0) + 1,
     })
   }
 

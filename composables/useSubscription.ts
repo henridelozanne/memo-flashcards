@@ -10,6 +10,7 @@ import { useSubscriptionStore } from '~/store/subscription'
 import { useRuntimeConfig } from 'nuxt/app'
 import { useUserProfile } from '~/composables/useUserProfile'
 import useSupabaseAuth from '~/composables/useSupabaseAuth'
+import { usePosthog } from '~/composables/usePosthog'
 
 const MONTHLY_PRODUCT_ID = 'memo_pro_monthly'
 const MONTHLY_FREE_TRIAL_PRODUCT_ID = 'memo_pro_monthly_free_trial'
@@ -141,6 +142,13 @@ export const useSubscription = () => {
     try {
       subscriptionStore.setLoading(true)
 
+      // Track attempt
+      const posthog = usePosthog()
+      posthog.capture('subscription_purchase_attempted', {
+        package_id: packageToPurchase.identifier,
+        product_id: packageToPurchase.product.identifier,
+      })
+
       let customerInfo
       try {
         // Créer un objet propre sans proxy Vue
@@ -159,14 +167,36 @@ export const useSubscription = () => {
       subscriptionStore.setCustomerInfo(customerInfo)
       await updateLocalSubscriptionStatus(customerInfo)
 
+      // Track successful purchase
+      const { status, productId } = deriveSubscriptionSnapshot(customerInfo)
+      posthog.capture('subscription_purchased', {
+        package_id: packageToPurchase.identifier,
+        product_id: productId,
+        subscription_status: status,
+      })
+
       return customerInfo
     } catch (error: any) {
       console.error('⚠️ purchasePackage CATCH:', error)
+
+      // Track cancellation
+      const posthog = usePosthog()
+
       // User cancelled purchase
       if (error?.code === 'PURCHASE_CANCELLED') {
         console.log('🚫 User cancelled purchase')
+        posthog.capture('subscription_purchase_cancelled', {
+          package_id: packageToPurchase.identifier,
+        })
         return null
       }
+
+      // Track error
+      posthog.capture('subscription_purchase_failed', {
+        package_id: packageToPurchase.identifier,
+        error_code: error?.code,
+        error_message: error?.message,
+      })
 
       console.error('❌ Rethrowing error:', error)
       throw error
@@ -190,6 +220,15 @@ export const useSubscription = () => {
       subscriptionStore.setSubscribed(isSubscribed)
       subscriptionStore.setCustomerInfo(customerInfo)
       await updateLocalSubscriptionStatus(customerInfo)
+
+      // Track restore
+      const posthog = usePosthog()
+      const { status, productId } = deriveSubscriptionSnapshot(customerInfo)
+      posthog.capture('subscription_restored', {
+        subscription_status: status,
+        product_id: productId,
+        is_subscribed: isSubscribed,
+      })
 
       return customerInfo
     } catch (error) {
