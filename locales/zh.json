@@ -252,6 +252,20 @@
       "ads": "不会将任何数据用于广告目的。",
       "deletion": "您可以随时联系我们请求删除您的个人数据。"
     },
+    "thirdPartyServices": {
+      "title": "第三方服务",
+      "description": "为了改进应用程序，我们使用以下可信赖的服务：",
+      "sentry": "Sentry：错误监控和崩溃报告",
+      "posthog": "PostHog：匿名使用分析（已禁用会话录制）",
+      "revenuecat": "RevenueCat：订阅和应用内购买管理",
+      "web3forms": "Web3Forms：处理错误报告和功能请求的联系表单"
+    },
+    "permissions": {
+      "title": "权限和访问",
+      "description": "应用程序可能会请求以下权限：",
+      "photos": "照片/相机：仅当您选择向卡片添加图片时",
+      "notifications": "通知：发送每日复习提醒（可选）"
+    },
     "distribution": {
       "title": "分发平台",
       "platforms": "该应用通过App Store（Apple）和Google Play Store（Android）分发。",

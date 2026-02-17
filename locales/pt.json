@@ -252,6 +252,20 @@
       "ads": "Nenhum dado é usado para fins publicitários.",
       "deletion": "Você pode solicitar a exclusão de seus dados pessoais a qualquer momento entrando em contato conosco."
     },
+    "thirdPartyServices": {
+      "title": "Serviços de terceiros",
+      "description": "Para melhorar o aplicativo, usamos os seguintes serviços confiáveis:",
+      "sentry": "Sentry: Monitoramento de erros e relatórios de falhas",
+      "posthog": "PostHog: Análise de uso anônima (gravação de sessão desabilitada)",
+      "revenuecat": "RevenueCat: Gerenciamento de assinaturas e compras no app",
+      "web3forms": "Web3Forms: Processamento de formulários de contato para relatórios de bugs e solicitações de recursos"
+    },
+    "permissions": {
+      "title": "Permissões e acesso",
+      "description": "O aplicativo pode solicitar as seguintes permissões:",
+      "photos": "Fotos/Câmera: Somente quando você escolhe adicionar imagens aos seus cartões",
+      "notifications": "Notificações: Para enviar lembretes diários de revisão (opcional)"
+    },
     "distribution": {
       "title": "Plataformas de distribuição",
       "platforms": "O aplicativo é distribuído através da App Store (Apple) e Google Play Store (Android).",

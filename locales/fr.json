@@ -252,6 +252,20 @@
       "ads": "Aucune donnée n'est utilisée à des fins publicitaires.",
       "deletion": "Vous pouvez demander à tout moment la suppression de vos données personnelles en nous contactant."
     },
+    "thirdPartyServices": {
+      "title": "Services tiers",
+      "description": "Pour améliorer l'application, nous utilisons les services de confiance suivants :",
+      "sentry": "Sentry : Suivi des erreurs et rapports de plantage",
+      "posthog": "PostHog : Analyse d'utilisation anonyme (enregistrement de session désactivé)",
+      "revenuecat": "RevenueCat : Gestion des abonnements et achats intégrés",
+      "web3forms": "Web3Forms : Traitement des formulaires de contact pour les rapports de bugs et demandes de fonctionnalités"
+    },
+    "permissions": {
+      "title": "Permissions et accès",
+      "description": "L'application peut demander les permissions suivantes :",
+      "photos": "Photos/Appareil photo : Uniquement lorsque vous choisissez d'ajouter des images à vos cartes",
+      "notifications": "Notifications : Pour envoyer des rappels quotidiens de révision (optionnel)"
+    },
     "distribution": {
       "title": "Plateformes de distribution",
       "platforms": "L'application est distribuée via l'App Store (Apple) et le Google Play Store (Android).",

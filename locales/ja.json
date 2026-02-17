@@ -252,6 +252,20 @@
       "ads": "データが広告目的で使用されることはありません。",
       "deletion": "個人データの削除をいつでもリクエストできます。"
     },
+    "thirdPartyServices": {
+      "title": "サードパーティサービス",
+      "description": "アプリを改善するために、以下の信頼できるサービスを使用しています：",
+      "sentry": "Sentry：エラー監視とクラッシュレポート",
+      "posthog": "PostHog：匿名の使用状況分析（セッション記録は無効）",
+      "revenuecat": "RevenueCat：サブスクリプションとアプリ内購入の管理",
+      "web3forms": "Web3Forms：バグレポートと機能リクエストのお問い合わせフォーム処理"
+    },
+    "permissions": {
+      "title": "許可とアクセス",
+      "description": "アプリは以下の許可をリクエストする場合があります：",
+      "photos": "写真/カメラ：フラッシュカードに画像を追加する時のみ",
+      "notifications": "通知：毎日の復習リマインダーを送信するため（オプション）"
+    },
     "distribution": {
       "title": "配信プラットフォーム",
       "platforms": "このアプリは、App Store（Apple）およびGoogle Play Store（Android）を通じて配信されます。",

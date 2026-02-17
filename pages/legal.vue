@@ -44,6 +44,32 @@
               </p>
             </section>
 
+            <!-- Services tiers -->
+            <section>
+              <h2 class="mb-2 text-lg font-semibold">{{ $t('legal.thirdPartyServices.title') }}</h2>
+              <p class="mb-2 text-sm leading-relaxed">
+                {{ $t('legal.thirdPartyServices.description') }}
+              </p>
+              <ul class="ml-4 list-disc space-y-1 text-sm leading-relaxed">
+                <li>{{ $t('legal.thirdPartyServices.sentry') }}</li>
+                <li>{{ $t('legal.thirdPartyServices.posthog') }}</li>
+                <li>{{ $t('legal.thirdPartyServices.revenuecat') }}</li>
+                <li>{{ $t('legal.thirdPartyServices.web3forms') }}</li>
+              </ul>
+            </section>
+
+            <!-- Permissions et données -->
+            <section>
+              <h2 class="mb-2 text-lg font-semibold">{{ $t('legal.permissions.title') }}</h2>
+              <p class="mb-2 text-sm leading-relaxed">
+                {{ $t('legal.permissions.description') }}
+              </p>
+              <ul class="ml-4 list-disc space-y-1 text-sm leading-relaxed">
+                <li>{{ $t('legal.permissions.photos') }}</li>
+                <li>{{ $t('legal.permissions.notifications') }}</li>
+              </ul>
+            </section>
+
             <!-- Plateformes de distribution -->
             <section>
               <h2 class="mb-2 text-lg font-semibold">{{ $t('legal.distribution.title') }}</h2>
