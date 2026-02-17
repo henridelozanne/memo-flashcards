@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <div class="mx-auto w-full max-w-md">
     <div class="relative flex aspect-[3/4] w-full select-none items-center justify-center" style="perspective: 1000px">
@@ -5,26 +6,35 @@
         <div class="flip-card-inner h-full w-full" :class="{ 'back-visible': isBackVisible }">
           <!-- Recto -->
           <div
-            class="flip-card-front flex h-full w-full flex-col items-center justify-center rounded-[15px] bg-white p-6 text-center shadow-[0px_4px_32px_#0000000a]"
+            class="flip-card-front flex h-full w-full flex-col rounded-[15px] bg-white p-8 text-center shadow-[0px_4px_32px_#0000000a]"
           >
-            <div class="line-clamp-6 break-words text-lg font-medium text-gray-900" v-html="sanitizedQuestion"></div>
-            <button
-              class="mt-8 rounded-[15px] bg-[var(--color-light-purple)] px-6 py-2 text-base font-medium text-[var(--color-primary)] shadow-sm transition hover:bg-[var(--color-accent-purple)] focus:outline-none"
-              @click="$emit('show-back')"
-            >
-              {{ $t('review.showAnswer') }}
-            </button>
+            <div class="flex flex-1 flex-col items-center justify-center">
+              <div
+                class="break-words font-medium text-gray-900"
+                :class="questionFontSize"
+                v-html="sanitizedQuestion"
+              ></div>
+              <button
+                class="mt-8 rounded-[15px] bg-[var(--color-light-purple)] px-6 py-3 text-base font-medium text-[var(--color-primary)] shadow-sm transition hover:bg-[var(--color-accent-purple)] focus:outline-none"
+                @click="$emit('show-back')"
+              >
+                {{ $t('review.showAnswer') }}
+              </button>
+            </div>
           </div>
           <!-- Verso -->
           <div
-            class="flip-card-back absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center rounded-[15px] bg-white p-6 text-center shadow-[0px_4px_32px_#0000000a]"
+            class="flip-card-back absolute left-0 top-0 flex h-full w-full flex-col rounded-[15px] bg-white p-8 text-center shadow-[0px_4px_32px_#0000000a]"
           >
-            <div
-              class="mb-4 line-clamp-6 break-words text-lg font-medium text-gray-900"
-              v-html="sanitizedQuestion"
-            ></div>
-            <div class="line-clamp-8 mb-8 break-words text-base text-gray-700" v-html="sanitizedAnswer"></div>
-            <div class="mt-auto flex justify-between gap-2">
+            <div class="flex flex-1 flex-col items-center justify-center gap-10">
+              <div
+                class="break-words font-medium text-gray-900"
+                :class="questionFontSizeBack"
+                v-html="sanitizedQuestion"
+              ></div>
+              <div class="break-words text-gray-700" :class="answerFontSize" v-html="sanitizedAnswer"></div>
+            </div>
+            <div class="mt-6 flex justify-between gap-2">
               <button
                 v-for="(choice, index) in userChoices"
                 :key="index"
@@ -63,6 +73,38 @@ const props = defineProps<{
 const sanitizedQuestion = computed(() => (props.currentCard ? sanitizeHtml(props.currentCard.question) : ''))
 
 const sanitizedAnswer = computed(() => (props.currentCard ? sanitizeHtml(props.currentCard.answer) : ''))
+
+// Fonction pour obtenir la taille de police adaptative basée sur la longueur du texte
+const getFontSizeClass = (text: string, isSmaller = false) => {
+  // Supprime les balises HTML pour compter le vrai texte
+  const strippedText = text.replace(/<[^>]*>/g, '').trim()
+  const { length } = strippedText
+
+  if (isSmaller) {
+    // Pour la réponse ou la question sur le verso (plus petit)
+    if (length < 30) return 'text-2xl leading-relaxed'
+    if (length < 80) return 'text-xl leading-relaxed'
+    if (length < 200) return 'text-lg leading-normal'
+    if (length < 400) return 'text-base leading-normal'
+    return 'text-sm leading-normal'
+  }
+
+  // Pour la question sur le recto (plus grand)
+  if (length < 30) return 'text-4xl leading-relaxed'
+  if (length < 80) return 'text-3xl leading-relaxed'
+  if (length < 200) return 'text-2xl leading-normal'
+  if (length < 400) return 'text-xl leading-normal'
+  return 'text-lg leading-normal'
+}
+
+// Tailles de police adaptatives pour chaque élément
+const questionFontSize = computed(() => (props.currentCard ? getFontSizeClass(props.currentCard.question, false) : ''))
+
+const questionFontSizeBack = computed(() =>
+  props.currentCard ? getFontSizeClass(props.currentCard.question, true) : ''
+)
+
+const answerFontSize = computed(() => (props.currentCard ? getFontSizeClass(props.currentCard.answer, true) : ''))
 
 defineEmits<{
   'show-back': []
