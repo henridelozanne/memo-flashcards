@@ -97,11 +97,6 @@ export const useSubscription = () => {
         appUserID: undefined, // Let RevenueCat generate anonymous ID, or use Supabase user ID
       })
 
-      // Enable debug logs in development
-      if (process.env.NODE_ENV === 'development') {
-        await Purchases.setLogLevel({ level: LOG_LEVEL.DEBUG })
-      }
-
       // Check subscription status on init
       await checkSubscriptionStatus()
     } catch (error) {
