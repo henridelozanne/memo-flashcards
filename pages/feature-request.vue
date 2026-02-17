@@ -77,10 +77,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRuntimeConfig } from 'nuxt/app'
 
 defineOptions({ name: 'FeatureRequestPage' })
 
 const { t } = useI18n()
+const config = useRuntimeConfig()
 
 const formData = ref({
   name: '',
@@ -138,7 +140,7 @@ async function handleSubmit() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        access_key: 'da0d6a52-1551-4e53-b6db-791a01f989d1',
+        access_key: config.public.web3formsKey,
         subject: 'Nouvelle demande de fonctionnalité - Remember',
         name: formData.value.name,
         email: formData.value.email,
