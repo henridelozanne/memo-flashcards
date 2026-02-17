@@ -106,6 +106,32 @@ export const useDatabase = () => {
       CREATE INDEX IF NOT EXISTS idx_review_logs_reviewed_at ON review_logs(reviewed_at);
     `)
 
+    // Migrations pour les bases existantes
+    // Tenter d'ajouter les colonnes subscription si elles n'existent pas
+    try {
+      await connection.run('ALTER TABLE user_profiles ADD COLUMN subscription_status TEXT DEFAULT "free"')
+    } catch (e) {
+      // Column already exists, ignore
+    }
+
+    try {
+      await connection.run('ALTER TABLE user_profiles ADD COLUMN subscription_product_id TEXT')
+    } catch (e) {
+      // Column already exists, ignore
+    }
+
+    try {
+      await connection.run('ALTER TABLE user_profiles ADD COLUMN subscription_expires_at INTEGER')
+    } catch (e) {
+      // Column already exists, ignore
+    }
+
+    try {
+      await connection.run('ALTER TABLE user_profiles ADD COLUMN subscription_updated_at INTEGER')
+    } catch (e) {
+      // Column already exists, ignore
+    }
+
     return connection
   }
 

@@ -16,6 +16,12 @@ PODS:
   - RevenuecatPurchasesCapacitor (11.2.16):
     - Capacitor
     - PurchasesHybridCommon (= 17.21.0)
+  - Sentry (9.3.0):
+    - Sentry/Core (= 9.3.0)
+  - Sentry/Core (9.3.0)
+  - SentryCapacitor (3.0.0):
+    - Capacitor
+    - Sentry (= 9.3.0)
   - SQLCipher (4.10.0):
     - SQLCipher/standard (= 4.10.0)
   - SQLCipher/common (4.10.0)
@@ -30,11 +36,13 @@ DEPENDENCIES:
   - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - "RevenuecatPurchasesCapacitor (from `../../node_modules/@revenuecat/purchases-capacitor`)"
+  - "SentryCapacitor (from `../../node_modules/@sentry/capacitor`)"
 
 SPEC REPOS:
   trunk:
     - PurchasesHybridCommon
     - RevenueCat
+    - Sentry
     - SQLCipher
     - ZIPFoundation
 
@@ -51,6 +59,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/preferences"
   RevenuecatPurchasesCapacitor:
     :path: "../../node_modules/@revenuecat/purchases-capacitor"
+  SentryCapacitor:
+    :path: "../../node_modules/@sentry/capacitor"
 
 SPEC CHECKSUMS:
   Capacitor: 28d6c01026a9a3f7156529498ec1f389a2a28dbc
@@ -61,9 +71,11 @@ SPEC CHECKSUMS:
   PurchasesHybridCommon: 988d080cd69d7aa0895e52f993dae53b45a0e929
   RevenueCat: fa9ad7e1c8817deddb737646946b6b3d8b25f54b
   RevenuecatPurchasesCapacitor: ea59cd926bda7f3def99ad410f85c09758b7d921
+  Sentry: 4d2abfa89a0f104f53e60c1d11c85e6f68a0e22b
+  SentryCapacitor: 0a794bea0de22a526bb4eaf8d6ae8b567a708dda
   SQLCipher: eb79c64049cb002b4e9fcb30edb7979bf4706dfc
   ZIPFoundation: dfd3d681c4053ff7e2f7350bc4e53b5dba3f5351
 
-PODFILE CHECKSUM: af091afa87efff951b84143559d92049bfd1dfc0
+PODFILE CHECKSUM: 00e38643a6ee38c11a8257b5233306e6f911ec81
 
 COCOAPODS: 1.16.2

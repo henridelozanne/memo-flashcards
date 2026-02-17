@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from 'nuxt/config'
+import packageJson from './package.json'
 
 export default defineNuxtConfig({
   ssr: false,
@@ -14,6 +15,8 @@ export default defineNuxtConfig({
     public: {
       web3formsKey: process.env.WEB3FORMS_KEY,
       revenuecatApiKey: process.env.REVENUECAT_API_KEY_IOS,
+      sentryDsn: process.env.SENTRY_DSN,
+      appVersion: packageJson.version,
     },
   },
   alias: {

@@ -2,19 +2,35 @@
 
 Stack: Nuxt 3 + TypeScript + Tailwind + Pinia + Capacitor + SQLite
 
-Installation
+## Installation
 
-```
+```bash
 npm install
 ```
 
-Dev
+## Configuration
+
+Copy `.env.example` to `.env` and configure the required environment variables:
+
+```bash
+cp .env.example .env
+```
+
+### Required Variables
+
+- `SENTRY_DSN`: Your Sentry project DSN for error tracking (get it from [sentry.io](https://sentry.io))
+- `REVENUECAT_API_KEY_IOS`: RevenueCat API key for iOS subscriptions
+- `WEB3FORMS_KEY`: Web3Forms access key for contact forms
+
+Sentry is automatically disabled in development mode.
+
+## Dev
 
 ```
 npm run dev
 ```
 
-Build
+## Build
 
 ```
 npm run build

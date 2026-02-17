@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { useUserProfileStore } from '~/store/userProfile'
+import { Preferences } from '@capacitor/preferences'
 
 // Lazy import de supabase pour éviter les erreurs process côté client
 let supabaseInstance: any = null
@@ -11,6 +11,9 @@ async function getSupabase() {
   }
   return supabaseInstance
 }
+
+// Clés pour Preferences
+const USER_ID_KEY = 'memo_user_id'
 
 export default function useSupabaseAuth() {
   const userId = ref<string | null>(null)
@@ -39,21 +42,60 @@ export default function useSupabaseAuth() {
         if (signInError) throw signInError
         if (!user?.id) throw new Error('Failed to get user ID after anonymous sign in')
         userId.value = user.id
+
+        // Persister le userId
+        await Preferences.set({ key: USER_ID_KEY, value: user.id })
       } else {
         userId.value = session.user.id
+
+        // Persister le userId
+        await Preferences.set({ key: USER_ID_KEY, value: session.user.id })
       }
     } catch (e) {
       error.value = e instanceof Error ? e : new Error('Unknown auth error')
-      // Fall back to generating a local ID if auth fails
-      userId.value = crypto.randomUUID()
+
+      // Try to get persisted userId first
+      try {
+        const { value } = await Preferences.get({ key: USER_ID_KEY })
+        if (value) {
+          userId.value = value
+          console.log('[Auth] Using persisted userId:', value)
+          return
+        }
+      } catch (prefError) {
+        console.error('[Auth] Failed to get persisted userId:', prefError)
+      }
+
+      // Fall back to generating a local ID if auth fails and no persisted ID
+      const newId = crypto.randomUUID()
+      userId.value = newId
+
+      // Persister le userId généré
+      try {
+        await Preferences.set({ key: USER_ID_KEY, value: newId })
+        console.log('[Auth] Generated and persisted new userId:', newId)
+      } catch (prefError) {
+        console.error('[Auth] Failed to persist generated userId:', prefError)
+      }
     } finally {
       isLoading.value = false
     }
   }
 
   async function getCurrentUserId(): Promise<string> {
-    // Try to get from Supabase session first
+    // Try to get from memory first
     if (userId.value) return userId.value
+
+    // Try to get from persistent storage
+    try {
+      const { value } = await Preferences.get({ key: USER_ID_KEY })
+      if (value) {
+        userId.value = value
+        return value
+      }
+    } catch (e) {
+      console.error('[Auth] Failed to get persisted userId:', e)
+    }
 
     // Initialize auth if no userId yet
     await initAuth()
