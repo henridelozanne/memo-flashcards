@@ -1,6 +1,6 @@
 # PostHog Analytics - Événements Trackés
 
-Ce document liste tous les événements PostHog trackés dans l'application Memo Flashcards.
+Ce document liste tous les événements PostHog trackés dans l'application MemoLooper.
 
 ## Configuration
 

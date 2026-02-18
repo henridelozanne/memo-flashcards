@@ -133,7 +133,7 @@ describe('useNotifications', () => {
 
       const scheduleCall = vi.mocked(LocalNotifications.schedule).mock.calls[0][0]
       expect(scheduleCall.notifications[0].body).toContain('Test notification message')
-      expect(scheduleCall.notifications[0].title).toBe('Remember')
+      expect(scheduleCall.notifications[0].title).toBe('MemoLooper')
     })
 
     it('should use random notification message without firstName', async () => {
@@ -145,7 +145,7 @@ describe('useNotifications', () => {
 
       const scheduleCall = vi.mocked(LocalNotifications.schedule).mock.calls[0][0]
       expect(scheduleCall.notifications[0].body).toBe('Test notification message for')
-      expect(scheduleCall.notifications[0].title).toBe('Remember')
+      expect(scheduleCall.notifications[0].title).toBe('MemoLooper')
     })
 
     it('should cancel existing notifications before scheduling', async () => {

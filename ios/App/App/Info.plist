@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-        <string>Memo Flashcards</string>
+        <string>MemoLooper</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -44,10 +44,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Memo needs access to your camera to take photos for your flashcards.</string>
+	<string>MemoLooper needs access to your camera to take photos for your flashcards.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Memo needs access to your photo library to add images to your flashcards.</string>
+	<string>MemoLooper needs access to your photo library to add images to your flashcards.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Memo needs access to save photos to your photo library.</string>
+	<string>MemoLooper needs access to save photos to your photo library.</string>
 </dict>
 </plist>

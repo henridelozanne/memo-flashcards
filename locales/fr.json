@@ -54,7 +54,7 @@
     "message21": "Un petit rappel pour ne pas perdre le rythme, {firstName} 🔄",
     "message22": "Une session maintenant te rapproche de tes objectifs 🎯"
   },
-  "app": { "name": "Remember" },
+  "app": { "name": "MemoLooper" },
   "common": {
     "ok": "OK",
     "cancel": "Annuler",
@@ -238,7 +238,7 @@
   "legal": {
     "editor": {
       "title": "Éditeur de l'application",
-      "description": "L'application Remember est éditée par Henri Delozanne, développeur indépendant basé en France. Pour toute demande, vous pouvez nous contacter par email à :",
+      "description": "L'application MemoLooper est éditée par Henri Delozanne, développeur indépendant basé en France. Pour toute demande, vous pouvez nous contacter par email à :",
       "address": "L'adresse professionnelle est disponible sur demande."
     },
     "hosting": {
@@ -248,7 +248,7 @@
     },
     "personalData": {
       "title": "Données personnelles",
-      "collection": "L'application Remember ne collecte que les données strictement nécessaires à son bon fonctionnement (cartes, progression, préférences).",
+      "collection": "L'application MemoLooper ne collecte que les données strictement nécessaires à son bon fonctionnement (cartes, progression, préférences).",
       "ads": "Aucune donnée n'est utilisée à des fins publicitaires.",
       "deletion": "Vous pouvez demander à tout moment la suppression de vos données personnelles en nous contactant."
     },
@@ -273,7 +273,7 @@
     },
     "intellectualProperty": {
       "title": "Propriété intellectuelle",
-      "copyright": "Tous les contenus de l'application Remember (textes, visuels, fonctionnalités) sont protégés par le droit d'auteur.",
+      "copyright": "Tous les contenus de l'application MemoLooper (textes, visuels, fonctionnalités) sont protégés par le droit d'auteur.",
       "prohibition": "Toute reproduction non autorisée est interdite."
     },
     "termsOfUse": {
@@ -288,7 +288,7 @@
     "email": "Email",
     "emailPlaceholder": "Votre email",
     "message": "Message",
-    "featureRequestPlaceholder": "Décrivez la fonctionnalité que vous aimeriez voir dans Remember...",
+    "featureRequestPlaceholder": "Décrivez la fonctionnalité que vous aimeriez voir dans MemoLooper...",
     "bugReportPlaceholder": "Décrivez le problème que vous avez rencontré...",
     "send": "Envoyer",
     "sendError": "Une erreur est survenue lors de l'envoi du message.",
@@ -305,7 +305,7 @@
     "later": "Plus tard"
   },
   "onboarding": {
-    "appName": "Remember",
+    "appName": "MemoLooper",
     "welcome": {
       "tagline1": "Apprends durablement.",
       "tagline2": "En quelques minutes par jour."
@@ -379,7 +379,7 @@
     },
     "step10": {
       "title": "Tout est prêt, {firstName} !",
-      "subtitle": "Tu es maintenant prêt à commencer ton apprentissage avec Remember"
+      "subtitle": "Tu es maintenant prêt à commencer ton apprentissage avec MemoLooper"
     },
     "paywall": {
       "title": "Débloque ton potentiel",

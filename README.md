@@ -1,4 +1,4 @@
-# Memo Flashcards
+# MemoLooper
 
 Stack: Nuxt 3 + TypeScript + Tailwind + Pinia + Capacitor + SQLite
 

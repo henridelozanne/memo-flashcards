@@ -141,7 +141,7 @@ async function handleSubmit() {
       },
       body: JSON.stringify({
         access_key: config.public.web3formsKey,
-        subject: 'Nouvelle demande de fonctionnalité - Remember',
+        subject: 'Nouvelle demande de fonctionnalité - MemoLooper',
         name: formData.value.name,
         email: formData.value.email,
         message: formData.value.message,

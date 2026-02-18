@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
-import { nextTick } from 'vue'
+import { nextTick, ref } from 'vue'
 import MonthCalendar from '@/components/MonthCalendar.vue'
 
 // Mock the database
@@ -23,6 +23,7 @@ vi.mock('vue-i18n', () => ({
       }
       return []
     }),
+    locale: ref('fr'),
   }),
 }))
 

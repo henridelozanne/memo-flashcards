@@ -35,7 +35,7 @@ describe('Welcome Page', () => {
         },
       },
     })
-    expect(wrapper.text()).toContain('Remember')
+    expect(wrapper.text()).toContain('MemoLooper')
   })
 
   it('displays taglines', () => {

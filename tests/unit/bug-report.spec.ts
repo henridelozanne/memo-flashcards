@@ -11,6 +11,15 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
+// Mock useRuntimeConfig
+vi.mock('nuxt/app', () => ({
+  useRuntimeConfig: () => ({
+    public: {
+      web3formsKey: 'test-key',
+    },
+  }),
+}))
+
 // Mock PageHeader
 vi.mock('@/components/PageHeader.vue', () => ({
   default: {

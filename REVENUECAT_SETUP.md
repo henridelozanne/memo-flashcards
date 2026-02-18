@@ -6,14 +6,14 @@
 
 1. Aller sur [https://app.revenuecat.com/signup](https://app.revenuecat.com/signup)
 2. Créer un compte gratuit
-3. Créer un nouveau projet "Memo Flashcards"
+3. Créer un nouveau projet "MemoLooper"
 
 ### 2. Configurer l'app dans RevenueCat
 
 1. Dans le dashboard RevenueCat, aller dans "Apps"
 2. Cliquer sur "Add new app"
 3. Remplir les informations :
-   - **App name**: Memo Flashcards
+   - **App name**: MemoLooper
    - **Bundle ID**: `votre.bundle.id` (doit correspondre à celui dans `capacitor.config.ts`)
    - **Platform**: iOS
 

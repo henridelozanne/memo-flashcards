@@ -1,9 +1,18 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'
 import { createPinia } from 'pinia'
 import StatsPage from '~/pages/stats.vue'
 import messages from '~/locales'
+
+// Mock nuxt/app before importing anything that uses it
+vi.mock('nuxt/app', () => ({
+  useRuntimeConfig: () => ({
+    public: {
+      revenuecatApiKey: 'test-key',
+    },
+  }),
+}))
 
 const i18n = createI18n({
   legacy: false,

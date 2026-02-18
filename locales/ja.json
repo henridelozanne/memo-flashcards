@@ -54,7 +54,7 @@
     "message21": "リズムを維持するための小さなリマインダー、{firstName} 🔄",
     "message22": "今学習すれば目標に近づきます 🎯"
   },
-  "app": { "name": "Remember" },
+  "app": { "name": "MemoLooper" },
   "common": {
     "ok": "OK",
     "cancel": "キャンセル",
@@ -238,7 +238,7 @@
   "legal": {
     "editor": {
       "title": "アプリ発行者",
-      "description": "Rememberアプリは、フランスに拠点を置く個人開発者Henri Delozanneによって発行されています。ご質問がある場合は、メールでお問い合わせください：",
+      "description": "MemoLooperアプリは、フランスに拠点を置く個人開発者Henri Delozanneによって発行されています。ご質問がある場合は、メールでお問い合わせください：",
       "address": "専門的な住所はリクエストに応じて提供されます。"
     },
     "hosting": {
@@ -248,7 +248,7 @@
     },
     "personalData": {
       "title": "個人データ",
-      "collection": "Rememberアプリは、正常な動作に必要なデータ（カード、進捗、設定）のみを収集します。",
+      "collection": "MemoLooperアプリは、正常な動作に必要なデータ（カード、進捗、設定）のみを収集します。",
       "ads": "データが広告目的で使用されることはありません。",
       "deletion": "個人データの削除をいつでもリクエストできます。"
     },
@@ -273,7 +273,7 @@
     },
     "intellectualProperty": {
       "title": "知的財産",
-      "copyright": "Rememberアプリのすべてのコンテンツ（テキスト、ビジュアル、機能）は著作権で保護されています。",
+      "copyright": "MemoLooperアプリのすべてのコンテンツ（テキスト、ビジュアル、機能）は著作権で保護されています。",
       "prohibition": "無許可の複製は禁止されています。"
     },
     "termsOfUse": {
@@ -288,7 +288,7 @@
     "email": "メールアドレス",
     "emailPlaceholder": "あなたのメールアドレス",
     "message": "メッセージ",
-    "featureRequestPlaceholder": "Rememberに追加してほしい機能を説明してください...",
+    "featureRequestPlaceholder": "MemoLooperに追加してほしい機能を説明してください...",
     "bugReportPlaceholder": "発生した問題を説明してください...",
     "send": "送信",
     "sendError": "メッセージの送信中にエラーが発生しました。",
@@ -305,7 +305,7 @@
     "later": "後で"
   },
   "onboarding": {
-    "appName": "Remember",
+    "appName": "MemoLooper",
     "welcome": {
       "tagline1": "持続的な学習。",
       "tagline2": "1日数分だけ。"
@@ -379,7 +379,7 @@
     },
     "step10": {
       "title": "準備完了、{firstName}！",
-      "subtitle": "Rememberで学習を開始する準備が整いました"
+      "subtitle": "MemoLooperで学習を開始する準備が整いました"
     },
     "paywall": {
       "title": "あなたの潜在能力を解放",
