@@ -5,9 +5,10 @@ import { defineNuxtPlugin, useRuntimeConfig } from 'nuxt/app'
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig()
   const sentryDsn = config.public.sentryDsn as string
+  const sentryEnabled = config.public.sentryEnabled as boolean
 
-  // Ne pas initialiser Sentry en développement ou si le DSN n'est pas configuré
-  if (!sentryDsn || process.env.NODE_ENV !== 'production') {
+  // Ne pas initialiser Sentry si désactivé ou si le DSN n'est pas configuré
+  if (!sentryDsn || !sentryEnabled) {
     return
   }
 
