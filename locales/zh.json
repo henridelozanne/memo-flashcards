@@ -233,6 +233,7 @@
     "deleteDataConfirmTitle": "删除所有我的数据",
     "deleteDataConfirmMessage": "您确定要删除所有数据吗？此操作不可逆，将删除所有收藏和卡片。",
     "deleteDataConfirm": "删除",
+    "unlockPremium": "解锁高级版",
     "legalNotice": "法律声明"
   },
   "legal": {

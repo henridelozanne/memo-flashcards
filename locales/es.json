@@ -233,6 +233,7 @@
     "deleteDataConfirmTitle": "Eliminar todos mis datos",
     "deleteDataConfirmMessage": "¿Estás seguro de querer eliminar todos tus datos? Esta acción es irreversible y eliminará todas tus colecciones y tarjetas.",
     "deleteDataConfirm": "Eliminar",
+    "unlockPremium": "Desbloquear Premium",
     "legalNotice": "Aviso legal"
   },
   "legal": {

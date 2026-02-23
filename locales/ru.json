@@ -233,6 +233,7 @@
     "deleteDataConfirmTitle": "Удалить все мои данные",
     "deleteDataConfirmMessage": "Вы уверены, что хотите удалить все свои данные? Это действие необратимо и удалит все ваши коллекции и карточки.",
     "deleteDataConfirm": "Удалить",
+    "unlockPremium": "Разблокировать Premium",
     "legalNotice": "Юридическая информация"
   },
   "legal": {

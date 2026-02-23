@@ -233,6 +233,7 @@
     "deleteDataConfirmTitle": "すべてのデータを削除",
     "deleteDataConfirmMessage": "すべてのデータを削除してもよろしいですか？この操作は元に戻せず、すべてのコレクションとカードが削除されます。",
     "deleteDataConfirm": "削除",
+    "unlockPremium": "プレミアムを解除する",
     "legalNotice": "法的通知"
   },
   "legal": {

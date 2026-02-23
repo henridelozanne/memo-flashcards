@@ -5,6 +5,17 @@
 
     <!-- Settings list -->
     <div class="mx-auto max-w-2xl space-y-2">
+      <!-- Unlock Premium -->
+      <SettingsItem
+        v-if="!subscriptionStore.isSubscribed"
+        :label="$t('settings.unlockPremium')"
+        @click="$router.push('/paywall')"
+      >
+        <template #icon>
+          <IconStar />
+        </template>
+      </SettingsItem>
+
       <!-- Heure de rappel -->
       <SettingsItem :label="$t('settings.reminderTime')" :value="currentReminderTime" @click="openTimePicker">
         <template #icon>
@@ -123,9 +134,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-// import { useI18n } from 'vue-i18n'
 import { useUserProfileStore } from '~/store/userProfile'
-// import { useSubscriptionStore } from '~/store/subscription'
+import { useSubscriptionStore } from '~/store/subscription'
 import { useNotificationTime } from '~/composables/useNotificationTime'
 import { useLanguageSelector } from '~/composables/useLanguageSelector'
 import { useDeleteData } from '~/composables/useDeleteData'
@@ -135,7 +145,7 @@ import PageHeader from '~/components/PageHeader.vue'
 import StatusMessage from '~/components/StatusMessage.vue'
 import ConfirmModal from '~/components/ConfirmModal.vue'
 import IconClock from '~/components/icons/IconClock.vue'
-// import IconStar from '~/components/icons/IconStar.vue' // v1.0: Temporairement masqué
+import IconStar from '~/components/icons/IconStar.vue'
 import IconGlobe from '~/components/icons/IconGlobe.vue'
 import IconFeatureRequest from '~/components/icons/IconFeatureRequest.vue'
 import IconBug from '~/components/icons/IconBug.vue'
@@ -144,7 +154,7 @@ import IconDocument from '~/components/icons/IconDocument.vue'
 // import IconRefresh from '~/components/icons/IconRefresh.vue' // v1.0: Temporairement masqué
 
 const userProfileStore = useUserProfileStore()
-// const subscriptionStore = useSubscriptionStore() // v1.0: Temporairement masqué
+const subscriptionStore = useSubscriptionStore()
 // const { restorePurchases } = useSubscription() // v1.0: Temporairement masqué
 const { timeInput, selectedTime, statusMessage, openTimePicker, handleTimeChange } = useNotificationTime()
 const {
