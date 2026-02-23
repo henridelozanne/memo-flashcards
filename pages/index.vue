@@ -1,7 +1,7 @@
 <template>
   <div class="h-full p-6">
     <!-- Header with stats and settings buttons -->
-    <PageHeader title="MemoLooper" test-id="heading-collections">
+    <PageHeader title="Cortx" test-id="heading-collections">
       <template #leftActions>
         <BaseButton variant="icon" aria-label="Statistics" @click="$router.push('/stats')">
           <IconStats />

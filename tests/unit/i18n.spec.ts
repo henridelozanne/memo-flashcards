@@ -3,9 +3,9 @@ import messages from '~/locales'
 
 describe('i18n messages', () => {
   it('has french app name', () => {
-    expect(messages.fr.app.name).toBe('MemoLooper')
+    expect(messages.fr.app.name).toBe('Cortx')
   })
   it('has english app name', () => {
-    expect(messages.en.app.name).toBe('MemoLooper')
+    expect(messages.en.app.name).toBe('Cortx')
   })
 })

@@ -48,8 +48,8 @@
           </div>
           <div class="mb-2 text-sm text-gray-600">{{ $t('onboarding.paywall.monthly.subtitle') }}</div>
           <div class="mb-4 text-sm text-gray-600">{{ $t('onboarding.paywall.monthly.renewal') }}</div>
-          <button class="subscribe-button mt-auto" :disabled="isPurchasing" @click="selectPlan('monthly')">
-            {{ isPurchasing ? `⏳ ${$t('onboarding.paywall.purchasing')}` : $t('onboarding.paywall.chooseOffer') }}
+          <button class="subscribe-button mt-auto" @click="selectPlan('monthly')">
+            {{ $t('onboarding.paywall.chooseOffer') }}
           </button>
         </div>
 
@@ -64,8 +64,8 @@
           </div>
           <div class="mb-2 text-sm text-gray-600">{{ $t('onboarding.paywall.lifetime.subtitle') }}</div>
           <div class="mb-4 text-sm text-gray-600">{{ $t('onboarding.paywall.lifetime.renewal') }}</div>
-          <button class="subscribe-button mt-auto" :disabled="isPurchasing" @click="selectPlan('lifetime')">
-            {{ isPurchasing ? `⏳ ${$t('onboarding.paywall.purchasing')}` : $t('onboarding.paywall.chooseOffer') }}
+          <button class="subscribe-button mt-auto" @click="selectPlan('lifetime')">
+            {{ $t('onboarding.paywall.chooseOffer') }}
           </button>
         </div>
       </div>
@@ -73,8 +73,8 @@
 
     <!-- CTA fixé en bas -->
     <div class="fixed bottom-0 left-0 right-0 z-10 bg-white px-6 pb-8 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
-      <button class="trial-button w-full" :disabled="isPurchasing" @click="selectPlan('monthly_free_trial')">
-        {{ isPurchasing ? `⏳ ${$t('onboarding.paywall.purchasing')}` : $t('onboarding.paywall.freeTrial') }}
+      <button class="trial-button w-full" @click="selectPlan('monthly_free_trial')">
+        {{ $t('onboarding.paywall.freeTrial') }}
       </button>
       <p class="mt-3 text-center text-sm text-gray-500">
         {{ $t('onboarding.paywall.disclaimer') }}
@@ -109,7 +109,6 @@ const monthlyPackageRef = ref<PurchasesPackage | null>(null)
 const monthlyTrialPackageRef = ref<PurchasesPackage | null>(null)
 const lifetimePrice = ref('')
 const lifetimePackageRef = ref<PurchasesPackage | null>(null)
-const isPurchasing = ref(false)
 const MONTHLY_PRODUCT_ID = 'memo_pro_monthly'
 const MONTHLY_FREE_TRIAL_PRODUCT_ID = 'memo_pro_monthly_free_trial'
 const LIFETIME_PRODUCT_ID = 'memo_pro_lifetime'
@@ -231,7 +230,6 @@ async function selectPlan(plan: 'monthly' | 'monthly_free_trial' | 'lifetime') {
   }
 
   selectedPlan.value = plan
-  isPurchasing.value = true
 
   try {
     // Timeout de 30 secondes pour détecter si ça bloque
@@ -249,13 +247,9 @@ async function selectPlan(plan: 'monthly' | 'monthly_free_trial' | 'lifetime') {
         productId: snapshot.productId,
         expiresAt: snapshot.expiresAt,
       })
-    } else {
-      isPurchasing.value = false
     }
   } catch (e: unknown) {
     console.error('❌ Purchase error:', e)
-
-    isPurchasing.value = false
   }
 }
 
@@ -281,13 +275,9 @@ defineOptions({ name: 'OnboardingPaywallPage' })
   top: 16px;
   right: 16px;
   padding: 8px;
-  color: #374151;
+  color: #d1d5db;
   transition: color 0.2s;
   z-index: 20;
-}
-
-.close-button:hover {
-  color: #111827;
 }
 
 .subscription-card {

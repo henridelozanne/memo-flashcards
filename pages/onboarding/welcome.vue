@@ -4,7 +4,7 @@
     <div class="flex h-full flex-col justify-between py-8">
       <!-- Logo et nom de l'app -->
       <div class="flex flex-row items-center justify-center gap-4 pt-12">
-        <img src="/MemoLooper_logo.png" alt="Memo Flashcards" class="h-12 w-12 rounded-xl" />
+        <img src="/cortx_logo.png" alt="Cortx logo" class="h-12 w-12 rounded-xl" />
         <h1 class="text-3xl font-bold text-[var(--color-black)]">{{ $t('onboarding.appName') }}</h1>
       </div>
 

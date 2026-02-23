@@ -54,7 +54,7 @@
     "message21": "小提醒保持节奏，{firstName} 🔄",
     "message22": "现在学习让您更接近目标 🎯"
   },
-  "app": { "name": "MemoLooper" },
+  "app": { "name": "Cortx" },
   "common": {
     "ok": "确定",
     "cancel": "取消",
@@ -238,7 +238,7 @@
   "legal": {
     "editor": {
       "title": "应用发布者",
-      "description": "MemoLooper应用由位于法国的独立开发者Henri Delozanne发布。如有任何问题，可通过电子邮件联系我们：",
+      "description": "Cortx应用由位于法国的独立开发者Henri Delozanne发布。如有任何问题，可通过电子邮件联系我们：",
       "address": "专业地址可根据要求提供。"
     },
     "hosting": {
@@ -248,7 +248,7 @@
     },
     "personalData": {
       "title": "个人数据",
-      "collection": "MemoLooper应用仅收集其正常运行所必需的数据（卡片、进度、偏好）。",
+      "collection": "Cortx应用仅收集其正常运行所必需的数据（卡片、进度、偏好）。",
       "ads": "不会将任何数据用于广告目的。",
       "deletion": "您可以随时联系我们请求删除您的个人数据。"
     },
@@ -273,7 +273,7 @@
     },
     "intellectualProperty": {
       "title": "知识产权",
-      "copyright": "MemoLooper应用的所有内容（文本、视觉效果、功能）均受版权保护。",
+      "copyright": "Cortx应用的所有内容（文本、视觉效果、功能）均受版权保护。",
       "prohibition": "禁止任何未经授权的复制。"
     },
     "termsOfUse": {
@@ -288,7 +288,7 @@
     "email": "电子邮件",
     "emailPlaceholder": "您的电子邮件",
     "message": "消息",
-    "featureRequestPlaceholder": "描述您希望在MemoLooper中看到的功能...",
+    "featureRequestPlaceholder": "描述您希望在Cortx中看到的功能...",
     "bugReportPlaceholder": "描述您遇到的问题...",
     "send": "发送",
     "sendError": "发送消息时出错。",
@@ -305,7 +305,7 @@
     "later": "稍后"
   },
   "onboarding": {
-    "appName": "MemoLooper",
+    "appName": "Cortx",
     "welcome": {
       "tagline1": "持久学习。",
       "tagline2": "每天只需几分钟。"
@@ -379,7 +379,7 @@
     },
     "step10": {
       "title": "一切准备就绪，{firstName}！",
-      "subtitle": "您现在准备好开始使用MemoLooper学习了"
+      "subtitle": "您现在准备好开始使用Cortx学习了"
     },
     "paywall": {
       "title": "释放您的潜力",

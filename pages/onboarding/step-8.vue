@@ -105,7 +105,9 @@
 
         <!-- Message de célébration -->
         <div class="celebration-message">
-          <div class="celebration-icon">🎉</div>
+          <div class="celebration-icon">
+            <img src="/cortx_yeah_transparent_background.png" alt="Celebration" />
+          </div>
           <div class="celebration-text">{{ $t('onboarding.step8.celebration') }}</div>
           <div class="celebration-subtext">{{ $t('onboarding.step8.keepItUp') }}</div>
         </div>
@@ -243,9 +245,17 @@ defineOptions({ name: 'OnboardingStep8Page' })
 
 .celebration-icon {
   font-size: 48px;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   animation: celebrationBounce 0.8s ease-out 4.2s;
   display: block;
+}
+
+.celebration-icon img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 .celebration-text {

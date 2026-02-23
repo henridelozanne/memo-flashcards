@@ -1,6 +1,6 @@
 # Configuration Sentry
 
-Ce guide explique comment configurer Sentry pour le monitoring d'erreurs et de performance de l'app MemoLooper.
+Ce guide explique comment configurer Sentry pour le monitoring d'erreurs et de performance de l'app Cortx.
 
 ## 🎯 Pourquoi Sentry ?
 
@@ -27,7 +27,7 @@ Cela permet de détecter et corriger rapidement les bugs en production.
 
 1. Dans Sentry, cliquer sur **Create Project**
 2. Sélectionner **Vue** comme plateforme
-3. Nommer le projet : `memolooper`
+3. Nommer le projet : `cortx`
 4. Cliquer sur **Create Project**
 
 ---

@@ -126,7 +126,7 @@ defineOptions({ name: 'CollectionCardsPage' })
 
 const route = useRoute()
 const router = useRouter()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const {
   collections,
   isLoading: isLoadingCollection,
@@ -279,7 +279,21 @@ function startPracticeMode() {
 }
 
 function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('fr-FR', {
+  // Map i18n locale to Intl locale format
+  const localeMap: Record<string, string> = {
+    en: 'en-US',
+    fr: 'fr-FR',
+    es: 'es-ES',
+    it: 'it-IT',
+    pt: 'pt-PT',
+    ru: 'ru-RU',
+    zh: 'zh-CN',
+    ja: 'ja-JP',
+  }
+
+  const intlLocale = localeMap[locale.value] || locale.value || 'en-US'
+
+  return new Intl.DateTimeFormat(intlLocale, {
     day: 'numeric',
     month: 'long',
     year: 'numeric',

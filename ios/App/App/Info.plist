@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-        <string>MemoLooper</string>
+        <string>Cortx</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -44,10 +44,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>MemoLooper needs access to your camera to take photos for your flashcards.</string>
+	<string>Cortx needs access to your camera to take photos for your flashcards.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>MemoLooper needs access to your photo library to add images to your flashcards.</string>
+	<string>Cortx needs access to your photo library to add images to your flashcards.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>MemoLooper needs access to save photos to your photo library.</string>
+	<string>Cortx needs access to save photos to your photo library.</string>
 </dict>
 </plist>

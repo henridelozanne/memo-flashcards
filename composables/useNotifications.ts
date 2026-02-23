@@ -64,7 +64,7 @@ export const useNotifications = () => {
         notifications: [
           {
             id: 1,
-            title: 'MemoLooper',
+            title: 'Cortx',
             body: getRandomNotificationMessage(),
             schedule: {
               at: scheduledTime,

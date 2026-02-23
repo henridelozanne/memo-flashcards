@@ -141,7 +141,7 @@ async function handleSubmit() {
       },
       body: JSON.stringify({
         access_key: config.public.web3formsKey,
-        subject: 'Nouveau signalement de bug - MemoLooper',
+        subject: 'Nouveau signalement de bug - Cortx',
         name: formData.value.name,
         email: formData.value.email,
         message: formData.value.message,
