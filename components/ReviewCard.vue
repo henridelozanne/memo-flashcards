@@ -1,22 +1,29 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <div class="mx-auto w-full max-w-md">
-    <div class="relative flex aspect-[3/4] w-full select-none items-center justify-center" style="perspective: 1000px">
+    <div
+      class="relative flex w-full select-none items-center justify-center"
+      style="perspective: 1000px; aspect-ratio: 3/4; max-height: calc(100svh - 160px)"
+    >
       <div v-if="currentCard" class="flip-card h-full w-full">
         <div class="flip-card-inner h-full w-full" :class="{ 'back-visible': isBackVisible }">
           <!-- Recto -->
           <div
-            class="flip-card-front flex h-full w-full flex-col rounded-[15px] bg-white p-8 text-center shadow-[0px_4px_32px_#0000000a]"
+            class="flip-card-front flex h-full w-full flex-col overflow-hidden rounded-[15px] bg-white p-8 text-center shadow-[0px_4px_32px_#0000000a]"
           >
-            <div class="flex flex-1 flex-col items-center justify-center">
+            <div class="flex flex-1 flex-col items-center justify-center overflow-y-auto">
               <div
                 class="break-words font-medium text-gray-900"
                 :class="questionFontSize"
                 v-html="sanitizedQuestion"
               ></div>
+            </div>
+            <div class="mt-6 flex justify-center">
               <button
-                class="mt-8 rounded-[15px] bg-[var(--color-light-purple)] px-6 py-3 text-base font-medium text-[var(--color-primary)] shadow-sm transition hover:bg-[var(--color-accent-purple)] focus:outline-none"
-                @click="$emit('show-back')"
+                :key="currentCard?.id"
+                ref="showBackBtn"
+                class="rounded-[15px] bg-[var(--color-light-purple)] px-6 py-3 text-base font-medium text-[var(--color-primary)] shadow-sm transition focus:outline-none active:bg-[var(--color-accent-purple)]"
+                @click="handleShowBack"
               >
                 {{ $t('review.showAnswer') }}
               </button>
@@ -24,9 +31,9 @@
           </div>
           <!-- Verso -->
           <div
-            class="flip-card-back absolute left-0 top-0 flex h-full w-full flex-col rounded-[15px] bg-white p-8 text-center shadow-[0px_4px_32px_#0000000a]"
+            class="flip-card-back absolute left-0 top-0 flex h-full w-full flex-col overflow-hidden rounded-[15px] bg-white p-8 text-center shadow-[0px_4px_32px_#0000000a]"
           >
-            <div class="flex flex-1 flex-col items-center justify-center gap-10">
+            <div class="flex flex-1 flex-col items-center justify-center gap-10 overflow-y-auto">
               <div
                 class="break-words font-medium text-gray-900"
                 :class="questionFontSizeBack"
@@ -56,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import type { Card, UserChoice } from '~/lib/types'
 import { sanitizeHtml } from '~/utils/sanitize'
 
@@ -64,6 +71,18 @@ const userChoices: UserChoice[] = [
   { value: false, label: 'review.again' },
   { value: true, label: 'review.good' },
 ]
+
+const emit = defineEmits<{
+  'show-back': []
+  answer: [value: boolean]
+}>()
+
+const showBackBtn = ref<HTMLButtonElement | null>(null)
+
+function handleShowBack() {
+  showBackBtn.value?.blur()
+  emit('show-back')
+}
 
 const props = defineProps<{
   currentCard: Card | null
@@ -105,11 +124,6 @@ const questionFontSizeBack = computed(() =>
 )
 
 const answerFontSize = computed(() => (props.currentCard ? getFontSizeClass(props.currentCard.answer, true) : ''))
-
-defineEmits<{
-  'show-back': []
-  answer: [value: boolean]
-}>()
 </script>
 
 <style scoped>
@@ -172,5 +186,14 @@ defineEmits<{
   font-size: 1.25em;
   font-weight: bold;
   margin: 0.8em 0 0.4em;
+}
+
+:deep(img) {
+  max-width: 100%;
+  max-height: 40vh;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
 }
 </style>
