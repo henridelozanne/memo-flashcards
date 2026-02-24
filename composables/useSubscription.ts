@@ -1,10 +1,4 @@
-import {
-  Purchases,
-  LOG_LEVEL,
-  PurchasesOfferings,
-  PurchasesPackage,
-  CustomerInfo,
-} from '@revenuecat/purchases-capacitor'
+import { Purchases, PurchasesOfferings, PurchasesPackage, CustomerInfo } from '@revenuecat/purchases-capacitor'
 import { computed, ref } from 'vue'
 import { useSubscriptionStore } from '~/store/subscription'
 import { useRuntimeConfig } from 'nuxt/app'

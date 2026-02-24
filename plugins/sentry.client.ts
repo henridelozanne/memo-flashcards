@@ -7,8 +7,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   const sentryDsn = config.public.sentryDsn as string
   const sentryEnabled = config.public.sentryEnabled as boolean
 
-  // Ne pas initialiser Sentry si désactivé ou si le DSN n'est pas configuré
-  if (!sentryDsn || !sentryEnabled) {
+  // Ne pas initialiser Sentry si désactivé, si le DSN n'est pas configuré, ou hors production
+  if (!sentryDsn || !sentryEnabled || process.env.NODE_ENV !== 'production') {
     return
   }
 

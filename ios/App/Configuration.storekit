@@ -1,4 +1,14 @@
 {
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
   "identifier" : "E8E7F0C5",
   "nonRenewingSubscriptions" : [
 
@@ -12,7 +22,7 @@
         {
           "description" : "Accès à vie à toutes les fonctionnalités premium",
           "displayName" : "Premium à vie",
-          "locale" : "fr_FR"
+          "locale" : "fr"
         },
         {
           "description" : "Lifetime access to all premium features",
@@ -26,56 +36,53 @@
     }
   ],
   "settings" : {
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_disableDialogs" : false,
     "_failTransactionsEnabled" : false,
-    "_locale" : "fr_FR",
+    "_locale" : "fr",
+    "_renewalBillingIssuesEnabled" : false,
     "_storefront" : "FRA",
     "_storeKitErrors" : [
       {
-        "current" : null,
         "enabled" : false,
         "name" : "Load Products"
       },
       {
-        "current" : null,
         "enabled" : false,
         "name" : "Purchase"
       },
       {
-        "current" : null,
         "enabled" : false,
         "name" : "Verification"
       },
       {
-        "current" : null,
         "enabled" : false,
         "name" : "App Store Sync"
       },
       {
-        "current" : null,
         "enabled" : false,
         "name" : "Subscription Status"
       },
       {
-        "current" : null,
         "enabled" : false,
         "name" : "App Transaction"
       },
       {
-        "current" : null,
         "enabled" : false,
         "name" : "Manage Subscriptions Sheet"
       },
       {
-        "current" : null,
         "enabled" : false,
         "name" : "Refund Request Sheet"
       },
       {
-        "current" : null,
         "enabled" : false,
         "name" : "Offer Code Redeem Sheet"
       }
-    ]
+    ],
+    "_timeRate" : 0
   },
   "subscriptionGroups" : [
     {
@@ -106,7 +113,7 @@
             {
               "description" : "Accès mensuel à toutes les fonctionnalités premium",
               "displayName" : "Premium mensuel",
-              "locale" : "fr_FR"
+              "locale" : "fr"
             },
             {
               "description" : "Monthly access to all premium features",
@@ -118,7 +125,10 @@
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Premium Monthly",
           "subscriptionGroupID" : "21474163",
-          "type" : "RecurringSubscription"
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         },
         {
           "adHocOffers" : [
@@ -141,7 +151,7 @@
             {
               "description" : "Accès mensuel à toutes les fonctionnalités premium avec essai gratuit",
               "displayName" : "Premium mensuel (essai gratuit)",
-              "locale" : "fr_FR"
+              "locale" : "fr"
             },
             {
               "description" : "Monthly access to all premium features with free trial",
@@ -153,13 +163,16 @@
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Premium Monthly Free Trial",
           "subscriptionGroupID" : "21474163",
-          "type" : "RecurringSubscription"
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         }
       ]
     }
   ],
   "version" : {
-    "major" : 3,
+    "major" : 4,
     "minor" : 0
   }
 }
