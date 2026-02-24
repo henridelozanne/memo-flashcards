@@ -10,8 +10,8 @@ export const usePosthog = () => {
    */
   const isInitialized = () => {
     try {
-      // @ts-ignore - propriété interne pour vérifier l'initialisation
-      return posthog.__loaded === true
+      // eslint-disable-next-line no-underscore-dangle
+      return (posthog as unknown as { __loaded: boolean }).__loaded === true
     } catch {
       return false
     }

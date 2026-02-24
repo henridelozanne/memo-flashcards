@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
+import { LocalNotifications } from '@capacitor/local-notifications'
 import { useNotifications } from '~/composables/useNotifications'
 import { useUserProfileStore } from '~/store/userProfile'
-import { LocalNotifications } from '@capacitor/local-notifications'
 
 // Mock Capacitor LocalNotifications
 vi.mock('@capacitor/local-notifications', () => ({

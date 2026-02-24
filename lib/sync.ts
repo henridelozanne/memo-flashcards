@@ -77,6 +77,7 @@ export async function syncUserProfileToRemote(): Promise<void> {
  * Blocking: should be awaited at app startup
  */
 export async function syncUserProfileFromRemote(): Promise<void> {
+  // eslint-disable-next-line no-useless-catch
   try {
     // Lazy imports
     const useSupabaseAuth = (await import('~/composables/useSupabaseAuth')).default
@@ -133,6 +134,7 @@ export async function syncUserProfileFromRemote(): Promise<void> {
           : null,
       })
     }
+    // eslint-disable-next-line no-useless-catch
   } catch (error) {
     throw error // This one is blocking, so we throw
   }
@@ -175,7 +177,7 @@ export async function syncCollectionsToRemote(): Promise<void> {
     // 4. Sync each local collection to remote if newer or missing
     const toUpsert: any[] = []
 
-    for (const local of localCollections) {
+    localCollections.forEach((local) => {
       const remote = remoteMap.get(local.id)
       const localUpdatedAt = local.updated_at
       const remoteUpdatedAt = remote ? new Date(remote.updated_at).getTime() : 0
@@ -190,7 +192,7 @@ export async function syncCollectionsToRemote(): Promise<void> {
           deleted_at: local.deleted_at ? new Date(local.deleted_at).toISOString() : null,
         })
       }
-    }
+    })
 
     if (toUpsert.length > 0) {
       const { error: upsertError } = await supabase.from('collections').upsert(toUpsert)
@@ -235,6 +237,7 @@ export async function syncCollectionsFromRemote(): Promise<void> {
     const localMap = new Map((localCollections || []).map((c: any) => [c.id, c]))
 
     // 4. Sync each remote collection to local if newer or missing
+    // eslint-disable-next-line no-restricted-syntax
     for (const remote of remoteCollections) {
       const local = localMap.get(remote.id)
       const remoteUpdatedAt = new Date(remote.updated_at).getTime()
@@ -242,12 +245,14 @@ export async function syncCollectionsFromRemote(): Promise<void> {
 
       if (!local || remoteUpdatedAt > localUpdatedAt) {
         // Upsert to local SQLite
+        // eslint-disable-next-line no-await-in-loop
         const existingCount = await db.get<{ count: number }>(
           'SELECT COUNT(*) as count FROM collections WHERE id = ?',
           [remote.id]
         )
 
         if (existingCount && existingCount.count > 0) {
+          // eslint-disable-next-line no-await-in-loop
           await db.run(
             `UPDATE collections 
              SET user_id = ?, name = ?, created_at = ?, updated_at = ?, deleted_at = ?
@@ -262,9 +267,11 @@ export async function syncCollectionsFromRemote(): Promise<void> {
             ]
           )
         } else {
+          // eslint-disable-next-line no-await-in-loop
           await db.run(
             `INSERT INTO collections (id, user_id, name, created_at, updated_at, deleted_at)
              VALUES (?, ?, ?, ?, ?, ?)`,
+
             [
               remote.id,
               remote.user_id,
@@ -317,7 +324,7 @@ export async function syncCardsToRemote(): Promise<void> {
     // 4. Sync each local card to remote if newer or missing
     const toUpsert: any[] = []
 
-    for (const local of localCards) {
+    localCards.forEach((local) => {
       const remote = remoteMap.get(local.id)
       const localUpdatedAt = local.updated_at
       const remoteUpdatedAt = remote ? new Date(remote.updated_at).getTime() : 0
@@ -339,7 +346,7 @@ export async function syncCardsToRemote(): Promise<void> {
           total_reviews: local.total_reviews || 0,
         })
       }
-    }
+    })
 
     if (toUpsert.length > 0) {
       const { error: upsertError } = await supabase.from('cards').upsert(toUpsert)
@@ -381,6 +388,7 @@ export async function syncCardsFromRemote(): Promise<void> {
     const localMap = new Map((localCards || []).map((c: any) => [c.id, c]))
 
     // 4. Sync each remote card to local if newer or missing
+    // eslint-disable-next-line no-restricted-syntax
     for (const remote of remoteCards) {
       const local = localMap.get(remote.id)
       const remoteUpdatedAt = new Date(remote.updated_at).getTime()
@@ -388,11 +396,13 @@ export async function syncCardsFromRemote(): Promise<void> {
 
       if (!local || remoteUpdatedAt > localUpdatedAt) {
         // Upsert to local SQLite
+        // eslint-disable-next-line no-await-in-loop
         const existingCount = await db.get<{ count: number }>('SELECT COUNT(*) as count FROM cards WHERE id = ?', [
           remote.id,
         ])
 
         if (existingCount && existingCount.count > 0) {
+          // eslint-disable-next-line no-await-in-loop
           await db.run(
             `UPDATE cards 
              SET user_id = ?, collection_id = ?, question = ?, answer = ?, 
@@ -416,6 +426,7 @@ export async function syncCardsFromRemote(): Promise<void> {
             ]
           )
         } else {
+          // eslint-disable-next-line no-await-in-loop
           await db.run(
             `INSERT INTO cards 
              (id, user_id, collection_id, question, answer, compartment, next_review_at, 

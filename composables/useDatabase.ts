@@ -19,6 +19,7 @@ export const useDatabase = () => {
 
     // Démarrer l'initialisation
     isInitializing = true
+    // eslint-disable-next-line no-use-before-define
     initPromise = initializeConnection()
 
     try {

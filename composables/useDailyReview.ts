@@ -31,7 +31,7 @@ export const useDailyReview = () => {
         key: 'dailyCardsDueTotal',
         value: JSON.stringify({
           date: today,
-          count: count,
+          count,
         }),
       })
 
@@ -53,7 +53,7 @@ export const useDailyReview = () => {
         key: 'dailyAnsweredCardsCount',
         value: JSON.stringify({
           date: today,
-          count: count,
+          count,
         }),
       })
 

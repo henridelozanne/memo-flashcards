@@ -117,9 +117,13 @@ export default function useSupabaseAuth() {
       if (!session?.user?.id) return null
 
       // Load full user profile
-      const { data, error } = await supabase.from('user_profiles').select('*').eq('id', session.user.id).single()
+      const { data, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single()
 
-      if (error || !data) return null
+      if (profileError || !data) return null
 
       return {
         firstName: data.first_name || '',

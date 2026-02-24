@@ -96,6 +96,7 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
   // Redirect to onboarding if not completed
   if (!userProfileStore.hasCompletedOnboarding) {
     // @ts-expect-error - Auto-imported by Nuxt
+    // eslint-disable-next-line consistent-return
     return navigateTo('/onboarding/welcome')
   }
 })

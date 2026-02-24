@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import { useDailyReview } from '~/composables/useDailyReview'
 import { Preferences } from '@capacitor/preferences'
+import { useDailyReview } from '~/composables/useDailyReview'
 import { useCards } from '~/composables/useCards'
 import type { Card } from '~/lib/types'
 
 // Helper pour créer des cartes de test
-const createMockCard = (id: string, question: string = 'Q', answer: string = 'A'): Card => ({
+const createMockCard = (id: string, question = 'Q', answer = 'A'): Card => ({
   id,
   question,
   answer,

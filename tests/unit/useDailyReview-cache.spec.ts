@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { useDailyReview } from '~/composables/useDailyReview'
 import { Preferences } from '@capacitor/preferences'
+import { useDailyReview } from '~/composables/useDailyReview'
 
 // Mock Preferences
 vi.mock('@capacitor/preferences', () => ({

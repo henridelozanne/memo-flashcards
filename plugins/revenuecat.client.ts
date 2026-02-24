@@ -1,7 +1,6 @@
+import { defineNuxtPlugin } from 'nuxt/app'
 import { useSubscription } from '~/composables/useSubscription'
 import { useSubscriptionStore } from '~/store/subscription'
-
-import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(async () => {
   // Don't block app initialization if RevenueCat fails

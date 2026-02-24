@@ -1,7 +1,7 @@
 import { Purchases, PurchasesOfferings, PurchasesPackage, CustomerInfo } from '@revenuecat/purchases-capacitor'
 import { computed, ref } from 'vue'
-import { useSubscriptionStore } from '~/store/subscription'
 import { useRuntimeConfig } from 'nuxt/app'
+import { useSubscriptionStore } from '~/store/subscription'
 import { useUserProfile } from '~/composables/useUserProfile'
 import useSupabaseAuth from '~/composables/useSupabaseAuth'
 import { usePosthog } from '~/composables/usePosthog'
@@ -53,12 +53,12 @@ export const useSubscription = () => {
   const updateLocalSubscriptionStatus = async (customerInfo: CustomerInfo) => {
     try {
       const { status, productId, expiresAt } = deriveSubscriptionSnapshot(customerInfo)
-      const useSupabaseAuth = (await import('~/composables/useSupabaseAuth')).default
-      const { getCurrentUserId } = useSupabaseAuth()
+      const supabaseAuth = (await import('~/composables/useSupabaseAuth')).default
+      const { getCurrentUserId } = supabaseAuth()
       const userId = await getCurrentUserId()
 
-      const { useUserProfile } = await import('~/composables/useUserProfile')
-      const { updateSubscriptionStatus } = useUserProfile()
+      const { useUserProfile: userProfileComposable } = await import('~/composables/useUserProfile')
+      const { updateSubscriptionStatus } = userProfileComposable()
 
       await updateSubscriptionStatus({
         userId,
@@ -92,6 +92,7 @@ export const useSubscription = () => {
       })
 
       // Check subscription status on init
+      // eslint-disable-next-line no-use-before-define
       await checkSubscriptionStatus()
     } catch (error) {
       console.error('Failed to initialize RevenueCat:', error)
@@ -151,6 +152,7 @@ export const useSubscription = () => {
       }
 
       // Update subscription status
+      // eslint-disable-next-line no-use-before-define
       const isSubscribed = checkCustomerInfoForActiveSubscription(customerInfo)
       subscriptionStore.setSubscribed(isSubscribed)
       subscriptionStore.setCustomerInfo(customerInfo)
@@ -205,6 +207,7 @@ export const useSubscription = () => {
       const { customerInfo } = await Purchases.restorePurchases()
 
       // Update subscription status
+      // eslint-disable-next-line no-use-before-define
       const isSubscribed = checkCustomerInfoForActiveSubscription(customerInfo)
       subscriptionStore.setSubscribed(isSubscribed)
       subscriptionStore.setCustomerInfo(customerInfo)
@@ -235,6 +238,7 @@ export const useSubscription = () => {
   const checkSubscriptionStatus = async (): Promise<boolean> => {
     try {
       const { customerInfo } = await Purchases.getCustomerInfo()
+      // eslint-disable-next-line no-use-before-define
       const isSubscribed = checkCustomerInfoForActiveSubscription(customerInfo)
 
       subscriptionStore.setSubscribed(isSubscribed)

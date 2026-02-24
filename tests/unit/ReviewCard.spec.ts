@@ -42,6 +42,8 @@ describe('ReviewCard', () => {
     next_review_at: Date.now(),
     created_at: Date.now(),
     updated_at: Date.now(),
+    correct_answers: 0,
+    total_reviews: 0,
   }
 
   it('affiche la question de la carte', () => {

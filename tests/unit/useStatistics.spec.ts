@@ -5,7 +5,7 @@ import { useDatabase } from '~/composables/useDatabase'
 vi.mock('~/composables/useDatabase')
 
 // Helper pour ajouter les mocks pour les statistiques de rythme (après overdueCards)
-function addRhythmStatsMocks(mockDb: any, hasFirstCard: boolean = false) {
+function addRhythmStatsMocks(mockDb: any, hasFirstCard = false) {
   // Mock pour first card date
   mockDb.all.mockResolvedValueOnce([{ first_created: hasFirstCard ? Date.now() : null }])
 

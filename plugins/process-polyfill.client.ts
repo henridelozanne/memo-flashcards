@@ -6,6 +6,6 @@ if (typeof window !== 'undefined' && typeof (window as any).process === 'undefin
     version: '',
     versions: {},
     platform: 'browser',
-    nextTick: (fn: Function) => setTimeout(fn, 0),
+    nextTick: (fn: () => void) => setTimeout(fn, 0),
   }
 }

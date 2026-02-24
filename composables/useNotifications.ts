@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import { LocalNotifications } from '@capacitor/local-notifications'
+import { useI18n } from 'vue-i18n'
 import { useUserProfileStore } from '~/store/userProfile'
 import { useCards } from '~/composables/useCards'
-import { useI18n } from 'vue-i18n'
 
 export const useNotifications = () => {
   const { t } = useI18n()

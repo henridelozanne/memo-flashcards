@@ -1,8 +1,8 @@
 import { ref, computed } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 import { useCards } from './useCards'
 import { useDatabase } from './useDatabase'
 import type { Card } from '~/lib/types'
-import { v4 as uuidv4 } from 'uuid'
 import { usePosthog } from './usePosthog'
 
 interface ReviewSessionConfig {

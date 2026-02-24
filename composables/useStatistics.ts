@@ -108,6 +108,7 @@ export const useStatistics = () => {
     compartmentData.value = newCompartmentData
 
     // Get mastered cards (compartment 5)
+    // eslint-disable-next-line prefer-destructuring
     masteredCards.value = newCompartmentData[4]
 
     // Get global coverage rate (cards reviewed at least once)
@@ -187,14 +188,14 @@ export const useStatistics = () => {
         const dateStr = d.toISOString().split('T')[0]
 
         if (reviewDates.has(dateStr)) {
-          currentStreakWith++
+          currentStreakWith += 1
           maxStreakWith = Math.max(maxStreakWith, currentStreakWith)
           if (currentStreakWithout > 0) {
             maxStreakWithout = Math.max(maxStreakWithout, currentStreakWithout)
             currentStreakWithout = 0
           }
         } else {
-          currentStreakWithout++
+          currentStreakWithout += 1
           if (currentStreakWith > 0) {
             maxStreakWith = Math.max(maxStreakWith, currentStreakWith)
             currentStreakWith = 0

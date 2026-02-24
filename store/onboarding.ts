@@ -24,7 +24,7 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     if (currentStepValidation.value) {
       const result = currentStepValidation.value()
       // Support des validations synchrones et asynchrones
-      return result instanceof Promise ? await result : result
+      return result instanceof Promise ? result : result
     }
     return true // Pas de validation = on peut continuer
   }
@@ -39,7 +39,7 @@ export const useOnboardingStore = defineStore('onboarding', () => {
   // Passer à l'étape suivante
   function nextStep() {
     if (currentStep.value < totalSteps) {
-      currentStep.value++
+      currentStep.value += 1
       // Réinitialiser la validation pour la nouvelle étape
       currentStepValidation.value = null
     }
@@ -48,7 +48,7 @@ export const useOnboardingStore = defineStore('onboarding', () => {
   // Revenir à l'étape précédente
   function previousStep() {
     if (currentStep.value > 1) {
-      currentStep.value--
+      currentStep.value -= 1
       // Réinitialiser la validation pour la nouvelle étape
       currentStepValidation.value = null
     }

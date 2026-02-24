@@ -1,7 +1,11 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import Select from '@/components/Select.vue'
-import type { SelectOption } from '@/components/Select.vue'
+
+interface SelectOption {
+  label: string
+  value: string
+}
 
 describe('Select', () => {
   const options: SelectOption[] = [
