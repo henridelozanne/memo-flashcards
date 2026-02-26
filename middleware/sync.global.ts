@@ -20,53 +20,24 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
 
   // Load user data from SQLite (with bidirectional sync)
   if (userProfileStore.hasCompletedOnboarding === null) {
-    // Wrap all sync operations in a try-catch to prevent blocking the app
     try {
-      // Sync user profile from remote to local (blocking)
-      try {
-        await syncUserProfileFromRemote()
-      } catch (error) {
-        console.error('[MIDDLEWARE] Failed to sync profile from remote at startup:', error)
-        // Continue anyway - user might be offline
+      // Step 1 — profile and collections are independent: run in parallel
+      const [, collectionsFromRemoteOk] = await Promise.allSettled([
+        syncUserProfileFromRemote().catch((e) => console.error('[MIDDLEWARE] Failed to sync profile from remote:', e)),
+        syncCollectionsFromRemote().catch((e) =>
+          console.error('[MIDDLEWARE] Failed to sync collections from remote:', e)
+        ),
+      ])
+
+      // Step 2 — cards depend on collections being present locally first
+      if (collectionsFromRemoteOk.status === 'fulfilled') {
+        await syncCardsFromRemote().catch((e) => console.error('[MIDDLEWARE] Failed to sync cards from remote:', e))
       }
 
-      // Sync user profile from local to remote if local is newer (non-blocking)
-      try {
-        await syncUserProfileToRemote()
-      } catch (error) {
-        console.error('[MIDDLEWARE] Failed to sync profile to remote at startup:', error)
-        // Continue anyway - user might be offline
-      }
+      // Step 3 — push local→remote in background (non-blocking, no await)
+      Promise.allSettled([syncUserProfileToRemote(), syncCollectionsToRemote(), syncCardsToRemote()])
 
-      // Sync collections from remote to local (blocking)
-      try {
-        await syncCollectionsFromRemote()
-      } catch (error) {
-        console.error('[MIDDLEWARE] Failed to sync collections from remote at startup:', error)
-      }
-
-      // Sync collections from local to remote if local is newer (non-blocking)
-      try {
-        await syncCollectionsToRemote()
-      } catch (error) {
-        console.error('[MIDDLEWARE] Failed to sync collections to remote at startup:', error)
-      }
-
-      // Sync cards from remote to local (blocking)
-      try {
-        await syncCardsFromRemote()
-      } catch (error) {
-        console.error('[MIDDLEWARE] Failed to sync cards from remote at startup:', error)
-      }
-
-      // Sync cards from local to remote if local is newer (non-blocking)
-      try {
-        await syncCardsToRemote()
-      } catch (error) {
-        console.error('[MIDDLEWARE] Failed to sync cards to remote at startup:', error)
-      }
-
-      // Invalidate daily review cache after syncing cards
+      // Step 4 — invalidate cache and load local data
       try {
         const { useDailyReview } = await import('~/composables/useDailyReview')
         const { invalidateCache } = useDailyReview()
@@ -75,21 +46,12 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
         console.error('[MIDDLEWARE] Failed to invalidate daily review cache:', error)
       }
 
-      // Load from local SQLite - this should never fail
-      try {
-        await userProfileStore.loadUserData()
-      } catch (error) {
-        console.error('[MIDDLEWARE] Failed to load user data from SQLite:', error)
-        // If this fails, something is seriously wrong - but don't block the app
-      }
+      await userProfileStore
+        .loadUserData()
+        .catch((e) => console.error('[MIDDLEWARE] Failed to load user data from SQLite:', e))
     } catch (globalError) {
       console.error('[MIDDLEWARE] Critical error during sync initialization:', globalError)
-      // Even if everything fails, try to load local data
-      try {
-        await userProfileStore.loadUserData()
-      } catch (e) {
-        console.error('[MIDDLEWARE] Could not load any user data:', e)
-      }
+      await userProfileStore.loadUserData().catch((e) => console.error('[MIDDLEWARE] Could not load any user data:', e))
     }
   }
 
