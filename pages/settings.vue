@@ -33,8 +33,9 @@
         @blur="handleTimeChange"
       />
 
-      <!-- Abonnement - Temporairement masqué pour v1.0 -->
-      <!-- <SettingsItem
+      <!-- Abonnement -->
+      <SettingsItem
+        v-if="subscriptionStore.isSubscribed"
         :label="$t('settings.subscription')"
         :value="subscriptionStatus"
         :show-arrow="false"
@@ -43,18 +44,14 @@
         <template #icon>
           <IconStar />
         </template>
-      </SettingsItem> -->
+      </SettingsItem>
 
-      <!-- Restaurer les achats - Temporairement masqué pour v1.0 -->
-      <!-- <SettingsItem
-        v-if="!subscriptionStore.isSubscribed"
-        :label="$t('settings.restorePurchases')"
-        @click="handleRestorePurchases"
-      >
+      <!-- Restaurer les achats -->
+      <SettingsItem v-else :label="$t('settings.restorePurchases')" @click="handleRestorePurchases">
         <template #icon>
           <IconRefresh />
         </template>
-      </SettingsItem> -->
+      </SettingsItem>
 
       <!-- Langue -->
       <SettingsItem :label="$t('settings.language')" :value="currentLanguage" @click="openLanguageSelector">
@@ -112,8 +109,8 @@
 
     <!-- Status Message -->
     <StatusMessage
-      v-if="statusMessage || languageStatusMessage"
-      :message="statusMessage || languageStatusMessage"
+      v-if="statusMessage || languageStatusMessage || restoreStatusMessage"
+      :message="statusMessage || languageStatusMessage || restoreStatusMessage"
       class="mx-auto mt-4 max-w-2xl"
     />
 
@@ -133,13 +130,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useUserProfileStore } from '~/store/userProfile'
 import { useSubscriptionStore } from '~/store/subscription'
 import { useNotificationTime } from '~/composables/useNotificationTime'
 import { useLanguageSelector } from '~/composables/useLanguageSelector'
 import { useDeleteData } from '~/composables/useDeleteData'
-// import { useSubscription } from '~/composables/useSubscription'
+import { useSubscription } from '~/composables/useSubscription'
 import { LANGUAGE_NAMES } from '~/constants/languages'
 import PageHeader from '~/components/PageHeader.vue'
 import StatusMessage from '~/components/StatusMessage.vue'
@@ -151,14 +149,14 @@ import IconFeatureRequest from '~/components/icons/IconFeatureRequest.vue'
 import IconBug from '~/components/icons/IconBug.vue'
 import IconTrash from '~/components/icons/IconTrash.vue'
 import IconDocument from '~/components/icons/IconDocument.vue'
-// import IconRefresh from '~/components/icons/IconRefresh.vue' // v1.0: Temporairement masqué
+import IconRefresh from '~/components/icons/IconRefresh.vue'
 
 const userProfileStore = useUserProfileStore()
 const subscriptionStore = useSubscriptionStore()
-// const { restorePurchases } = useSubscription() // v1.0: Temporairement masqué
-const { timeInput, selectedTime, statusMessage, openTimePicker, handleTimeChange } = useNotificationTime()
+const { t } = useI18n()
+const { restorePurchases } = useSubscription()
+const { selectedTime, statusMessage, openTimePicker, handleTimeChange } = useNotificationTime()
 const {
-  languageSelect,
   selectedLanguage,
   statusMessage: languageStatusMessage,
   openLanguageSelector,
@@ -166,51 +164,41 @@ const {
 } = useLanguageSelector()
 const { showDeleteConfirm, isDeleting, openDeleteConfirm, closeDeleteConfirm, handleDeleteData } = useDeleteData()
 
-// const restoreStatusMessage = ref<{ type: 'success' | 'error'; text: string } | null>(null) // v1.0: Temporairement masqué
+const restoreStatusMessage = ref<{ type: 'success' | 'error'; text: string } | null>(null)
 
 // Heure de rappel actuelle
 const currentReminderTime = computed(() => userProfileStore.notificationHour || '20:00')
 
-// Statut d'abonnement - v1.0: Temporairement masqué
-// const subscriptionStatus = computed(() => {
-//   if (subscriptionStore.isSubscribed) {
-//     const plan = subscriptionStore.currentPlan
-//     if (subscriptionStore.isInFreeTrial) {
-//       return t('settings.subscriptionTrialActive')
-//     }
-//     return plan ? t('settings.subscriptionActive', { plan }) : t('settings.subscriptionActive')
-//   }
-//   return t('settings.subscriptionFree')
-// })
+// Statut d'abonnement
+const subscriptionStatus = computed(() => t('settings.subscriptionActive'))
 
 // Langue actuelle
 const currentLanguage = computed(() => LANGUAGE_NAMES[userProfileStore.language] || userProfileStore.language)
 
-// Restaurer les achats - v1.0: Temporairement masqué
-// async function handleRestorePurchases() {
-//   try {
-//     restoreStatusMessage.value = { type: 'success', text: t('settings.restoringPurchases') }
-//     const customerInfo = await restorePurchases()
+async function handleRestorePurchases() {
+  try {
+    restoreStatusMessage.value = { type: 'success', text: t('settings.restoringPurchases') }
+    const customerInfo = await restorePurchases()
 
-//     if (customerInfo && subscriptionStore.isSubscribed) {
-//       restoreStatusMessage.value = { type: 'success', text: t('settings.restorePurchasesSuccess') }
-//     } else {
-//       restoreStatusMessage.value = { type: 'success', text: t('settings.restorePurchasesNone') }
-//     }
+    if (customerInfo && subscriptionStore.isSubscribed) {
+      restoreStatusMessage.value = { type: 'success', text: t('settings.restorePurchasesSuccess') }
+    } else {
+      restoreStatusMessage.value = { type: 'success', text: t('settings.restorePurchasesNone') }
+    }
 
-//     // Clear message after 3 seconds
-//     setTimeout(() => {
-//       restoreStatusMessage.value = null
-//     }, 3000)
-//   } catch (error) {
-//     console.error('Failed to restore purchases:', error)
-//     restoreStatusMessage.value = { type: 'error', text: t('settings.restorePurchasesError') }
+    // Clear message after 3 seconds
+    setTimeout(() => {
+      restoreStatusMessage.value = null
+    }, 3000)
+  } catch (error) {
+    console.error('Failed to restore purchases:', error)
+    restoreStatusMessage.value = { type: 'error', text: t('settings.restorePurchasesError') }
 
-//     setTimeout(() => {
-//       restoreStatusMessage.value = null
-//     }, 3000)
-//   }
-// }
+    setTimeout(() => {
+      restoreStatusMessage.value = null
+    }, 3000)
+  }
+}
 
 defineOptions({ name: 'SettingsPage' })
 </script>

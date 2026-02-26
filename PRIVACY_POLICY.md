@@ -136,7 +136,7 @@ Your continued use of the App after changes constitutes acceptance of the update
 
 If you have any questions about this Privacy Policy or our data practices, please contact us:
 
-- **Email**: memo.flashcards.contact@gmail.com
+- **Email**: hello@cortx-app.com
 - **Bug Reports**: Available in-app under Settings → Bug Report
 - **Feature Requests**: Available in-app under Settings → Feature Request
 

@@ -12,8 +12,8 @@
               <h2 class="mb-2 text-lg font-semibold">{{ $t('legal.editor.title') }}</h2>
               <p class="mb-2 text-sm leading-relaxed">
                 {{ $t('legal.editor.description') }}
-                <a href="mailto:memo.flashcards.contact@gmail.com" class="text-[var(--color-primary)] underline">
-                  memo.flashcards.contact@gmail.com
+                <a href="mailto:hello@cortx-app.com" class="text-[var(--color-primary)] underline">
+                  hello@cortx-app.com
                 </a>
               </p>
               <p class="text-sm leading-relaxed">{{ $t('legal.editor.address') }}</p>
