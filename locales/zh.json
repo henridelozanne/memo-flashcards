@@ -8,7 +8,7 @@
     "showAnswer": "显示答案",
     "good": "✅ 记得很好",
     "again": "❌ 需要复习",
-    "sessionFinished": "学习结束！",
+    "sessionFinished": "学习结束",
     "congrats": "恭喜完成本次复习！",
     "cardsReviewed": "已复习卡片：{count}",
     "successRate": "正确率：{percent}%",

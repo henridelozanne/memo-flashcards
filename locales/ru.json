@@ -8,7 +8,7 @@
     "showAnswer": "Показать ответ",
     "good": "✅ Хорошо запомнил",
     "again": "❌ Повторить",
-    "sessionFinished": "Сеанс завершён!",
+    "sessionFinished": "Сеанс завершён",
     "congrats": "Поздравляем с завершением сеанса повторения!",
     "cardsReviewed": "Карточек повторено: {count}",
     "successRate": "% правильных ответов: {percent}%",

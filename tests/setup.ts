@@ -1,5 +1,8 @@
 import { vi } from 'vitest'
 
+// Mock HTMLCanvasElement.getContext (not supported in jsdom)
+HTMLCanvasElement.prototype.getContext = vi.fn(() => null) as unknown as typeof HTMLCanvasElement.prototype.getContext
+
 // Mock tous les imports SVG
 vi.mock('*.svg', () => ({
   default: 'mocked-svg-path',

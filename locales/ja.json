@@ -8,7 +8,7 @@
     "showAnswer": "答えを表示",
     "good": "✅ よく覚えています",
     "again": "❌ もう一度復習",
-    "sessionFinished": "セッション終了！",
+    "sessionFinished": "セッション終了",
     "congrats": "おめでとうございます、復習が完了しました！",
     "cardsReviewed": "復習したカード：{count}",
     "successRate": "成功率：{percent}%",

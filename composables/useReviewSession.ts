@@ -24,6 +24,7 @@ export function useReviewSession(config: ReviewSessionConfig) {
   const cardsReviewedCount = ref(0)
   const total = ref(0)
   const isLoading = ref(true)
+  const answeredCards = ref<{ question: string; answer: string; correct: boolean }[]>([])
   const sessionId = ref<string | null>(null)
   const isPracticeMode = config.isPracticeMode ?? false
 
@@ -83,6 +84,11 @@ export function useReviewSession(config: ReviewSessionConfig) {
     }
 
     // Compter les statistiques (même en mode practice pour l'affichage)
+    answeredCards.value.push({
+      question: currentCard.value.question,
+      answer: currentCard.value.answer,
+      correct: choice,
+    })
     cardsReviewedCount.value += 1
     if (choice === true) goodCount.value += 1
 
@@ -133,6 +139,7 @@ export function useReviewSession(config: ReviewSessionConfig) {
     sessionFinished,
     goodCount,
     cardsReviewedCount,
+    answeredCards,
     total,
     isLoading,
 

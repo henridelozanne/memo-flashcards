@@ -8,7 +8,7 @@
     "showAnswer": "Mostrar respuesta",
     "good": "✅ Bien recordado",
     "again": "❌ Repasar",
-    "sessionFinished": "¡Sesión terminada!",
+    "sessionFinished": "Sesión terminada",
     "congrats": "¡Enhorabuena por esta sesión de repaso!",
     "cardsReviewed": "Tarjetas repasadas: {count}",
     "successRate": "% de respuestas correctas: {percent}%",

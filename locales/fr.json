@@ -8,7 +8,7 @@
     "showAnswer": "Afficher la réponse",
     "good": "✅ Bien retenu",
     "again": "❌ À revoir",
-    "sessionFinished": "Session terminée !",
+    "sessionFinished": "Session terminée",
     "congrats": "Bravo pour cette session de révision !",
     "cardsReviewed": "Cartes révisées : {count}",
     "successRate": "% de bonnes réponses : {percent}%",

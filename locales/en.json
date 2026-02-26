@@ -8,7 +8,7 @@
     "showAnswer": "Show answer",
     "good": "✅ Well remembered",
     "again": "❌ Review again",
-    "sessionFinished": "Session finished!",
+    "sessionFinished": "Session finished",
     "congrats": "Congrats on your review session!",
     "cardsReviewed": "Cards reviewed: {count}",
     "successRate": "Success rate: {percent}%",
