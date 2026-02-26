@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-bar-container" :class="{ 'max-width-limited': !fullWidth }">
+  <div class="progress-bar-container" :class="{ 'max-width-limited': !fullWidth, 'with-tooltip': showTooltip }">
     <div class="progress-bar-background">
       <div class="progress-bar-fill" :style="{ width: `${progressPercentage}%` }"></div>
     </div>
@@ -47,7 +47,11 @@ const progressPercentage = computed(() => {
   align-items: center;
   height: 24px;
   position: relative;
+}
+
+.progress-bar-container.with-tooltip {
   padding-top: 32px;
+  height: 56px;
 }
 
 .progress-bar-container.max-width-limited {

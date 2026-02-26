@@ -9,7 +9,7 @@
       <!-- Animation de streak -->
       <div class="slide-up-2 relative flex w-full flex-1 flex-col items-center justify-center gap-8">
         <div class="streak-widget w-full">
-          <div class="streak-container flex items-center gap-2">
+          <div class="streak-container">
             <!-- Jour 1 - complété -->
             <div class="streak-day completed">
               <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -142,13 +142,16 @@ defineOptions({ name: 'OnboardingStep8Page' })
 
 .streak-container {
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
 }
 
 /* Case de jour de streak */
 .streak-day {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
