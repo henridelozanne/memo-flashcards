@@ -404,7 +404,8 @@
       "purchasing": "En cours...",
       "freeTrial": "Essayer gratuitement pendant 7 jours",
       "disclaimer": "Sans engagement. Vous pouvez annuler à tout moment.",
-      "privacyPolicy": "Politique de confidentialité"
+      "privacyPolicy": "Politique de confidentialité",
+      "termsOfUse": "Conditions d'utilisation"
     },
     "continue": "Continuer",
     "start": "Commencer",

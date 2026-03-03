@@ -404,7 +404,8 @@
       "purchasing": "Processando...",
       "freeTrial": "Teste grátis de 7 dias",
       "disclaimer": "Sem compromisso. Você pode cancelar a qualquer momento.",
-      "privacyPolicy": "Política de Privacidade"
+      "privacyPolicy": "Política de Privacidade",
+      "termsOfUse": "Termos de uso"
     },
     "continue": "Continuar",
     "start": "Começar",

@@ -81,6 +81,10 @@
       </p>
       <p class="mt-2 text-center text-xs text-gray-400">
         <a href="/legal" class="underline">{{ $t('onboarding.paywall.privacyPolicy') }}</a>
+        <span class="mx-1">·</span>
+        <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" class="underline">{{
+          $t('onboarding.paywall.termsOfUse')
+        }}</a>
       </p>
     </div>
   </div>
