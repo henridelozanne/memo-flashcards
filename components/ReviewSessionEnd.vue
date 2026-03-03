@@ -31,7 +31,7 @@
 
       <button
         class="mt-6 rounded-[15px] bg-[var(--color-primary)] px-6 py-2 text-base font-medium text-white shadow-sm transition hover:bg-[var(--color-dark-purple)]"
-        @click="$emit('back')"
+        @click="handleBack"
       >
         {{ returnLabel || $t('review.backToCollections') }}
       </button>
@@ -45,6 +45,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { launchConfetti } from '~/utils/confetti'
+import { useRateApp } from '~/composables/useRateApp'
 
 interface AnsweredCard {
   question: string
@@ -59,7 +60,14 @@ const props = defineProps({
   answeredCards: { type: Array as () => AnsweredCard[], default: () => [] },
   returnLabel: { type: String, default: '' },
 })
-defineEmits(['back'])
+const emit = defineEmits(['back'])
+
+const { requestReviewIfEligible } = useRateApp()
+
+async function handleBack() {
+  emit('back')
+  await requestReviewIfEligible()
+}
 
 const confettiCanvas = ref<HTMLCanvasElement | null>(null)
 let cleanup: (() => void) | null = null
