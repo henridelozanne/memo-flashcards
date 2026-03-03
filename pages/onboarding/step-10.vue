@@ -29,23 +29,40 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
 import { useUserProfileStore } from '~/store/userProfile'
+import { launchConfetti } from '~/utils/confetti'
 
 const router = useRouter()
 const onboardingStore = useOnboardingStore()
 const userProfileStore = useUserProfileStore()
 
+let cleanup: (() => void) | null = null
+
 onMounted(() => {
   onboardingStore.currentStep = 10
+
+  if (!onboardingStore.step10ConfettiShown) {
+    const canvas = document.createElement('canvas')
+    canvas.classList.add('confetti-canvas')
+    document.body.appendChild(canvas)
+    cleanup = launchConfetti(canvas)
+    onboardingStore.step10ConfettiShown = true
+  }
 
   // Rediriger vers le paywall
   onboardingStore.registerStepValidation(async () => {
     router.push('/paywall')
     return false // Empêcher la navigation automatique
   })
+})
+
+onUnmounted(() => {
+  cleanup?.()
+  // Nettoyer la canvas du DOM
+  document.querySelectorAll('body > canvas.confetti-canvas').forEach((el) => el.remove())
 })
 
 defineOptions({ name: 'OnboardingStep10Page' })

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxi dev",
+    "dev:ios": "CAP_DEV_URL=http://localhost:3000 npx cap run ios",
     "build": "nuxi build",
     "go": "npm run build && npx @capacitor/cli sync ios",
     "preview": "nuxi preview",

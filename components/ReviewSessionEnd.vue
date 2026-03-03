@@ -80,16 +80,6 @@ onUnmounted(() => {
   animation: brainEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-.confetti-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9999;
-}
-
 @keyframes brainEntrance {
   0% {
     opacity: 0;

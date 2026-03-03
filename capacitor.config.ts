@@ -5,4 +5,5 @@ export default {
   ios: {
     contentInset: 'never',
   },
+  ...(process.env.CAP_DEV_URL ? { server: { url: process.env.CAP_DEV_URL, cleartext: true } } : {}),
 }

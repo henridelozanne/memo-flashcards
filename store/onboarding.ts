@@ -7,6 +7,7 @@ export const useOnboardingStore = defineStore('onboarding', () => {
 
   // État de l'onboarding uniquement
   const currentStep = ref<number>(1)
+  const step10ConfettiShown = ref<boolean>(false)
 
   // Nombre total d'étapes (10 steps + 1 welcome = 11 écrans, mais totalSteps = 10 pour la progress bar)
   const totalSteps = 10
@@ -33,6 +34,7 @@ export const useOnboardingStore = defineStore('onboarding', () => {
   function resetOnboarding() {
     currentStep.value = 1
     currentStepValidation.value = null
+    step10ConfettiShown.value = false
     userProfileStore.resetProfile()
   }
 
@@ -65,6 +67,7 @@ export const useOnboardingStore = defineStore('onboarding', () => {
     currentStep,
     totalSteps,
     currentStepValidation,
+    step10ConfettiShown,
 
     // Actions
     registerStepValidation,

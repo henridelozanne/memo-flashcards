@@ -12,7 +12,7 @@ const COLORS = [
 ]
 
 const TOTAL = 180
-const DURATION = 6000
+const DURATION = 3000
 
 interface Particle {
   x: number
