@@ -25,7 +25,11 @@
 
       <!-- Time picker invisible -->
       <input
-        ref="timeInput"
+        :ref="
+          (el) => {
+            timeInput = el as HTMLInputElement | null
+          }
+        "
         v-model="selectedTime"
         type="time"
         class="pointer-events-none absolute opacity-0"
@@ -62,7 +66,11 @@
 
       <!-- Language selector invisible -->
       <select
-        ref="languageSelect"
+        :ref="
+          (el) => {
+            languageSelect = el as HTMLSelectElement | null
+          }
+        "
         v-model="selectedLanguage"
         class="pointer-events-none absolute opacity-0"
         style="width: 1px; height: 1px"
@@ -155,8 +163,9 @@ const userProfileStore = useUserProfileStore()
 const subscriptionStore = useSubscriptionStore()
 const { t } = useI18n()
 const { restorePurchases } = useSubscription()
-const { selectedTime, statusMessage, openTimePicker, handleTimeChange } = useNotificationTime()
+const { timeInput, selectedTime, statusMessage, openTimePicker, handleTimeChange } = useNotificationTime()
 const {
+  languageSelect,
   selectedLanguage,
   statusMessage: languageStatusMessage,
   openLanguageSelector,
