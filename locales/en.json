@@ -88,7 +88,7 @@
     "deleteConfirm": "Are you sure you want to delete the collection \"{name}\"?",
     "deleteWarning": "This action is irreversible.",
     "nameLabel": "Collection name",
-    "namePlaceholder": "e.g. English vocabulary",
+    "namePlaceholder": "e.g. French vocabulary",
     "submitting": "Processing...",
     "edit": "Edit",
     "create": "Create"
