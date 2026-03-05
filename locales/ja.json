@@ -378,9 +378,21 @@
       "keepItUp": "継続しましょう"
     },
     "step9": {
-      "title": "通知を受け取る時間は？"
+      "title": "AIにコレクションを埋めてもらおう",
+      "subtitle": "Cortxはすでにあるカードをもとに、AIが関連カードを提案します。探す手間はもう不要。",
+      "existingLabel": "あなたのコレクション",
+      "card1": "フランスの首都はどこ？",
+      "card2": "ナイル川の長さは？",
+      "aiButton": "✦ カードを提案",
+      "suggestionLabel": "AI提案",
+      "suggestion1": "世界最大の国はどこ？",
+      "suggestion2": "太平洋の深さは？",
+      "suggestion3": "大陸はいくつある？"
     },
     "step10": {
+      "title": "通知を受け取る時間は？"
+    },
+    "step11": {
       "title": "準備完了、{firstName}！",
       "subtitle": "Cortxで学習を開始する準備が整いました"
     },

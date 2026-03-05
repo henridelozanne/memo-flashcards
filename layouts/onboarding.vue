@@ -89,6 +89,7 @@ watch(
       8: '/onboarding/step-8',
       9: '/onboarding/step-9',
       10: '/onboarding/step-10',
+      11: '/onboarding/step-11',
     }
 
     const targetRoute = stepRoutes[newStep]

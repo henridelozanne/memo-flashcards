@@ -1,89 +1,121 @@
 <template>
   <NuxtLayout name="onboarding">
-    <div class="flex h-full flex-col items-center justify-center px-6">
+    <div class="flex h-full flex-col items-center px-6 pt-6">
       <!-- Titre -->
-      <h1 class="slide-up-1 mb-8 max-w-md text-center text-3xl font-bold leading-tight text-[var(--color-black)]">
-        <span>{{ $t('onboarding.step10.title', { firstName: userProfileStore.firstName }).split(',')[0] }},</span>
-        <br />
-        <span>{{ $t('onboarding.step10.title', { firstName: userProfileStore.firstName }).split(',')[1] }}</span>
+      <h1 class="slide-up-1 mb-16 max-w-md text-center text-2xl font-bold leading-tight text-[var(--color-black)]">
+        {{ $t('onboarding.step10.title') }}
       </h1>
 
-      <!-- Message -->
-      <p class="slide-up-2 mb-16 max-w-md text-center text-lg text-gray-600">
-        {{ $t('onboarding.step10.subtitle') }}
-      </p>
-
-      <!-- Icône de succès -->
-      <div class="slide-up-3 success-icon mb-16">
-        <svg width="80" height="80" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="10" fill="#10b981" />
-          <path d="M8 12l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+      <!-- Time Picker -->
+      <div class="slide-up-2 relative flex flex-1 items-center justify-center">
+        <div class="time-picker-container">
+          <input ref="timeInput" v-model="selectedTime" type="time" class="time-input" @change="handleTimeChange" />
+        </div>
       </div>
     </div>
-
-    <template #button-label>
-      {{ $t('onboarding.letsGo') }}
-    </template>
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { LocalNotifications } from '@capacitor/local-notifications'
+import { ref, onMounted } from 'vue'
 import { useOnboardingStore } from '~/store/onboarding'
 import { useUserProfileStore } from '~/store/userProfile'
-import { launchConfetti } from '~/utils/confetti'
+import { useNotifications } from '~/composables/useNotifications'
 
-const router = useRouter()
 const onboardingStore = useOnboardingStore()
 const userProfileStore = useUserProfileStore()
+const { scheduleDailyNotification } = useNotifications()
+const timeInput = ref<HTMLInputElement | null>(null)
+const selectedTime = ref<string>('')
 
-let cleanup: (() => void) | null = null
+// Obtenir l'heure actuelle au format HH:MM
+function getCurrentTime(): string {
+  const now = new Date()
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  return `${hours}:${minutes}`
+}
 
-onMounted(() => {
-  onboardingStore.currentStep = 10
+// Gérer le changement d'heure
+function handleTimeChange() {
+  userProfileStore.notificationHour = selectedTime.value
+}
 
-  if (!onboardingStore.step10ConfettiShown) {
-    const canvas = document.createElement('canvas')
-    canvas.classList.add('confetti-canvas')
-    document.body.appendChild(canvas)
-    cleanup = launchConfetti(canvas)
-    onboardingStore.step10ConfettiShown = true
+// Demander la permission pour les notifications
+async function requestNotificationPermission() {
+  try {
+    const permission = await LocalNotifications.requestPermissions()
+    return permission.display === 'granted'
+  } catch (error) {
+    console.error('Erreur lors de la demande de permission:', error)
+    return false
+  }
+}
+
+// Enregistrer la validation de l'étape
+onboardingStore.registerStepValidation(async () => {
+  if (!selectedTime.value) {
+    return false
   }
 
-  // Rediriger vers le paywall
-  onboardingStore.registerStepValidation(async () => {
-    router.push('/paywall')
-    return false // Empêcher la navigation automatique
-  })
+  // Demander la permission pour les notifications
+  const hasPermission = await requestNotificationPermission()
+
+  // Planifier la notification quotidienne si la permission est accordée
+  if (hasPermission) {
+    await scheduleDailyNotification()
+  }
+
+  return true
 })
 
-onUnmounted(() => {
-  cleanup?.()
-  // Nettoyer la canvas du DOM
-  document.querySelectorAll('body > canvas.confetti-canvas').forEach((el) => el.remove())
+onMounted(async () => {
+  onboardingStore.currentStep = 10
+
+  // Définir l'heure actuelle par défaut
+  selectedTime.value = getCurrentTime()
+  userProfileStore.notificationHour = selectedTime.value
 })
 
 defineOptions({ name: 'OnboardingStep10Page' })
 </script>
 
 <style scoped>
-.success-icon {
-  animation: successPop 0.5s ease-out 0.9s forwards;
+.time-picker-container {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  justify-content: center;
 }
 
-@keyframes successPop {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+.time-input {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  border: 2px solid #d1d5db;
+  border-radius: 12px;
+  background: white;
+  color: var(--color-black);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.time-input:hover {
+  border-color: #9ca3af;
+}
+
+.time-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Style pour le picker natif */
+.time-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  font-size: 20px;
 }
 </style>

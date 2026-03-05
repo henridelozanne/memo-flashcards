@@ -378,9 +378,21 @@
       "keepItUp": "Sigue así"
     },
     "step9": {
-      "title": "¿A qué hora quieres ser notificado?"
+      "title": "Deja que la IA rellene tus colecciones",
+      "subtitle": "Cortx usa IA para sugerir tarjetas relevantes basadas en lo que ya tienes. Sin necesidad de buscar.",
+      "existingLabel": "Tu colección",
+      "card1": "¿Cuál es la capital de Francia?",
+      "card2": "¿Cuánto mide el Nilo?",
+      "aiButton": "✦ Sugerir tarjetas",
+      "suggestionLabel": "Sugerencia IA",
+      "suggestion1": "¿Cuál es el país más grande del mundo?",
+      "suggestion2": "¿Cuál es la profundidad del océano Pacífico?",
+      "suggestion3": "¿Cuántos continentes hay?"
     },
     "step10": {
+      "title": "¿A qué hora quieres ser notificado?"
+    },
+    "step11": {
       "title": "¡Todo está listo, {firstName}!",
       "subtitle": "Ya estás listo para comenzar tu aprendizaje con Cortx"
     },

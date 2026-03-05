@@ -9,8 +9,8 @@ export const useOnboardingStore = defineStore('onboarding', () => {
   const currentStep = ref<number>(1)
   const step10ConfettiShown = ref<boolean>(false)
 
-  // Nombre total d'étapes (10 steps + 1 welcome = 11 écrans, mais totalSteps = 10 pour la progress bar)
-  const totalSteps = 10
+  // Nombre total d'étapes (11 steps + 1 welcome = 12 écrans, mais totalSteps = 11 pour la progress bar)
+  const totalSteps = 11
 
   // Fonction de validation de l'étape courante (enregistrée par chaque page)
   const currentStepValidation = ref<(() => boolean | Promise<boolean>) | null>(null)

@@ -104,7 +104,7 @@ describe('onboarding store', () => {
   it('initializes with default values', () => {
     const store = useOnboardingStore()
     expect(store.currentStep).toBe(1)
-    expect(store.totalSteps).toBe(10)
+    expect(store.totalSteps).toBe(11)
   })
 
   it('navigates to next step', () => {

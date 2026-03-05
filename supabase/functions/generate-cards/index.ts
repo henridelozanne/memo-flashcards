@@ -1,4 +1,3 @@
-// @ts-nocheck - This file runs on Deno (Supabase Edge Functions), not Node.js
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
 
 const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY')
@@ -24,6 +23,44 @@ interface GeneratedCard {
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
+function getGoalInstruction(goalValue: string): string {
+  switch (goalValue) {
+    case 'learnLanguage':
+      return "The user's goal is to learn a language. Generate cards that prioritise high-utility vocabulary, common expressions, and core grammar patterns relevant to the category."
+    case 'reviseClasses':
+      return "The user's goal is to revise school material. Generate cards covering key definitions, concepts, and facts commonly required for exams in this topic."
+    case 'memorizeFactsScience':
+      return "The user's goal is to memorise historical or scientific facts. Prefer precise, high-signal facts (dates, definitions, laws, discoveries, figures) that are commonly taught or referenced."
+    case 'learnVocabulary':
+      return "The user's goal is to learn professional vocabulary. Generate cards introducing essential field-specific terms with concise, accurate definitions and typical usage."
+    case 'developCulture':
+      return "The user's goal is to develop general knowledge. Generate broadly useful, interesting, and commonly referenced facts related to the category."
+    case 'other':
+    default:
+      return "The user's goal is to learn about this topic. Generate useful, relevant cards that build a solid understanding of the category."
+  }
+}
+
+function getSituationInstruction(situationValue: string): string {
+  switch (situationValue) {
+    case 'student':
+      return 'Adapt difficulty and terminology to a university student: moderately advanced vocabulary is fine, but keep questions clear and answers succinct.'
+    case 'highSchool':
+      return 'Adapt difficulty and wording to a high-school level learner: focus on core concepts and commonly taught knowledge, avoid niche jargon.'
+    case 'employed':
+      return 'Adapt the cards to a working professional: prioritise practical knowledge and concepts that are useful in real-world contexts.'
+    case 'retraining':
+      return 'Adapt the cards to someone retraining into a new field: prioritise fundamentals, core terminology, and the essential building blocks of the topic.'
+    case 'selfLearner':
+      return 'Adapt the cards to an independent learner: keep them clear, structured, and focused on high-utility knowledge that builds understanding progressively.'
+    case 'jobSeeking':
+      return 'Adapt the cards to someone job-seeking: prioritise key concepts and terminology that can help in interviews or professional conversations about this topic.'
+    case 'other':
+    default:
+      return 'Adapt the cards to a general audience: keep terminology accessible and focus on broadly useful knowledge.'
+  }
 }
 
 Deno.serve(async (req: Request) => {
@@ -62,44 +99,6 @@ Deno.serve(async (req: Request) => {
       ja: 'Japanese',
     }
     const language = languageMap[locale] ?? 'English'
-
-    function getGoalInstruction(goal) {
-      switch (goal) {
-        case 'learnLanguage':
-          return "The user's goal is to learn a language. Generate cards that prioritise high-utility vocabulary, common expressions, and core grammar patterns relevant to the category."
-        case 'reviseClasses':
-          return "The user's goal is to revise school material. Generate cards covering key definitions, concepts, and facts commonly required for exams in this topic."
-        case 'memorizeFactsScience':
-          return "The user's goal is to memorise historical or scientific facts. Prefer precise, high-signal facts (dates, definitions, laws, discoveries, figures) that are commonly taught or referenced."
-        case 'learnVocabulary':
-          return "The user's goal is to learn professional vocabulary. Generate cards introducing essential field-specific terms with concise, accurate definitions and typical usage."
-        case 'developCulture':
-          return "The user's goal is to develop general knowledge. Generate broadly useful, interesting, and commonly referenced facts related to the category."
-        case 'other':
-        default:
-          return "The user's goal is to learn about this topic. Generate useful, relevant cards that build a solid understanding of the category."
-      }
-    }
-
-    function getSituationInstruction(situation) {
-      switch (situation) {
-        case 'student':
-          return 'Adapt difficulty and terminology to a university student: moderately advanced vocabulary is fine, but keep questions clear and answers succinct.'
-        case 'highSchool':
-          return 'Adapt difficulty and wording to a high-school level learner: focus on core concepts and commonly taught knowledge, avoid niche jargon.'
-        case 'employed':
-          return 'Adapt the cards to a working professional: prioritise practical knowledge and concepts that are useful in real-world contexts.'
-        case 'retraining':
-          return 'Adapt the cards to someone retraining into a new field: prioritise fundamentals, core terminology, and the essential building blocks of the topic.'
-        case 'selfLearner':
-          return 'Adapt the cards to an independent learner: keep them clear, structured, and focused on high-utility knowledge that builds understanding progressively.'
-        case 'jobSeeking':
-          return 'Adapt the cards to someone job-seeking: prioritise key concepts and terminology that can help in interviews or professional conversations about this topic.'
-        case 'other':
-        default:
-          return 'Adapt the cards to a general audience: keep terminology accessible and focus on broadly useful knowledge.'
-      }
-    }
 
     const systemPrompt = `
       You are an expert flashcard creator.

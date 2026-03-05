@@ -5,7 +5,7 @@ import Step10 from '~/pages/onboarding/step-10.vue'
 import { useOnboardingStore } from '~/store/onboarding'
 import { createTestI18n } from '../helpers/i18n'
 
-describe('Step 10 - Completion', () => {
+describe('Step 10 - Notification Time', () => {
   const NuxtLayoutStub = {
     template: '<div><slot /></div>',
   }
@@ -39,7 +39,7 @@ describe('Step 10 - Completion', () => {
     expect(store.currentStep).toBe(10)
   })
 
-  it('displays completion message', () => {
+  it('displays notification time selector', () => {
     const wrapper = mount(Step10, {
       global: {
         plugins: [createTestI18n()],
@@ -48,6 +48,7 @@ describe('Step 10 - Completion', () => {
         },
       },
     })
-    expect(wrapper.text().length).toBeGreaterThan(0)
+    const timeInput = wrapper.find('input[type="time"]')
+    expect(timeInput.exists()).toBe(true)
   })
 })

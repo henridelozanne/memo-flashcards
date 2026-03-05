@@ -378,9 +378,21 @@
       "keepItUp": "Keep it up"
     },
     "step9": {
-      "title": "What time would you like to be notified?"
+      "title": "Let AI fill your collections",
+      "subtitle": "Cortx uses AI to suggest relevant cards based on what you already have. No more searching.",
+      "existingLabel": "Your collection",
+      "card1": "What is the capital of France?",
+      "card2": "How long is the Nile?",
+      "aiButton": "✦ Suggest cards",
+      "suggestionLabel": "AI Suggestion",
+      "suggestion1": "What is the largest country in the world?",
+      "suggestion2": "How deep is the Pacific Ocean?",
+      "suggestion3": "How many continents are there?"
     },
     "step10": {
+      "title": "What time would you like to be notified?"
+    },
+    "step11": {
       "title": "You're all set, {firstName}!",
       "subtitle": "You're now ready to start your learning journey with Cortx"
     },

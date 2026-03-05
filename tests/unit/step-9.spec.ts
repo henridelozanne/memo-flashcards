@@ -5,7 +5,7 @@ import Step9 from '~/pages/onboarding/step-9.vue'
 import { useOnboardingStore } from '~/store/onboarding'
 import { createTestI18n } from '../helpers/i18n'
 
-describe('Step 9 - Notification Time', () => {
+describe('Step 9 - AI Card Suggestions', () => {
   const NuxtLayoutStub = {
     template: '<div><slot /></div>',
   }
@@ -39,7 +39,7 @@ describe('Step 9 - Notification Time', () => {
     expect(store.currentStep).toBe(9)
   })
 
-  it('displays notification time selector', async () => {
+  it('does not display a time input', async () => {
     const wrapper = mount(Step9, {
       global: {
         plugins: [createPinia(), createTestI18n()],
@@ -48,8 +48,7 @@ describe('Step 9 - Notification Time', () => {
         },
       },
     })
-    // Vérifie qu'il y a un input de type time
     const timeInput = wrapper.find('input[type="time"]')
-    expect(timeInput.exists()).toBe(true)
+    expect(timeInput.exists()).toBe(false)
   })
 })

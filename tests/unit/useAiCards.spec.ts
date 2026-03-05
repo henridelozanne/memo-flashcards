@@ -1,5 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
+import { useAiCards } from '~/composables/useAiCards'
+import type { Card } from '~/lib/types'
 
 // Mock supabase before importing the composable
 const mockInvoke = vi.fn()
@@ -11,9 +13,6 @@ vi.mock('~/lib/supabase', () => ({
     },
   },
 }))
-
-import { useAiCards } from '~/composables/useAiCards'
-import type { Card } from '~/lib/types'
 
 // Helper
 const makeCard = (id: string, question = 'Q', answer = 'A'): Card => ({

@@ -378,9 +378,21 @@
       "keepItUp": "继续保持"
     },
     "step9": {
-      "title": "您希望在什么时间收到通知？"
+      "title": "让AI填充你的收藏",
+      "subtitle": "Cortx使用AI根据你已有的内容推荐相关卡片。不再需要搜索。",
+      "existingLabel": "你的收藏",
+      "card1": "法国的首都是哪里？",
+      "card2": "尼罗河有多长？",
+      "aiButton": "✦ 建议卡片",
+      "suggestionLabel": "AI建议",
+      "suggestion1": "世界上最大的国家是哪里？",
+      "suggestion2": "太平洋有多深？",
+      "suggestion3": "共有多少个大洲？"
     },
     "step10": {
+      "title": "您希望在什么时间收到通知？"
+    },
+    "step11": {
       "title": "一切准备就绪，{firstName}！",
       "subtitle": "您现在准备好开始使用Cortx学习了"
     },
