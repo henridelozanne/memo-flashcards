@@ -41,7 +41,7 @@ Tests
 Unit
 
 ```
-npm run test:unit
+npm run test
 ```
 
 Capacitor commands
@@ -66,14 +66,13 @@ Future: an export/import feature and Supabase-based sync will be added.
 
 ## Leitner & planning
 
-This project includes a pure business module that implements a Leitner spaced-repetition scheduler. It's located at `app/lib/leitner.ts` and contains deterministic, pure functions (no DB or UI responsibilities).
+This project implements a Leitner spaced-repetition scheduler. The logic is embedded in `composables/useReviewSession.ts` and `composables/useCards.ts` (no longer a standalone file).
 
 Rules implemented:
 
-- Compartments & intervals (days): 1 → 0, 2 → 1, 3 → 3, 4 → 7, 5 → 14, 6 → 30 (maintenance: +90 days after Correct in C6).
-- "Almost" schedules half the interval (minimum 1 day). For compartment 1 (0d interval), "Almost" schedules +12 hours.
-- "Wrong" resets to 1 day, except when in compartment 6 — then it moves back to compartment 3 and schedules +3 days.
-- Archived cards are excluded from selection. The selection utility can also exclude all C6 cards via `excludeC6=true`.
+- Compartments & intervals (days): 1 → 1, 2 → 3, 3 → 7, 4 → 14, 5 → 30.
+- "Almost" schedules half the interval (minimum 1 day).
+- "Wrong" resets to compartment 1 (interval: 1 day).
 
 This module is pure and will be wired into the data-layer and UI in subsequent steps.
 
@@ -89,16 +88,13 @@ Authentication is handled by the `useSupabaseAuth()` composable, which:
 
 All data entities (collections, cards, sessions, logs) include a `user_id` field, preparing for future multi-user sync capabilities while maintaining strict data isolation even in offline mode.
 
-## Synchronisation (préparation)
+## Synchronisation
 
-Le code prépare la synchronisation future avec Supabase :
+La synchronisation avec Supabase est implémentée dans `lib/sync.ts` :
 
-- Toutes les entités sont scindées par `user_id` (données isolées par utilisateur, même en local)
-- Les fonctions de synchronisation sont prêtes dans `lib/sync.ts` : `syncLocalToRemote`, `syncRemoteToLocal`, `isSyncNeeded` (stubs, à implémenter)
-- Les migrations et le data layer sont prêts pour supporter la sync multi-utilisateur
-- Les tests valident la structure et l’isolation des données
-
-La synchronisation effective (push/pull, gestion des conflits) sera ajoutée dans un prompt ultérieur.
+- `syncLocalToRemote` / `syncRemoteToLocal` : synchronisation bidirectionnelle des collections, cartes et profil utilisateur
+- `isSyncNeeded` : vérifie si une synchronisation est nécessaire
+- La synchronisation est déclenchée automatiquement via le middleware `middleware/sync.global.ts`
 
 ```
 
