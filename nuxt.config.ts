@@ -10,6 +10,9 @@ export default defineNuxtConfig({
   modules: ['@pinia/nuxt'],
   typescript: {
     strict: true,
+    tsConfig: {
+      exclude: ['../supabase/functions'],
+    },
   },
   runtimeConfig: {
     public: {

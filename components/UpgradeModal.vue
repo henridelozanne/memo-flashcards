@@ -5,7 +5,7 @@
         <div class="modal-container">
           <!-- Icône Premium -->
           <div class="modal-icon">
-            <div class="premium-badge">⭐</div>
+            <div class="premium-badge">💫</div>
           </div>
 
           <!-- Titre -->

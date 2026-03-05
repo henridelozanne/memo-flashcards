@@ -70,7 +70,8 @@
     "loadingCollections": "Cargando colecciones...",
     "createCollection": "Crear una colección",
     "confirm": "Confirmar",
-    "processing": "En curso..."
+    "processing": "En curso...",
+    "close": "Cerrar"
   },
   "collections": {
     "collection": "Colección",
@@ -301,6 +302,7 @@
     "collectionLimit": "El plan gratuito permite crear hasta 1 colección. Actualiza a Premium para crear colecciones ilimitadas.",
     "cardLimit": "El plan gratuito permite crear hasta 70 tarjetas. Actualiza a Premium para crear tarjetas ilimitadas.",
     "practiceOptionsLimit": "Las opciones de entrenamiento están reservadas para usuarios Premium. Actualiza a Premium para personalizar tus sesiones de entrenamiento.",
+    "aiCardsFeature": "La función 'Completar con IA' está disponible solo para suscriptores Premium. Actualiza a Premium para generar tarjetas automáticamente.",
     "statsLimit": "Las estadísticas avanzadas están reservadas para usuarios Premium. Actualiza a Premium para acceder a todas las estadísticas de progreso.",
     "upgradeToPremium": "Actualizar a Premium",
     "later": "Más tarde"
@@ -410,5 +412,22 @@
     "continue": "Continuar",
     "start": "Comenzar",
     "letsGo": "¡Vamos!"
+  },
+  "aiCards": {
+    "generate": "Completar con IA",
+    "generating": "La IA está generando propuestas...",
+    "suggestion": "Sugerencia IA",
+    "question": "Pregunta",
+    "answer": "Respuesta",
+    "add": "Añadir",
+    "reject": "Rechazar",
+    "progress": "{current} / {total}",
+    "error": "No se pudieron generar sugerencias. Inténtalo más tarde.",
+    "premiumRequired": "Esta función está disponible solo para suscriptores Premium.",
+    "finished": "¡Todas las sugerencias han sido revisadas!",
+    "loadingStep1": "Leyendo tus tarjetas...",
+    "loadingStep2": "Identificando lagunas...",
+    "loadingStep3": "Generando nuevas tarjetas...",
+    "loadingStep4": "Finalizando propuestas..."
   }
 }

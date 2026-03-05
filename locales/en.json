@@ -70,6 +70,7 @@
     "createCollection": "Create a collection",
     "confirm": "Confirm",
     "processing": "Processing...",
+    "close": "Close",
     "backButton": "Back"
   },
   "collections": {
@@ -301,6 +302,7 @@
     "collectionLimit": "The free plan allows you to create up to 1 collection. Upgrade to Premium for unlimited collections.",
     "cardLimit": "The free plan allows you to create up to 70 cards. Upgrade to Premium for unlimited cards.",
     "practiceOptionsLimit": "Practice options are reserved for Premium users. Upgrade to Premium to customize your training sessions.",
+    "aiCardsFeature": "The 'Complete with AI' feature is available to Premium subscribers only. Upgrade to Premium to generate cards automatically.",
     "statsLimit": "Advanced statistics are reserved for Premium users. Upgrade to Premium to access all progression statistics.",
     "upgradeToPremium": "Upgrade to Premium",
     "later": "Later"
@@ -410,5 +412,22 @@
     "continue": "Continue",
     "start": "Get started",
     "letsGo": "Let's go"
+  },
+  "aiCards": {
+    "generate": "Complete with AI",
+    "generating": "AI is generating suggestions...",
+    "suggestion": "AI Suggestion",
+    "question": "Question",
+    "answer": "Answer",
+    "add": "Add",
+    "reject": "Decline",
+    "progress": "{current} / {total}",
+    "error": "Unable to generate suggestions. Please try again later.",
+    "premiumRequired": "This feature is available to Premium subscribers only.",
+    "finished": "All suggestions have been reviewed!",
+    "loadingStep1": "Reading your cards...",
+    "loadingStep2": "Identifying gaps...",
+    "loadingStep3": "Generating new cards...",
+    "loadingStep4": "Finalising proposals..."
   }
 }

@@ -70,7 +70,8 @@
     "loadingCollections": "コレクションを読み込み中...",
     "createCollection": "コレクションを作成",
     "confirm": "確認",
-    "processing": "処理中..."
+    "processing": "処理中...",
+    "close": "閉じる"
   },
   "collections": {
     "collection": "コレクション",
@@ -301,6 +302,7 @@
     "collectionLimit": "無料プランでは最大1つのコレクションを作成できます。プレミアムにアップグレードするとコレクションを無制限に作成できます。",
     "cardLimit": "無料プランでは最大70枚のカードを作成できます。プレミアムにアップグレードするとカードを無制限に作成できます。",
     "practiceOptionsLimit": "練習オプションはプレミアムユーザー専用です。プレミアムにアップグレードしてトレーニングセッションをカスタマイズしてください。",
+    "aiCardsFeature": "'AIで補完する'機能はプレミアム会員限定です。プレミアムにアップグレードしてカードを自動生成しましょう。",
     "statsLimit": "高度な統計情報はプレミアムユーザー専用です。プレミアムにアップグレードしてすべての進捗統計にアクセスしてください。",
     "upgradeToPremium": "プレミアムにアップグレード",
     "later": "後で"
@@ -410,5 +412,22 @@
     "continue": "続ける",
     "start": "開始",
     "letsGo": "始めましょう"
+  },
+  "aiCards": {
+    "generate": "AIで補完する",
+    "generating": "AIが提案を生成中...",
+    "suggestion": "AIの提案",
+    "question": "質問",
+    "answer": "答え",
+    "add": "追加",
+    "reject": "拒否",
+    "progress": "{current} / {total}",
+    "error": "提案を生成できませんでした。後でもう一度お試しください。",
+    "premiumRequired": "この機能はプレミアム会員限定です。",
+    "finished": "すべての提案を確認しました！",
+    "loadingStep1": "カードを読み込み中...",
+    "loadingStep2": "ギャップを特定中...",
+    "loadingStep3": "新しいカードを生成中...",
+    "loadingStep4": "提案を仕上げ中..."
   }
 }

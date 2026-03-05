@@ -70,7 +70,8 @@
     "loadingCollections": "加载收藏中...",
     "createCollection": "创建收藏",
     "confirm": "确认",
-    "processing": "处理中..."
+    "processing": "处理中...",
+    "close": "关闭"
   },
   "collections": {
     "collection": "收藏",
@@ -301,6 +302,7 @@
     "collectionLimit": "免费计划允许创建最多1个集合。升级到高级版以创建无限集合。",
     "cardLimit": "免费计划允许创建最多70张卡片。升级到高级版以创建无限卡片。",
     "practiceOptionsLimit": "练习选项仅限高级用户使用。升级到高级版以自定义您的训练课程。",
+    "aiCardsFeature": "'AI补充'功能仅适用于高级订阅用户。升级到高级版以自动生成卡片。",
     "statsLimit": "高级统计信息仅限高级用户使用。升级到高级版以访问所有进度统计信息。",
     "upgradeToPremium": "升级到高级版",
     "later": "稍后"
@@ -410,5 +412,22 @@
     "continue": "继续",
     "start": "开始",
     "letsGo": "开始吧"
+  },
+  "aiCards": {
+    "generate": "用AI补充",
+    "generating": "AI正在生成建议...",
+    "suggestion": "AI建议",
+    "question": "问题",
+    "answer": "答案",
+    "add": "添加",
+    "reject": "拒绝",
+    "progress": "{current} / {total}",
+    "error": "无法生成建议，请稍后重试。",
+    "premiumRequired": "此功能仅适用于高级订阅用户。",
+    "finished": "所有建议已审阅完毕！",
+    "loadingStep1": "正在读取你的卡片...",
+    "loadingStep2": "识别知识缺口...",
+    "loadingStep3": "生成新卡片...",
+    "loadingStep4": "整理提案中..."
   }
 }

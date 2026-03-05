@@ -38,3 +38,6 @@ yarn-error.log*
 *.sqlite
 *.sqlite3
 *.db
+
+# Supabase CLI temp files
+supabase/.temp/

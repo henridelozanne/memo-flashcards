@@ -66,6 +66,30 @@
                 />
               </div>
             </Transition>
+
+            <!-- Bouton Compléter avec l'IA -->
+            <div v-if="cards.length >= 4" class="mt-2">
+              <button
+                type="button"
+                class="ai-button w-full"
+                :disabled="isGeneratingAiCards"
+                @click="handleGenerateAiCards"
+              >
+                <template v-if="isGeneratingAiCards">
+                  <svg class="h-5 w-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  {{ $t('aiCards.generating') }}
+                </template>
+                <template v-else>
+                  <IconSparkles class="h-5 w-5" />
+                  {{ $t('aiCards.generate') }}
+                  <IconLock v-if="isFree" class="ai-button__lock" />
+                </template>
+              </button>
+              <StatusMessage v-if="aiGenerationError" :message="{ type: 'error', text: aiGenerationError }" />
+            </div>
           </div>
         </div>
 
@@ -102,6 +126,16 @@
         :description="$t(upgradeModalMessage)"
         @close="showUpgradeModal = false"
       />
+
+      <!-- Modal suggestions IA -->
+      <AiCardSuggestions
+        :is-open="showAiSuggestions"
+        :is-loading="isGeneratingAiCards"
+        :proposals="aiProposals"
+        @close="showAiSuggestions = false"
+        @accept="handleAiCardAccepted"
+        @finished="showAiSuggestions = false"
+      />
     </div>
   </div>
 </template>
@@ -113,6 +147,8 @@ import { useI18n } from 'vue-i18n'
 import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
 import { useSubscription } from '~/composables/useSubscription'
+import { useAiCards, type AiCardProposal } from '~/composables/useAiCards'
+import { useUserProfileStore } from '~/store/userProfile'
 import CardItem from '~/components/CardItem.vue'
 import CreateCardItem from '~/components/CreateCardItem.vue'
 import Select, { type SelectOption } from '~/components/Select.vue'
@@ -120,6 +156,9 @@ import PracticeModeOptions from '~/components/PracticeModeOptions.vue'
 import IconSettings from '~/components/icons/IconSettings.vue'
 import IconDumbbell from '~/components/icons/IconDumbbell.vue'
 import IconStar from '~/components/icons/IconStar.vue'
+import IconSparkles from '~/components/icons/IconSparkles.vue'
+import IconLock from '~/components/icons/IconLock.vue'
+import AiCardSuggestions from '~/components/AiCardSuggestions.vue'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'CollectionCardsPage' })
@@ -141,8 +180,11 @@ const {
   loadCards,
   getLastCardDate,
   getTotalCardsCount,
+  createCard: createCardInCollection,
 } = useCards()
 const { isFree, FREE_LIMITS } = useSubscription()
+const { generateCards, isGenerating: isGeneratingAiCards } = useAiCards()
+const userProfileStore = useUserProfileStore()
 
 const collectionId = String(route.params.id)
 const collection = ref<Collection | null>(null)
@@ -151,6 +193,9 @@ const sortBy = ref('newestFirst')
 const showPracticeOptions = ref(false)
 const showUpgradeModal = ref(false)
 const upgradeModalMessage = ref('upgrade.cardLimit')
+const showAiSuggestions = ref(false)
+const aiProposals = ref<AiCardProposal[]>([])
+const aiGenerationError = ref<string | null>(null)
 const practiceOptions = ref({
   mostFailed: false,
   onlyDue: false,
@@ -256,6 +301,39 @@ function createCard() {
 function handlePremiumRequired() {
   upgradeModalMessage.value = 'upgrade.practiceOptionsLimit'
   showUpgradeModal.value = true
+}
+
+async function handleGenerateAiCards() {
+  if (isGeneratingAiCards.value) return
+
+  if (isFree.value) {
+    upgradeModalMessage.value = 'upgrade.aiCardsFeature'
+    showUpgradeModal.value = true
+    return
+  }
+
+  aiGenerationError.value = null
+  aiProposals.value = []
+  showAiSuggestions.value = true
+  const result = await generateCards(
+    [...cards.value],
+    locale.value,
+    collection.value?.name ?? '',
+    userProfileStore.goal,
+    userProfileStore.situation
+  )
+
+  if (result.length === 0) {
+    showAiSuggestions.value = false
+    aiGenerationError.value = t('aiCards.error')
+    return
+  }
+
+  aiProposals.value = result
+}
+
+async function handleAiCardAccepted(proposal: AiCardProposal) {
+  await createCardInCollection(proposal.question, proposal.answer, collectionId)
 }
 
 function editCard(cardId: string) {
@@ -371,5 +449,49 @@ onMounted(init)
   opacity: 1;
   max-height: 500px;
   transform: translateY(0);
+}
+
+/* Bouton AI */
+.ai-button {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ai-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ai-button:not(:disabled):active {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
+
+.ai-button {
+  position: relative;
+}
+
+.ai-button__lock {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 11px;
+  height: 11px;
+  color: white;
+  opacity: 0.85;
 }
 </style>

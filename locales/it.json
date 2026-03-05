@@ -70,7 +70,8 @@
     "loadingCollections": "Caricamento collezioni...",
     "createCollection": "Crea collezione",
     "confirm": "Conferma",
-    "processing": "Elaborazione..."
+    "processing": "Elaborazione...",
+    "close": "Chiudi"
   },
   "collections": {
     "collection": "Collezione",
@@ -301,6 +302,7 @@
     "collectionLimit": "Il piano gratuito consente di creare fino a 1 collezione. Passa a Premium per creare collezioni illimitate.",
     "cardLimit": "Il piano gratuito consente di creare fino a 70 carte. Passa a Premium per creare carte illimitate.",
     "practiceOptionsLimit": "Le opzioni di allenamento sono riservate agli utenti Premium. Passa a Premium per personalizzare le tue sessioni di allenamento.",
+    "aiCardsFeature": "La funzionalità 'Completa con l'IA' è disponibile solo per gli abbonati Premium. Passa al Premium per generare schede automaticamente.",
     "statsLimit": "Le statistiche avanzate sono riservate agli utenti Premium. Passa a Premium per accedere a tutte le statistiche di progressione.",
     "upgradeToPremium": "Passa a Premium",
     "later": "Più tardi"
@@ -410,5 +412,22 @@
     "continue": "Continua",
     "start": "Inizia",
     "letsGo": "Andiamo"
+  },
+  "aiCards": {
+    "generate": "Completa con l'IA",
+    "generating": "L'IA sta generando proposte...",
+    "suggestion": "Suggerimento IA",
+    "question": "Domanda",
+    "answer": "Risposta",
+    "add": "Aggiungi",
+    "reject": "Rifiuta",
+    "progress": "{current} / {total}",
+    "error": "Impossibile generare suggerimenti. Riprova più tardi.",
+    "premiumRequired": "Questa funzionalità è disponibile solo per gli abbonati Premium.",
+    "finished": "Tutti i suggerimenti sono stati esaminati!",
+    "loadingStep1": "Lettura delle tue carte...",
+    "loadingStep2": "Identificazione delle lacune...",
+    "loadingStep3": "Generazione di nuove carte...",
+    "loadingStep4": "Finalizzazione delle proposte..."
   }
 }
