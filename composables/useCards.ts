@@ -210,6 +210,10 @@ export const useCards = () => {
     )
     cards.value = result
 
+    // Invalider le cache du daily review (la carte supprimée peut être due aujourd'hui)
+    const { invalidateCache } = useDailyReview()
+    await invalidateCache()
+
     // Sync to Supabase (non-blocking)
     syncCardsToRemote().catch((err) => {
       console.error('Failed to sync card deletion to remote:', err)
