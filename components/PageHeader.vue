@@ -6,7 +6,7 @@
     </div>
 
     <h1
-      class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-2xl font-bold text-[var(--color-black)]"
+      class="absolute left-1/2 top-1/2 w-[80%] -translate-x-1/2 -translate-y-1/2 truncate text-center text-2xl font-bold text-[var(--color-black)]"
       :data-testid="testId"
     >
       {{ title }}
