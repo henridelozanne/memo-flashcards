@@ -7,6 +7,7 @@ import { syncCardsToRemote } from '~/lib/sync'
 import useSupabaseAuth from './useSupabaseAuth'
 import { appConfig } from '~/config/app'
 import { usePosthog } from './usePosthog'
+import { useWidgetData } from './useWidgetData'
 
 const cards = ref<Card[]>([])
 const isLoading = ref(false)
@@ -23,6 +24,7 @@ const LEITNER_INTERVALS: Record<number, number> = {
 
 export const useCards = () => {
   const { getDbConnection } = useDatabase()
+  const { syncCardsToWidget } = useWidgetData()
 
   const loadCards = async (collectionId: string) => {
     isLoading.value = true
@@ -39,6 +41,7 @@ export const useCards = () => {
         [collectionId]
       )
       cards.value = result
+      syncCardsToWidget(result)
     } catch (e: any) {
       error.value = e.message || 'Erreur lors du chargement des cartes'
     } finally {
@@ -111,6 +114,7 @@ export const useCards = () => {
       [collectionId]
     )
     cards.value = result
+    syncCardsToWidget(result)
 
     // Sync to Supabase (non-blocking)
     syncCardsToRemote().catch((err) => {
@@ -165,6 +169,7 @@ export const useCards = () => {
       [existing.collection_id]
     )
     cards.value = result
+    syncCardsToWidget(result)
 
     // Sync to Supabase (non-blocking)
     syncCardsToRemote().catch((err) => {
@@ -209,6 +214,7 @@ export const useCards = () => {
       [existing.collection_id]
     )
     cards.value = result
+    syncCardsToWidget(result)
 
     // Invalider le cache du daily review (la carte supprimée peut être due aujourd'hui)
     const { invalidateCache } = useDailyReview()

@@ -108,30 +108,18 @@ export const useDatabase = () => {
     `)
 
     // Migrations pour les bases existantes
-    // Tenter d'ajouter les colonnes subscription si elles n'existent pas
-    try {
+    // Vérifier via PRAGMA avant d'ajouter pour éviter des erreurs natives
+    const existingCols = await connection.all<{ name: string }>('PRAGMA table_info(user_profiles)')
+    const colNames = existingCols.map((c) => c.name)
+
+    if (!colNames.includes('subscription_status'))
       await connection.run('ALTER TABLE user_profiles ADD COLUMN subscription_status TEXT DEFAULT "free"')
-    } catch (e) {
-      // Column already exists, ignore
-    }
-
-    try {
+    if (!colNames.includes('subscription_product_id'))
       await connection.run('ALTER TABLE user_profiles ADD COLUMN subscription_product_id TEXT')
-    } catch (e) {
-      // Column already exists, ignore
-    }
-
-    try {
+    if (!colNames.includes('subscription_expires_at'))
       await connection.run('ALTER TABLE user_profiles ADD COLUMN subscription_expires_at INTEGER')
-    } catch (e) {
-      // Column already exists, ignore
-    }
-
-    try {
+    if (!colNames.includes('subscription_updated_at'))
       await connection.run('ALTER TABLE user_profiles ADD COLUMN subscription_updated_at INTEGER')
-    } catch (e) {
-      // Column already exists, ignore
-    }
 
     return connection
   }
