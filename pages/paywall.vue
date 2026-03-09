@@ -72,7 +72,10 @@
     </div>
 
     <!-- CTA fixé en bas -->
-    <div class="fixed bottom-0 left-0 right-0 z-10 bg-white px-6 pb-8 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
+    <div
+      class="fixed bottom-0 left-0 right-0 z-10 bg-white px-6 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]"
+      style="padding-bottom: calc(2rem + env(safe-area-inset-bottom))"
+    >
       <button class="trial-button w-full" @click="selectPlan('monthly_free_trial')">
         {{ $t('onboarding.paywall.freeTrial') }}
       </button>
@@ -80,11 +83,14 @@
         {{ $t('onboarding.paywall.disclaimer') }}
       </p>
       <p class="mt-2 text-center text-xs text-gray-400">
-        <a href="/legal" class="underline">{{ $t('onboarding.paywall.privacyPolicy') }}</a>
+        <NuxtLink to="/legal" class="underline">{{ $t('onboarding.paywall.privacyPolicy') }}</NuxtLink>
         <span class="mx-1">·</span>
-        <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" class="underline">{{
-          $t('onboarding.paywall.termsOfUse')
-        }}</a>
+        <button
+          class="underline"
+          @click="openLink('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/')"
+        >
+          {{ $t('onboarding.paywall.termsOfUse') }}
+        </button>
       </p>
     </div>
   </div>
@@ -100,6 +106,7 @@ import useSupabaseAuth from '~/composables/useSupabaseAuth'
 import { useUserProfile } from '~/composables/useUserProfile'
 import { syncUserProfileToRemote } from '~/lib/sync'
 import { useSubscription } from '~/composables/useSubscription'
+import { useExternalLink } from '~/composables/useExternalLink'
 
 const router = useRouter()
 const onboardingStore = useOnboardingStore()
@@ -108,6 +115,7 @@ const selectedPlan = ref<'monthly' | 'monthly_free_trial' | 'lifetime' | null>(n
 const { initAuth, getCurrentUserId } = useSupabaseAuth()
 const { saveUserProfile: saveUserProfileLocal } = useUserProfile()
 const { getOfferings, purchasePackage } = useSubscription()
+const { openLink } = useExternalLink()
 const monthlyPrice = ref('')
 const monthlyPackageRef = ref<PurchasesPackage | null>(null)
 const monthlyTrialPackageRef = ref<PurchasesPackage | null>(null)
