@@ -13,7 +13,7 @@
 
       <!-- Animation -->
       <div class="slide-up-3 w-full flex-1">
-        <div class="w-full max-w-xs">
+        <div class="mx-auto w-full max-w-xs">
           <!-- Ta collection -->
           <div class="mb-4">
             <div class="existing-card">

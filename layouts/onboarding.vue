@@ -15,7 +15,7 @@
 
     <!-- Contenu de l'onboarding -->
     <div class="relative z-10 flex flex-1 flex-col overflow-auto p-6">
-      <div class="flex h-full w-full max-w-lg flex-col">
+      <div class="mx-auto flex h-full w-full max-w-lg flex-col">
         <transition name="fade" mode="out-in">
           <slot />
         </transition>
