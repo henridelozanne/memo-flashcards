@@ -14,7 +14,7 @@ export const useStreakData = () => {
   function getLast7DaysDates(): Date[] {
     const today = new Date()
     const dates: Date[] = []
-    for (let i = 6; i >= 0; i--) {
+    for (let i = 6; i >= 0; i -= 1) {
       const d = new Date(today)
       d.setDate(d.getDate() - i)
       dates.push(d)
@@ -96,7 +96,7 @@ export const useStreakData = () => {
     d.setDate(d.getDate() - 1)
 
     while (reviewDates.has(formatDate(d))) {
-      count++
+      count += 1
       d.setDate(d.getDate() - 1)
     }
 

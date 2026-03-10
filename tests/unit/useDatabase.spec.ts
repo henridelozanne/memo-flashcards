@@ -5,6 +5,8 @@ import { useDatabase } from '~/composables/useDatabase'
 const mockConnection = {
   exec: vi.fn(),
   close: vi.fn(),
+  all: vi.fn(),
+  run: vi.fn(),
 }
 
 const mockOpenDatabase = vi.fn()
@@ -20,6 +22,8 @@ describe('useDatabase', () => {
     mockOpenDatabase.mockResolvedValue(mockConnection)
     mockConnection.exec.mockResolvedValue(undefined)
     mockConnection.close.mockResolvedValue(undefined)
+    mockConnection.all.mockResolvedValue([])
+    mockConnection.run.mockResolvedValue(undefined)
   })
 
   describe('getDbConnection', () => {

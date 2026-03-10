@@ -3,6 +3,12 @@ import { mount } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'
 import ReviewSessionEnd from '@/components/ReviewSessionEnd.vue'
 
+vi.mock('~/composables/useRateApp', () => ({
+  useRateApp: () => ({
+    requestReviewIfEligible: vi.fn().mockResolvedValue(undefined),
+  }),
+}))
+
 const i18n = createI18n({
   legacy: false,
   locale: 'fr',

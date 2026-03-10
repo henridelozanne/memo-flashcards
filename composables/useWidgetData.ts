@@ -1,5 +1,4 @@
-import { registerPlugin } from '@capacitor/core'
-import { Capacitor } from '@capacitor/core'
+import { registerPlugin, Capacitor } from '@capacitor/core'
 import type { Card } from '~/lib/types'
 
 interface WidgetDataPlugin {
