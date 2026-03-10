@@ -13,8 +13,6 @@
           <div class="boxes-track absolute flex items-center gap-8">
             <!-- Boîte 1 -->
             <div class="leitner-box">
-              <div class="box-back"></div>
-              <div class="box-front"></div>
               <div class="box-number">
                 <span class="text-sm font-bold text-gray-700">1</span>
               </div>
@@ -22,8 +20,6 @@
 
             <!-- Boîte 2 -->
             <div class="leitner-box">
-              <div class="box-back"></div>
-              <div class="box-front"></div>
               <div class="box-number">
                 <span class="text-sm font-bold text-gray-700">2</span>
               </div>
@@ -31,8 +27,6 @@
 
             <!-- Boîte 3 -->
             <div class="leitner-box">
-              <div class="box-back"></div>
-              <div class="box-front"></div>
               <div class="box-number">
                 <span class="text-sm font-bold text-gray-700">3</span>
               </div>
@@ -40,8 +34,6 @@
 
             <!-- Boîte 4 -->
             <div class="leitner-box">
-              <div class="box-back"></div>
-              <div class="box-front"></div>
               <div class="box-number">
                 <span class="text-sm font-bold text-gray-700">4</span>
               </div>
@@ -49,8 +41,6 @@
 
             <!-- Boîte 5 -->
             <div class="leitner-box">
-              <div class="box-back"></div>
-              <div class="box-front"></div>
               <div class="box-number box-number-5">
                 <span class="box-5-number text-sm font-bold text-gray-700">5</span>
                 <svg class="box-5-check absolute opacity-0" width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -102,39 +92,17 @@ defineOptions({ name: 'OnboardingStep7Page' })
   overflow: visible;
 }
 
-/* Boîte Leitner avec effet 3D */
+/* Boîte Leitner */
 .leitner-box {
   position: relative;
   width: 200px;
   height: 240px;
   flex-shrink: 0;
-}
-
-/* Face arrière de la boîte (fond) */
-.box-back {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  right: -8px;
-  bottom: 0;
-  background: #e5e7eb;
-  border-radius: 0 0 12px 12px;
-  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Face avant de la boîte */
-.box-front {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 8px;
   background: white;
-  border: 2px solid #d1d5db;
+  border: 2px solid #e5e7eb;
   border-top: none;
   border-radius: 0 0 12px 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  z-index: 2;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
 
 /* Numéro de la boîte */
@@ -171,28 +139,28 @@ defineOptions({ name: 'OnboardingStep7Page' })
     transform: translate(-100px, -120px);
   }
   20% {
-    transform: translate(calc(-100px - 228px), -120px);
+    transform: translate(-332px, -120px);
   }
   35% {
-    transform: translate(calc(-100px - 228px), -120px);
+    transform: translate(-332px, -120px);
   }
   40% {
-    transform: translate(calc(-100px - 456px), -120px);
+    transform: translate(-564px, -120px);
   }
   55% {
-    transform: translate(calc(-100px - 456px), -120px);
+    transform: translate(-564px, -120px);
   }
   60% {
-    transform: translate(calc(-100px - 684px), -120px);
+    transform: translate(-796px, -120px);
   }
   75% {
-    transform: translate(calc(-100px - 684px), -120px);
+    transform: translate(-796px, -120px);
   }
   80% {
-    transform: translate(calc(-100px - 912px), -120px);
+    transform: translate(-1028px, -120px);
   }
   100% {
-    transform: translate(calc(-100px - 912px), -120px);
+    transform: translate(-1028px, -120px);
   }
 }
 
