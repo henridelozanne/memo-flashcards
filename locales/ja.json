@@ -413,7 +413,7 @@
         "title": "月額",
         "price": "123456,99€ / 月",
         "subtitle": "テストに最適",
-        "renewal": "自動更新"
+        "renewal": "毎月課金"
       },
       "lifetime": {
         "title": "生涯",
@@ -421,9 +421,11 @@
         "subtitle": "生涯プレミアムアクセス",
         "renewal": "更新なし"
       },
+      "mostPopular": "最も人気",
       "chooseOffer": "このオファーを選択",
       "purchasing": "処理中...",
       "freeTrial": "7日間無料トライアル",
+      "freeTrialThen": "試用期間後は{price}/月",
       "disclaimer": "コミットメントなし。いつでもキャンセルできます。",
       "privacyPolicy": "プライバシーポリシー",
       "termsOfUse": "利用規約"

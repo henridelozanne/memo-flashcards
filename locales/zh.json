@@ -413,7 +413,7 @@
         "title": "月度",
         "price": "123456,99€ / 月",
         "subtitle": "适合测试",
-        "renewal": "自动续订"
+        "renewal": "按月计费"
       },
       "lifetime": {
         "title": "终身",
@@ -421,9 +421,11 @@
         "subtitle": "终身高级访问",
         "renewal": "无续订"
       },
+      "mostPopular": "最受欢迎",
       "chooseOffer": "选择此优惠",
       "purchasing": "处理中...",
       "freeTrial": "免费试用7天",
+      "freeTrialThen": "试用期结束后{price}/月",
       "disclaimer": "无需承诺。您可以随时取消。",
       "privacyPolicy": "隐私政策",
       "termsOfUse": "使用条款"

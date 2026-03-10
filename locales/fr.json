@@ -413,7 +413,7 @@
         "title": "Mensuel",
         "price": "123456,99€ / mois",
         "subtitle": "Idéal pour tester",
-        "renewal": "Renouvellement automatique"
+        "renewal": "Facturé mensuellement"
       },
       "lifetime": {
         "title": "À vie",
@@ -421,9 +421,11 @@
         "subtitle": "Accès premium à vie",
         "renewal": "Aucun renouvellement"
       },
+      "mostPopular": "Le plus populaire",
       "chooseOffer": "Choisir cette offre",
       "purchasing": "En cours...",
       "freeTrial": "Essayer gratuitement pendant 7 jours",
+      "freeTrialThen": "Puis {price}/mois après la période d'essai",
       "disclaimer": "Sans engagement. Vous pouvez annuler à tout moment.",
       "privacyPolicy": "Politique de confidentialité",
       "termsOfUse": "Conditions d'utilisation"

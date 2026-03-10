@@ -413,7 +413,7 @@
         "title": "Monthly",
         "price": "$2.99 / month",
         "subtitle": "Perfect for testing",
-        "renewal": "Automatic renewal"
+        "renewal": "Billed monthly"
       },
       "lifetime": {
         "title": "Lifetime",
@@ -421,9 +421,11 @@
         "subtitle": "Premium access forever",
         "renewal": "No renewal"
       },
+      "mostPopular": "Most popular",
       "chooseOffer": "Choose this offer",
       "purchasing": "Processing...",
       "freeTrial": "Try free for 7 days",
+      "freeTrialThen": "Then {price}/month after trial",
       "disclaimer": "No commitment. You can cancel anytime.",
       "privacyPolicy": "Privacy Policy",
       "termsOfUse": "Terms of Use"

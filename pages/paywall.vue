@@ -10,16 +10,16 @@
 
     <!-- Contenu scrollable -->
     <div
-      class="relative z-10 flex-1 overflow-y-auto px-6 pt-16"
+      class="relative z-10 flex-1 overflow-y-auto px-6 pt-14"
       style="padding-bottom: calc(13rem + env(safe-area-inset-bottom))"
     >
       <!-- Titre -->
-      <h1 class="mb-12 text-center text-3xl font-bold text-[var(--color-black)]">
+      <h1 class="mb-6 text-center text-3xl font-bold text-[var(--color-black)]">
         {{ $t('onboarding.paywall.title') }}
       </h1>
 
       <!-- Liste des avantages -->
-      <ul class="mb-12 space-y-3 text-left">
+      <ul class="mb-8 space-y-2 text-left">
         <li class="flex items-start gap-3">
           <span class="mt-1 text-lg">•</span>
           <span class="text-base text-gray-700">{{ $t('onboarding.paywall.benefit1') }}</span>
@@ -39,50 +39,60 @@
       </ul>
 
       <!-- Options d'abonnement -->
-      <div class="mb-8 grid grid-cols-2 gap-3">
+      <div class="mb-8 flex flex-col gap-3">
         <!-- Mensuel -->
-        <div class="subscription-card" :class="{ selected: selectedPlan === 'monthly' }">
-          <div class="mb-2 text-2xl">💎</div>
-          <div class="mb-3 text-lg font-bold text-[var(--color-black)]">
-            {{ $t('onboarding.paywall.monthly.title') }}
+        <button
+          class="subscription-card relative"
+          :class="{ selected: selectedPlan === 'monthly' }"
+          @click="selectPlan('monthly')"
+        >
+          <span class="popular-badge">{{ $t('onboarding.paywall.mostPopular') }}</span>
+          <div class="flex w-full items-center justify-between">
+            <div class="text-left">
+              <div class="text-lg font-bold text-[var(--color-black)]">
+                {{ $t('onboarding.paywall.monthly.title') }}
+              </div>
+              <div class="text-sm text-gray-500">{{ $t('onboarding.paywall.monthly.renewal') }}</div>
+            </div>
+            <div class="text-xl font-bold text-[var(--color-black)]">
+              {{ monthlyPrice || $t('onboarding.paywall.monthly.price') }}
+            </div>
           </div>
-          <div class="mb-2 text-base font-semibold text-[var(--color-black)]">
-            {{ monthlyPrice || $t('onboarding.paywall.monthly.price') }}
-          </div>
-          <div class="mb-2 text-sm text-gray-600">{{ $t('onboarding.paywall.monthly.subtitle') }}</div>
-          <div class="mb-4 text-sm text-gray-600">{{ $t('onboarding.paywall.monthly.renewal') }}</div>
-          <button class="subscribe-button mt-auto" @click="selectPlan('monthly')">
-            {{ $t('onboarding.paywall.chooseOffer') }}
-          </button>
-        </div>
+        </button>
 
         <!-- À vie -->
-        <div class="subscription-card" :class="{ selected: selectedPlan === 'lifetime' }">
-          <div class="mb-2 text-2xl">⭐</div>
-          <div class="mb-3 text-lg font-bold text-[var(--color-black)]">
-            {{ $t('onboarding.paywall.lifetime.title') }}
+        <button
+          class="subscription-card"
+          :class="{ selected: selectedPlan === 'lifetime' }"
+          @click="selectPlan('lifetime')"
+        >
+          <div class="flex w-full items-center justify-between">
+            <div class="text-left">
+              <div class="text-lg font-bold text-[var(--color-black)]">
+                {{ $t('onboarding.paywall.lifetime.title') }}
+              </div>
+              <div class="text-sm text-gray-500">{{ $t('onboarding.paywall.lifetime.renewal') }}</div>
+            </div>
+            <div class="text-xl font-bold text-[var(--color-black)]">
+              {{ lifetimePrice || $t('onboarding.paywall.lifetime.price') }}
+            </div>
           </div>
-          <div class="mb-2 text-base font-semibold text-[var(--color-black)]">
-            {{ lifetimePrice || $t('onboarding.paywall.lifetime.price') }}
-          </div>
-          <div class="mb-2 text-sm text-gray-600">{{ $t('onboarding.paywall.lifetime.subtitle') }}</div>
-          <div class="mb-4 text-sm text-gray-600">{{ $t('onboarding.paywall.lifetime.renewal') }}</div>
-          <button class="subscribe-button mt-auto" @click="selectPlan('lifetime')">
-            {{ $t('onboarding.paywall.chooseOffer') }}
-          </button>
-        </div>
+        </button>
       </div>
     </div>
 
     <!-- CTA fixé en bas -->
     <div
       class="fixed bottom-0 left-0 right-0 z-10 bg-white px-6 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]"
-      style="padding-bottom: calc(2rem + env(safe-area-inset-bottom))"
+      style="padding-bottom: calc(0.3rem + env(safe-area-inset-bottom))"
     >
       <button class="trial-button w-full" @click="selectPlan('monthly_free_trial')">
         {{ $t('onboarding.paywall.freeTrial') }}
       </button>
-      <p class="mt-3 text-center text-sm text-gray-500">
+      <p v-if="monthlyPrice" class="mt-2 text-center text-xs text-gray-500">
+        {{ $t('onboarding.paywall.freeTrialThen', { price: monthlyPrice }) }}
+      </p>
+      <p class="mt-3 text-center text-xs text-gray-500">
         {{ $t('onboarding.paywall.disclaimer') }}
       </p>
       <p class="mt-2 text-center text-xs text-gray-400">
@@ -299,12 +309,14 @@ defineOptions({ name: 'OnboardingPaywallPage' })
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 18px 20px;
   border: 2px solid #d1d5db;
   border-radius: 12px;
   background: white;
   text-align: center;
   transition: all 0.3s ease-in-out;
+  width: 100%;
+  cursor: pointer;
 }
 
 .subscription-card.selected {
@@ -312,26 +324,18 @@ defineOptions({ name: 'OnboardingPaywallPage' })
   background: #f5f3ff;
 }
 
-.subscribe-button {
-  width: 100%;
-  padding: 10px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151;
-  background: white;
-  transition: all 0.2s;
-}
-
-.subscribe-button:hover {
-  background: #f9fafb;
-}
-
-.subscription-card.selected .subscribe-button {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  background: white;
+.popular-badge {
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--color-accent-blue);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 .trial-button {
