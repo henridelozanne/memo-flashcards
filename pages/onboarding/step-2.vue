@@ -30,7 +30,7 @@
     <!-- Slot pour personnaliser le bouton -->
     <template #button-label>
       <span :class="{ 'opacity-50': !selectedGoal }">
-        {{ $t('onboarding.continue') }}
+        {{ $t('common.continue') }}
       </span>
     </template>
   </NuxtLayout>

@@ -28,7 +28,11 @@
     "streakNotValidated": "Серия не подтверждена",
     "currentStreak": "Текущая серия: {days} день | Текущая серия: {days} дня | Текущая серия: {days} дней",
     "needMoreCards": "Повторите минимум 10 карточек для подтверждения серии",
-    "backToCollections": "Вернуться к коллекциям"
+    "backToCollections": "Вернуться к коллекциям",
+    "streakModal": {
+      "title": "Первый день! | {count} дней подряд!",
+      "subtitle": "Регулярность — ключ к успеху."
+    }
   },
   "notifications": {
     "message1": "Ваши карточки ждут вас, {firstName}! 🎯",
@@ -54,7 +58,9 @@
     "message21": "Небольшое напоминание, чтобы не сбиться с ритма, {firstName} 🔄",
     "message22": "Сеанс сейчас приблизит вас к вашим целям 🎯"
   },
-  "app": { "name": "Cortx" },
+  "app": {
+    "name": "Cortx"
+  },
   "common": {
     "ok": "ОК",
     "cancel": "Отмена",
@@ -71,7 +77,8 @@
     "createCollection": "Создать коллекцию",
     "confirm": "Подтвердить",
     "processing": "Обработка...",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "continue": "Продолжить"
   },
   "collections": {
     "collection": "Коллекция",
@@ -421,7 +428,6 @@
       "privacyPolicy": "Политика конфиденциальности",
       "termsOfUse": "Условия использования"
     },
-    "continue": "Продолжить",
     "start": "Начать",
     "letsGo": "Поехали"
   },

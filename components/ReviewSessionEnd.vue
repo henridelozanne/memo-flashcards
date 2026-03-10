@@ -65,8 +65,8 @@ const emit = defineEmits(['back'])
 const { requestReviewIfEligible } = useRateApp()
 
 async function handleBack() {
-  emit('back')
   await requestReviewIfEligible()
+  emit('back')
 }
 
 const confettiCanvas = ref<HTMLCanvasElement | null>(null)

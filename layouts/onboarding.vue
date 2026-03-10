@@ -29,7 +29,7 @@
           class="w-full rounded-[15px] bg-[var(--color-primary)] px-8 py-4 text-lg font-semibold text-white shadow-[0px_4px_32px_#0000000a] transition hover:opacity-90"
           @click="handleNext"
         >
-          <slot name="button-label">{{ $t('onboarding.continue') }}</slot>
+          <slot name="button-label">{{ $t('common.continue') }}</slot>
         </button>
       </div>
     </div>

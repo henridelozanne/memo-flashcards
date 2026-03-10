@@ -13,6 +13,10 @@
   --color-accent-green: #047c78;
   --color-accent-red: #f2582c;
   --color-accent-yellow: #f59e0b;
+  --color-flame-bottom: #c0380a;
+  --color-flame-mid: #f97316;
+  --color-flame-top: #fde047;
+  --shadow-flame: 2px 10px 18px rgba(249, 115, 22, 0.45);
   --color-light-purple: #eee9ff;
   --color-light-pink: #ffe4f2;
   --color-light-blue: #e6f3ff;

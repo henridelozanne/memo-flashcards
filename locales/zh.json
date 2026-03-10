@@ -28,7 +28,11 @@
     "streakNotValidated": "连续记录未验证",
     "currentStreak": "当前连续：{days} 天",
     "needMoreCards": "至少复习10张卡片以验证您的连续记录",
-    "backToCollections": "返回收藏"
+    "backToCollections": "返回收藏",
+    "streakModal": {
+      "title": "第一天！ | 连续{count}天！",
+      "subtitle": "坚持就是胜利。"
+    }
   },
   "notifications": {
     "message1": "您的卡片在等您，{firstName}！🎯",
@@ -54,7 +58,9 @@
     "message21": "小提醒保持节奏，{firstName} 🔄",
     "message22": "现在学习让您更接近目标 🎯"
   },
-  "app": { "name": "Cortx" },
+  "app": {
+    "name": "Cortx"
+  },
   "common": {
     "ok": "确定",
     "cancel": "取消",
@@ -71,7 +77,8 @@
     "createCollection": "创建收藏",
     "confirm": "确认",
     "processing": "处理中...",
-    "close": "关闭"
+    "close": "关闭",
+    "continue": "继续"
   },
   "collections": {
     "collection": "收藏",
@@ -421,7 +428,6 @@
       "privacyPolicy": "隐私政策",
       "termsOfUse": "使用条款"
     },
-    "continue": "继续",
     "start": "开始",
     "letsGo": "开始吧"
   },

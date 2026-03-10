@@ -40,10 +40,12 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCards } from '~/composables/useCards'
 import { useReviewSession } from '~/composables/useReviewSession'
+import { useDailyReviewStore } from '~/store/dailyReview'
 import ProgressCircle from '~/components/ProgressCircle.vue'
 
 const router = useRouter()
 const { getCardsDueToday } = useCards()
+const dailyReviewStore = useDailyReviewStore()
 
 const {
   currentIndex,
@@ -61,7 +63,10 @@ const {
 } = useReviewSession({
   getCards: getCardsDueToday,
   onBack: () => router.push('/'),
-  onFinish: () => router.push('/'),
+  onFinish: () => {
+    dailyReviewStore.setShowStreakModal(true)
+    router.push('/')
+  },
 })
 
 onMounted(initializeSession)

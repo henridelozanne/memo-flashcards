@@ -9,7 +9,10 @@
     </button>
 
     <!-- Contenu scrollable -->
-    <div class="relative z-10 flex-1 overflow-y-auto px-6 pb-32 pt-16">
+    <div
+      class="relative z-10 flex-1 overflow-y-auto px-6 pt-16"
+      style="padding-bottom: calc(13rem + env(safe-area-inset-bottom))"
+    >
       <!-- Titre -->
       <h1 class="mb-12 text-center text-3xl font-bold text-[var(--color-black)]">
         {{ $t('onboarding.paywall.title') }}

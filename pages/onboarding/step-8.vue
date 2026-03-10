@@ -11,94 +11,115 @@
         <div class="streak-widget w-full">
           <div class="streak-container">
             <!-- Jour 1 - complété -->
-            <div class="streak-day completed">
-              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+            <div class="streak-col">
+              <span class="streak-day-label">{{ weekDays[0] }}</span>
+              <div class="streak-day completed">
+                <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M7 12l3 3 7-7"
+                    stroke="white"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
             </div>
 
             <!-- Jour 2 - complété -->
-            <div class="streak-day completed">
-              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+            <div class="streak-col">
+              <span class="streak-day-label">{{ weekDays[1] }}</span>
+              <div class="streak-day completed">
+                <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M7 12l3 3 7-7"
+                    stroke="white"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
             </div>
 
             <!-- Jour 3 - complété -->
-            <div class="streak-day completed">
-              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+            <div class="streak-col">
+              <span class="streak-day-label">{{ weekDays[2] }}</span>
+              <div class="streak-day completed">
+                <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M7 12l3 3 7-7"
+                    stroke="white"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
             </div>
 
             <!-- Jour 4 - complété -->
-            <div class="streak-day completed">
-              <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+            <div class="streak-col">
+              <span class="streak-day-label">{{ weekDays[3] }}</span>
+              <div class="streak-day completed">
+                <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M7 12l3 3 7-7"
+                    stroke="white"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
             </div>
 
             <!-- Jour 5 - animation -->
-            <div class="streak-day day-5">
-              <svg class="check-icon check-5" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+            <div class="streak-col">
+              <span class="streak-day-label">{{ weekDays[4] }}</span>
+              <div class="streak-day day-5">
+                <svg class="check-icon check-5" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M7 12l3 3 7-7"
+                    stroke="white"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
             </div>
 
             <!-- Jour 6 - animation -->
-            <div class="streak-day day-6">
-              <svg class="check-icon check-6" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+            <div class="streak-col">
+              <span class="streak-day-label">{{ weekDays[5] }}</span>
+              <div class="streak-day day-6">
+                <svg class="check-icon check-6" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M7 12l3 3 7-7"
+                    stroke="white"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
             </div>
 
             <!-- Jour 7 - aujourd'hui, animation -->
-            <div class="streak-day day-7">
-              <svg class="check-icon check-7" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M7 12l3 3 7-7"
-                  stroke="white"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+            <div class="streak-col">
+              <span class="streak-day-label">{{ weekDays[6] }}</span>
+              <div class="streak-day day-7">
+                <svg class="check-icon check-7" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M7 12l3 3 7-7"
+                    stroke="white"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
@@ -117,10 +138,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useOnboardingStore } from '~/store/onboarding'
 
 const onboardingStore = useOnboardingStore()
+const { tm } = useI18n()
+
+const weekDays = computed(() => tm('date.weekDays') as string[])
 
 onMounted(() => {
   onboardingStore.currentStep = 8
@@ -145,6 +170,20 @@ defineOptions({ name: 'OnboardingStep8Page' })
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
+}
+
+.streak-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.streak-day-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 0.05em;
 }
 
 /* Case de jour de streak */

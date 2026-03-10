@@ -2,7 +2,7 @@
   "date": {
     "today": "Aujourd'hui",
     "tomorrow": "Demain",
-    "weekDays": ["L", "M", "M", "J", "V", "S", "D"]
+    "weekDays": ["Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"]
   },
   "review": {
     "showAnswer": "Afficher la réponse",
@@ -28,7 +28,11 @@
     "streakNotValidated": "Streak non validé",
     "currentStreak": "Série actuelle : {days} jour | Série actuelle : {days} jours",
     "needMoreCards": "Révisez au moins 10 cartes pour valider votre streak",
-    "backToCollections": "Retour aux collections"
+    "backToCollections": "Retour aux collections",
+    "streakModal": {
+      "title": "Premier jour ! | {count} jours de suite !",
+      "subtitle": "Ta régularité fait toute la différence."
+    }
   },
   "notifications": {
     "message1": "Vos cartes vous attendent, {firstName} ! 🎯",
@@ -54,7 +58,9 @@
     "message21": "Un petit rappel pour ne pas perdre le rythme, {firstName} 🔄",
     "message22": "Une session maintenant te rapproche de tes objectifs 🎯"
   },
-  "app": { "name": "Cortx" },
+  "app": {
+    "name": "Cortx"
+  },
   "common": {
     "ok": "OK",
     "cancel": "Annuler",
@@ -71,7 +77,8 @@
     "createCollection": "Créer une collection",
     "confirm": "Confirmer",
     "processing": "En cours...",
-    "close": "Fermer"
+    "close": "Fermer",
+    "continue": "Continuer"
   },
   "collections": {
     "collection": "Collection",
@@ -421,7 +428,6 @@
       "privacyPolicy": "Politique de confidentialité",
       "termsOfUse": "Conditions d'utilisation"
     },
-    "continue": "Continuer",
     "start": "Commencer",
     "letsGo": "C'est parti"
   },

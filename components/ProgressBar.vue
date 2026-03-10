@@ -76,7 +76,7 @@ const progressPercentage = computed(() => {
 
 .progress-tooltip {
   position: absolute;
-  bottom: 4px;
+  bottom: 14px;
   transform: translateX(-50%);
   transition: left 0.5s ease-out;
   pointer-events: none;

@@ -56,6 +56,9 @@ export default defineNuxtConfig({
       fs: {
         allow: ['.'],
       },
+      watch: {
+        ignored: ['**/ios/**', '**/android/**', '**/.git/**'],
+      },
     },
   },
 })

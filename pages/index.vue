@@ -71,6 +71,9 @@
       :description="$t('upgrade.collectionLimit')"
       @close="showUpgradeModal = false"
     />
+
+    <!-- Streak modal après la révision du jour -->
+    <StreakModal :is-open="dailyReviewStore.showStreakModal" @close="dailyReviewStore.setShowStreakModal(false)" />
   </div>
 </template>
 
@@ -80,12 +83,14 @@ import { useRouter } from 'vue-router'
 import { useCollections } from '~/composables/useCollections'
 import { useDailyReview } from '~/composables/useDailyReview'
 import { useSubscription } from '~/composables/useSubscription'
+import { useDailyReviewStore } from '~/store/dailyReview'
 import DailyReviewButton from '~/components/DailyReviewButton.vue'
 import PageHeader from '~/components/PageHeader.vue'
 import BaseButton from '~/components/Button.vue'
 import IconSettings from '~/components/icons/IconSettings.vue'
 import IconStats from '~/components/icons/IconStats.vue'
 import UpgradeModal from '~/components/UpgradeModal.vue'
+import StreakModal from '~/components/StreakModal.vue'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'HomePage' })
@@ -94,6 +99,7 @@ const router = useRouter()
 const { collections, isLoading, error, loadCollections, deleteCollection } = useCollections()
 const { initDailyReview } = useDailyReview()
 const { isFree, FREE_LIMITS } = useSubscription()
+const dailyReviewStore = useDailyReviewStore()
 
 const collectionToDelete = ref<Collection | null>(null)
 const isDeleting = ref(false)

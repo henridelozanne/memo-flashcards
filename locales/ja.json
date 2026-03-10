@@ -28,7 +28,11 @@
     "streakNotValidated": "連続記録が確認されていません",
     "currentStreak": "現在の連続：{days} 日",
     "needMoreCards": "連続記録を確認するには、少なくとも10枚のカードを復習してください",
-    "backToCollections": "コレクションに戻る"
+    "backToCollections": "コレクションに戻る",
+    "streakModal": {
+      "title": "初日！ | {count}日連続記録！",
+      "subtitle": "継続は力なり。"
+    }
   },
   "notifications": {
     "message1": "カードがあなたを待っています、{firstName}！🎯",
@@ -54,7 +58,9 @@
     "message21": "リズムを維持するための小さなリマインダー、{firstName} 🔄",
     "message22": "今学習すれば目標に近づきます 🎯"
   },
-  "app": { "name": "Cortx" },
+  "app": {
+    "name": "Cortx"
+  },
   "common": {
     "ok": "OK",
     "cancel": "キャンセル",
@@ -71,7 +77,8 @@
     "createCollection": "コレクションを作成",
     "confirm": "確認",
     "processing": "処理中...",
-    "close": "閉じる"
+    "close": "閉じる",
+    "continue": "続ける"
   },
   "collections": {
     "collection": "コレクション",
@@ -421,7 +428,6 @@
       "privacyPolicy": "プライバシーポリシー",
       "termsOfUse": "利用規約"
     },
-    "continue": "続ける",
     "start": "開始",
     "letsGo": "始めましょう"
   },
