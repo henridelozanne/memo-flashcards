@@ -5,6 +5,7 @@ import { useDatabase } from './useDatabase'
 import { syncCollectionsToRemote } from '~/lib/sync'
 import useSupabaseAuth from './useSupabaseAuth'
 import { usePosthog } from './usePosthog'
+import { useWidgetData } from './useWidgetData'
 
 const collections = ref<Collection[]>([])
 const isLoading = ref(true)
@@ -13,6 +14,7 @@ const error = ref<string | null>(null)
 const { getDbConnection } = useDatabase()
 
 export const useCollections = () => {
+  const { syncAllCardsToWidget } = useWidgetData()
   const loadCollections = async () => {
     isLoading.value = true
     error.value = null
@@ -151,6 +153,7 @@ export const useCollections = () => {
       })
 
       await loadCollections()
+      syncAllCardsToWidget()
 
       // Track event
       const posthog = usePosthog()

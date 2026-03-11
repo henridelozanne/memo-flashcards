@@ -16,13 +16,19 @@ struct FlashCard: Codable {
 }
 
 func loadCards() -> [FlashCard] {
-    guard
-        let defaults = UserDefaults(suiteName: "group.com.memoflashcards.app"),
-        let data = defaults.data(forKey: "widgetCards"),
-        let cards = try? JSONDecoder().decode([FlashCard].self, from: data)
-    else {
+    guard let defaults = UserDefaults(suiteName: "group.com.memoflashcards.app") else {
+        print("[MemoWidget] ERROR: App Group UserDefaults not accessible")
         return []
     }
+    guard let data = defaults.data(forKey: "widgetCards") else {
+        print("[MemoWidget] No data found for key 'widgetCards'")
+        return []
+    }
+    guard let cards = try? JSONDecoder().decode([FlashCard].self, from: data) else {
+        print("[MemoWidget] ERROR: Failed to decode cards from UserDefaults")
+        return []
+    }
+    print("[MemoWidget] Loaded \(cards.count) cards from UserDefaults")
     return cards
 }
 
@@ -52,11 +58,16 @@ struct Provider: TimelineProvider {
             return
         }
 
-        // Une carte différente toutes les minutes (test)
+        // Mélange côté widget pour varier l'ordre des cartes
+        let shuffledCards = cards.shuffled()
+
+        // Boucle sur les cartes pour remplir 4h d'entrées (toutes les 5 secondes)
         let now = Date()
         var entries: [CardEntry] = []
-        for (index, card) in cards.prefix(48).enumerated() {
-            let entryDate = Calendar.current.date(byAdding: .minute, value: index * 1, to: now)!
+        let totalEntries = 48
+        for i in 0..<totalEntries {
+            let card = shuffledCards[i % shuffledCards.count]
+            let entryDate = Calendar.current.date(byAdding: .second, value: i * 20, to: now)!
             entries.append(CardEntry(date: entryDate, card: card))
         }
 
@@ -74,7 +85,7 @@ struct MemoWidgetEntryView: View {
 
     var body: some View {
         if let card = entry.card {
-            ZStack(alignment: .topTrailing) {
+            ZStack(alignment: .bottomTrailing) {
                 VStack(alignment: .leading, spacing: 0) {
                     Spacer()
 
@@ -111,8 +122,8 @@ struct MemoWidgetEntryView: View {
                     .resizable()
                     .frame(width: 18, height: 18)
                     .cornerRadius(4)
-                    .padding(.top, 6)
-                    .padding(.trailing, 6)
+                    .padding(.bottom, 4)
+                    .padding(.trailing, 4)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {

@@ -9,7 +9,24 @@
 
 <script setup>
 // Design : https://www.figma.com/design/V15DbYppzpLTKLMGpOmXxf/Task-management---to-do-list-app--Community-?node-id=1-87&p=f&t=g7PKTuPvHqPTjuhe-0
+import { onMounted, onUnmounted } from 'vue'
 import BackgroundEffects from '~/components/BackgroundEffects.vue'
+import { useWidgetData } from '~/composables/useWidgetData'
+
+const { syncAllCardsToWidget } = useWidgetData()
+
+const onVisibilityChange = () => {
+  if (document.visibilityState === 'visible') syncAllCardsToWidget()
+}
+
+onMounted(() => {
+  syncAllCardsToWidget()
+  document.addEventListener('visibilitychange', onVisibilityChange)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('visibilitychange', onVisibilityChange)
+})
 </script>
 
 <style>

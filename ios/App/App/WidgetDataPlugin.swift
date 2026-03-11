@@ -28,17 +28,24 @@ public class WidgetDataPlugin: CAPPlugin, CAPBridgedPlugin {
         }
 
         do {
-            let data = try JSONSerialization.data(withJSONObject: cards)
-            defaults.set(data, forKey: storageKey)
+            let newData = try JSONSerialization.data(withJSONObject: cards)
+            let existingData = defaults.data(forKey: storageKey)
+            defaults.set(newData, forKey: storageKey)
             defaults.synchronize()
+            print("[WidgetDataPlugin] Wrote \(cards.count) cards to UserDefaults (App Group: \(appGroupId))")
+
+            // Ne recharger la timeline que si les données ont changé
+            if #available(iOS 14.0, *) {
+                if newData != existingData {
+                    print("[WidgetDataPlugin] Data changed, reloading timelines")
+                    WidgetCenter.shared.reloadAllTimelines()
+                } else {
+                    print("[WidgetDataPlugin] Data unchanged, skipping timeline reload")
+                }
+            }
         } catch {
             call.reject("Failed to serialize cards: \(error.localizedDescription)")
             return
-        }
-
-        // Demander à WidgetKit de recharger toutes les timelines
-        if #available(iOS 14.0, *) {
-            WidgetCenter.shared.reloadAllTimelines()
         }
 
         call.resolve()

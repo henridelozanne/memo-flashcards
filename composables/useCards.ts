@@ -24,7 +24,7 @@ const LEITNER_INTERVALS: Record<number, number> = {
 
 export const useCards = () => {
   const { getDbConnection } = useDatabase()
-  const { syncCardsToWidget } = useWidgetData()
+  const { syncAllCardsToWidget } = useWidgetData()
 
   const loadCards = async (collectionId: string) => {
     isLoading.value = true
@@ -41,7 +41,7 @@ export const useCards = () => {
         [collectionId]
       )
       cards.value = result
-      syncCardsToWidget(result)
+      syncAllCardsToWidget()
     } catch (e: any) {
       error.value = e.message || 'Erreur lors du chargement des cartes'
     } finally {
@@ -114,7 +114,7 @@ export const useCards = () => {
       [collectionId]
     )
     cards.value = result
-    syncCardsToWidget(result)
+    syncAllCardsToWidget()
 
     // Sync to Supabase (non-blocking)
     syncCardsToRemote().catch((err) => {
@@ -169,7 +169,7 @@ export const useCards = () => {
       [existing.collection_id]
     )
     cards.value = result
-    syncCardsToWidget(result)
+    syncAllCardsToWidget()
 
     // Sync to Supabase (non-blocking)
     syncCardsToRemote().catch((err) => {
@@ -214,7 +214,7 @@ export const useCards = () => {
       [existing.collection_id]
     )
     cards.value = result
-    syncCardsToWidget(result)
+    syncAllCardsToWidget()
 
     // Invalider le cache du daily review (la carte supprimée peut être due aujourd'hui)
     const { invalidateCache } = useDailyReview()

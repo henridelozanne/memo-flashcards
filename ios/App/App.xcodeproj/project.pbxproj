@@ -19,6 +19,7 @@
 		970C41FB2F5F03B200716593 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 970C41FA2F5F03B200716593 /* SwiftUI.framework */; };
 		970C420A2F5F03B400716593 /* MemoWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 970C41F72F5F03B200716593 /* MemoWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		970C42222F5F143E00716593 /* WidgetDataPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C42212F5F143E00716593 /* WidgetDataPlugin.swift */; };
+		979AF7AF2F619340007A7E9F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979AF7AE2F619340007A7E9F /* ViewController.swift */; };
 		97C9AF212F4E2132000B15D9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C9AF202F4E2132000B15D9 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,7 @@
 		970C41FA2F5F03B200716593 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		970C42102F5F048300716593 /* MemoWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MemoWidgetExtension.entitlements; sourceTree = "<group>"; };
 		970C42212F5F143E00716593 /* WidgetDataPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDataPlugin.swift; sourceTree = "<group>"; };
+		979AF7AE2F619340007A7E9F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		97C9AF202F4E2132000B15D9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B581CB4E9FEFEFE0FDA89CE2 /* Pods_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5828525242C027C6CCEB854 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			children = (
 				970C42212F5F143E00716593 /* WidgetDataPlugin.swift */,
 				970C41F22F5F031C00716593 /* App.entitlements */,
+				979AF7AE2F619340007A7E9F /* ViewController.swift */,
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
@@ -314,6 +317,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				979AF7AF2F619340007A7E9F /* ViewController.swift in Sources */,
 				970C42222F5F143E00716593 /* WidgetDataPlugin.swift in Sources */,
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 			);
