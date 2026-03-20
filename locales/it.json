@@ -117,6 +117,7 @@
     "addAnother": "Aggiungi un'altra",
     "createdSuccess": "Carta aggiunta con successo!",
     "createdError": "Errore nell'aggiunta della carta",
+    "duplicateQuestion": "Esiste già una carta con la stessa domanda in questa collezione",
     "updatedSuccess": "Carta modificata con successo",
     "updatedError": "Errore nella modifica della carta",
     "deleteConfirm": "Elimina questa carta",

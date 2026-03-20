@@ -117,6 +117,7 @@
     "addAnother": "Añadir otra",
     "createdSuccess": "¡Tarjeta añadida con éxito!",
     "createdError": "Error al añadir la tarjeta",
+    "duplicateQuestion": "Ya existe una tarjeta con la misma pregunta en esta colección",
     "updatedSuccess": "Tarjeta modificada con éxito",
     "updatedError": "Error al modificar la tarjeta",
     "deleteConfirm": "Eliminar esta tarjeta",

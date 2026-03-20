@@ -111,7 +111,10 @@ async function onSubmit(front: string, back: string) {
   } catch (error) {
     message.value = {
       type: 'error',
-      text: error instanceof Error ? error.message : (t('cards.createdError') as string),
+      text:
+        error instanceof Error && error.message === 'cards.duplicateQuestion'
+          ? t('cards.duplicateQuestion')
+          : t('cards.createdError'),
     }
   } finally {
     isSubmitting.value = false

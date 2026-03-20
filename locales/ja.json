@@ -117,6 +117,7 @@
     "addAnother": "別のカードを追加",
     "createdSuccess": "カードが正常に追加されました！",
     "createdError": "カードの追加エラー",
+    "duplicateQuestion": "同じ質問を持つカードがすでにこのコレクションに存在します",
     "updatedSuccess": "カードが正常に変更されました",
     "updatedError": "カードの変更エラー",
     "deleteConfirm": "このカードを削除",

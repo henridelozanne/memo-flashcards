@@ -117,6 +117,7 @@
     "addAnother": "Ajouter une autre",
     "createdSuccess": "Carte ajoutée avec succès !",
     "createdError": "Erreur lors de l'ajout de la carte",
+    "duplicateQuestion": "Une carte avec la même question existe déjà dans cette collection",
     "updatedSuccess": "Carte modifiée avec succès",
     "updatedError": "Erreur lors de la modification de la carte",
     "deleteConfirm": "Supprimer cette carte",

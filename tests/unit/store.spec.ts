@@ -69,7 +69,7 @@ describe('user profile store', () => {
     await store.loadUserData()
 
     expect(store.firstName).toBe('John')
-    expect(store.goal).toBe('learn')
+    expect(store.goal).toEqual(['learn'])
     expect(store.situation).toBe('student')
     expect(store.notificationHour).toBe('09:00')
     expect(store.language).toBe('fr')

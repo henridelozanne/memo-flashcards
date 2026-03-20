@@ -117,6 +117,7 @@
     "addAnother": "Add another",
     "createdSuccess": "Card added successfully!",
     "createdError": "Error while adding the card",
+    "duplicateQuestion": "A card with the same question already exists in this collection",
     "updatedSuccess": "Card updated successfully",
     "updatedError": "Error while updating the card",
     "deleteConfirm": "Delete this card",

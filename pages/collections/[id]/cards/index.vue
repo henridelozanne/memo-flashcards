@@ -333,7 +333,11 @@ async function handleGenerateAiCards() {
 }
 
 async function handleAiCardAccepted(proposal: AiCardProposal) {
-  await createCardInCollection(proposal.question, proposal.answer, collectionId)
+  try {
+    await createCardInCollection(proposal.question, proposal.answer, collectionId)
+  } catch {
+    // Silently ignore duplicate question errors from AI suggestions
+  }
 }
 
 function editCard(cardId: string) {

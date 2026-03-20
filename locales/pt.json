@@ -117,6 +117,7 @@
     "addAnother": "Adicionar outro",
     "createdSuccess": "Cartão adicionado com sucesso!",
     "createdError": "Erro ao adicionar cartão",
+    "duplicateQuestion": "Já existe um cartão com a mesma pergunta nesta coleção",
     "updatedSuccess": "Cartão modificado com sucesso",
     "updatedError": "Erro ao modificar cartão",
     "deleteConfirm": "Excluir este cartão",

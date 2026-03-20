@@ -62,6 +62,17 @@ export const useCards = () => {
       throw new Error('Le verso de la carte est obligatoire')
     }
 
+    const db = await getDbConnection()
+
+    // Vérifier les doublons dans la collection (sur la question uniquement)
+    const duplicate = await db.get<{ id: string }>(
+      'SELECT id FROM cards WHERE collection_id = ? AND LOWER(question) = LOWER(?) AND deleted_at IS NULL',
+      [collectionId, front.trim()]
+    )
+    if (duplicate) {
+      throw new Error('cards.duplicateQuestion')
+    }
+
     const { getCurrentUserId } = useSupabaseAuth()
     const userId = await getCurrentUserId()
 
@@ -82,7 +93,6 @@ export const useCards = () => {
       total_reviews: 0,
     }
 
-    const db = await getDbConnection()
     await db.run(
       `
       INSERT INTO cards (id, user_id, collection_id, question, answer, compartment, next_review_at, created_at, updated_at, archived, correct_answers, total_reviews)
