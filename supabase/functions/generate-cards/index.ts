@@ -11,7 +11,7 @@ interface RequestBody {
   cards: CardInput[]
   locale: string
   categoryName: string
-  goal: string
+  goal: string[]
   situation: string
 }
 
@@ -25,7 +25,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-function getGoalInstruction(goalValue: string): string {
+function getSingleGoalInstruction(goalValue: string): string {
   switch (goalValue) {
     case 'learnLanguage':
       return "The user's goal is to learn a language. Generate cards that prioritise high-utility vocabulary, common expressions, and core grammar patterns relevant to the category."
@@ -41,6 +41,11 @@ function getGoalInstruction(goalValue: string): string {
     default:
       return "The user's goal is to learn about this topic. Generate useful, relevant cards that build a solid understanding of the category."
   }
+}
+
+function getGoalInstruction(goals: string[]): string {
+  if (!goals || goals.length === 0) return getSingleGoalInstruction('other')
+  return goals.map(getSingleGoalInstruction).join(' ')
 }
 
 function getSituationInstruction(situationValue: string): string {

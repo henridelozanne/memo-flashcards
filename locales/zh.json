@@ -327,7 +327,7 @@
     },
     "step2": {
       "title": "欢迎{name}！",
-      "subtitle": "您的目标是什么？",
+      "subtitle": "您的目标有哪些？",
       "goals": {
         "learnLanguage": "学习一门语言",
         "reviseClasses": "复习课程",

@@ -2,10 +2,19 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { detectSystemLanguage } from '~/utils/language'
 
+function parseGoal(raw: string): string[] {
+  try {
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? parsed : raw ? [raw] : []
+  } catch {
+    return raw ? [raw] : []
+  }
+}
+
 export const useUserProfileStore = defineStore('userProfile', () => {
   // Données du profil utilisateur
   const firstName = ref<string>('')
-  const goal = ref<string>('')
+  const goal = ref<string[]>([])
   const situation = ref<string>('')
   const notificationHour = ref<string>('')
   const language = ref<string>(detectSystemLanguage())
@@ -29,7 +38,7 @@ export const useUserProfileStore = defineStore('userProfile', () => {
       if (profile) {
         // Populate all fields from SQLite
         firstName.value = profile.first_name
-        goal.value = profile.goal
+        goal.value = parseGoal(profile.goal)
         situation.value = profile.situation
         notificationHour.value = profile.notification_hour
         language.value = profile.language || detectSystemLanguage()
@@ -49,7 +58,7 @@ export const useUserProfileStore = defineStore('userProfile', () => {
   // Réinitialiser le profil utilisateur
   function resetProfile() {
     firstName.value = ''
-    goal.value = ''
+    goal.value = []
     situation.value = ''
     notificationHour.value = ''
     language.value = detectSystemLanguage()

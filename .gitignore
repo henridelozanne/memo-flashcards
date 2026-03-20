@@ -42,3 +42,6 @@ yarn-error.log*
 # Supabase CLI temp files
 supabase/.temp/
 ios/App/App.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+
+# Release notes
+ANDROID_RELEASE.md

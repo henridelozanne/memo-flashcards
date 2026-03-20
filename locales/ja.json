@@ -327,7 +327,7 @@
     },
     "step2": {
       "title": "ようこそ{name}！",
-      "subtitle": "あなたの目標は何ですか？",
+      "subtitle": "あなたの目標は何ですか？（複数選択可）",
       "goals": {
         "learnLanguage": "言語を学ぶ",
         "reviseClasses": "授業を復習する",

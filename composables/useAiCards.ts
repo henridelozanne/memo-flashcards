@@ -25,7 +25,7 @@ export const useAiCards = () => {
     cards: Card[],
     locale: string,
     categoryName: string,
-    goal: string,
+    goal: string[],
     situation: string
   ): Promise<AiCardProposal[]> => {
     isGenerating.value = true

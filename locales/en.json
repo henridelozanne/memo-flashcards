@@ -327,7 +327,7 @@
     },
     "step2": {
       "title": "Welcome {name}!",
-      "subtitle": "What's your goal?",
+      "subtitle": "What are your goals?",
       "goals": {
         "learnLanguage": "Learn a language",
         "reviseClasses": "Review my classes",

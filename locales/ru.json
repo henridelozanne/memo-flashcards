@@ -327,7 +327,7 @@
     },
     "step2": {
       "title": "Добро пожаловать, {name}!",
-      "subtitle": "Какая ваша цель?",
+      "subtitle": "Каковы ваши цели?",
       "goals": {
         "learnLanguage": "Выучить язык",
         "reviseClasses": "Повторить курсы",

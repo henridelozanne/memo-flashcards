@@ -327,7 +327,7 @@
     },
     "step2": {
       "title": "¡Bienvenido/a {name}!",
-      "subtitle": "¿Cuál es tu objetivo?",
+      "subtitle": "¿Cuáles son tus objetivos?",
       "goals": {
         "learnLanguage": "Aprender un idioma",
         "reviseClasses": "Repasar mis clases",

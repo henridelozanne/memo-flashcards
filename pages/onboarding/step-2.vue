@@ -15,12 +15,12 @@
           :key="goalOption.value"
           :class="[
             'w-full rounded-[15px] border-2 px-6 py-4 text-left text-base transition',
-            selectedGoal === goalOption.value
+            selectedGoals.includes(goalOption.value)
               ? 'border-[var(--color-primary)] bg-[var(--color-primary)] font-semibold text-white'
               : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300',
             `slide-up-${index + 2}`,
           ]"
-          @click="selectGoal(goalOption.value)"
+          @click="toggleGoal(goalOption.value)"
         >
           {{ goalOption.label }}
         </button>
@@ -29,7 +29,7 @@
 
     <!-- Slot pour personnaliser le bouton -->
     <template #button-label>
-      <span :class="{ 'opacity-50': !selectedGoal }">
+      <span :class="{ 'opacity-50': selectedGoals.length === 0 }">
         {{ $t('common.continue') }}
       </span>
     </template>
@@ -47,7 +47,7 @@ const userProfileStore = useUserProfileStore()
 const { t } = useI18n()
 
 // État local
-const selectedGoal = ref<string>(userProfileStore.goal || '')
+const selectedGoals = ref<string[]>(userProfileStore.goal.length > 0 ? [...userProfileStore.goal] : [])
 
 // Liste des options d'objectifs
 const goalOptions = computed(() => [
@@ -59,19 +59,24 @@ const goalOptions = computed(() => [
   { value: 'other', label: t('onboarding.step2.goals.other') },
 ])
 
-// Sélectionner un objectif
-function selectGoal(goal: string) {
-  selectedGoal.value = goal
+// Basculer un objectif (ajoute ou retire de la sélection)
+function toggleGoal(goal: string) {
+  const idx = selectedGoals.value.indexOf(goal)
+  if (idx === -1) {
+    selectedGoals.value.push(goal)
+  } else {
+    selectedGoals.value.splice(idx, 1)
+  }
 }
 
 // Fonction de validation
 function validate(): boolean {
-  if (!selectedGoal.value) {
+  if (selectedGoals.value.length === 0) {
     return false // Bloquer si aucune sélection
   }
 
   // Sauvegarder dans le store
-  userProfileStore.goal = selectedGoal.value
+  userProfileStore.goal = selectedGoals.value
   return true
 }
 

@@ -199,7 +199,7 @@ async function completeOnboarding(subscriptionSnapshot?: {
     await saveUserProfileLocal({
       userId,
       firstName: userProfileStore.firstName,
-      goal: userProfileStore.goal,
+      goal: JSON.stringify(userProfileStore.goal),
       situation: userProfileStore.situation,
       notificationHour: userProfileStore.notificationHour,
       language: userProfileStore.language,
@@ -220,7 +220,7 @@ async function completeOnboarding(subscriptionSnapshot?: {
       subscription_status: subscriptionSnapshot?.status || 'free',
       subscription_product_id: subscriptionSnapshot?.productId || null,
       first_name: userProfileStore.firstName,
-      goal: userProfileStore.goal,
+      goal: userProfileStore.goal.join(','),
       situation: userProfileStore.situation,
       language: userProfileStore.language,
       notification_hour: userProfileStore.notificationHour,
