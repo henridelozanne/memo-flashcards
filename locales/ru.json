@@ -95,6 +95,7 @@
     "deleteConfirm": "Вы уверены, что хотите удалить коллекцию \"{name}\"?",
     "deleteWarning": "Это действие необратимо.",
     "nameLabel": "Название коллекции",
+    "backgroundColorLabel": "Цвет фона",
     "namePlaceholder": "Например: Английский словарь",
     "submitting": "Обработка...",
     "edit": "Изменить",

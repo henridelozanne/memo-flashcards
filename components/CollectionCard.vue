@@ -1,23 +1,28 @@
 <template>
   <div
-    class="flex cursor-pointer flex-col rounded-[15px] border border-gray-100 bg-white p-4 shadow-[0px_4px_32px_#0000000a] transition hover:shadow-md"
+    class="flex cursor-pointer flex-col rounded-[15px] border border-gray-100 p-4 shadow-[0px_4px_32px_#0000000a] transition hover:shadow-md"
+    :style="{ background: collection.color || '#ffffff' }"
     @click="handleClick"
   >
-    <div class="mb-2 text-lg font-semibold">{{ collection.name }}</div>
-    <div class="mb-4 text-sm text-gray-500">
+    <div class="mb-2 text-lg font-semibold" :class="isColored ? 'text-white' : 'text-gray-900'">
+      {{ collection.name }}
+    </div>
+    <div class="mb-4 text-sm" :class="isColored ? 'text-white/75' : 'text-gray-500'">
       {{ $t('cards.cardCount', { count: cardCount }) }}
     </div>
     <div class="mt-auto flex gap-2">
       <button
         v-if="onEdit"
-        class="text-xs text-[var(--color-accent-blue)] hover:underline"
+        class="text-xs hover:underline"
+        :class="isColored ? 'text-white/80' : 'text-[var(--color-accent-blue)]'"
         @click.stop="onEdit(collection.id)"
       >
         {{ $t('collections.edit') }}
       </button>
       <button
         v-if="onDelete"
-        class="text-xs text-[var(--color-accent-red)] hover:underline"
+        class="text-xs hover:underline"
+        :class="isColored ? 'text-white/80' : 'text-[var(--color-accent-red)]'"
         @click.stop="onDelete(collection)"
       >
         {{ $t('common.delete') }}
@@ -27,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useCards } from '~/composables/useCards'
 import type { Collection } from '~/lib/types'
 
@@ -40,6 +45,7 @@ const props = defineProps<{
 
 const { getCardsCount } = useCards()
 const cardCount = ref(0)
+const isColored = computed(() => !!props.collection.color && props.collection.color !== '#ffffff')
 
 onMounted(async () => {
   try {

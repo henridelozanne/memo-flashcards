@@ -42,7 +42,7 @@ const { createCollection } = useCollections()
 const isSubmitting = ref(false)
 const message = ref<{ type: 'success' | 'error'; text: string } | null>(null)
 
-async function onSubmit(name: string) {
+async function onSubmit({ name }: { name: string; color: string }) {
   isSubmitting.value = true
   message.value = null
   try {

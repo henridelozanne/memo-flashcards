@@ -95,6 +95,7 @@
     "deleteConfirm": "Tem certeza de que deseja excluir a coleção \"{name}\"?",
     "deleteWarning": "Esta ação é irreversível.",
     "nameLabel": "Nome da coleção",
+    "backgroundColorLabel": "Cor de fundo",
     "namePlaceholder": "Ex: Vocabulário em inglês",
     "submitting": "Processando...",
     "edit": "Modificar",

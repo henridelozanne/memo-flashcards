@@ -115,8 +115,8 @@ describe('useCollections Persistence', () => {
 
     // Verify UPDATE query was called
     expect(mockSqliteConnection.run).toHaveBeenCalledWith(
-      'UPDATE collections SET name = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
-      [newName, expect.any(Number), collectionId]
+      'UPDATE collections SET name = ?, color = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
+      [newName, null, expect.any(Number), collectionId]
     )
   })
 

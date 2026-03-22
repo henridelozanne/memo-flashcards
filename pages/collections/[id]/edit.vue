@@ -19,6 +19,7 @@
       <div v-else class="rounded-lg bg-white p-6 shadow">
         <CollectionForm
           :name="collection.name"
+          :color="collection.color"
           :is-submitting="isSubmitting"
           :submit-label="$t('common.save')"
           @submit="onSubmit"
@@ -60,18 +61,18 @@ async function init() {
 
 init()
 
-async function onSubmit(name: string) {
+async function onSubmit({ name, color }: { name: string; color: string }) {
   if (!collection.value) return
   isSubmitting.value = true
   message.value = null
   try {
     const collectionId = collection.value.id
-    await updateCollection(collectionId, name)
+    await updateCollection(collectionId, name, color)
     message.value = {
       type: 'success',
       text: t('collections.updatedSuccess') as string,
     }
-    router.push(`/collections/${collectionId}/cards`)
+    router.push('/')
   } catch (err) {
     message.value = {
       type: 'error',

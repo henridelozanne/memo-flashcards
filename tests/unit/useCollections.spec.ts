@@ -111,8 +111,8 @@ describe('useCollections', () => {
         ['Updated', 'test-id']
       )
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
-        'UPDATE collections SET name = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
-        ['Updated', expect.any(Number), 'test-id']
+        'UPDATE collections SET name = ?, color = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
+        ['Updated', null, expect.any(Number), 'test-id']
       )
     })
   })

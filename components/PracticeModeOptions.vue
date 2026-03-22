@@ -81,6 +81,7 @@ export interface PracticeModeOptions {
 interface Props {
   modelValue: PracticeModeOptions
   isFree?: boolean
+  isColored?: boolean
 }
 
 const props = defineProps<Props>()
@@ -148,7 +149,7 @@ function handleClick(key: keyof PracticeModeOptions, event: Event) {
   cursor: pointer;
   font-size: 15px;
   font-weight: 500;
-  color: #1f2937;
+  color: v-bind("isColored ? '#ffffff' : '#1f2937'");
   -webkit-tap-highlight-color: transparent !important;
 }
 
@@ -164,7 +165,7 @@ function handleClick(key: keyof PracticeModeOptions, event: Event) {
   margin: 0;
   padding-left: 32px;
   font-size: 13px;
-  color: #6b7280;
+  color: v-bind("isColored ? 'rgba(255,255,255,0.7)' : '#6b7280'");
   line-height: 1.4;
 }
 </style>

@@ -121,6 +121,12 @@ export const useDatabase = () => {
     if (!colNames.includes('subscription_updated_at'))
       await connection.run('ALTER TABLE user_profiles ADD COLUMN subscription_updated_at INTEGER')
 
+    // Migration: ajout de la couleur de fond sur les collections
+    const collectionCols = await connection.all<{ name: string }>('PRAGMA table_info(collections)')
+    const collectionColNames = collectionCols.map((c) => c.name)
+    if (!collectionColNames.includes('color'))
+      await connection.run('ALTER TABLE collections ADD COLUMN color TEXT DEFAULT NULL')
+
     return connection
   }
 

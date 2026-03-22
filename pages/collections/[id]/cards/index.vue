@@ -23,13 +23,16 @@
       <!-- Content -->
       <div v-else>
         <!-- Résumé -->
-        <div class="mb-6 rounded-[15px] border border-gray-100 bg-white p-6 shadow-[0px_4px_32px_#0000000a]">
+        <div
+          class="mb-6 rounded-[15px] border border-gray-100 p-6 shadow-[0px_4px_32px_#0000000a]"
+          :style="{ background: collection.color || '#ffffff' }"
+        >
           <div class="flex flex-col gap-4">
             <div>
-              <p class="text-lg font-medium">
+              <p class="text-lg font-medium" :class="isColored ? 'text-white' : ''">
                 {{ $t('cards.cardCount', { count: cards.length }) }}
               </p>
-              <p v-if="lastCardDate" class="text-sm text-gray-500">
+              <p v-if="lastCardDate" class="text-sm" :class="isColored ? 'text-white/75' : 'text-gray-500'">
                 {{ $t('cards.lastAdded') }} {{ formatDate(lastCardDate) }}
               </p>
             </div>
@@ -37,15 +40,25 @@
             <!-- Bouton Practice Mode -->
             <div class="flex flex-col gap-2">
               <div class="flex items-center gap-2">
-                <button type="button" class="practice-button" @click="startPracticeMode">
+                <button
+                  type="button"
+                  class="practice-button"
+                  :class="{ 'practice-button--colored': isColored }"
+                  @click="startPracticeMode"
+                >
                   <IconDumbbell />
                   {{ $t('practiceMode.button') }}
                 </button>
-                <button type="button" class="options-toggle-button" @click="showPracticeOptions = !showPracticeOptions">
+                <button
+                  type="button"
+                  class="options-toggle-button"
+                  :class="isColored ? 'text-white' : 'text-gray-500'"
+                  @click="showPracticeOptions = !showPracticeOptions"
+                >
                   <IconSettings />
                 </button>
               </div>
-              <p class="text-center text-xs text-gray-500">
+              <p class="text-center text-xs" :class="isColored ? 'text-white/75' : 'text-gray-500'">
                 {{ $t('practiceMode.subtitle') }}
               </p>
             </div>
@@ -54,7 +67,7 @@
             <Transition name="practice-options">
               <div v-if="showPracticeOptions" class="mt-2">
                 <div class="mb-3 flex items-center justify-between">
-                  <p class="text-sm font-medium text-gray-700">
+                  <p class="text-sm font-medium" :class="isColored ? 'text-white' : 'text-gray-700'">
                     {{ $t('practiceMode.options') }}
                   </p>
                   <IconStar v-if="isFree" class="h-4 w-4 text-yellow-500" />
@@ -62,6 +75,7 @@
                 <PracticeModeOptions
                   v-model="practiceOptions"
                   :is-free="isFree"
+                  :is-colored="isColored"
                   @premium-required="handlePremiumRequired"
                 />
               </div>
@@ -72,6 +86,7 @@
               <button
                 type="button"
                 class="ai-button w-full"
+                :class="{ 'ai-button--colored': isColored }"
                 :disabled="isGeneratingAiCards"
                 @click="handleGenerateAiCards"
               >
@@ -188,6 +203,7 @@ const userProfileStore = useUserProfileStore()
 
 const collectionId = String(route.params.id)
 const collection = ref<Collection | null>(null)
+const isColored = computed(() => !!collection.value?.color && collection.value.color !== '#ffffff')
 const lastCardDate = ref<Date | null>(null)
 const sortBy = ref('newestFirst')
 const showPracticeOptions = ref(false)
@@ -417,10 +433,14 @@ onMounted(init)
   transform: translateY(0);
 }
 
+.practice-button--colored {
+  color: var(--color-black);
+  border-color: white;
+}
+
 .options-toggle-button {
   background: transparent;
   border: none;
-  color: #6b7280;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -487,6 +507,10 @@ onMounted(init)
 
 .ai-button {
   position: relative;
+}
+
+.ai-button--colored {
+  border: 1.5px solid white;
 }
 
 .ai-button__lock {

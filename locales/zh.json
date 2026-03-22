@@ -95,6 +95,7 @@
     "deleteConfirm": "您确定要删除收藏\"{name}\"吗？",
     "deleteWarning": "此操作不可逆。",
     "nameLabel": "收藏名称",
+    "backgroundColorLabel": "背景颜色",
     "namePlaceholder": "例如：英语词汇",
     "submitting": "处理中...",
     "edit": "修改",

@@ -95,6 +95,7 @@
     "deleteConfirm": "Are you sure you want to delete the collection \"{name}\"?",
     "deleteWarning": "This action is irreversible.",
     "nameLabel": "Collection name",
+    "backgroundColorLabel": "Background color",
     "namePlaceholder": "e.g. French vocabulary",
     "submitting": "Processing...",
     "edit": "Edit",

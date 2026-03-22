@@ -187,6 +187,7 @@ export async function syncCollectionsToRemote(): Promise<void> {
           id: local.id,
           user_id: local.user_id,
           name: local.name,
+          color: local.color ?? null,
           created_at: new Date(local.created_at).toISOString(),
           updated_at: new Date(local.updated_at).toISOString(),
           deleted_at: local.deleted_at ? new Date(local.deleted_at).toISOString() : null,
@@ -255,11 +256,12 @@ export async function syncCollectionsFromRemote(): Promise<void> {
           // eslint-disable-next-line no-await-in-loop
           await db.run(
             `UPDATE collections 
-             SET user_id = ?, name = ?, created_at = ?, updated_at = ?, deleted_at = ?
+             SET user_id = ?, name = ?, color = ?, created_at = ?, updated_at = ?, deleted_at = ?
              WHERE id = ?`,
             [
               remote.user_id,
               remote.name,
+              remote.color ?? null,
               new Date(remote.created_at).getTime(),
               remoteUpdatedAt,
               remote.deleted_at ? new Date(remote.deleted_at).getTime() : null,
@@ -269,13 +271,14 @@ export async function syncCollectionsFromRemote(): Promise<void> {
         } else {
           // eslint-disable-next-line no-await-in-loop
           await db.run(
-            `INSERT INTO collections (id, user_id, name, created_at, updated_at, deleted_at)
-             VALUES (?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO collections (id, user_id, name, color, created_at, updated_at, deleted_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
 
             [
               remote.id,
               remote.user_id,
               remote.name,
+              remote.color ?? null,
               new Date(remote.created_at).getTime(),
               remoteUpdatedAt,
               remote.deleted_at ? new Date(remote.deleted_at).getTime() : null,

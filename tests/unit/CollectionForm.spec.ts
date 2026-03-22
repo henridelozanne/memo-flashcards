@@ -71,7 +71,7 @@ describe('CollectionForm', () => {
     await wrapper.find('form').trigger('submit')
 
     expect(wrapper.emitted('submit')).toBeTruthy()
-    expect(wrapper.emitted('submit')?.[0]).toEqual(['My Collection'])
+    expect(wrapper.emitted('submit')?.[0]).toEqual([{ name: 'My Collection', color: '#ffffff' }])
   })
 
   it('emits cancel event when cancel button clicked', async () => {
@@ -82,7 +82,8 @@ describe('CollectionForm', () => {
     })
 
     const buttons = wrapper.findAll('button')
-    await buttons[0].trigger('click')
+    const cancelButton = buttons.find((b) => b.text() === 'Annuler')
+    await cancelButton!.trigger('click')
 
     expect(wrapper.emitted('cancel')).toBeTruthy()
   })

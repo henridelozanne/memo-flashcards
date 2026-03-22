@@ -88,7 +88,7 @@ export const useCollections = () => {
     }
   }
 
-  const updateCollection = async (id: string, name: string): Promise<void> => {
+  const updateCollection = async (id: string, name: string, color?: string | null): Promise<void> => {
     error.value = null
     try {
       const db = await getDbConnection()
@@ -102,8 +102,9 @@ export const useCollections = () => {
         throw new Error(`Collection "${name}" already exists`)
       }
 
-      await db.run('UPDATE collections SET name = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL', [
+      await db.run('UPDATE collections SET name = ?, color = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL', [
         name.trim(),
+        color ?? null,
         Date.now(),
         id,
       ])

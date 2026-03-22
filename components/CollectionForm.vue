@@ -14,6 +14,28 @@
       />
       <p v-if="error" class="mt-1 text-sm text-[var(--color-accent-red)]">{{ error }}</p>
     </div>
+
+    <!-- Sélecteur de couleur -->
+    <div class="mb-6">
+      <label class="mb-3 block text-sm font-medium text-gray-700">
+        {{ $t('collections.backgroundColorLabel') }}
+      </label>
+      <div class="grid grid-cols-4 gap-2">
+        <button
+          v-for="color in COLLECTION_COLORS"
+          :key="color"
+          type="button"
+          :aria-label="color"
+          class="h-10 w-full rounded-[7px] transition-transform hover:scale-105"
+          :style="{ background: color }"
+          :class="
+            localColor === color ? 'ring-2 ring-[var(--color-accent-blue)] ring-offset-2' : 'ring-1 ring-gray-200'
+          "
+          @click="selectColor(color)"
+        />
+      </div>
+    </div>
+
     <div class="flex gap-3">
       <button
         type="button"
@@ -40,25 +62,44 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
+// 10 couleurs vives en dégradé + blanc en dernière position
+const COLLECTION_COLORS = [
+  'linear-gradient(135deg, #9333ea, #7c3aed)', // violet
+  'linear-gradient(135deg, #db2777, #e11d48)', // rose
+  'linear-gradient(135deg, #0284c7, #4f46e5)', // bleu-indigo
+  'linear-gradient(135deg, #059669, #0d9488)', // menthe-teal
+  'linear-gradient(135deg, #ea580c, #d97706)', // orange
+  'linear-gradient(135deg, #be185d, #9d174d)', // rose foncé
+  'linear-gradient(135deg, #92400e, #78350f)', // marron
+  '#ffffff', // blanc
+]
+
 const props = withDefaults(
   defineProps<{
     name?: string
+    color?: string | null
     isSubmitting?: boolean
     submitLabel?: string
   }>(),
   {
     name: '',
+    color: null,
     isSubmitting: false,
     submitLabel: 'Enregistrer',
   }
 )
 const emit = defineEmits<{
-  (e: 'submit', name: string): void
+  (e: 'submit', payload: { name: string; color: string }): void
   (e: 'cancel'): void
 }>()
 
 const localName = ref(props.name ?? '')
+const localColor = ref<string>(props.color ?? '#ffffff')
 const error = ref<string | null>(null)
+
+function selectColor(color: string) {
+  localColor.value = color
+}
 
 function validateName() {
   const name = localName.value.trim()
@@ -72,6 +113,6 @@ function validateName() {
 function handleSubmit() {
   validateName()
   if (error.value) return
-  emit('submit', localName.value.trim())
+  emit('submit', { name: localName.value.trim(), color: localColor.value })
 }
 </script>
