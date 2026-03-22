@@ -21,6 +21,7 @@
           <ReviewCard
             :current-card="currentCard"
             :is-back-visible="isBackVisible"
+            :card-background="cardBackground"
             @show-back="isBackVisible = true"
             @answer="answer"
           />
@@ -42,17 +43,20 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCards } from '~/composables/useCards'
+import { useCollections } from '~/composables/useCollections'
 import { useReviewSession } from '~/composables/useReviewSession'
 import ProgressCircle from '~/components/ProgressCircle.vue'
 
 const route = useRoute()
 const router = useRouter()
 const { loadCards, cards } = useCards()
+const { loadCollections, getCollection } = useCollections()
 
 const collectionId = String(route.params.id)
+const cardBackground = ref<string | null>(null)
 
 // Parse practice options from query params
 const practiceOptions = {
@@ -66,6 +70,7 @@ const practiceOptions = {
 // Fonction pour récupérer et filtrer les cartes selon les options
 async function getCollectionCards() {
   await loadCards(collectionId)
+  cardBackground.value = getCollection(collectionId)?.card_background ?? null
   let filteredCards = [...cards.value]
 
   const now = Date.now()
@@ -133,7 +138,10 @@ const {
   isPracticeMode: true,
 })
 
-onMounted(initializeSession)
+onMounted(async () => {
+  await loadCollections()
+  await initializeSession()
+})
 
 defineOptions({ name: 'PracticeReviewPage' })
 </script>

@@ -96,6 +96,14 @@
     "deleteWarning": "Это действие необратимо.",
     "nameLabel": "Название коллекции",
     "backgroundColorLabel": "Цвет фона",
+    "cardBackgroundLabel": "Фон карточек",
+    "cardBackgrounds": {
+      "white": "Белый",
+      "graphPaper": "Мелкая клетка",
+      "ruledNotebook": "Блокнот в линейку",
+      "dotGrid": "Точечная сетка",
+      "graphMillimetre": "Миллиметровая бумага"
+    },
     "namePlaceholder": "Например: Английский словарь",
     "submitting": "Обработка...",
     "edit": "Изменить",

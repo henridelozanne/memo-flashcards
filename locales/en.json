@@ -96,6 +96,14 @@
     "deleteWarning": "This action is irreversible.",
     "nameLabel": "Collection name",
     "backgroundColorLabel": "Background color",
+    "cardBackgroundLabel": "Card background",
+    "cardBackgrounds": {
+      "white": "White",
+      "graphPaper": "Graph paper",
+      "ruledNotebook": "Ruled notebook",
+      "dotGrid": "Dot grid",
+      "graphMillimetre": "Millimetre paper"
+    },
     "namePlaceholder": "e.g. French vocabulary",
     "submitting": "Processing...",
     "edit": "Edit",

@@ -96,6 +96,14 @@
     "deleteWarning": "この操作は元に戻せません。",
     "nameLabel": "コレクション名",
     "backgroundColorLabel": "背景色",
+    "cardBackgroundLabel": "カードの背景",
+    "cardBackgrounds": {
+      "white": "白",
+      "graphPaper": "方眼紙（小）",
+      "ruledNotebook": "罫線ノート",
+      "dotGrid": "ドットグリッド",
+      "graphMillimetre": "方眼紙（ミリ）"
+    },
     "namePlaceholder": "例：英語の語彙",
     "submitting": "処理中...",
     "edit": "編集",

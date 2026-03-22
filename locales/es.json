@@ -96,6 +96,14 @@
     "deleteWarning": "Esta acción es irreversible.",
     "nameLabel": "Nombre de la colección",
     "backgroundColorLabel": "Color de fondo",
+    "cardBackgroundLabel": "Fondo de las tarjetas",
+    "cardBackgrounds": {
+      "white": "Blanco",
+      "graphPaper": "Cuadrícula pequeña",
+      "ruledNotebook": "Bloc de notas rayado",
+      "dotGrid": "Dot grid",
+      "graphMillimetre": "Papel milimetrado"
+    },
     "namePlaceholder": "Ej: Vocabulario inglés",
     "submitting": "En curso...",
     "edit": "Modificar",

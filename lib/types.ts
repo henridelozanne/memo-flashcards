@@ -3,6 +3,7 @@ export interface Collection {
   user_id: string
   name: string
   color?: string | null
+  card_background?: string | null
   created_at: number
   updated_at: number
   deleted_at?: number

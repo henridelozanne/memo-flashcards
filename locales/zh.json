@@ -96,6 +96,14 @@
     "deleteWarning": "此操作不可逆。",
     "nameLabel": "收藏名称",
     "backgroundColorLabel": "背景颜色",
+    "cardBackgroundLabel": "卡片背景",
+    "cardBackgrounds": {
+      "white": "白色",
+      "graphPaper": "小方格",
+      "ruledNotebook": "横线笔记本",
+      "dotGrid": "点阵格",
+      "graphMillimetre": "毫米纸"
+    },
     "namePlaceholder": "例如：英语词汇",
     "submitting": "处理中...",
     "edit": "修改",

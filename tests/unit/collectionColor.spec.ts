@@ -73,7 +73,7 @@ describe('CollectionForm — color picker', () => {
       global: { plugins: [i18n] },
     })
     await wrapper.find('form').trigger('submit')
-    expect(wrapper.emitted('submit')?.[0]).toEqual([{ name: 'Test', color: WHITE }])
+    expect(wrapper.emitted('submit')?.[0]).toEqual([{ name: 'Test', color: WHITE, cardBackground: 'white' }])
   })
 
   it('initialises selected color from the color prop', async () => {
@@ -82,7 +82,7 @@ describe('CollectionForm — color picker', () => {
       global: { plugins: [i18n] },
     })
     await wrapper.find('form').trigger('submit')
-    expect(wrapper.emitted('submit')?.[0]).toEqual([{ name: 'Test', color: VIOLET_GRADIENT }])
+    expect(wrapper.emitted('submit')?.[0]).toEqual([{ name: 'Test', color: VIOLET_GRADIENT, cardBackground: 'white' }])
   })
 
   it('emits selected color after clicking a swatch', async () => {
@@ -96,7 +96,7 @@ describe('CollectionForm — color picker', () => {
     await swatches[0].trigger('click')
 
     await wrapper.find('form').trigger('submit')
-    expect(wrapper.emitted('submit')?.[0]).toEqual([{ name: 'Test', color: VIOLET_GRADIENT }])
+    expect(wrapper.emitted('submit')?.[0]).toEqual([{ name: 'Test', color: VIOLET_GRADIENT, cardBackground: 'white' }])
   })
 
   it('emits { name, color } object on submit (not a plain string)', async () => {
@@ -185,8 +185,8 @@ describe('useCollections — updateCollection with color', () => {
     await composable.updateCollection('col-1', 'Nom', VIOLET_GRADIENT)
 
     expect(mockSqliteConnection.run).toHaveBeenCalledWith(
-      'UPDATE collections SET name = ?, color = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
-      ['Nom', VIOLET_GRADIENT, expect.any(Number), 'col-1']
+      'UPDATE collections SET name = ?, color = ?, card_background = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
+      ['Nom', VIOLET_GRADIENT, null, expect.any(Number), 'col-1']
     )
   })
 
@@ -194,8 +194,8 @@ describe('useCollections — updateCollection with color', () => {
     await composable.updateCollection('col-1', 'Nom')
 
     expect(mockSqliteConnection.run).toHaveBeenCalledWith(
-      'UPDATE collections SET name = ?, color = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
-      ['Nom', null, expect.any(Number), 'col-1']
+      'UPDATE collections SET name = ?, color = ?, card_background = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
+      ['Nom', null, null, expect.any(Number), 'col-1']
     )
   })
 
@@ -203,8 +203,8 @@ describe('useCollections — updateCollection with color', () => {
     await composable.updateCollection('col-1', 'Nom', null)
 
     expect(mockSqliteConnection.run).toHaveBeenCalledWith(
-      'UPDATE collections SET name = ?, color = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
-      ['Nom', null, expect.any(Number), 'col-1']
+      'UPDATE collections SET name = ?, color = ?, card_background = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
+      ['Nom', null, null, expect.any(Number), 'col-1']
     )
   })
 })

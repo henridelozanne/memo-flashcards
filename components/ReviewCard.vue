@@ -13,7 +13,8 @@
         <div class="flip-card-inner h-full w-full" :class="{ 'back-visible': isBackVisible }">
           <!-- Recto -->
           <div
-            class="flip-card-front flex h-full w-full flex-col overflow-hidden rounded-[15px] bg-white p-8 text-center shadow-[0px_4px_32px_#0000000a]"
+            class="flip-card-front flex h-full w-full flex-col overflow-hidden rounded-[15px] p-8 text-center shadow-[0px_4px_32px_#0000000a]"
+            :style="cardStyle"
           >
             <div class="flex flex-1 flex-col items-center justify-center overflow-y-auto">
               <div
@@ -35,7 +36,8 @@
           </div>
           <!-- Verso -->
           <div
-            class="flip-card-back absolute left-0 top-0 flex h-full w-full flex-col overflow-hidden rounded-[15px] bg-white p-8 text-center shadow-[0px_4px_32px_#0000000a]"
+            class="flip-card-back absolute left-0 top-0 flex h-full w-full flex-col overflow-hidden rounded-[15px] p-8 text-center shadow-[0px_4px_32px_#0000000a]"
+            :style="cardStyle"
           >
             <div class="flex flex-1 flex-col items-center justify-center gap-10 overflow-y-auto">
               <div
@@ -71,6 +73,7 @@
 import { ref, computed, onUnmounted } from 'vue'
 import type { Card, UserChoice } from '~/lib/types'
 import { sanitizeHtml } from '~/utils/sanitize'
+import { getCardBackgroundStyle } from '~/utils/cardBackgrounds'
 
 const userChoices: UserChoice[] = [
   { value: false, label: 'review.again' },
@@ -87,6 +90,7 @@ const showBackBtn = ref<HTMLButtonElement | null>(null)
 const props = defineProps<{
   currentCard: Card | null
   isBackVisible: boolean
+  cardBackground?: string | null
 }>()
 
 // --- Swipe logic ---
@@ -225,6 +229,8 @@ const questionFontSizeBack = computed(() =>
 )
 
 const answerFontSize = computed(() => (props.currentCard ? getFontSizeClass(props.currentCard.answer, true) : ''))
+
+const cardStyle = computed(() => getCardBackgroundStyle(props.cardBackground))
 </script>
 
 <style scoped>

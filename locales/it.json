@@ -96,6 +96,14 @@
     "deleteWarning": "Questa azione è irreversibile.",
     "nameLabel": "Nome della collezione",
     "backgroundColorLabel": "Colore di sfondo",
+    "cardBackgroundLabel": "Sfondo delle schede",
+    "cardBackgrounds": {
+      "white": "Bianco",
+      "graphPaper": "Quadretti piccoli",
+      "ruledNotebook": "Blocco note a righe",
+      "dotGrid": "Dot grid",
+      "graphMillimetre": "Carta millimetrata"
+    },
     "namePlaceholder": "Es: Vocabolario inglese",
     "submitting": "Elaborazione...",
     "edit": "Modifica",

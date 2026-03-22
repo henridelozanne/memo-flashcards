@@ -126,6 +126,8 @@ export const useDatabase = () => {
     const collectionColNames = collectionCols.map((c) => c.name)
     if (!collectionColNames.includes('color'))
       await connection.run('ALTER TABLE collections ADD COLUMN color TEXT DEFAULT NULL')
+    if (!collectionColNames.includes('card_background'))
+      await connection.run('ALTER TABLE collections ADD COLUMN card_background TEXT DEFAULT NULL')
 
     return connection
   }

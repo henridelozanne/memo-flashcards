@@ -20,6 +20,7 @@
         <CollectionForm
           :name="collection.name"
           :color="collection.color"
+          :card-background="collection.card_background"
           :is-submitting="isSubmitting"
           :submit-label="$t('common.save')"
           @submit="onSubmit"
@@ -61,13 +62,13 @@ async function init() {
 
 init()
 
-async function onSubmit({ name, color }: { name: string; color: string }) {
+async function onSubmit({ name, color, cardBackground }: { name: string; color: string; cardBackground: string }) {
   if (!collection.value) return
   isSubmitting.value = true
   message.value = null
   try {
     const collectionId = collection.value.id
-    await updateCollection(collectionId, name, color)
+    await updateCollection(collectionId, name, color, cardBackground)
     message.value = {
       type: 'success',
       text: t('collections.updatedSuccess') as string,

@@ -22,17 +22,45 @@
       </label>
       <div class="grid grid-cols-4 gap-2">
         <button
-          v-for="color in COLLECTION_COLORS"
-          :key="color"
+          v-for="colorValue in COLLECTION_COLORS"
+          :key="colorValue"
           type="button"
-          :aria-label="color"
+          :aria-label="colorValue"
           class="h-10 w-full rounded-[7px] transition-transform hover:scale-105"
-          :style="{ background: color }"
+          :style="{ background: colorValue }"
           :class="
-            localColor === color ? 'ring-2 ring-[var(--color-accent-blue)] ring-offset-2' : 'ring-1 ring-gray-200'
+            localColor === colorValue ? 'ring-2 ring-[var(--color-accent-blue)] ring-offset-2' : 'ring-1 ring-gray-200'
           "
-          @click="selectColor(color)"
+          @click="selectColor(colorValue)"
         />
+      </div>
+    </div>
+
+    <!-- Sélecteur de fond de carte -->
+    <div class="mb-6">
+      <label class="mb-3 block text-sm font-medium text-gray-700">
+        {{ $t('collections.cardBackgroundLabel') }}
+      </label>
+      <div class="grid grid-cols-2 gap-2">
+        <button
+          v-for="bg in CARD_BACKGROUNDS"
+          :key="bg.id"
+          type="button"
+          class="flex flex-col items-start gap-2 rounded-[10px] p-2"
+          @click="localCardBackground = bg.id"
+        >
+          <div
+            class="w-full rounded-[7px] border shadow-sm"
+            style="aspect-ratio: 6/9"
+            :style="bg.style"
+            :class="
+              localCardBackground === bg.id
+                ? 'border-transparent ring-2 ring-[var(--color-accent-blue)] ring-offset-1'
+                : 'border-gray-200'
+            "
+          />
+          <span class="w-full text-center text-sm font-medium text-gray-700">{{ $t(bg.labelKey) }}</span>
+        </button>
       </div>
     </div>
 
@@ -59,6 +87,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { CARD_BACKGROUNDS, type CardBackgroundId } from '~/utils/cardBackgrounds'
 
 const { t } = useI18n()
 
@@ -78,23 +107,26 @@ const props = withDefaults(
   defineProps<{
     name?: string
     color?: string | null
+    cardBackground?: string | null
     isSubmitting?: boolean
     submitLabel?: string
   }>(),
   {
     name: '',
     color: null,
+    cardBackground: null,
     isSubmitting: false,
     submitLabel: 'Enregistrer',
   }
 )
 const emit = defineEmits<{
-  (e: 'submit', payload: { name: string; color: string }): void
+  (e: 'submit', payload: { name: string; color: string; cardBackground: string }): void
   (e: 'cancel'): void
 }>()
 
 const localName = ref(props.name ?? '')
 const localColor = ref<string>(props.color ?? '#ffffff')
+const localCardBackground = ref<CardBackgroundId>((props.cardBackground as CardBackgroundId) ?? 'white')
 const error = ref<string | null>(null)
 
 function selectColor(color: string) {
@@ -113,6 +145,6 @@ function validateName() {
 function handleSubmit() {
   validateName()
   if (error.value) return
-  emit('submit', { name: localName.value.trim(), color: localColor.value })
+  emit('submit', { name: localName.value.trim(), color: localColor.value, cardBackground: localCardBackground.value })
 }
 </script>

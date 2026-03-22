@@ -71,7 +71,9 @@ describe('CollectionForm', () => {
     await wrapper.find('form').trigger('submit')
 
     expect(wrapper.emitted('submit')).toBeTruthy()
-    expect(wrapper.emitted('submit')?.[0]).toEqual([{ name: 'My Collection', color: '#ffffff' }])
+    expect(wrapper.emitted('submit')?.[0]).toEqual([
+      { name: 'My Collection', color: '#ffffff', cardBackground: 'white' },
+    ])
   })
 
   it('emits cancel event when cancel button clicked', async () => {
