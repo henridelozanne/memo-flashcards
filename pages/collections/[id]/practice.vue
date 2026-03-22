@@ -5,7 +5,7 @@
       <PageHeader :title="$t('practiceMode.title')" :back-button-visible="true" @back="goToFinish">
         <template #actions>
           <ProgressCircle
-            :current="cardsReviewedCount"
+            :current="currentIndex + 1"
             :total="total"
             :is-from-page-header="true"
             color-variant="purple"

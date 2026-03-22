@@ -4,7 +4,12 @@
     <div class="header-container flex-shrink-0 px-6 pb-2 pt-6">
       <PageHeader :title="$t('dailyReview.title')" back-button-visible @back="goBack">
         <template #actions>
-          <ProgressCircle :is-from-page-header="true" color-variant="purple" />
+          <ProgressCircle
+            :current="currentIndex + 1"
+            :total="total"
+            :is-from-page-header="true"
+            color-variant="purple"
+          />
         </template>
       </PageHeader>
     </div>
@@ -55,6 +60,7 @@ const {
   goodCount,
   successRate,
   answeredCards,
+  total,
   currentCard,
   answer,
   goBack,
