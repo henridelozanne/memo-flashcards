@@ -350,8 +350,8 @@ export const useSubscription = () => {
    * Limites pour les utilisateurs gratuits
    */
   const FREE_LIMITS = {
-    MAX_COLLECTIONS: 1,
-    MAX_CARDS: 70,
+    MAX_COLLECTIONS: 3,
+    MAX_CARDS: 100,
   }
 
   // Charger le statut local au démarrage

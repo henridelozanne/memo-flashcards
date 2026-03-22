@@ -316,8 +316,8 @@
   },
   "upgrade": {
     "limitReached": "Limite atteinte",
-    "collectionLimit": "Le plan gratuit permet de créer jusqu'à 1 collection. Passe au Premium pour créer des collections illimitées.",
-    "cardLimit": "Le plan gratuit permet de créer jusqu'à 70 cartes. Passe au Premium pour créer des cartes illimitées.",
+    "collectionLimit": "Le plan gratuit permet de créer jusqu'à 3 collections. Passe au Premium pour créer des collections illimitées.",
+    "cardLimit": "Le plan gratuit permet de créer jusqu'à 100 cartes. Passe au Premium pour créer des cartes illimitées.",
     "practiceOptionsLimit": "Les options d'entraînement sont réservées aux utilisateurs Premium. Passe au Premium pour personnaliser tes sessions d'entraînement.",
     "aiCardsFeature": "La fonctionnalité 'Compléter avec l'IA' est réservée aux abonnés Premium. Passe au Premium pour générer des cartes automatiquement.",
     "statsLimit": "Les statistiques avancées sont réservées aux utilisateurs Premium. Passe au Premium pour accéder à toutes les statistiques de progression.",
