@@ -180,4 +180,88 @@ describe('ReviewCard', () => {
 
     expect(wrapper.text()).toContain('Aucune carte')
   })
+
+  describe('swipe gestures', () => {
+    it("n'enclenche pas le swipe quand le verso n'est pas visible (recto)", async () => {
+      const wrapper = mount(ReviewCard, {
+        props: { currentCard: mockCard, isBackVisible: false },
+        ...globalMountOptions,
+      })
+
+      const container = wrapper.find('.relative')
+      await container.trigger('mousedown', { clientX: 0, clientY: 0 })
+      await container.trigger('mousemove', { clientX: 120, clientY: 0 })
+      await container.trigger('mouseup')
+
+      expect(wrapper.emitted('answer')).toBeFalsy()
+    })
+
+    it('un swipe à droite suffisant émet answer(true) — bien retenu', async () => {
+      const wrapper = mount(ReviewCard, {
+        props: { currentCard: mockCard, isBackVisible: true },
+        ...globalMountOptions,
+      })
+
+      const container = wrapper.find('.relative')
+      await container.trigger('mousedown', { clientX: 0, clientY: 0 })
+      // Simulate move via window event (mimics the real handler)
+      window.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 0 }))
+      await wrapper.vm.$nextTick()
+      window.dispatchEvent(new MouseEvent('mouseup'))
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.emitted('answer')).toBeTruthy()
+      expect(wrapper.emitted('answer')?.[0]).toEqual([true])
+    })
+
+    it('un swipe à gauche suffisant émet answer(false) — à revoir', async () => {
+      const wrapper = mount(ReviewCard, {
+        props: { currentCard: mockCard, isBackVisible: true },
+        ...globalMountOptions,
+      })
+
+      const container = wrapper.find('.relative')
+      await container.trigger('mousedown', { clientX: 0, clientY: 0 })
+      window.dispatchEvent(new MouseEvent('mousemove', { clientX: -100, clientY: 0 }))
+      await wrapper.vm.$nextTick()
+      window.dispatchEvent(new MouseEvent('mouseup'))
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.emitted('answer')).toBeTruthy()
+      expect(wrapper.emitted('answer')?.[0]).toEqual([false])
+    })
+
+    it('un swipe insuffisant (< seuil) ne déclenche pas de réponse', async () => {
+      const wrapper = mount(ReviewCard, {
+        props: { currentCard: mockCard, isBackVisible: true },
+        ...globalMountOptions,
+      })
+
+      const container = wrapper.find('.relative')
+      await container.trigger('mousedown', { clientX: 0, clientY: 0 })
+      window.dispatchEvent(new MouseEvent('mousemove', { clientX: 40, clientY: 0 }))
+      await wrapper.vm.$nextTick()
+      window.dispatchEvent(new MouseEvent('mouseup'))
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.emitted('answer')).toBeFalsy()
+    })
+
+    it('un mouvement principalement vertical ne déclenche pas de réponse', async () => {
+      const wrapper = mount(ReviewCard, {
+        props: { currentCard: mockCard, isBackVisible: true },
+        ...globalMountOptions,
+      })
+
+      const container = wrapper.find('.relative')
+      await container.trigger('mousedown', { clientX: 0, clientY: 0 })
+      // dy > dx → vertical scroll, swipe ignoré
+      window.dispatchEvent(new MouseEvent('mousemove', { clientX: 30, clientY: 150 }))
+      await wrapper.vm.$nextTick()
+      window.dispatchEvent(new MouseEvent('mouseup'))
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.emitted('answer')).toBeFalsy()
+    })
+  })
 })

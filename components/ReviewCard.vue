@@ -4,8 +4,12 @@
     <div
       class="relative flex w-full select-none items-center justify-center"
       style="perspective: 1000px; aspect-ratio: 3/4; max-height: calc(100svh - 160px)"
+      @touchstart="onDragStart"
+      @touchmove="onDragMove"
+      @touchend="onDragEnd"
+      @mousedown="onDragStart"
     >
-      <div v-if="currentCard" class="flip-card h-full w-full">
+      <div v-if="currentCard" class="flip-card h-full w-full" :style="dragCardStyle">
         <div class="flip-card-inner h-full w-full" :class="{ 'back-visible': isBackVisible }">
           <!-- Recto -->
           <div
@@ -45,7 +49,8 @@
               <button
                 v-for="(choice, index) in userChoices"
                 :key="index"
-                class="flex flex-1 items-center justify-center gap-2 rounded-[15px] border border-gray-200 bg-white px-2 py-3 text-base font-medium text-gray-900 shadow-sm transition focus:outline-none"
+                class="flex flex-1 items-center justify-center gap-2 rounded-[15px] border bg-white px-2 py-3 text-base font-medium text-gray-900 shadow-sm focus:outline-none"
+                :style="getButtonStyle(choice)"
                 @click="$emit('answer', choice.value)"
               >
                 <span>{{ $t(choice.label) }}</span>
@@ -63,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import type { Card, UserChoice } from '~/lib/types'
 import { sanitizeHtml } from '~/utils/sanitize'
 
@@ -79,15 +84,111 @@ const emit = defineEmits<{
 
 const showBackBtn = ref<HTMLButtonElement | null>(null)
 
-function handleShowBack() {
-  showBackBtn.value?.blur()
-  emit('show-back')
-}
-
 const props = defineProps<{
   currentCard: Card | null
   isBackVisible: boolean
 }>()
+
+// --- Swipe logic ---
+const SWIPE_THRESHOLD = 80
+const isDragging = ref(false)
+const startX = ref(0)
+const startY = ref(0)
+const dragOffset = ref(0)
+
+const dragCardStyle = computed(() => {
+  if (dragOffset.value === 0) return {}
+  const rotation = dragOffset.value * 0.04
+  return {
+    transform: `translateX(${dragOffset.value}px) rotate(${rotation}deg)`,
+    transition: isDragging.value ? 'none' : 'transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)',
+  }
+})
+
+function getButtonStyle(choice: UserChoice): Record<string, string> {
+  const progress = Math.min(Math.abs(dragOffset.value) / SWIPE_THRESHOLD, 1)
+  const isLeft = dragOffset.value < 0 // swiping left activates "again" (value=false)
+  const isRight = dragOffset.value > 0 // swiping right activates "good" (value=true)
+
+  if (isLeft && choice.value === false) {
+    // "again" button is active
+    return {
+      borderColor: 'var(--color-accent-red)',
+      borderWidth: `${1 + progress * 2}px`,
+    }
+  }
+  if (isLeft && choice.value === true) {
+    // "good" button fades
+    return { opacity: `${1 - progress}` }
+  }
+  if (isRight && choice.value === true) {
+    // "good" button is active
+    return {
+      borderColor: 'var(--color-accent-green)',
+      borderWidth: `${1 + progress * 2}px`,
+    }
+  }
+  if (isRight && choice.value === false) {
+    // "again" button fades
+    return { opacity: `${1 - progress}` }
+  }
+  return { borderColor: 'var(--color-gray-200)', borderWidth: '1px' }
+}
+
+function getClientXY(e: Event): { x: number; y: number } {
+  if ('touches' in e) {
+    const t = (e as TouchEvent).touches[0]
+    return { x: t.clientX, y: t.clientY }
+  }
+  return { x: (e as MouseEvent).clientX, y: (e as MouseEvent).clientY }
+}
+
+function onDragMove(e: Event) {
+  if (!isDragging.value) return
+  const { x, y } = getClientXY(e)
+  const dx = x - startX.value
+  const dy = y - startY.value
+  // Only track horizontal swipes; let vertical movement scroll normally
+  if (Math.abs(dy) > Math.abs(dx)) return
+  e.preventDefault()
+  dragOffset.value = dx
+}
+
+function onDragEnd() {
+  if (!isDragging.value) return
+  isDragging.value = false
+  window.removeEventListener('mousemove', onDragMove)
+  window.removeEventListener('mouseup', onDragEnd)
+  if (Math.abs(dragOffset.value) >= SWIPE_THRESHOLD) {
+    emit('answer', dragOffset.value > 0)
+    // Leave dragOffset as-is; card fades out in displaced position via parent transition
+  } else {
+    dragOffset.value = 0
+  }
+}
+
+function onDragStart(e: TouchEvent | MouseEvent) {
+  if (!props.isBackVisible) return
+  isDragging.value = true
+  const { x, y } = getClientXY(e)
+  startX.value = x
+  startY.value = y
+  if (!('touches' in e)) {
+    window.addEventListener('mousemove', onDragMove)
+    window.addEventListener('mouseup', onDragEnd)
+  }
+}
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', onDragMove)
+  window.removeEventListener('mouseup', onDragEnd)
+})
+// --- End swipe logic ---
+
+function handleShowBack() {
+  showBackBtn.value?.blur()
+  emit('show-back')
+}
 
 const sanitizedQuestion = computed(() => (props.currentCard ? sanitizeHtml(props.currentCard.question) : ''))
 
