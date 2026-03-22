@@ -5,7 +5,8 @@ import { detectSystemLanguage } from '~/utils/language'
 function parseGoal(raw: string): string[] {
   try {
     const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? parsed : raw ? [raw] : []
+    if (Array.isArray(parsed)) return parsed
+    return raw ? [raw] : []
   } catch {
     return raw ? [raw] : []
   }

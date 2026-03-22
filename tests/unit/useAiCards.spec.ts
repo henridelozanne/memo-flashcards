@@ -56,7 +56,7 @@ describe('useAiCards', () => {
       const { proposals, isGenerating, error, generateCards } = useAiCards()
       const cards = [makeCard('1'), makeCard('2')]
 
-      const result = await generateCards(cards, 'fr', 'JavaScript', 'learnVocabulary', 'student')
+      const result = await generateCards(cards, 'fr', 'JavaScript', ['learnVocabulary'], 'student')
 
       expect(result).toEqual(mockProposals)
       expect(proposals.value).toEqual(mockProposals)
@@ -70,7 +70,7 @@ describe('useAiCards', () => {
       const { generateCards } = useAiCards()
       const cards = [makeCard('1', 'Capital of France?', 'Paris'), makeCard('2', 'Capital of Spain?', 'Madrid')]
 
-      await generateCards(cards, 'en', 'Geography', 'memorizeFactsScience', 'employed')
+      await generateCards(cards, 'en', 'Geography', ['memorizeFactsScience'], 'employed')
 
       expect(mockInvoke).toHaveBeenCalledWith('generate-cards', {
         body: {
@@ -80,7 +80,7 @@ describe('useAiCards', () => {
           ],
           locale: 'en',
           categoryName: 'Geography',
-          goal: 'memorizeFactsScience',
+          goal: ['memorizeFactsScience'],
           situation: 'employed',
         },
       })
@@ -97,7 +97,7 @@ describe('useAiCards', () => {
       const { isGenerating, generateCards } = useAiCards()
 
       expect(isGenerating.value).toBe(false)
-      const promise = generateCards([makeCard('1')], 'fr', 'Test', 'other', 'other')
+      const promise = generateCards([makeCard('1')], 'fr', 'Test', ['other'], 'other')
       // isGenerating becomes true synchronously before the first await inside generateCards
       await promise
       expect(generatingDuringCall).toBe(true)
@@ -113,7 +113,7 @@ describe('useAiCards', () => {
       proposals.value = [{ question: 'old', answer: 'old' }]
       error.value = 'previous error'
 
-      await generateCards([makeCard('1')], 'fr', 'Test', 'other', 'other')
+      await generateCards([makeCard('1')], 'fr', 'Test', ['other'], 'other')
 
       expect(proposals.value).toEqual(mockProposals)
       expect(error.value).toBeNull()
@@ -125,7 +125,7 @@ describe('useAiCards', () => {
       mockInvoke.mockResolvedValue({ data: null, error: { message: 'Function invocation failed' } })
 
       const { proposals, error, generateCards } = useAiCards()
-      const result = await generateCards([makeCard('1')], 'fr', 'Test', 'other', 'other')
+      const result = await generateCards([makeCard('1')], 'fr', 'Test', ['other'], 'other')
 
       expect(result).toEqual([])
       expect(proposals.value).toEqual([])
@@ -137,7 +137,7 @@ describe('useAiCards', () => {
       mockInvoke.mockResolvedValue({ data: null, error: {} })
 
       const { error, generateCards } = useAiCards()
-      await generateCards([makeCard('1')], 'fr', 'Test', 'other', 'other')
+      await generateCards([makeCard('1')], 'fr', 'Test', ['other'], 'other')
 
       expect(error.value).toBe('Error calling AI service')
     })
@@ -148,7 +148,7 @@ describe('useAiCards', () => {
       mockInvoke.mockResolvedValue({ data: { error: 'OPENAI_API_KEY is not configured' }, error: null })
 
       const { error, generateCards } = useAiCards()
-      const result = await generateCards([makeCard('1')], 'fr', 'Test', 'other', 'other')
+      const result = await generateCards([makeCard('1')], 'fr', 'Test', ['other'], 'other')
 
       expect(result).toEqual([])
       expect(error.value).toBe('OPENAI_API_KEY is not configured')
@@ -160,7 +160,7 @@ describe('useAiCards', () => {
       mockInvoke.mockResolvedValue({ data: { something: 'else' }, error: null })
 
       const { error, generateCards } = useAiCards()
-      const result = await generateCards([makeCard('1')], 'fr', 'Test', 'other', 'other')
+      const result = await generateCards([makeCard('1')], 'fr', 'Test', ['other'], 'other')
 
       expect(result).toEqual([])
       expect(error.value).toBe('Invalid response from AI service')
@@ -170,7 +170,7 @@ describe('useAiCards', () => {
       mockInvoke.mockResolvedValue({ data: { proposals: 'not an array' }, error: null })
 
       const { error, generateCards } = useAiCards()
-      const result = await generateCards([makeCard('1')], 'fr', 'Test', 'other', 'other')
+      const result = await generateCards([makeCard('1')], 'fr', 'Test', ['other'], 'other')
 
       expect(result).toEqual([])
       expect(error.value).toBe('Invalid response from AI service')
@@ -180,7 +180,7 @@ describe('useAiCards', () => {
       mockInvoke.mockResolvedValue({ data: null, error: null })
 
       const { error, generateCards } = useAiCards()
-      const result = await generateCards([makeCard('1')], 'fr', 'Test', 'other', 'other')
+      const result = await generateCards([makeCard('1')], 'fr', 'Test', ['other'], 'other')
 
       expect(result).toEqual([])
       expect(error.value).toBe('Invalid response from AI service')
@@ -192,7 +192,7 @@ describe('useAiCards', () => {
       mockInvoke.mockRejectedValue(new Error('Network timeout'))
 
       const { error, isGenerating, generateCards } = useAiCards()
-      const result = await generateCards([makeCard('1')], 'fr', 'Test', 'other', 'other')
+      const result = await generateCards([makeCard('1')], 'fr', 'Test', ['other'], 'other')
 
       expect(result).toEqual([])
       expect(error.value).toBe('Network timeout')
@@ -203,7 +203,7 @@ describe('useAiCards', () => {
       mockInvoke.mockRejectedValue('some string error')
 
       const { error, generateCards } = useAiCards()
-      await generateCards([makeCard('1')], 'fr', 'Test', 'other', 'other')
+      await generateCards([makeCard('1')], 'fr', 'Test', ['other'], 'other')
 
       expect(error.value).toBe('Unexpected error')
     })
