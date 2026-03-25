@@ -1,5 +1,6 @@
 <template>
   <button
+    type="button"
     class="text-[var(--color-secondary)] active:text-[var(--color-black)]"
     :aria-label="$t('common.backButton')"
     @click="$emit('click')"
