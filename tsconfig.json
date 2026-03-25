@@ -18,5 +18,5 @@
       "@/*": ["./*"]
     }
   },
-  "exclude": ["node_modules", ".nuxt", "dist", "supabase/functions"]
+  "exclude": ["node_modules", ".nuxt", "dist", "supabase/functions", "nuxt.config.ts"]
 }

@@ -4,6 +4,7 @@ export interface Collection {
   name: string
   color?: string | null
   card_background?: string | null
+  rejected_ai_cards?: string | null
   created_at: number
   updated_at: number
   deleted_at?: number

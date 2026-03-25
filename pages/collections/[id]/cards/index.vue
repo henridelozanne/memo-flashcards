@@ -155,6 +155,7 @@
         :proposals="aiProposals"
         @close="showAiSuggestions = false"
         @accept="handleAiCardAccepted"
+        @reject="handleAiCardRejected"
         @finished="showAiSuggestions = false"
       />
     </div>
@@ -193,6 +194,7 @@ const {
   error: collectionError,
   loadCollections,
   getCollection,
+  addRejectedAiCard,
 } = useCollections()
 const {
   cards,
@@ -337,12 +339,19 @@ async function handleGenerateAiCards() {
   aiGenerationError.value = null
   aiProposals.value = []
   showAiSuggestions.value = true
+
+  const currentCollection = getCollection(collectionId)
+  const rejectedQuestions: string[] = currentCollection?.rejected_ai_cards
+    ? JSON.parse(currentCollection.rejected_ai_cards)
+    : []
+
   const result = await generateCards(
     [...cards.value],
     locale.value,
-    collection.value?.name ?? '',
+    currentCollection?.name ?? '',
     userProfileStore.goal,
-    userProfileStore.situation
+    userProfileStore.situation,
+    rejectedQuestions
   )
 
   if (result.length === 0) {
@@ -360,6 +369,10 @@ async function handleAiCardAccepted(proposal: AiCardProposal) {
   } catch {
     // Silently ignore duplicate question errors from AI suggestions
   }
+}
+
+function handleAiCardRejected(question: string) {
+  addRejectedAiCard(collectionId, question)
 }
 
 function editCard(cardId: string) {

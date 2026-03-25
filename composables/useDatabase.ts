@@ -128,6 +128,8 @@ export const useDatabase = () => {
       await connection.run('ALTER TABLE collections ADD COLUMN color TEXT DEFAULT NULL')
     if (!collectionColNames.includes('card_background'))
       await connection.run('ALTER TABLE collections ADD COLUMN card_background TEXT DEFAULT NULL')
+    if (!collectionColNames.includes('rejected_ai_cards'))
+      await connection.run('ALTER TABLE collections ADD COLUMN rejected_ai_cards TEXT DEFAULT NULL')
 
     return connection
   }

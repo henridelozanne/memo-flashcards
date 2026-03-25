@@ -175,6 +175,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'close'): void
   (e: 'accept', proposal: AiCardProposal): Promise<void> | void
+  (e: 'reject', question: string): void
   (e: 'finished'): void
 }>()
 
@@ -227,6 +228,9 @@ function advance() {
 }
 
 function handleReject() {
+  if (currentProposal.value) {
+    emit('reject', currentProposal.value.question)
+  }
   advance()
 }
 

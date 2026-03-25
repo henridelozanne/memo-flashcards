@@ -13,6 +13,7 @@ interface RequestBody {
   categoryName: string
   goal: string[]
   situation: string
+  rejectedQuestions?: string[]
 }
 
 interface GeneratedCard {
@@ -79,7 +80,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: RequestBody = await req.json()
-    const { cards, locale, categoryName, goal, situation } = body
+    const { cards, locale, categoryName, goal, situation, rejectedQuestions } = body
 
     if (!cards || !Array.isArray(cards) || cards.length === 0) {
       return new Response(JSON.stringify({ error: 'Invalid cards input' }), {
@@ -90,7 +91,7 @@ Deno.serve(async (req: Request) => {
 
     const cardsSummary = [...cards]
       .sort(() => Math.random() - 0.5)
-      .slice(0, 30)
+      .slice(0, 100)
       .map((c, i) => ({ index: i + 1, question: c.question, answer: c.answer }))
 
     const languageMap: Record<string, string> = {
@@ -112,7 +113,7 @@ Deno.serve(async (req: Request) => {
 
       Generate exactly 10 new flashcard suggestions in ${language} about this topic.
 
-      Match the writing style, difficulty, and formatting of the existing cards.
+      Match EXACTLY the writing style, difficulty, and formatting of the existing cards. Look carefully at how the existing questions are phrased and reproduce the same structure. If existing questions are single words or short phrases, generate single words or short phrases, not full sentences.
 
       Each card must be different from the existing cards.
 
@@ -125,6 +126,8 @@ Deno.serve(async (req: Request) => {
       ${getGoalInstruction(goal)}
 
       ${getSituationInstruction(situation)}
+
+      ${rejectedQuestions?.length > 0 ? `The user has already reviewed and explicitly rejected the following flashcard questions: \n${rejectedQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n')}. Do NOT reproduce or closely paraphrase any of them` : ''}
 
       Return ONLY valid JSON.
 

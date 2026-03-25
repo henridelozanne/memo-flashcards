@@ -88,7 +88,12 @@ export const useCollections = () => {
     }
   }
 
-  const updateCollection = async (id: string, name: string, color?: string | null, cardBackground?: string | null): Promise<void> => {
+  const updateCollection = async (
+    id: string,
+    name: string,
+    color?: string | null,
+    cardBackground?: string | null
+  ): Promise<void> => {
     error.value = null
     try {
       const db = await getDbConnection()
@@ -102,13 +107,10 @@ export const useCollections = () => {
         throw new Error(`Collection "${name}" already exists`)
       }
 
-      await db.run('UPDATE collections SET name = ?, color = ?, card_background = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL', [
-        name.trim(),
-        color ?? null,
-        cardBackground ?? null,
-        Date.now(),
-        id,
-      ])
+      await db.run(
+        'UPDATE collections SET name = ?, color = ?, card_background = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL',
+        [name.trim(), color ?? null, cardBackground ?? null, Date.now(), id]
+      )
 
       // Sync to Supabase (non-blocking)
       syncCollectionsToRemote().catch((err) => {
@@ -175,6 +177,39 @@ export const useCollections = () => {
     isLoading.value = false
   }
 
+  const MAX_REJECTED_AI_CARDS = 70
+
+  const addRejectedAiCard = async (collectionId: string, question: string): Promise<void> => {
+    try {
+      const db = await getDbConnection()
+      const row = (await db.get('SELECT rejected_ai_cards FROM collections WHERE id = ? AND deleted_at IS NULL', [
+        collectionId,
+      ])) as { rejected_ai_cards: string | null } | undefined
+
+      const existing: string[] = row?.rejected_ai_cards ? JSON.parse(row.rejected_ai_cards) : []
+      const updated = [...existing, question].slice(-MAX_REJECTED_AI_CARDS)
+
+      await db.run('UPDATE collections SET rejected_ai_cards = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL', [
+        JSON.stringify(updated),
+        Date.now(),
+        collectionId,
+      ])
+
+      // Update in-memory
+      const idx = collections.value.findIndex((c) => c.id === collectionId)
+      if (idx !== -1) {
+        collections.value[idx] = { ...collections.value[idx], rejected_ai_cards: JSON.stringify(updated) }
+      }
+
+      // Sync to Supabase (non-blocking)
+      syncCollectionsToRemote().catch((err) => {
+        console.error('Failed to sync rejected AI cards to remote:', err)
+      })
+    } catch (e: any) {
+      console.error('Failed to save rejected AI card:', e.message)
+    }
+  }
+
   return {
     collections: readonly(collections),
     isLoading: readonly(isLoading),
@@ -185,5 +220,6 @@ export const useCollections = () => {
     updateCollection,
     deleteCollection,
     resetCollections,
+    addRejectedAiCard,
   }
 }

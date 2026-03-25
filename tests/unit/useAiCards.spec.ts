@@ -82,6 +82,7 @@ describe('useAiCards', () => {
           categoryName: 'Geography',
           goal: ['memorizeFactsScience'],
           situation: 'employed',
+          rejectedQuestions: [],
         },
       })
     })

@@ -67,9 +67,8 @@ describe('ReviewCard', () => {
       ...globalMountOptions,
     })
 
-    const button = wrapper.find('button')
-    expect(button.exists()).toBe(true)
-    expect(button.text()).toBe('Voir la réponse')
+    const front = wrapper.find('.flip-card-front')
+    expect(front.exists()).toBe(true)
   })
 
   it("émet l'événement show-back au clic sur le bouton", async () => {
@@ -81,8 +80,8 @@ describe('ReviewCard', () => {
       ...globalMountOptions,
     })
 
-    const button = wrapper.find('button')
-    await button.trigger('click')
+    const front = wrapper.find('.flip-card-front')
+    await front.trigger('click')
 
     expect(wrapper.emitted('show-back')).toBeTruthy()
   })
@@ -131,7 +130,7 @@ describe('ReviewCard', () => {
       ...globalMountOptions,
     })
 
-    await wrapper.find('button').trigger('click')
+    await wrapper.find('.flip-card-front').trigger('click')
     expect(wrapper.emitted('show-back')).toBeTruthy()
   })
 

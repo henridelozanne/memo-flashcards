@@ -26,7 +26,8 @@ export const useAiCards = () => {
     locale: string,
     categoryName: string,
     goal: string[],
-    situation: string
+    situation: string,
+    rejectedQuestions: string[] = []
   ): Promise<AiCardProposal[]> => {
     isGenerating.value = true
     error.value = null
@@ -41,7 +42,7 @@ export const useAiCards = () => {
       }))
 
       const { data, error: fnError } = await supabase.functions.invoke('generate-cards', {
-        body: { cards: cardInputs, locale, categoryName, goal, situation },
+        body: { cards: cardInputs, locale, categoryName, goal, situation, rejectedQuestions },
       })
 
       if (fnError) {
