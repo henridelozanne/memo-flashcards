@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full p-6">
+  <div class="h-full p-6 pb-10">
     <div class="mx-auto max-w-md">
       <!-- Header avec retour -->
       <PageHeader

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full p-6">
+  <div class="min-h-full p-6 pb-16">
     <div class="mx-auto max-w-2xl">
       <!-- Header avec retour et titre -->
       <PageHeader
@@ -24,7 +24,7 @@
       <div v-else>
         <!-- Résumé -->
         <div
-          class="mb-6 rounded-[15px] p-6 shadow-[0px_8px_32px_rgba(0,0,0,0.15)]"
+          class="mb-6 rounded-[15px] p-6 shadow-[0px_4px_32px_#0000000a]"
           :style="{
             background: collection.color && collection.color !== '#ffffff' ? collection.color : 'var(--color-white)',
           }"
