@@ -15,6 +15,7 @@
           <div
             class="flip-card-front flex h-full w-full flex-col overflow-hidden rounded-[15px] p-8 text-center shadow-[0px_4px_32px_#0000000a]"
             :style="cardStyle"
+            @click="handleShowBack"
           >
             <div class="flex flex-1 flex-col items-center justify-center overflow-y-auto">
               <div
@@ -22,16 +23,6 @@
                 :class="questionFontSize"
                 v-html="sanitizedQuestion"
               ></div>
-            </div>
-            <div class="mt-6 flex justify-center">
-              <button
-                :key="currentCard?.id"
-                ref="showBackBtn"
-                class="rounded-[15px] bg-[var(--color-light-purple)] px-6 py-3 text-base font-medium text-[var(--color-primary)] shadow-sm transition focus:outline-none active:bg-[var(--color-accent-purple)]"
-                @click="handleShowBack"
-              >
-                {{ $t('review.showAnswer') }}
-              </button>
             </div>
           </div>
           <!-- Verso -->
@@ -84,8 +75,6 @@ const emit = defineEmits<{
   'show-back': []
   answer: [value: boolean]
 }>()
-
-const showBackBtn = ref<HTMLButtonElement | null>(null)
 
 const props = defineProps<{
   currentCard: Card | null
@@ -190,7 +179,6 @@ onUnmounted(() => {
 // --- End swipe logic ---
 
 function handleShowBack() {
-  showBackBtn.value?.blur()
   emit('show-back')
 }
 
