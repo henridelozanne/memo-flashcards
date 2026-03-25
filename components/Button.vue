@@ -50,9 +50,9 @@ const buttonClasses = computed(() => {
       'disabled:cursor-not-allowed'
     )
   } else if (props.variant === 'icon') {
-    classes.push('rounded-full', 'p-2', 'hover:bg-[var(--color-gray-200)]')
+    classes.push('rounded-full', 'p-2', 'active:bg-[var(--color-gray-200)]')
   } else if (props.variant === 'ghost') {
-    classes.push('hover:bg-[var(--color-gray-200)]', 'text-[var(--color-black)]')
+    classes.push('active:bg-[var(--color-gray-200)]', 'text-[var(--color-black)]')
   }
 
   // Sizes (not applied to icon variant)

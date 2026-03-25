@@ -78,6 +78,6 @@ describe('BackButton', () => {
     })
 
     const button = wrapper.find('button')
-    expect(button.classes()).toContain('hover:text-gray-800')
+    expect(button.classes()).toContain('active:text-[var(--color-black)]')
   })
 })

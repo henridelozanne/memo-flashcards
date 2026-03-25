@@ -190,8 +190,8 @@ describe('MonthCalendar', () => {
     const day30 = dayElements.find((el) => el.text().includes('30'))
 
     expect(day30).toBeDefined()
-    expect(day30?.classes()).toContain('bg-gray-100')
-    expect(day30?.classes()).toContain('text-gray-400')
+    expect(day30?.classes()).toContain('bg-[var(--color-gray-200)]')
+    expect(day30?.classes()).toContain('text-[var(--color-secondary)]')
   })
 
   it('combines today ring with review background when both conditions met', async () => {

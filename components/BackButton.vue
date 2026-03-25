@@ -1,6 +1,6 @@
 <template>
   <button
-    class="text-[var(--color-secondary)] hover:text-[var(--color-black)]"
+    class="text-[var(--color-secondary)] active:text-[var(--color-black)]"
     :aria-label="$t('common.backButton')"
     @click="$emit('click')"
   >

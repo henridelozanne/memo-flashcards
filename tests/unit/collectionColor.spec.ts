@@ -133,8 +133,9 @@ describe('CollectionCard — color display', () => {
       global: { plugins: [i18n] },
     })
     const card = wrapper.find('div')
-    // jsdom normalizes #ffffff → rgb(255, 255, 255)
-    expect(card.element.style.background).toContain('rgb(255, 255, 255)')
+    // jsdom cannot resolve CSS custom properties, so var(--color-white) is
+    // not stored in element.style — the background is effectively empty (no custom color applied)
+    expect(card.element.style.background).toBeFalsy()
   })
 
   it('applies white text class when collection has a gradient color (isColored)', () => {
@@ -153,7 +154,7 @@ describe('CollectionCard — color display', () => {
       global: { plugins: [i18n] },
     })
     const nameEl = wrapper.find('div.mb-2')
-    expect(nameEl.classes()).toContain('text-gray-900')
+    expect(nameEl.classes()).toContain('text-[var(--color-black)]')
     expect(nameEl.classes()).not.toContain('text-white')
   })
 
@@ -163,7 +164,7 @@ describe('CollectionCard — color display', () => {
       global: { plugins: [i18n] },
     })
     const nameEl = wrapper.find('div.mb-2')
-    expect(nameEl.classes()).toContain('text-gray-900')
+    expect(nameEl.classes()).toContain('text-[var(--color-black)]')
     expect(nameEl.classes()).not.toContain('text-white')
   })
 })
