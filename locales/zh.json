@@ -457,8 +457,7 @@
     "premiumRequired": "此功能仅适用于高级订阅用户。",
     "finished": "所有建议已审阅完毕！",
     "loadingStep1": "正在读取你的卡片...",
-    "loadingStep2": "识别知识缺口...",
-    "loadingStep3": "生成新卡片...",
-    "loadingStep4": "整理提案中..."
+    "loadingStep2": "生成新卡片...",
+    "loadingStep3": "整理提案中..."
   }
 }

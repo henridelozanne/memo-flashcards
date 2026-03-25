@@ -457,8 +457,7 @@
     "premiumRequired": "この機能はプレミアム会員限定です。",
     "finished": "すべての提案を確認しました！",
     "loadingStep1": "カードを読み込み中...",
-    "loadingStep2": "ギャップを特定中...",
-    "loadingStep3": "新しいカードを生成中...",
-    "loadingStep4": "提案を仕上げ中..."
+    "loadingStep2": "新しいカードを生成中...",
+    "loadingStep3": "提案を仕上げ中..."
   }
 }

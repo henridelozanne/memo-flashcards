@@ -457,8 +457,7 @@
     "premiumRequired": "Questa funzionalità è disponibile solo per gli abbonati Premium.",
     "finished": "Tutti i suggerimenti sono stati esaminati!",
     "loadingStep1": "Lettura delle tue carte...",
-    "loadingStep2": "Identificazione delle lacune...",
-    "loadingStep3": "Generazione di nuove carte...",
-    "loadingStep4": "Finalizzazione delle proposte..."
+    "loadingStep2": "Generazione di nuove carte...",
+    "loadingStep3": "Finalizzazione delle proposte..."
   }
 }

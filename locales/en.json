@@ -457,8 +457,7 @@
     "premiumRequired": "This feature is available to Premium subscribers only.",
     "finished": "All suggestions have been reviewed!",
     "loadingStep1": "Reading your cards...",
-    "loadingStep2": "Identifying gaps...",
-    "loadingStep3": "Generating new cards...",
-    "loadingStep4": "Finalising proposals..."
+    "loadingStep2": "Generating new cards...",
+    "loadingStep3": "Finalising proposals..."
   }
 }

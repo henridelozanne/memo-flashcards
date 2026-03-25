@@ -457,8 +457,7 @@
     "premiumRequired": "Esta funcionalidade está disponível apenas para assinantes Premium.",
     "finished": "Todas as sugestões foram examinadas!",
     "loadingStep1": "Lendo seus cartões...",
-    "loadingStep2": "Identificando lacunas...",
-    "loadingStep3": "Gerando novos cartões...",
-    "loadingStep4": "Finalizando propostas..."
+    "loadingStep2": "Gerando novos cartões...",
+    "loadingStep3": "Finalizando propostas..."
   }
 }

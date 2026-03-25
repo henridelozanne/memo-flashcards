@@ -195,7 +195,6 @@ const loadingMessages = computed(() => [
   t('aiCards.loadingStep1'),
   t('aiCards.loadingStep2'),
   t('aiCards.loadingStep3'),
-  t('aiCards.loadingStep4'),
 ])
 
 function startLoadingAnimation() {
@@ -207,7 +206,7 @@ function startLoadingAnimation() {
     }
   }, 70)
   messageInterval = setInterval(() => {
-    loadingMessageIndex.value = (loadingMessageIndex.value + 1) % 4
+    loadingMessageIndex.value = (loadingMessageIndex.value + 1) % 3
   }, 2000)
 }
 

@@ -457,8 +457,7 @@
     "premiumRequired": "Esta función está disponible solo para suscriptores Premium.",
     "finished": "¡Todas las sugerencias han sido revisadas!",
     "loadingStep1": "Leyendo tus tarjetas...",
-    "loadingStep2": "Identificando lagunas...",
-    "loadingStep3": "Generando nuevas tarjetas...",
-    "loadingStep4": "Finalizando propuestas..."
+    "loadingStep2": "Generando nuevas tarjetas...",
+    "loadingStep3": "Finalizando propuestas..."
   }
 }
