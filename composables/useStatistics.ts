@@ -111,9 +111,12 @@ export const useStatistics = () => {
     // eslint-disable-next-line prefer-destructuring
     masteredCards.value = newCompartmentData[4]
 
-    // Get global coverage rate (cards reviewed at least once)
+    // Get global coverage rate (cards reviewed at least once, excluding deleted cards)
     const reviewedCardsResult = await db.all<{ count: number }>(
-      'SELECT COUNT(DISTINCT card_id) as count FROM review_logs WHERE user_id = ?',
+      `SELECT COUNT(DISTINCT rl.card_id) as count 
+       FROM review_logs rl
+       INNER JOIN cards c ON c.id = rl.card_id
+       WHERE rl.user_id = ? AND c.deleted_at IS NULL`,
       ['default-user']
     )
     const reviewedCount = reviewedCardsResult[0]?.count || 0
