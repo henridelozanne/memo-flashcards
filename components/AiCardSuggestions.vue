@@ -3,14 +3,14 @@
     <Transition name="ai-modal">
       <div
         v-if="isOpen"
-        class="fixed inset-0 z-50 flex flex-col bg-white"
+        class="fixed inset-0 z-50 flex flex-col bg-[var(--color-white)]"
         style="padding-top: env(safe-area-inset-top)"
       >
         <!-- Header -->
-        <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+        <div class="flex items-center justify-between border-b border-[var(--color-gray-200)] px-6 py-4">
           <button
             type="button"
-            class="flex items-center gap-1 text-sm text-gray-500 transition active:opacity-60"
+            class="flex items-center gap-1 text-sm text-[var(--color-secondary)] transition active:opacity-60"
             @click="$emit('close')"
           >
             <svg
@@ -29,13 +29,13 @@
             {{ $t('common.close') }}
           </button>
 
-          <span v-if="!isLoading" class="text-sm font-medium text-gray-400">
+          <span v-if="!isLoading" class="text-sm font-medium text-[var(--color-secondary)]">
             {{ $t('aiCards.progress', { current: currentIndex + 1, total: proposals.length }) }}
           </span>
         </div>
 
         <!-- Progress bar -->
-        <div v-if="!isLoading" class="h-1 w-full bg-gray-100">
+        <div v-if="!isLoading" class="h-1 w-full bg-[var(--color-gray-200)]">
           <div
             class="h-1 bg-[var(--color-primary)] transition-all duration-300"
             :style="{ width: `${((currentIndex + 1) / proposals.length) * 100}%` }"
@@ -50,7 +50,7 @@
               <ProgressCircle color-variant="purple" :current="loadingProgress" :total="100" :numbers-visible="false" />
             </div>
             <Transition name="fade" mode="out-in">
-              <p :key="loadingMessageIndex" class="mt-6 text-center text-sm font-medium text-gray-400">
+              <p :key="loadingMessageIndex" class="mt-6 text-center text-sm font-medium text-[var(--color-secondary)]">
                 {{ loadingMessages[loadingMessageIndex] }}
               </p>
             </Transition>
@@ -62,7 +62,7 @@
             class="flex flex-1 flex-col items-center justify-center overflow-y-auto px-6 py-8"
           >
             <p
-              class="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-[var(--color-primary)] opacity-70"
+              class="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-[var(--color-primary)] dark:text-[var(--color-accent-purple)]"
             >
               {{ $t('aiCards.suggestion') }}
             </p>
@@ -70,27 +70,27 @@
             <Transition :name="transitionName" mode="out-in">
               <div
                 :key="currentIndex"
-                class="w-full max-w-md rounded-[var(--border-radius-md)] border border-gray-100 bg-white p-8 shadow-[var(--shadow-light)]"
+                class="w-full max-w-md rounded-[var(--border-radius-md)] border border-[var(--color-gray-200)] bg-[var(--color-white)] p-8 shadow-[var(--shadow-light)]"
               >
                 <!-- Question -->
                 <div class="mb-6">
-                  <p class="mb-1 text-xs font-semibold uppercase tracking-widest text-gray-400">
+                  <p class="mb-1 text-xs font-semibold uppercase tracking-widest text-[var(--color-secondary)]">
                     {{ $t('aiCards.question') }}
                   </p>
-                  <p class="text-lg font-medium text-gray-900">
+                  <p class="text-lg font-medium text-[var(--color-black)]">
                     {{ currentProposal?.question }}
                   </p>
                 </div>
 
                 <!-- Divider -->
-                <div class="mb-6 h-px w-full bg-gray-100" />
+                <div class="mb-6 h-px w-full bg-[var(--color-gray-200)]" />
 
                 <!-- Answer -->
                 <div>
-                  <p class="mb-1 text-xs font-semibold uppercase tracking-widest text-gray-400">
+                  <p class="mb-1 text-xs font-semibold uppercase tracking-widest text-[var(--color-secondary)]">
                     {{ $t('aiCards.answer') }}
                   </p>
-                  <p class="text-lg font-medium text-gray-900">
+                  <p class="text-lg font-medium text-[var(--color-black)]">
                     {{ currentProposal?.answer }}
                   </p>
                 </div>
@@ -100,7 +100,7 @@
         </Transition>
 
         <!-- Actions -->
-        <div v-if="!isLoading" class="border-t border-gray-100 px-6 pb-10 pt-4">
+        <div v-if="!isLoading" class="border-t border-[var(--color-gray-200)] px-6 pb-10 pt-4">
           <div class="mx-auto flex max-w-md gap-3">
             <!-- Reject -->
             <button
@@ -292,12 +292,12 @@ onUnmounted(() => {
 }
 
 .ai-action-button--reject {
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--color-gray-200);
+  color: var(--color-black);
 }
 
 .ai-action-button--reject:not(:disabled):active {
-  background: var(--color-gray-200);
+  background: var(--color-gray-500);
 }
 
 .ai-action-button--accept {
