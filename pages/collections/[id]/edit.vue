@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full p-6">
+  <div class="min-h-full overflow-y-auto p-6 pb-16">
     <div class="mx-auto max-w-md">
       <PageHeader
         :title="$t('collections.editTitle')"
@@ -12,11 +12,11 @@
 
       <ErrorMessage v-else-if="!collection && error" :error="error" :on-retry="init" />
 
-      <div v-else-if="!collection" class="text-center text-gray-600">
+      <div v-else-if="!collection" class="text-center text-gray-600 dark:text-[var(--color-secondary)]">
         {{ $t('collections.notFound') }}
       </div>
 
-      <div v-else class="rounded-lg bg-white p-6 shadow">
+      <div v-else class="mb-8 rounded-lg p-6 shadow" style="background-color: var(--color-white)">
         <CollectionForm
           :name="collection.name"
           :color="collection.color"

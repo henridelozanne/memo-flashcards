@@ -1,9 +1,9 @@
 <template>
-  <label class="flex cursor-pointer items-center gap-2 text-xs text-gray-500">
+  <label class="flex cursor-pointer items-center gap-2 text-xs text-[var(--color-secondary)]">
     <span>{{ label }}</span>
     <div
       class="relative inline-block h-4 w-8 cursor-pointer rounded-full transition"
-      :class="modelValue ? 'bg-[var(--color-primary)]' : 'bg-gray-300'"
+      :class="modelValue ? 'bg-[var(--color-primary)]' : 'bg-gray-300 dark:bg-[var(--color-gray-500)]'"
       @click="$emit('update:modelValue', !modelValue)"
     >
       <div

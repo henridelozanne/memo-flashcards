@@ -86,6 +86,36 @@
         <option value="it">Italiano</option>
       </select>
 
+      <!-- Mode sombre -->
+      <div
+        class="relative z-10 flex w-full items-center rounded-[15px] border border-gray-100 p-4 shadow-[0px_4px_32px_#0000000a] dark:border-[var(--color-gray-200)]"
+        style="background-color: var(--color-white)"
+      >
+        <div class="flex flex-1 items-center gap-4">
+          <div
+            class="relative flex h-6 w-6 flex-shrink-0 items-center justify-center overflow-hidden text-[var(--color-primary)] dark:text-[#ab93ff]"
+          >
+            <Transition name="theme-icon">
+              <IconSun v-if="isDark" key="sun" />
+              <IconMoon v-else key="moon" />
+            </Transition>
+          </div>
+          <span class="flex-1 text-left font-medium text-[var(--color-black)]">{{ $t('settings.darkMode') }}</span>
+        </div>
+        <button
+          class="relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors duration-200 focus:outline-none"
+          :class="isDark ? 'bg-[var(--color-primary)]' : 'bg-gray-300 dark:bg-gray-600'"
+          :aria-label="$t('settings.darkMode')"
+          :aria-pressed="isDark"
+          @click="toggleDark"
+        >
+          <span
+            class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200"
+            :class="isDark ? 'translate-x-6' : 'translate-x-1'"
+          />
+        </button>
+      </div>
+
       <!-- Demander une fonctionnalité -->
       <SettingsItem :label="$t('settings.featureRequest')" @click="$router.push('/feature-request')">
         <template #icon>
@@ -140,6 +170,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useColorMode } from '@vueuse/core'
+import { isDark } from '~/composables/useIsDark'
 import { useUserProfileStore } from '~/store/userProfile'
 import { useSubscriptionStore } from '~/store/subscription'
 import { useNotificationTime } from '~/composables/useNotificationTime'
@@ -158,6 +190,14 @@ import IconBug from '~/components/icons/IconBug.vue'
 import IconTrash from '~/components/icons/IconTrash.vue'
 import IconDocument from '~/components/icons/IconDocument.vue'
 import IconRefresh from '~/components/icons/IconRefresh.vue'
+import IconMoon from '~/components/icons/IconMoon.vue'
+import IconSun from '~/components/icons/IconSun.vue'
+
+const colorMode = useColorMode()
+
+function toggleDark() {
+  colorMode.value = isDark.value ? 'light' : 'dark'
+}
 
 const userProfileStore = useUserProfileStore()
 const subscriptionStore = useSubscriptionStore()
@@ -211,3 +251,29 @@ async function handleRestorePurchases() {
 
 defineOptions({ name: 'SettingsPage' })
 </script>
+
+<style scoped>
+.theme-icon-enter-active,
+.theme-icon-leave-active {
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+  position: absolute;
+}
+.theme-icon-enter-from {
+  opacity: 0;
+  transform: translateY(-120%);
+}
+.theme-icon-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+.theme-icon-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+.theme-icon-leave-to {
+  opacity: 0;
+  transform: translateY(120%);
+}
+</style>

@@ -1,5 +1,9 @@
 <template>
-  <button class="text-gray-600 hover:text-gray-800" :aria-label="$t('common.backButton')" @click="$emit('click')">
+  <button
+    class="text-[var(--color-secondary)] hover:text-[var(--color-black)]"
+    :aria-label="$t('common.backButton')"
+    @click="$emit('click')"
+  >
     <IconArrowLeft />
   </button>
 </template>

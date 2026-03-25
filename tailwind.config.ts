@@ -1,6 +1,7 @@
 import { Config } from 'tailwindcss'
 
 const config: Config = {
+  darkMode: 'class',
   content: ['./**/*.{vue,js,ts,html}'],
   theme: {
     extend: {

@@ -24,15 +24,21 @@
       <div v-else>
         <!-- Résumé -->
         <div
-          class="mb-6 rounded-[15px] border border-gray-100 p-6 shadow-[0px_4px_32px_#0000000a]"
-          :style="{ background: collection.color || '#ffffff' }"
+          class="mb-6 rounded-[15px] p-6 shadow-[0px_8px_32px_rgba(0,0,0,0.15)]"
+          :style="{
+            background: collection.color && collection.color !== '#ffffff' ? collection.color : 'var(--color-white)',
+          }"
         >
           <div class="flex flex-col gap-4">
             <div>
-              <p class="text-lg font-medium" :class="isColored ? 'text-white' : ''">
+              <p class="text-lg font-medium" :class="isColored ? 'text-white' : 'text-[var(--color-black)]'">
                 {{ $t('cards.cardCount', { count: cards.length }) }}
               </p>
-              <p v-if="lastCardDate" class="text-sm" :class="isColored ? 'text-white/75' : 'text-gray-500'">
+              <p
+                v-if="lastCardDate"
+                class="text-sm"
+                :class="isColored ? 'text-white/75' : 'text-[var(--color-secondary)]'"
+              >
                 {{ $t('cards.lastAdded') }} {{ formatDate(lastCardDate) }}
               </p>
             </div>
@@ -52,13 +58,13 @@
                 <button
                   type="button"
                   class="options-toggle-button"
-                  :class="isColored ? 'text-white' : 'text-gray-500'"
+                  :class="isColored ? 'text-white' : 'text-[var(--color-gray-500)]'"
                   @click="showPracticeOptions = !showPracticeOptions"
                 >
                   <IconSettings />
                 </button>
               </div>
-              <p class="text-center text-xs" :class="isColored ? 'text-white/75' : 'text-gray-500'">
+              <p class="text-center text-xs" :class="isColored ? 'text-white/75' : 'text-[var(--color-secondary)]'">
                 {{ $t('practiceMode.subtitle') }}
               </p>
             </div>
@@ -67,7 +73,7 @@
             <Transition name="practice-options">
               <div v-if="showPracticeOptions" class="mt-2">
                 <div class="mb-3 flex items-center justify-between">
-                  <p class="text-sm font-medium" :class="isColored ? 'text-white' : 'text-gray-700'">
+                  <p class="text-sm font-medium" :class="isColored ? 'text-white' : 'text-[var(--color-black)]'">
                     {{ $t('practiceMode.options') }}
                   </p>
                   <IconStar v-if="isFree" class="h-4 w-4 text-yellow-500" />

@@ -146,7 +146,7 @@ watch(
 
 .streak-modal-card {
   position: relative;
-  background: white;
+  background: var(--color-white);
   border-radius: 24px;
   padding: 40px 28px 28px;
   width: 100%;
@@ -219,7 +219,7 @@ watch(
 
 .streak-subtitle {
   font-size: 14px;
-  color: #9ca3af;
+  color: var(--color-gray-500);
   text-align: center;
   margin-bottom: 32px;
   padding: 0 12px;
@@ -246,7 +246,7 @@ watch(
 .streak-day-letter {
   font-size: 13px;
   font-weight: 700;
-  color: #d1d5db;
+  color: var(--color-gray-500);
   transition: color 0.3s ease;
 }
 
@@ -256,7 +256,7 @@ watch(
 
 .streak-day-letter.missed,
 .streak-day-letter.future {
-  color: #d1d5db;
+  color: var(--color-gray-500);
 }
 
 /* Dots for reviewed days outside the streak */
@@ -274,7 +274,7 @@ watch(
 .streak-progress-track {
   position: relative;
   height: 10px;
-  background: #e5e7eb;
+  background: var(--color-gray-200);
   border-radius: 10px;
 }
 

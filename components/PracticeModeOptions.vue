@@ -1,5 +1,5 @@
 <template>
-  <div class="practice-options">
+  <div class="practice-options" :class="isColored ? 'is-colored' : 'is-light'">
     <div class="option-item">
       <label class="option-label">
         <input
@@ -149,8 +149,15 @@ function handleClick(key: keyof PracticeModeOptions, event: Event) {
   cursor: pointer;
   font-size: 15px;
   font-weight: 500;
-  color: v-bind("isColored ? '#ffffff' : '#1f2937'");
   -webkit-tap-highlight-color: transparent !important;
+}
+
+.is-colored .option-label {
+  color: #ffffff;
+}
+
+.is-light .option-label {
+  color: var(--color-black);
 }
 
 .option-checkbox {
@@ -165,7 +172,14 @@ function handleClick(key: keyof PracticeModeOptions, event: Event) {
   margin: 0;
   padding-left: 32px;
   font-size: 13px;
-  color: v-bind("isColored ? 'rgba(255,255,255,0.7)' : '#6b7280'");
   line-height: 1.4;
+}
+
+.is-colored .option-description {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.is-light .option-description {
+  color: var(--color-secondary);
 }
 </style>

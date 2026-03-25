@@ -21,6 +21,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'import/prefer-default-export': 'off',
     'no-promise-executor-return': 'off',
+    'vue/multi-word-component-names': 'off',
   },
   settings: {
     'import/resolver': {

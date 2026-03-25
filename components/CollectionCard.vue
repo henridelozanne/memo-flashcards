@@ -1,13 +1,15 @@
 <template>
   <div
-    class="flex cursor-pointer flex-col rounded-[15px] border border-gray-100 p-4 shadow-[0px_4px_32px_#0000000a] transition hover:shadow-md"
-    :style="{ background: collection.color || '#ffffff' }"
+    class="flex cursor-pointer flex-col rounded-[15px] p-4 shadow-[0px_4px_32px_#0000000a] transition hover:shadow-md"
+    :style="{
+      background: collection.color && collection.color !== '#ffffff' ? collection.color : 'var(--color-white)',
+    }"
     @click="handleClick"
   >
-    <div class="mb-2 text-lg font-semibold" :class="isColored ? 'text-white' : 'text-gray-900'">
+    <div class="mb-2 text-lg font-semibold" :class="isColored ? 'text-white' : 'text-[var(--color-black)]'">
       {{ collection.name }}
     </div>
-    <div class="mb-4 text-sm" :class="isColored ? 'text-white/75' : 'text-gray-500'">
+    <div class="mb-4 text-sm" :class="isColored ? 'text-white/75' : 'text-[var(--color-secondary)]'">
       {{ $t('cards.cardCount', { count: cardCount }) }}
     </div>
     <div class="mt-auto flex gap-2">

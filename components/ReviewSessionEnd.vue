@@ -1,13 +1,13 @@
 <template>
   <div class="flex flex-col items-center">
     <img src="/cortx_yeah_transparent_background.png" alt="Cortx" class="brain-entrance mb-4 w-40" />
-    <div class="w-full max-w-md rounded-[15px] bg-white p-8 text-center shadow-[0px_4px_32px_#0000000a]">
-      <div class="mb-2 text-2xl font-bold">
+    <div class="w-full max-w-md rounded-[15px] bg-[var(--color-white)] p-8 text-center shadow-[var(--shadow-light)]">
+      <div class="mb-2 text-2xl font-bold text-[var(--color-black)]">
         {{ $t('review.sessionFinished') }}
       </div>
-      <div class="mb-4 text-lg text-gray-700">{{ $t('review.congrats') }}</div>
-      <div class="my-4 text-5xl font-bold text-black">{{ goodCount }} / {{ cardsReviewedCount }}</div>
-      <div class="mb-2 text-gray-500">
+      <div class="mb-4 text-lg text-[var(--color-secondary)]">{{ $t('review.congrats') }}</div>
+      <div class="my-4 text-5xl font-bold text-[var(--color-black)]">{{ goodCount }} / {{ cardsReviewedCount }}</div>
+      <div class="mb-2 text-[var(--color-secondary)]">
         {{ $t('review.successRate', { percent: successRate }) }}
       </div>
 

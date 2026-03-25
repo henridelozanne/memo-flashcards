@@ -20,6 +20,7 @@
     "@capacitor/ios": "^7.4.3",
     "@capacitor/local-notifications": "^7.0.3",
     "@capacitor/preferences": "^7.0.2",
+    "@nuxtjs/color-mode": "^4.0.0",
     "@pinia/nuxt": "^0.4.0",
     "@revenuecat/purchases-capacitor": "^11.2.16",
     "@sentry/capacitor": "^3.0.0",

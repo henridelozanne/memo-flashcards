@@ -61,7 +61,7 @@ const progressPercentage = computed(() => {
 .progress-bar-background {
   width: 100%;
   height: 4px;
-  background-color: #e5e7eb;
+  background-color: var(--color-gray-200);
   border-radius: 2px;
   overflow: hidden;
   position: relative;

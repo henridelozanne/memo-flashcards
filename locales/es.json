@@ -242,6 +242,7 @@
     "restorePurchasesNone": "Ninguna compra para restaurar",
     "restorePurchasesError": "Error al restaurar",
     "language": "Idioma",
+    "darkMode": "Modo oscuro",
     "languageUpdated": "Idioma actualizado con éxito",
     "languageError": "Error al actualizar el idioma",
     "feedback": "Hacer una sugerencia o reportar un error",

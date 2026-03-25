@@ -21,20 +21,20 @@
       <!-- Liste des avantages -->
       <ul class="mb-8 space-y-2 text-left">
         <li class="flex items-start gap-3">
-          <span class="mt-1 text-lg">•</span>
-          <span class="text-base text-gray-700">{{ $t('onboarding.paywall.benefit1') }}</span>
+          <span class="mt-1 text-lg text-[var(--color-secondary)]">•</span>
+          <span class="text-base text-[var(--color-secondary)]">{{ $t('onboarding.paywall.benefit1') }}</span>
         </li>
         <li class="flex items-start gap-3">
-          <span class="mt-1 text-lg">•</span>
-          <span class="text-base text-gray-700">{{ $t('onboarding.paywall.benefit2') }}</span>
+          <span class="mt-1 text-lg text-[var(--color-secondary)]">•</span>
+          <span class="text-base text-[var(--color-secondary)]">{{ $t('onboarding.paywall.benefit2') }}</span>
         </li>
         <li class="flex items-start gap-3">
-          <span class="mt-1 text-lg">•</span>
-          <span class="text-base text-gray-700">{{ $t('onboarding.paywall.benefit3') }}</span>
+          <span class="mt-1 text-lg text-[var(--color-secondary)]">•</span>
+          <span class="text-base text-[var(--color-secondary)]">{{ $t('onboarding.paywall.benefit3') }}</span>
         </li>
         <li class="flex items-start gap-3">
-          <span class="mt-1 text-lg">•</span>
-          <span class="text-base text-gray-700">{{ $t('onboarding.paywall.benefit4') }}</span>
+          <span class="mt-1 text-lg text-[var(--color-secondary)]">•</span>
+          <span class="text-base text-[var(--color-secondary)]">{{ $t('onboarding.paywall.benefit4') }}</span>
         </li>
       </ul>
 
@@ -52,7 +52,9 @@
               <div class="text-lg font-bold text-[var(--color-black)]">
                 {{ $t('onboarding.paywall.monthly.title') }}
               </div>
-              <div class="text-sm text-gray-500">{{ $t('onboarding.paywall.monthly.renewal') }}</div>
+              <div class="text-sm text-gray-500 dark:text-[var(--color-secondary)]">
+                {{ $t('onboarding.paywall.monthly.renewal') }}
+              </div>
             </div>
             <div class="text-xl font-bold text-[var(--color-black)]">
               {{ monthlyPrice || $t('onboarding.paywall.monthly.price') }}
@@ -71,7 +73,9 @@
               <div class="text-lg font-bold text-[var(--color-black)]">
                 {{ $t('onboarding.paywall.lifetime.title') }}
               </div>
-              <div class="text-sm text-gray-500">{{ $t('onboarding.paywall.lifetime.renewal') }}</div>
+              <div class="text-sm text-gray-500 dark:text-[var(--color-secondary)]">
+                {{ $t('onboarding.paywall.lifetime.renewal') }}
+              </div>
             </div>
             <div class="text-xl font-bold text-[var(--color-black)]">
               {{ lifetimePrice || $t('onboarding.paywall.lifetime.price') }}
@@ -83,19 +87,19 @@
 
     <!-- CTA fixé en bas -->
     <div
-      class="fixed bottom-0 left-0 right-0 z-10 bg-white px-6 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]"
+      class="fixed bottom-0 left-0 right-0 z-10 bg-[var(--color-white)] px-6 pt-6 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]"
       style="padding-bottom: calc(0.3rem + env(safe-area-inset-bottom))"
     >
       <button class="trial-button w-full" @click="selectPlan('monthly_free_trial')">
         {{ $t('onboarding.paywall.freeTrial') }}
       </button>
-      <p v-if="monthlyPrice" class="mt-2 text-center text-xs text-gray-500">
+      <p v-if="monthlyPrice" class="mt-2 text-center text-xs text-gray-500 dark:text-[var(--color-secondary)]">
         {{ $t('onboarding.paywall.freeTrialThen', { price: monthlyPrice }) }}
       </p>
-      <p class="mt-3 text-center text-xs text-gray-500">
+      <p class="mt-3 text-center text-xs text-gray-500 dark:text-[var(--color-secondary)]">
         {{ $t('onboarding.paywall.disclaimer') }}
       </p>
-      <p class="mt-2 text-center text-xs text-gray-400">
+      <p class="mt-2 text-center text-xs text-gray-400 dark:text-[var(--color-gray-500)]">
         <NuxtLink to="/legal" class="underline">{{ $t('onboarding.paywall.privacyPolicy') }}</NuxtLink>
         <span class="mx-1">·</span>
         <button
@@ -310,9 +314,9 @@ defineOptions({ name: 'OnboardingPaywallPage' })
   flex-direction: column;
   align-items: center;
   padding: 18px 20px;
-  border: 2px solid #d1d5db;
+  border: 2px solid var(--color-gray-200);
   border-radius: 12px;
-  background: white;
+  background: var(--color-white);
   text-align: center;
   transition: all 0.3s ease-in-out;
   width: 100%;
@@ -321,7 +325,7 @@ defineOptions({ name: 'OnboardingPaywallPage' })
 
 .subscription-card.selected {
   border-color: var(--color-primary);
-  background: #f5f3ff;
+  background: var(--color-light-purple);
 }
 
 .popular-badge {

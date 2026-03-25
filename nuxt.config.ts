@@ -7,7 +7,13 @@ export default defineNuxtConfig({
     preset: 'static',
   },
   srcDir: './',
-  modules: ['@pinia/nuxt'],
+  modules: ['@pinia/nuxt', '@nuxtjs/color-mode'],
+  colorMode: {
+    classSuffix: '',
+    preference: 'system',
+    fallback: 'light',
+    storageKey: 'cortx-color-mode',
+  },
   typescript: {
     strict: true,
     tsConfig: {

@@ -2,7 +2,7 @@
   <form @submit.prevent="handleSubmit">
     <div class="mb-6">
       <div class="mb-2 flex items-center justify-between">
-        <label for="front" class="text-sm font-medium text-gray-700"> {{ $t('cards.front') }} * </label>
+        <label for="front" class="text-sm font-medium text-[var(--color-black)]"> {{ $t('cards.front') }} * </label>
         <RichTextToggle v-model="isRichTextFront" :label="$t('cards.richTextMode')" />
       </div>
       <TipTapEditor
@@ -17,7 +17,7 @@
         v-model="localFront"
         type="text"
         :placeholder="$t('cards.frontPlaceholder')"
-        class="w-full rounded-[15px] border border-gray-300 px-4 py-2 focus:border-[var(--color-primary)] focus:outline-none"
+        class="w-full rounded-[15px] border border-[var(--color-gray-200)] bg-[var(--color-bg)] px-4 py-2 text-[var(--color-black)] focus:border-[var(--color-primary)] focus:outline-none"
         data-testid="front-input"
       />
       <p v-if="frontError" class="mt-1 text-sm text-[var(--color-accent-red)]">
@@ -27,7 +27,7 @@
 
     <div class="mb-6">
       <div class="mb-2 flex items-center justify-between">
-        <label for="back" class="text-sm font-medium text-gray-700"> {{ $t('cards.back') }} * </label>
+        <label for="back" class="text-sm font-medium text-[var(--color-black)]"> {{ $t('cards.back') }} * </label>
         <RichTextToggle v-model="isRichTextBack" :label="$t('cards.richTextMode')" />
       </div>
       <TipTapEditor
@@ -42,7 +42,7 @@
         v-model="localBack"
         :placeholder="$t('cards.backPlaceholder')"
         rows="4"
-        class="w-full rounded-[15px] border border-gray-300 px-4 py-2 focus:border-[var(--color-primary)] focus:outline-none"
+        class="w-full rounded-[15px] border border-[var(--color-gray-200)] bg-[var(--color-bg)] px-4 py-2 text-[var(--color-black)] focus:border-[var(--color-primary)] focus:outline-none"
         data-testid="back-input"
       ></textarea>
       <p v-if="backError" class="mt-1 text-sm text-[var(--color-accent-red)]">{{ backError }}</p>
@@ -51,7 +51,7 @@
     <div class="flex gap-3">
       <button
         type="button"
-        class="flex-1 rounded-[15px] bg-gray-200 px-4 py-2 text-gray-700 transition hover:bg-gray-300"
+        class="flex-1 rounded-[15px] bg-gray-200 px-4 py-2 text-gray-700 transition hover:bg-gray-300 dark:bg-[var(--color-gray-200)] dark:text-[var(--color-black)] dark:hover:bg-[var(--color-gray-500)]"
         @click="$emit('cancel')"
       >
         {{ $t('common.cancel') }}

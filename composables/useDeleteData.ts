@@ -71,7 +71,11 @@ export function useDeleteData() {
       const { Preferences } = await import('@capacitor/preferences')
       await Preferences.clear()
 
-      // 8. Redirect to onboarding
+      // 8. Reset dark mode preference
+      localStorage.removeItem('cortx-color-mode')
+      document.documentElement.classList.remove('dark')
+
+      // 9. Redirect to onboarding
       closeDeleteConfirm()
       router.push('/onboarding/welcome')
     } catch (error) {

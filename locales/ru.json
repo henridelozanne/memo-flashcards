@@ -242,6 +242,7 @@
     "restorePurchasesNone": "Нет покупок для восстановления",
     "restorePurchasesError": "Ошибка при восстановлении",
     "language": "Язык",
+    "darkMode": "Тёмная тема",
     "languageUpdated": "Язык успешно обновлён",
     "languageError": "Ошибка обновления языка",
     "feedback": "Предложить улучшение или сообщить об ошибке",

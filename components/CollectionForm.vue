@@ -1,14 +1,14 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-6">
-      <label for="name" class="mb-2 block text-sm font-medium text-gray-700">
+      <label for="name" class="mb-2 block text-sm font-medium text-[var(--color-black)]">
         {{ $t('collections.nameLabel') }} *
       </label>
       <input
         id="name"
         v-model="localName"
         type="text"
-        class="w-full rounded-[15px] border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full rounded-[15px] border border-[var(--color-gray-200)] bg-[var(--color-gray-50)] px-3 py-2 text-[var(--color-black)] focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
         :class="{ 'border-[var(--color-accent-red)]': error }"
         :placeholder="$t('collections.namePlaceholder')"
       />
@@ -17,7 +17,7 @@
 
     <!-- Sélecteur de couleur -->
     <div class="mb-6">
-      <label class="mb-3 block text-sm font-medium text-gray-700">
+      <label class="mb-3 block text-sm font-medium text-[var(--color-black)]">
         {{ $t('collections.backgroundColorLabel') }}
       </label>
       <div class="grid grid-cols-4 gap-2">
@@ -29,7 +29,9 @@
           class="h-10 w-full rounded-[7px] transition-transform hover:scale-105"
           :style="{ background: colorValue }"
           :class="
-            localColor === colorValue ? 'ring-2 ring-[var(--color-accent-blue)] ring-offset-2' : 'ring-1 ring-gray-200'
+            localColor === colorValue
+              ? 'ring-2 ring-[var(--color-accent-blue)] ring-offset-2'
+              : 'ring-1 ring-[var(--color-gray-200)]'
           "
           @click="selectColor(colorValue)"
         />
@@ -38,10 +40,10 @@
 
     <!-- Sélecteur de fond de carte -->
     <div class="mb-6">
-      <label class="mb-3 block text-sm font-medium text-gray-700">
+      <label class="mb-3 block text-sm font-medium text-[var(--color-black)]">
         {{ $t('collections.cardBackgroundLabel') }}
       </label>
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid grid-cols-3 gap-2">
         <button
           v-for="bg in CARD_BACKGROUNDS"
           :key="bg.id"
@@ -56,10 +58,10 @@
             :class="
               localCardBackground === bg.id
                 ? 'border-transparent ring-2 ring-[var(--color-accent-blue)] ring-offset-1'
-                : 'border-gray-200'
+                : 'border-[var(--color-gray-200)]'
             "
           />
-          <span class="w-full text-center text-sm font-medium text-gray-700">{{ $t(bg.labelKey) }}</span>
+          <span class="w-full text-center text-sm font-medium text-[var(--color-black)]">{{ $t(bg.labelKey) }}</span>
         </button>
       </div>
     </div>
@@ -67,7 +69,7 @@
     <div class="flex gap-3">
       <button
         type="button"
-        class="flex-1 rounded-[15px] bg-gray-200 px-4 py-2 text-gray-700 transition hover:bg-gray-300"
+        class="flex-1 rounded-[15px] bg-[var(--color-gray-200)] px-4 py-2 text-[var(--color-black)] transition hover:bg-[var(--color-gray-500)] hover:text-white"
         @click="$emit('cancel')"
       >
         {{ $t('common.cancel') }}

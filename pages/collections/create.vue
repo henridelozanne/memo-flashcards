@@ -11,7 +11,8 @@
 
       <!-- Formulaire -->
       <div
-        class="rounded-[15px] border border-gray-100 bg-white p-6 shadow-[0px_4px_32px_#0000000a]"
+        class="mb-8 rounded-[15px] border p-6 shadow-[0px_4px_32px_#0000000a]"
+        style="background-color: var(--color-white); border-color: var(--color-gray-200)"
         data-testid="create-form"
       >
         <CollectionForm

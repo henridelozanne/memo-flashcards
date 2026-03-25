@@ -16,7 +16,9 @@
       <ErrorMessage v-else-if="error" :error="error" :on-retry="init" />
 
       <!-- Card not found -->
-      <div v-else-if="!card" class="text-center text-gray-600">{{ $t('cards.notFound') }}</div>
+      <div v-else-if="!card" class="text-center text-gray-600 dark:text-[var(--color-secondary)]">
+        {{ $t('cards.notFound') }}
+      </div>
 
       <!-- Content -->
       <div v-else>
@@ -24,7 +26,10 @@
         <CollectionInfo :collection="collection" />
 
         <!-- Formulaire -->
-        <div class="mb-6 rounded-lg bg-white p-6 shadow" data-testid="edit-card-form">
+        <div
+          class="mb-6 rounded-[15px] border border-[var(--color-gray-200)] bg-[var(--color-white)] p-6 shadow-[var(--shadow-light)]"
+          data-testid="edit-card-form"
+        >
           <CardForm
             :front="card.question"
             :back="card.answer"
@@ -35,17 +40,26 @@
           />
         </div>
 
-        <div v-if="card.next_review_at" class="mb-6 flex items-center justify-end text-[13px] text-gray-500">
+        <div
+          v-if="card.next_review_at"
+          class="mb-6 flex items-center justify-end text-[13px] text-gray-500 dark:text-[var(--color-secondary)]"
+        >
           <IconClock class="mr-2 h-4 w-4" />
           <span class="mr-1">{{ $t('cards.nextReview') }}: {{ formatReviewDate(card.next_review_at) }}</span>
         </div>
 
-        <div v-if="card" class="mb-6 flex items-center justify-end text-[13px] text-gray-500">
+        <div
+          v-if="card"
+          class="mb-6 flex items-center justify-end text-[13px] text-gray-500 dark:text-[var(--color-secondary)]"
+        >
           <IconBox class="mr-2 opacity-60" />
           <span class="mr-1">{{ $t('cards.compartment', { n: card.compartment, total: 5 }) }}</span>
         </div>
 
-        <div v-if="card?.total_reviews > 0" class="mb-6 flex items-center justify-end text-[13px] text-gray-500">
+        <div
+          v-if="card?.total_reviews > 0"
+          class="mb-6 flex items-center justify-end text-[13px] text-gray-500 dark:text-[var(--color-secondary)]"
+        >
           <IconStats class="mr-2 opacity-60" />
           <span class="mr-1">{{
             $t('cards.correctAnswers', { correct: card.correct_answers, total: card.total_reviews })
@@ -54,8 +68,7 @@
 
         <!-- Bouton supprimer -->
         <button
-          class="flex w-full items-center justify-center gap-2 rounded-md px-4 py-2 transition"
-          style="background-color: #ffe4e4; color: var(--color-accent-red)"
+          class="flex w-full items-center justify-center gap-2 rounded-md bg-[#ffe4e4] px-4 py-2 text-[var(--color-accent-red)] transition dark:bg-[#3a1010]"
           data-testid="delete-card-btn"
           @click="confirmDelete"
         >
@@ -87,7 +100,9 @@
     >
       {{ $t('cards.deleteMessage') }}
       <br />
-      <span class="text-sm text-gray-500">{{ $t('collections.deleteWarning') }}</span>
+      <span class="text-sm text-gray-500 dark:text-[var(--color-secondary)]">{{
+        $t('collections.deleteWarning')
+      }}</span>
     </ConfirmModal>
   </div>
 </template>

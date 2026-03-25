@@ -242,6 +242,7 @@
     "restorePurchasesNone": "Nessun acquisto da ripristinare",
     "restorePurchasesError": "Errore durante il ripristino",
     "language": "Lingua",
+    "darkMode": "Modalità scura",
     "languageUpdated": "Lingua aggiornata con successo",
     "languageError": "Impossibile aggiornare la lingua",
     "feedback": "Fai un suggerimento o segnala un bug",

@@ -1,24 +1,26 @@
 <template>
   <button
-    class="relative z-10 flex w-full items-center rounded-[15px] border border-gray-100 p-4 shadow-[0px_4px_32px_#0000000a] transition hover:bg-[var(--color-gray-50)]"
-    style="background-color: #ffffff"
+    class="relative z-10 flex w-full items-center rounded-[15px] border border-gray-100 p-4 shadow-[0px_4px_32px_#0000000a] transition hover:bg-[var(--color-gray-50)] dark:border-[var(--color-gray-200)]"
+    style="background-color: var(--color-white)"
     @click="$emit('click')"
   >
     <div class="flex flex-1 items-center gap-4">
-      <div class="icon-wrapper flex h-6 w-6 flex-shrink-0 items-center justify-center text-[var(--color-primary)]">
+      <div
+        class="icon-wrapper flex h-6 w-6 flex-shrink-0 items-center justify-center text-[var(--color-primary)] dark:text-[#ab93ff]"
+      >
         <slot name="icon" />
       </div>
       <span class="flex-1 text-left font-medium text-[var(--color-black)]">{{ label }}</span>
     </div>
-    <div class="flex flex-shrink-0 items-center gap-2">
-      <span v-if="value" class="text-sm text-gray-500">{{ value }}</span>
-      <svg 
+    <div class="flex flex-shrink-0 items-center gap-2 text-[var(--color-secondary)]">
+      <span v-if="value" class="text-sm">{{ value }}</span>
+      <svg
         v-if="showArrow"
-        width="20" 
-        height="20" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
         stroke-width="2"
       >
         <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round" />

@@ -1,6 +1,6 @@
 <template>
   <div class="relative mb-6 flex h-8 items-center">
-    <div class="absolute left-0 flex h-full items-center">
+    <div class="absolute left-0 flex h-full items-center text-[var(--color-secondary)]">
       <BackButton v-if="backButtonVisible" @click="handleBackClick" />
       <slot v-else name="leftActions" />
     </div>
@@ -12,7 +12,7 @@
       {{ title }}
     </h1>
 
-    <div v-if="$slots.actions" class="absolute right-0">
+    <div v-if="$slots.actions" class="absolute right-0 text-[var(--color-secondary)]">
       <slot name="actions" />
     </div>
   </div>

@@ -14,7 +14,7 @@
 
       <!-- Formulaire -->
       <div
-        class="rounded-[15px] border border-gray-100 bg-white p-6 shadow-[0px_4px_32px_#0000000a]"
+        class="rounded-[15px] border border-[var(--color-gray-200)] bg-[var(--color-white)] p-6 shadow-[var(--shadow-light)]"
         data-testid="create-card-form"
       >
         <CardForm

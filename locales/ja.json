@@ -242,6 +242,7 @@
     "restorePurchasesNone": "復元する購入はありません",
     "restorePurchasesError": "復元中にエラーが発生しました",
     "language": "言語",
+    "darkMode": "ダークモード",
     "languageUpdated": "言語が正常に更新されました",
     "languageError": "言語の更新に失敗しました",
     "feedback": "提案またはバグを報告",

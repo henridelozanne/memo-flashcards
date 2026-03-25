@@ -86,7 +86,7 @@ watch(
 }
 
 .modal-container {
-  background: white;
+  background: var(--color-white);
   border-radius: 20px;
   padding: 32px 24px;
   max-width: 400px;
@@ -120,7 +120,7 @@ watch(
 
 .modal-description {
   font-size: 16px;
-  color: #6b7280;
+  color: var(--color-secondary);
   line-height: 1.5;
   margin-bottom: 24px;
 }
@@ -150,7 +150,7 @@ watch(
 .btn-secondary {
   padding: 14px 24px;
   background: transparent;
-  color: #6b7280;
+  color: var(--color-secondary);
   font-weight: 600;
   font-size: 16px;
   border-radius: 12px;
@@ -160,7 +160,7 @@ watch(
 }
 
 .btn-secondary:hover {
-  background: #f3f4f6;
+  background: var(--color-gray-200);
 }
 
 /* Animations */

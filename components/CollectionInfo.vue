@@ -1,5 +1,5 @@
 <template>
-  <div v-if="collection" class="mb-6 rounded-[15px] bg-[var(--color-light-blue)] p-4 shadow-[0px_4px_32px_#0000000a]">
+  <div v-if="collection" class="mb-6 rounded-[15px] bg-[var(--color-light-blue)] p-4 shadow-[var(--shadow-light)] dark:bg-[var(--color-gray-200)]">
     <p class="text-sm text-[var(--color-accent-blue)]">
       <span class="font-medium">{{ $t('collections.collection') }}:</span>
       {{ collection.name }}

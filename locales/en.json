@@ -242,6 +242,7 @@
     "restorePurchasesNone": "No purchases to restore",
     "restorePurchasesError": "Error restoring purchases",
     "language": "Language",
+    "darkMode": "Dark mode",
     "languageUpdated": "Language updated successfully",
     "languageError": "Failed to update language",
     "feedback": "Make a suggestion or report a bug",

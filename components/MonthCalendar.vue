@@ -2,11 +2,11 @@
   <div class="month-calendar">
     <!-- En-tête avec mois et année -->
     <div class="mb-4 flex items-center justify-between">
-      <button class="rounded-lg p-2 hover:bg-gray-100" @click="previousMonth">
+      <button class="rounded-lg p-2 text-[var(--color-black)] hover:bg-[var(--color-gray-200)]" @click="previousMonth">
         <IconArrowLeft class="h-5 w-5" />
       </button>
-      <div class="text-base font-semibold">{{ monthYearLabel }}</div>
-      <button class="rounded-lg p-2 hover:bg-gray-100" @click="nextMonth">
+      <div class="text-base font-semibold text-[var(--color-black)]">{{ monthYearLabel }}</div>
+      <button class="rounded-lg p-2 text-[var(--color-black)] hover:bg-[var(--color-gray-200)]" @click="nextMonth">
         <IconArrowRight class="h-5 w-5" />
       </button>
     </div>
@@ -105,7 +105,7 @@ function getDayClass(day: number) {
   const hasReview = reviewDates.value.has(dateStr)
 
   if (isFuture) {
-    return 'bg-gray-100 text-gray-400'
+    return 'bg-[var(--color-gray-200)] text-[var(--color-secondary)]'
   }
 
   if (hasReview) {
@@ -115,8 +115,8 @@ function getDayClass(day: number) {
   }
 
   return isToday
-    ? 'bg-gray-200 text-[var(--color-black)] ring-2 ring-[var(--color-accent-purple)] ring-offset-2'
-    : 'bg-gray-200 text-[var(--color-black)]'
+    ? 'bg-[var(--color-gray-200)] text-[var(--color-black)] ring-2 ring-[var(--color-accent-purple)] ring-offset-2'
+    : 'bg-[var(--color-gray-200)] text-[var(--color-black)]'
 }
 
 async function loadReviewDates() {

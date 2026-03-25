@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <BackgroundEffects />
+    <BackgroundEffects v-if="!isDark" />
     <div class="app-content">
       <NuxtPage />
     </div>
@@ -10,6 +10,7 @@
 <script setup>
 // Design : https://www.figma.com/design/V15DbYppzpLTKLMGpOmXxf/Task-management---to-do-list-app--Community-?node-id=1-87&p=f&t=g7PKTuPvHqPTjuhe-0
 import { onMounted, onUnmounted } from 'vue'
+import { isDark } from '~/composables/useIsDark'
 import BackgroundEffects from '~/components/BackgroundEffects.vue'
 import { useWidgetData } from '~/composables/useWidgetData'
 
@@ -37,7 +38,7 @@ onUnmounted(() => {
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
   height: 100vh;
-  background: white;
+  background: var(--color-bg);
   position: relative;
 }
 

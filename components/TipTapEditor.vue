@@ -191,10 +191,10 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .tiptap-editor {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-gray-200);
   border-radius: 12px;
   overflow: hidden;
-  background: white;
+  background: var(--color-gray-50);
 }
 
 .toolbar {
@@ -203,8 +203,8 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   gap: 2px;
   padding: 4px;
-  border-bottom: 1px solid #e5e7eb;
-  background: #f9fafb;
+  border-bottom: 1px solid var(--color-gray-200);
+  background: var(--color-gray-50);
   flex-wrap: nowrap;
 }
 
@@ -219,11 +219,11 @@ onBeforeUnmount(() => {
   background: transparent;
   cursor: pointer;
   transition: all 0.2s;
-  color: #374151;
+  color: var(--color-black);
 }
 
 .toolbar-btn:hover {
-  background: #e5e7eb;
+  background: var(--color-gray-200);
 }
 
 .toolbar-btn.is-active {

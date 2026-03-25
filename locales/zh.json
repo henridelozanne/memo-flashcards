@@ -242,6 +242,7 @@
     "restorePurchasesNone": "没有购买需要恢复",
     "restorePurchasesError": "恢复时出错",
     "language": "语言",
+    "darkMode": "深色模式",
     "languageUpdated": "语言更新成功",
     "languageError": "更新语言失败",
     "feedback": "提出建议或报告错误",

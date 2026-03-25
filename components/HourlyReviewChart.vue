@@ -10,6 +10,7 @@ import { useI18n } from 'vue-i18n'
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { isDark } from '~/composables/useIsDark'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels)
 
@@ -76,7 +77,7 @@ const chartOptions = computed(() => ({
         display: false,
       },
       ticks: {
-        color: '#6e6a7c',
+        color: isDark.value ? 'rgba(190, 188, 210, 1)' : 'rgba(110, 106, 124, 1)',
         font: {
           size: 10,
         },

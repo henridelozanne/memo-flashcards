@@ -24,19 +24,21 @@
     <DailyReviewButton />
 
     <!-- Collections title -->
-    <h2 class="mb-4 text-xl font-semibold">{{ $t('collections.myCollections') }}</h2>
+    <h2 class="mb-4 text-xl font-semibold text-[var(--color-black)]">{{ $t('collections.myCollections') }}</h2>
 
     <!-- Collections grid -->
     <div v-if="!isLoading && !error" class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
       <!-- Carte + Créer une collection -->
       <div
         data-testid="create-card"
-        class="order-last flex cursor-pointer flex-col items-center justify-center rounded-[15px] border-2 border-dashed bg-[var(--color-white)] p-6 transition hover:bg-[var(--color-light-purple)]"
+        class="order-last flex cursor-pointer flex-col items-center justify-center rounded-[15px] border-2 border-dashed bg-[var(--color-white)] p-6 transition hover:bg-[var(--color-light-purple)] dark:bg-[#261d4a] dark:hover:bg-[#3a2d68]"
         style="border-color: var(--color-accent-purple)"
         @click="handleCreateCollection"
       >
         <span class="mb-2 text-4xl text-[var(--color-accent-purple)]">+</span>
-        <span class="text-center font-medium text-[var(--color-primary)]">{{ $t('common.createCollection') }}</span>
+        <span class="text-center font-medium" style="color: var(--color-cta-text)">{{
+          $t('common.createCollection')
+        }}</span>
       </div>
 
       <!-- Collections existantes -->

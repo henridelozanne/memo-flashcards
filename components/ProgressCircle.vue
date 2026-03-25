@@ -26,7 +26,9 @@
     </svg>
     <!-- Texte au centre -->
     <div v-if="numbersVisible" class="absolute inset-1 flex items-center justify-center">
-      <span v-if="showPercentage" class="text-[14px] font-bold">{{ progressPercentage }}%</span>
+      <span v-if="showPercentage" class="text-[14px] font-bold text-[var(--color-black)]"
+        >{{ progressPercentage }}%</span
+      >
       <template v-else>
         <span class="text-[12px] font-bold">{{ currentValue }}</span
         >/<span class="text-[12px] font-bold">{{ totalValue }}</span>
@@ -71,7 +73,9 @@ const backgroundStrokeClass = computed(() =>
   props.colorVariant === 'purple' ? 'stroke-[var(--color-accent-purple)]' : 'stroke-white/30'
 )
 
-const progressStrokeClass = computed(() => (props.colorVariant === 'purple' ? 'stroke-[var(--color-primary)]' : 'stroke-white'))
+const progressStrokeClass = computed(() =>
+  props.colorVariant === 'purple' ? 'stroke-[var(--color-primary)]' : 'stroke-white'
+)
 
 // Données depuis les props ou depuis le store
 const currentValue = computed(() => props.current ?? dailyReviewStore.answeredCardsCount)

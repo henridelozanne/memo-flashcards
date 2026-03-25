@@ -104,7 +104,7 @@ onUnmounted(() => {
   background: transparent;
   border: none;
   font-size: 14px;
-  color: #6b7280;
+  color: var(--color-gray-500);
   cursor: pointer;
   transition: all 0.2s ease;
   -webkit-tap-highlight-color: transparent !important;
@@ -114,7 +114,7 @@ onUnmounted(() => {
 }
 
 .select-trigger:hover {
-  color: #374151;
+  color: var(--color-black);
 }
 
 .select-trigger-open {
@@ -127,7 +127,7 @@ onUnmounted(() => {
 }
 
 .select-arrow {
-  color: #6b7280;
+  color: var(--color-gray-500);
   transition: transform 0.2s ease;
   flex-shrink: 0;
 }
@@ -141,8 +141,8 @@ onUnmounted(() => {
   top: calc(100% + 4px);
   right: 0;
   min-width: 200px;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -154,8 +154,8 @@ onUnmounted(() => {
   padding: 12px 16px;
   text-align: left;
   font-size: 14px;
-  color: #374151;
-  background: white;
+  color: var(--color-black);
+  background: var(--color-white);
   border: none;
   cursor: pointer;
   transition: background 0.15s ease;
@@ -164,17 +164,17 @@ onUnmounted(() => {
 }
 
 .select-option:hover {
-  background: #f3f4f6;
+  background: var(--color-gray-50);
 }
 
 .select-option-selected {
   color: var(--color-primary);
   font-weight: 600;
-  background: #f0f0ff;
+  background: var(--color-light-purple);
 }
 
 .select-option-selected:hover {
-  background: #e8e8ff;
+  background: var(--color-light-purple);
 }
 
 /* Transition pour le dropdown */

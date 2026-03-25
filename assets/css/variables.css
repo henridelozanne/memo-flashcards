@@ -1,5 +1,7 @@
 :root {
   /* Colors */
+  --color-bg: #ffffff;
+  --color-cta-text: rgba(95, 51, 225, 1);
   --color-black: rgba(36, 37, 44, 1);
   --color-secondary: rgba(110, 106, 124, 1);
   --color-primary: rgba(95, 51, 225, 1);
@@ -69,4 +71,18 @@
   --spacing-md: 16px;
   --spacing-lg: 22px;
   --spacing-xl: 38px;
+}
+
+.dark {
+  --color-bg: #0f0f18;
+  --color-cta-text: #ffffff;
+  --color-white: #24243a;
+  --color-black: rgba(232, 232, 244, 1);
+  --color-secondary: rgba(190, 188, 210, 1);
+  --color-gray-50: #1e1e2e;
+  --color-gray-200: #2e2e44;
+  --color-gray-500: #8a88a0;
+  --color-light-purple: #2c2050;
+  --shadow-light: 0px 4px 32px rgba(0, 0, 0, 0.3);
+  --shadow-home: 0px 6px 6px #5f33e130;
 }

@@ -54,7 +54,7 @@
 
         <button
           type="submit"
-          class="w-full rounded-[15px] bg-[var(--color-primary)] px-6 py-3 font-semibold text-[var(--color-white)]"
+          class="w-full rounded-[15px] bg-[var(--color-primary)] px-6 py-3 font-semibold text-white"
         >
           {{ $t('contact.send') }}
         </button>
