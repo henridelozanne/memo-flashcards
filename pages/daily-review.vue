@@ -21,6 +21,7 @@
           <ReviewCard
             :current-card="currentCard"
             :is-back-visible="isBackVisible"
+            :card-background="cardBackground"
             @show-back="isBackVisible = true"
             @answer="answer"
           />
@@ -41,15 +42,17 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCards } from '~/composables/useCards'
+import { useCollections } from '~/composables/useCollections'
 import { useReviewSession } from '~/composables/useReviewSession'
 import { useDailyReviewStore } from '~/store/dailyReview'
 import ProgressCircle from '~/components/ProgressCircle.vue'
 
 const router = useRouter()
 const { getCardsDueToday } = useCards()
+const { loadCollections, getCollection } = useCollections()
 const dailyReviewStore = useDailyReviewStore()
 
 const {
@@ -75,7 +78,15 @@ const {
   },
 })
 
-onMounted(initializeSession)
+const cardBackground = computed(() => {
+  if (!currentCard.value) return null
+  return getCollection(currentCard.value.collection_id)?.card_background ?? null
+})
+
+onMounted(async () => {
+  await loadCollections()
+  initializeSession()
+})
 
 defineOptions({ name: 'DailyReviewPage' })
 </script>

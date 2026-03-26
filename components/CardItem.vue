@@ -1,6 +1,7 @@
 <template>
   <div
-    class="relative flex aspect-[3/4] h-72 w-full max-w-56 cursor-pointer flex-col items-center justify-center rounded-[15px] border border-gray-100 bg-white p-4 shadow-[0px_4px_32px_#0000000a] transition"
+    class="relative flex aspect-[3/4] h-72 w-full max-w-56 cursor-pointer flex-col items-center justify-center rounded-[15px] border border-gray-100 p-4 shadow-[0px_4px_32px_#0000000a] transition"
+    :style="getCardBackgroundStyle(cardBackground)"
     @click="$emit('click', card.id)"
   >
     <div class="flex w-full flex-1 flex-col items-center justify-center overflow-hidden text-center">
@@ -21,9 +22,11 @@
 import { computed } from 'vue'
 import type { Card } from '~/lib/types'
 import { sanitizeHtml } from '~/utils/sanitize'
+import { getCardBackgroundStyle } from '~/utils/cardBackgrounds'
 
 const props = defineProps<{
   card: Card
+  cardBackground?: string | null
 }>()
 
 const sanitizedQuestion = computed(() => sanitizeHtml(props.card.question))

@@ -163,6 +163,7 @@
               v-for="card in sortedCards"
               :key="card.id"
               :card="card"
+              :card-background="collection?.card_background"
               data-testid="card-item"
               @click="editCard"
             />
