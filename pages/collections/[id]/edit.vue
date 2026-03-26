@@ -73,7 +73,7 @@ async function onSubmit({ name, color, cardBackground }: { name: string; color: 
       type: 'success',
       text: t('collections.updatedSuccess') as string,
     }
-    router.push('/')
+    router.push(`/collections/${collectionId}/cards`)
   } catch (err) {
     message.value = {
       type: 'error',

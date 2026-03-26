@@ -7,7 +7,17 @@
         test-id="heading-cards"
         back-button-visible
         @back="$router.push('/')"
-      />
+      >
+        <template #actions>
+          <BaseButton
+            variant="icon"
+            :aria-label="$t('collections.edit')"
+            @click="router.push(`/collections/${collectionId}/edit`)"
+          >
+            <IconEdit />
+          </BaseButton>
+        </template>
+      </PageHeader>
 
       <!-- Loading state -->
       <Loading v-if="isLoadingCollection || isLoadingCards" />
@@ -218,6 +228,8 @@ import { useUserProfile } from '~/composables/useUserProfile'
 import useSupabaseAuth from '~/composables/useSupabaseAuth'
 import CardItem from '~/components/CardItem.vue'
 import CreateCardItem from '~/components/CreateCardItem.vue'
+import BaseButton from '~/components/Button.vue'
+import IconEdit from '~/components/icons/IconEdit.vue'
 import Select, { type SelectOption } from '~/components/Select.vue'
 import PracticeModeOptions from '~/components/PracticeModeOptions.vue'
 import IconSettings from '~/components/icons/IconSettings.vue'
