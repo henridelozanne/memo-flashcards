@@ -28,8 +28,8 @@
           <div class="grid grid-cols-2 gap-4">
             <StatCard :label="$t('stats.totalCards')" :value="totalCards" />
             <StatCard :label="$t('stats.totalCollections')" :value="totalCollections" />
-            <StatCard :label="$t('stats.totalReviews')" :value="totalReviews" />
             <StatCard :label="$t('stats.totalSessions')" :value="totalSessions" />
+            <StatCard :label="$t('stats.totalReviews')" :value="totalReviews" />
           </div>
 
           <div class="rounded-[15px] bg-[var(--color-white)] p-4 shadow-[0px_4px_32px_#0000000a]">

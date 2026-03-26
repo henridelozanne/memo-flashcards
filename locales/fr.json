@@ -187,7 +187,7 @@
     },
     "totalCards": "Total de cartes",
     "totalCollections": "Total de collections",
-    "totalReviews": "Total de révisions",
+    "totalReviews": "Total d'entrainements",
     "totalSessions": "Total de sessions",
     "globalSuccessRate": "Taux de réussite global",
     "cardsCreatedThisMonth": "Cartes créées ce mois-ci",
@@ -250,7 +250,7 @@
     "bugReport": "Signaler un bug",
     "deleteData": "Supprimer mes données",
     "deleteDataConfirmTitle": "Supprimer toutes mes données",
-    "deleteDataConfirmMessage": "Êtes-vous sûr de vouloir supprire toutes vos données ? Cette action est irréversible et supprimera toutes vos collections et cartes.",
+    "deleteDataConfirmMessage": "Êtes-vous sûr de vouloir supprimer toutes vos données ? Cette action est irréversible et supprimera toutes vos collections et cartes.",
     "deleteDataConfirm": "Supprimer",
     "unlockPremium": "Débloquer le Premium",
     "legalNotice": "Mentions légales"
@@ -276,7 +276,7 @@
       "title": "Services tiers",
       "description": "Pour améliorer l'application, nous utilisons les services de confiance suivants :",
       "sentry": "Sentry : Suivi des erreurs et rapports de plantage",
-      "posthog": "PostHog : Analyse d'utilisation anonyme (enregistrement de session désactivé)",
+      "posthog": "PostHog : Analyse d'utilisation anonyme",
       "revenuecat": "RevenueCat : Gestion des abonnements et achats intégrés",
       "web3forms": "Web3Forms : Traitement des formulaires de contact pour les rapports de bugs et demandes de fonctionnalités"
     },

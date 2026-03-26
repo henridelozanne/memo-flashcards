@@ -187,7 +187,7 @@
     },
     "totalCards": "Total de cartões",
     "totalCollections": "Total de coleções",
-    "totalReviews": "Total de revisões",
+    "totalReviews": "Total de treinos",
     "totalSessions": "Total de sessões",
     "globalSuccessRate": "Taxa de sucesso global",
     "cardsCreatedThisMonth": "Cartões criados este mês",
@@ -276,7 +276,7 @@
       "title": "Serviços de terceiros",
       "description": "Para melhorar o aplicativo, usamos os seguintes serviços confiáveis:",
       "sentry": "Sentry: Monitoramento de erros e relatórios de falhas",
-      "posthog": "PostHog: Análise de uso anônima (gravação de sessão desabilitada)",
+      "posthog": "PostHog: Análise de uso anônima",
       "revenuecat": "RevenueCat: Gerenciamento de assinaturas e compras no app",
       "web3forms": "Web3Forms: Processamento de formulários de contato para relatórios de bugs e solicitações de recursos"
     },

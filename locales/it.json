@@ -187,7 +187,7 @@
     },
     "totalCards": "Totale carte",
     "totalCollections": "Totale collezioni",
-    "totalReviews": "Totale revisioni",
+    "totalReviews": "Totale allenamenti",
     "totalSessions": "Totale sessioni",
     "globalSuccessRate": "Tasso di successo globale",
     "cardsCreatedThisMonth": "Carte create questo mese",
@@ -276,7 +276,7 @@
       "title": "Servizi di terze parti",
       "description": "Per migliorare l'applicazione, utilizziamo i seguenti servizi affidabili:",
       "sentry": "Sentry: Monitoraggio degli errori e report dei crash",
-      "posthog": "PostHog: Analisi di utilizzo anonima (registrazione della sessione disabilitata)",
+      "posthog": "PostHog: Analisi di utilizzo anonima",
       "revenuecat": "RevenueCat: Gestione degli abbonamenti e degli acquisti in-app",
       "web3forms": "Web3Forms: Gestione dei moduli di contatto per segnalazioni di bug e richieste di funzionalità"
     },

@@ -187,7 +187,7 @@
     },
     "totalCards": "Total cards",
     "totalCollections": "Total collections",
-    "totalReviews": "Total reviews",
+    "totalReviews": "Total trainings",
     "totalSessions": "Total sessions",
     "globalSuccessRate": "Global success rate",
     "cardsCreatedThisMonth": "Cards created this month",
@@ -276,7 +276,7 @@
       "title": "Third-Party Services",
       "description": "To improve the application, we use the following trusted services:",
       "sentry": "Sentry: Error monitoring and crash reporting",
-      "posthog": "PostHog: Anonymous usage analytics (session recording disabled)",
+      "posthog": "PostHog: Anonymous usage analytics",
       "revenuecat": "RevenueCat: Subscription and in-app purchase management",
       "web3forms": "Web3Forms: Contact form handling for bug reports and feature requests"
     },
