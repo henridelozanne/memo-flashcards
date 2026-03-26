@@ -216,6 +216,28 @@ export const useUserProfile = () => {
     }
   }
 
+  /**
+   * Increment the AI generation counter for a given feature type
+   */
+  const incrementAiGenerationCount = async (userId: string, type: 'cards' | 'image'): Promise<number> => {
+    try {
+      const db = await getDbConnection()
+      const now = Date.now()
+      const column = type === 'cards' ? 'ai_generations_from_cards' : 'ai_generations_from_image'
+
+      await db.run(
+        `UPDATE user_profiles SET ${column} = COALESCE(${column}, 0) + 1, updated_at = ? WHERE user_id = ?`,
+        [now, userId]
+      )
+
+      await loadUserProfile(userId)
+      return (userProfile.value?.[column] as number | undefined) ?? 0
+    } catch (e: any) {
+      console.error('Error incrementing AI generation count:', e)
+      throw e
+    }
+  }
+
   return {
     userProfile,
     isLoading,
@@ -225,5 +247,6 @@ export const useUserProfile = () => {
     updateNotificationHour,
     updateLanguage,
     updateSubscriptionStatus,
+    incrementAiGenerationCount,
   }
 }

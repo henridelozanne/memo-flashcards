@@ -321,6 +321,7 @@
     "cardLimit": "The free plan allows you to create up to 100 cards. Upgrade to Premium for unlimited cards.",
     "practiceOptionsLimit": "Practice options are reserved for Premium users. Upgrade to Premium to customize your training sessions.",
     "aiCardsFeature": "The 'Complete with AI' feature is available to Premium subscribers only. Upgrade to Premium to generate cards automatically.",
+    "aiGenerationLimit": "You've reached the free plan limit of 4 AI generations. Upgrade to Premium for unlimited AI card generation.",
     "statsLimit": "Advanced statistics are reserved for Premium users. Upgrade to Premium to access all progression statistics.",
     "upgradeToPremium": "Upgrade to Premium",
     "later": "Later"
@@ -397,7 +398,7 @@
     },
     "step9": {
       "title": "Let AI fill your collections",
-      "subtitle": "Cortx uses AI to suggest relevant cards based on what you already have. No more searching.",
+      "subtitle": "Take a photo of your notes 📸\nLet the AI create flashcards for you!\n\nAlso enjoy card suggestions based on the ones you've already created.",
       "existingLabel": "Your collection",
       "card1": "What is the capital of France?",
       "card2": "How long is the Nile?",

@@ -7,7 +7,7 @@
       </h1>
 
       <!-- Sous-titre -->
-      <p class="slide-up-2 mb-8 max-w-md text-center text-base leading-relaxed text-gray-500">
+      <p class="slide-up-2 mb-8 max-w-md whitespace-pre-line text-center text-base leading-relaxed text-gray-500">
         {{ $t('onboarding.step9.subtitle') }}
       </p>
 

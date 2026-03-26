@@ -108,7 +108,6 @@
               <template v-else>
                 <IconCamera class="h-4 w-4" />
                 {{ $t('aiCardsFromImage.buttonShort') }}
-                <IconLock v-if="isFree" class="ai-button__lock" />
               </template>
             </button>
 
@@ -125,7 +124,6 @@
               <template v-else>
                 <IconCardsStack class="h-4 w-4" />
                 {{ $t('aiCards.generateShort') }}
-                <IconLock v-if="isFree" class="ai-button__lock" />
               </template>
             </button>
           </div>
@@ -216,6 +214,8 @@ import { useCards } from '~/composables/useCards'
 import { useSubscription } from '~/composables/useSubscription'
 import { useAiCards, type AiCardProposal } from '~/composables/useAiCards'
 import { useAiCardsFromImage } from '~/composables/useAiCardsFromImage'
+import { useUserProfile } from '~/composables/useUserProfile'
+import useSupabaseAuth from '~/composables/useSupabaseAuth'
 import CardItem from '~/components/CardItem.vue'
 import CreateCardItem from '~/components/CreateCardItem.vue'
 import Select, { type SelectOption } from '~/components/Select.vue'
@@ -226,7 +226,6 @@ import IconStar from '~/components/icons/IconStar.vue'
 import IconCardsStack from '~/components/icons/IconCardsStack.vue'
 import IconCamera from '~/components/icons/IconCamera.vue'
 import IconSpinner from '~/components/icons/IconSpinner.vue'
-import IconLock from '~/components/icons/IconLock.vue'
 import AiCardSuggestions from '~/components/AiCardSuggestions.vue'
 import ImageSelectionPreview from '~/components/ImageSelectionPreview.vue'
 import type { Collection } from '~/lib/types'
@@ -254,6 +253,8 @@ const {
   createCard: createCardInCollection,
 } = useCards()
 const { isFree, FREE_LIMITS } = useSubscription()
+const { userProfile, loadUserProfile } = useUserProfile()
+const { getCurrentUserId } = useSupabaseAuth()
 const { generateCards, isGenerating: isGeneratingAiCards } = useAiCards()
 const {
   selectedImages,
@@ -366,6 +367,16 @@ async function init() {
     await loadCards(collectionId)
     lastCardDate.value = await getLastCardDate(collectionId)
   }
+
+  // Charger le profil pour avoir les compteurs de génération IA à jour
+  if (isFree.value) {
+    try {
+      const userId = await getCurrentUserId()
+      await loadUserProfile(userId)
+    } catch {
+      // non bloquant
+    }
+  }
 }
 
 function createCard() {
@@ -393,9 +404,12 @@ async function handleGenerateAiCards() {
   if (isGeneratingAiCards.value) return
 
   if (isFree.value) {
-    upgradeModalMessage.value = 'upgrade.aiCardsFeature'
-    showUpgradeModal.value = true
-    return
+    const count = userProfile.value?.ai_generations_from_cards ?? 0
+    if (count >= FREE_LIMITS.MAX_AI_GENERATIONS) {
+      upgradeModalMessage.value = 'upgrade.aiGenerationLimit'
+      showUpgradeModal.value = true
+      return
+    }
   }
 
   aiGenerationError.value = null
@@ -416,6 +430,16 @@ async function handleGenerateAiCards() {
   }
 
   aiProposals.value = result
+
+  if (isFree.value) {
+    try {
+      const userId = await getCurrentUserId()
+      const { incrementAiGenerationCount } = useUserProfile()
+      await incrementAiGenerationCount(userId, 'cards')
+    } catch {
+      // non bloquant
+    }
+  }
 }
 
 async function handleAiCardAccepted(proposal: AiCardProposal) {
@@ -434,9 +458,12 @@ function handleOpenImageSelection() {
   if (isGeneratingFromImage.value) return
 
   if (isFree.value) {
-    upgradeModalMessage.value = 'upgrade.aiCardsFeature'
-    showUpgradeModal.value = true
-    return
+    const count = userProfile.value?.ai_generations_from_image ?? 0
+    if (count >= FREE_LIMITS.MAX_AI_GENERATIONS) {
+      upgradeModalMessage.value = 'upgrade.aiGenerationLimit'
+      showUpgradeModal.value = true
+      return
+    }
   }
 
   imageGenerationError.value = null
@@ -470,6 +497,16 @@ async function handleGenerateFromImages() {
   showImageSelection.value = false
   showImageAiSuggestions.value = true
   resetImageSelection()
+
+  if (isFree.value) {
+    try {
+      const userId = await getCurrentUserId()
+      const { incrementAiGenerationCount } = useUserProfile()
+      await incrementAiGenerationCount(userId, 'image')
+    } catch {
+      // non bloquant
+    }
+  }
 }
 
 function editCard(cardId: string) {

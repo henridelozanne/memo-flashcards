@@ -321,6 +321,7 @@
     "cardLimit": "Le plan gratuit permet de créer jusqu'à 100 cartes. Passe au Premium pour créer des cartes illimitées.",
     "practiceOptionsLimit": "Les options d'entraînement sont réservées aux utilisateurs Premium. Passe au Premium pour personnaliser tes sessions d'entraînement.",
     "aiCardsFeature": "La fonctionnalité 'Compléter avec l'IA' est réservée aux abonnés Premium. Passe au Premium pour générer des cartes automatiquement.",
+    "aiGenerationLimit": "Tu as atteint la limite de 4 générations IA du plan gratuit. Passe au Premium pour des générations illimitées.",
     "statsLimit": "Les statistiques avancées sont réservées aux utilisateurs Premium. Passe au Premium pour accéder à toutes les statistiques de progression.",
     "upgradeToPremium": "Passer au Premium",
     "later": "Plus tard"
@@ -397,7 +398,7 @@
     },
     "step9": {
       "title": "Laisse l'IA remplir tes collections",
-      "subtitle": "Cortx utilise l'IA pour suggérer des cartes pertinentes basées sur ce que tu as déjà. Plus besoin de chercher.",
+      "subtitle": "Prends tes notes en photo 📸\nL'IA s'occupe de créer les cartes pour toi !\n\nProfite aussi des suggestions de cartes à partir de celles que tu as déjà créées.",
       "existingLabel": "Ta collection",
       "card1": "Quelle est la capitale de la France ?",
       "card2": "Quelle est la longueur du Nil ?",

@@ -321,6 +321,7 @@
     "cardLimit": "O plano gratuito permite criar até 100 cartões. Atualize para Premium para criar cartões ilimitados.",
     "practiceOptionsLimit": "As opções de treino são reservadas para usuários Premium. Atualize para Premium para personalizar suas sessões de treino.",
     "aiCardsFeature": "A funcionalidade 'Completar com IA' está disponível apenas para assinantes Premium. Atualize para Premium para gerar cartões automaticamente.",
+    "aiGenerationLimit": "Você atingiu o limite gratuito de 4 gerações com IA. Atualize para Premium para gerações ilimitadas.",
     "statsLimit": "As estatísticas avançadas são reservadas para usuários Premium. Atualize para Premium para acessar todas as estatísticas de progresso.",
     "upgradeToPremium": "Atualizar para Premium",
     "later": "Mais tarde"
@@ -397,7 +398,7 @@
     },
     "step9": {
       "title": "Deixe a IA preencher suas coleções",
-      "subtitle": "O Cortx usa IA para sugerir cartões relevantes com base no que você já tem. Sem precisar procurar.",
+      "subtitle": "Fotografe suas anotações 📸\nDeixe a IA criar os cartões para você!\n\nAproveite também sugestões de cartões com base nos que você já criou.",
       "existingLabel": "Sua coleção",
       "card1": "Qual é a capital da França?",
       "card2": "Qual é o comprimento do Nilo?",

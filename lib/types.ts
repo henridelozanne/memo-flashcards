@@ -65,6 +65,8 @@ export interface UserProfile {
   subscription_product_id?: string | null
   subscription_expires_at?: number | null
   subscription_updated_at?: number | null
+  ai_generations_from_cards?: number
+  ai_generations_from_image?: number
   created_at: number
   updated_at: number
 }

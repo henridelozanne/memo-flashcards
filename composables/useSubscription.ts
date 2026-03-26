@@ -352,6 +352,7 @@ export const useSubscription = () => {
   const FREE_LIMITS = {
     MAX_COLLECTIONS: 3,
     MAX_CARDS: 100,
+    MAX_AI_GENERATIONS: 4,
   }
 
   // Charger le statut local au démarrage
