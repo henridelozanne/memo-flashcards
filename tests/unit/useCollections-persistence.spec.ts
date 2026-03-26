@@ -58,7 +58,7 @@ describe('useCollections Persistence', () => {
 
     // Verify INSERT query was called
     expect(mockSqliteConnection.run).toHaveBeenCalledWith(
-      'INSERT INTO collections (id, user_id, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
+      'INSERT INTO collections (id, user_id, name, color, card_background, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
       expect.arrayContaining([
         expect.any(String), // id (UUID)
         'test-user-id', // user_id

@@ -43,11 +43,11 @@ const { createCollection } = useCollections()
 const isSubmitting = ref(false)
 const message = ref<{ type: 'success' | 'error'; text: string } | null>(null)
 
-async function onSubmit({ name }: { name: string; color: string }) {
+async function onSubmit({ name, color, cardBackground }: { name: string; color: string; cardBackground: string }) {
   isSubmitting.value = true
   message.value = null
   try {
-    const collection = await createCollection(name)
+    const collection = await createCollection(name, color, cardBackground)
     message.value = {
       type: 'success',
       text: t('collections.createdSuccess') as string,

@@ -75,6 +75,8 @@ describe('useCollections', () => {
         id: 'mock-uuid-1',
         user_id: 'test-user-id',
         name: 'Test Collection',
+        color: null,
+        card_background: null,
         created_at: expect.any(Number),
         updated_at: expect.any(Number),
       })
@@ -85,8 +87,8 @@ describe('useCollections', () => {
         ['Test Collection']
       )
       expect(mockSqliteConnection.run).toHaveBeenCalledWith(
-        'INSERT INTO collections (id, user_id, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-        ['mock-uuid-1', 'test-user-id', 'Test Collection', expect.any(Number), expect.any(Number)]
+        'INSERT INTO collections (id, user_id, name, color, card_background, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        ['mock-uuid-1', 'test-user-id', 'Test Collection', null, null, expect.any(Number), expect.any(Number)]
       )
     })
 

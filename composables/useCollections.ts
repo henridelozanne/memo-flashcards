@@ -34,7 +34,11 @@ export const useCollections = () => {
   const getCollection = (id: string): Collection | null =>
     collections.value.find((c) => c.id === id && !c.deleted_at) ?? null
 
-  const createCollection = async (name: string): Promise<Collection> => {
+  const createCollection = async (
+    name: string,
+    color?: string | null,
+    cardBackground?: string | null
+  ): Promise<Collection> => {
     error.value = null
     try {
       const { getCurrentUserId } = useSupabaseAuth()
@@ -44,6 +48,8 @@ export const useCollections = () => {
         id: uuidv4(),
         user_id: userId,
         name: name.trim(),
+        color: color ?? null,
+        card_background: cardBackground ?? null,
         created_at: Date.now(),
         updated_at: Date.now(),
       }
@@ -59,13 +65,18 @@ export const useCollections = () => {
         throw new Error(`Collection "${name}" already exists`)
       }
 
-      await db.run('INSERT INTO collections (id, user_id, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)', [
-        newCollection.id,
-        newCollection.user_id,
-        newCollection.name,
-        newCollection.created_at,
-        newCollection.updated_at,
-      ])
+      await db.run(
+        'INSERT INTO collections (id, user_id, name, color, card_background, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [
+          newCollection.id,
+          newCollection.user_id,
+          newCollection.name,
+          newCollection.color ?? null,
+          newCollection.card_background ?? null,
+          newCollection.created_at,
+          newCollection.updated_at,
+        ]
+      )
 
       // Sync to Supabase (non-blocking)
       syncCollectionsToRemote().catch((err) => {
