@@ -1,5 +1,5 @@
 <template>
-  <div class="relative h-full p-6">
+  <div class="relative h-full overflow-y-auto p-6">
     <div>
       <PageHeader :title="$t('settings.legalNotice')" back-button-visible @back="$router.back()" />
 
@@ -102,6 +102,11 @@
                 {{ $t('legal.termsOfUse.compliance') }}
               </p>
             </section>
+
+            <!-- Logo -->
+            <div class="flex justify-center pb-2 pt-4">
+              <img src="/cortx_logo.png" alt="Cortx" class="h-12 w-auto opacity-60" />
+            </div>
           </div>
         </div>
       </div>
