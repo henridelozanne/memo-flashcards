@@ -458,6 +458,21 @@
     "finished": "Toutes les suggestions ont été passées en revue !",
     "loadingStep1": "Lecture de tes cartes...",
     "loadingStep2": "Génération de nouvelles cartes...",
-    "loadingStep3": "Finalisation des propositions..."
+    "loadingStep3": "Finalisation des propositions...",
+    "generateShort": "Depuis mes cartes"
+  },
+  "aiCardsFromImage": {
+    "button": "Générer depuis une photo",
+    "buttonShort": "Depuis une photo",
+    "title": "Générer des flashcards depuis des photos",
+    "generating": "Analyse en cours...",
+    "generate": "Générer les flashcards",
+    "addPhoto": "Ajouter",
+    "takePhoto": "Prendre une photo",
+    "chooseFromLibrary": "Choisir depuis la galerie",
+    "imageCount": "{count} photo sélectionnée | {count} photo sélectionnée | {count} photos sélectionnées",
+    "emptyHint": "Prends ou importe une photo de tes cours, d'un livre ou de n'importe quel texte que tu souhaites mémoriser.",
+    "qualityWarning": "Pour de meilleurs résultats, assure-toi que le texte est bien éclairé et net.",
+    "error": "Impossible d'analyser les photos. Vérifie ta connexion et réessaie."
   }
 }

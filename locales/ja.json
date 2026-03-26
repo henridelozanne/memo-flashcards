@@ -458,6 +458,21 @@
     "finished": "すべての提案を確認しました！",
     "loadingStep1": "カードを読み込み中...",
     "loadingStep2": "新しいカードを生成中...",
-    "loadingStep3": "提案を仕上げ中..."
+    "loadingStep3": "提案を仕上げ中...",
+    "generateShort": "カードから"
+  },
+  "aiCardsFromImage": {
+    "button": "写真から生成",
+    "buttonShort": "写真から",
+    "title": "写真からフラッシュカードを生成",
+    "generating": "画像を分析中...",
+    "generate": "フラッシュカードを生成",
+    "addPhoto": "追加",
+    "takePhoto": "写真を撮る",
+    "chooseFromLibrary": "ライブラリから選択",
+    "imageCount": "{count} 枚の写真を選択中",
+    "emptyHint": "ノート、教科書、または覚えたい任意のテキストの写真を撮影またはインポートしてください。",
+    "qualityWarning": "最大の效果を得るには、テキストが十分に明るく、ピントが合っていることを確認してください。",
+    "error": "写真を分析できませんでした。接続を確認して再試行してください。"
   }
 }

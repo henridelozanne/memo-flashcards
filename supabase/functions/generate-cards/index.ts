@@ -11,8 +11,6 @@ interface RequestBody {
   cards: CardInput[]
   locale: string
   categoryName: string
-  goal: string[]
-  situation: string
   rejectedQuestions?: string[]
 }
 
@@ -26,49 +24,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-function getSingleGoalInstruction(goalValue: string): string {
-  switch (goalValue) {
-    case 'learnLanguage':
-      return "The user's goal is to learn a language. Generate cards that prioritise high-utility vocabulary, common expressions, and core grammar patterns relevant to the category."
-    case 'reviseClasses':
-      return "The user's goal is to revise school material. Generate cards covering key definitions, concepts, and facts commonly required for exams in this topic."
-    case 'memorizeFactsScience':
-      return "The user's goal is to memorise historical or scientific facts. Prefer precise, high-signal facts (dates, definitions, laws, discoveries, figures) that are commonly taught or referenced."
-    case 'learnVocabulary':
-      return "The user's goal is to learn professional vocabulary. Generate cards introducing essential field-specific terms with concise, accurate definitions and typical usage."
-    case 'developCulture':
-      return "The user's goal is to develop general knowledge. Generate broadly useful, interesting, and commonly referenced facts related to the category."
-    case 'other':
-    default:
-      return "The user's goal is to learn about this topic. Generate useful, relevant cards that build a solid understanding of the category."
-  }
-}
-
-function getGoalInstruction(goals: string[]): string {
-  if (!goals || goals.length === 0) return getSingleGoalInstruction('other')
-  return goals.map(getSingleGoalInstruction).join(' ')
-}
-
-function getSituationInstruction(situationValue: string): string {
-  switch (situationValue) {
-    case 'student':
-      return 'Adapt difficulty and terminology to a university student: moderately advanced vocabulary is fine, but keep questions clear and answers succinct.'
-    case 'highSchool':
-      return 'Adapt difficulty and wording to a high-school level learner: focus on core concepts and commonly taught knowledge, avoid niche jargon.'
-    case 'employed':
-      return 'Adapt the cards to a working professional: prioritise practical knowledge and concepts that are useful in real-world contexts.'
-    case 'retraining':
-      return 'Adapt the cards to someone retraining into a new field: prioritise fundamentals, core terminology, and the essential building blocks of the topic.'
-    case 'selfLearner':
-      return 'Adapt the cards to an independent learner: keep them clear, structured, and focused on high-utility knowledge that builds understanding progressively.'
-    case 'jobSeeking':
-      return 'Adapt the cards to someone job-seeking: prioritise key concepts and terminology that can help in interviews or professional conversations about this topic.'
-    case 'other':
-    default:
-      return 'Adapt the cards to a general audience: keep terminology accessible and focus on broadly useful knowledge.'
-  }
-}
-
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -80,7 +35,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: RequestBody = await req.json()
-    const { cards, locale, categoryName, goal, situation, rejectedQuestions } = body
+    const { cards, locale, categoryName, rejectedQuestions } = body
 
     if (!cards || !Array.isArray(cards) || cards.length === 0) {
       return new Response(JSON.stringify({ error: 'Invalid cards input' }), {
@@ -122,10 +77,6 @@ Deno.serve(async (req: Request) => {
       Questions must be clear and concise.
 
       Answers must be factual and under one sentence.
-
-      ${getGoalInstruction(goal)}
-
-      ${getSituationInstruction(situation)}
 
       ${rejectedQuestions?.length > 0 ? `The user has already reviewed and explicitly rejected the following flashcard questions: \n${rejectedQuestions.map((q, i) => `${i + 1}. ${q}`).join('\n')}. Do NOT reproduce or closely paraphrase any of them` : ''}
 

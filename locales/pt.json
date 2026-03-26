@@ -458,6 +458,21 @@
     "finished": "Todas as sugestões foram examinadas!",
     "loadingStep1": "Lendo seus cartões...",
     "loadingStep2": "Gerando novos cartões...",
-    "loadingStep3": "Finalizando propostas..."
+    "loadingStep3": "Finalizando propostas...",
+    "generateShort": "Das minhas cartas"
+  },
+  "aiCardsFromImage": {
+    "button": "Gerar a partir de uma foto",
+    "buttonShort": "De uma foto",
+    "title": "Gerar flashcards a partir de fotos",
+    "generating": "Analisando imagens...",
+    "generate": "Gerar os flashcards",
+    "addPhoto": "Adicionar",
+    "takePhoto": "Tirar uma foto",
+    "chooseFromLibrary": "Escolher da biblioteca",
+    "imageCount": "{count} foto selecionada | {count} fotos selecionadas",
+    "emptyHint": "Tire ou importe uma foto das suas notas, de um livro ou de qualquer texto que queiras memorizar.",
+    "qualityWarning": "Para melhores resultados, certifique-se de que o texto está bem iluminado e nítido.",
+    "error": "Não foi possível analisar as fotos. Verifique a ligação e tente novamente."
   }
 }

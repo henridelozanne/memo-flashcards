@@ -458,6 +458,21 @@
     "finished": "所有建议已审阅完毕！",
     "loadingStep1": "正在读取你的卡片...",
     "loadingStep2": "生成新卡片...",
-    "loadingStep3": "整理提案中..."
+    "loadingStep3": "整理提案中...",
+    "generateShort": "从我的卡片"
+  },
+  "aiCardsFromImage": {
+    "button": "从照片生成",
+    "buttonShort": "从照片",
+    "title": "从照片生成闪卡",
+    "generating": "分析图片中...",
+    "generate": "生成闪卡",
+    "addPhoto": "添加",
+    "takePhoto": "拍照",
+    "chooseFromLibrary": "从相册选择",
+    "imageCount": "已选择 {count} 张照片",
+    "emptyHint": "拍摄或导入笔记、教科书或任何你想记住的文字的照片。",
+    "qualityWarning": "为获得最佳效果，请确保文字光线充足且清晰。",
+    "error": "无法分析照片。请检查网络连接并重试。"
   }
 }

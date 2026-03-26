@@ -86,32 +86,53 @@
                 />
               </div>
             </Transition>
-
-            <!-- Bouton Compléter avec l'IA -->
-            <div v-if="cards.length >= 4" class="mt-2">
-              <button
-                type="button"
-                class="ai-button w-full"
-                :class="{ 'ai-button--colored': isColored }"
-                :disabled="isGeneratingAiCards"
-                @click="handleGenerateAiCards"
-              >
-                <template v-if="isGeneratingAiCards">
-                  <svg class="h-5 w-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                  {{ $t('aiCards.generating') }}
-                </template>
-                <template v-else>
-                  <IconSparkles class="h-5 w-5" />
-                  {{ $t('aiCards.generate') }}
-                  <IconLock v-if="isFree" class="ai-button__lock" />
-                </template>
-              </button>
-              <StatusMessage v-if="aiGenerationError" :message="{ type: 'error', text: aiGenerationError }" />
-            </div>
           </div>
+        </div>
+
+        <!-- Section IA -->
+        <div class="mb-6">
+          <p class="ai-section-title mb-3 text-xs font-semibold uppercase tracking-widest">
+            {{ $t('aiCards.generate') }}
+          </p>
+          <div class="flex gap-3">
+            <!-- Depuis une photo -->
+            <button
+              type="button"
+              class="ai-button flex-1"
+              :disabled="isGeneratingFromImage || isGeneratingAiCards"
+              @click="handleOpenImageSelection"
+            >
+              <template v-if="isGeneratingFromImage">
+                <IconSpinner class="h-4 w-4" />
+              </template>
+              <template v-else>
+                <IconCamera class="h-4 w-4" />
+                {{ $t('aiCardsFromImage.buttonShort') }}
+                <IconLock v-if="isFree" class="ai-button__lock" />
+              </template>
+            </button>
+
+            <!-- Depuis mes cartes -->
+            <button
+              type="button"
+              class="ai-button flex-1"
+              :disabled="cards.length < 4 || isGeneratingAiCards || isGeneratingFromImage"
+              @click="handleGenerateAiCards"
+            >
+              <template v-if="isGeneratingAiCards">
+                <IconSpinner class="h-4 w-4" />
+              </template>
+              <template v-else>
+                <IconCardsStack class="h-4 w-4" />
+                {{ $t('aiCards.generateShort') }}
+                <IconLock v-if="isFree" class="ai-button__lock" />
+              </template>
+            </button>
+          </div>
+          <StatusMessage
+            v-if="aiGenerationError || imageGenerationError"
+            :message="{ type: 'error', text: (aiGenerationError || imageGenerationError)! }"
+          />
         </div>
 
         <!-- Liste des cartes -->
@@ -158,6 +179,30 @@
         @reject="handleAiCardRejected"
         @finished="showAiSuggestions = false"
       />
+
+      <!-- Sélection de photos pour génération IA -->
+      <ImageSelectionPreview
+        :is-open="showImageSelection"
+        :images="selectedImages"
+        :is-picking-images="isPickingImages"
+        :is-generating="isGeneratingFromImage"
+        @close="handleCloseImageSelection"
+        @remove="removeImage"
+        @pick-camera="pickFromCamera"
+        @pick-gallery="pickFromGallery"
+        @generate="handleGenerateFromImages"
+      />
+
+      <!-- Modal suggestions IA depuis photo -->
+      <AiCardSuggestions
+        :is-open="showImageAiSuggestions"
+        :is-loading="isGeneratingFromImage"
+        :proposals="imageAiProposals"
+        @close="showImageAiSuggestions = false"
+        @accept="handleAiCardAccepted"
+        @reject="handleAiCardRejected"
+        @finished="showImageAiSuggestions = false"
+      />
     </div>
   </div>
 </template>
@@ -170,7 +215,7 @@ import { useCollections } from '~/composables/useCollections'
 import { useCards } from '~/composables/useCards'
 import { useSubscription } from '~/composables/useSubscription'
 import { useAiCards, type AiCardProposal } from '~/composables/useAiCards'
-import { useUserProfileStore } from '~/store/userProfile'
+import { useAiCardsFromImage } from '~/composables/useAiCardsFromImage'
 import CardItem from '~/components/CardItem.vue'
 import CreateCardItem from '~/components/CreateCardItem.vue'
 import Select, { type SelectOption } from '~/components/Select.vue'
@@ -178,9 +223,12 @@ import PracticeModeOptions from '~/components/PracticeModeOptions.vue'
 import IconSettings from '~/components/icons/IconSettings.vue'
 import IconDumbbell from '~/components/icons/IconDumbbell.vue'
 import IconStar from '~/components/icons/IconStar.vue'
-import IconSparkles from '~/components/icons/IconSparkles.vue'
+import IconCardsStack from '~/components/icons/IconCardsStack.vue'
+import IconCamera from '~/components/icons/IconCamera.vue'
+import IconSpinner from '~/components/icons/IconSpinner.vue'
 import IconLock from '~/components/icons/IconLock.vue'
 import AiCardSuggestions from '~/components/AiCardSuggestions.vue'
+import ImageSelectionPreview from '~/components/ImageSelectionPreview.vue'
 import type { Collection } from '~/lib/types'
 
 defineOptions({ name: 'CollectionCardsPage' })
@@ -207,7 +255,17 @@ const {
 } = useCards()
 const { isFree, FREE_LIMITS } = useSubscription()
 const { generateCards, isGenerating: isGeneratingAiCards } = useAiCards()
-const userProfileStore = useUserProfileStore()
+const {
+  selectedImages,
+  isPickingImages,
+  isGenerating: isGeneratingFromImage,
+  error: imageFromError,
+  pickFromCamera,
+  pickFromGallery,
+  removeImage,
+  reset: resetImageSelection,
+  generateFromImages,
+} = useAiCardsFromImage()
 
 const collectionId = String(route.params.id)
 const collection = ref<Collection | null>(null)
@@ -220,6 +278,10 @@ const upgradeModalMessage = ref('upgrade.cardLimit')
 const showAiSuggestions = ref(false)
 const aiProposals = ref<AiCardProposal[]>([])
 const aiGenerationError = ref<string | null>(null)
+const showImageSelection = ref(false)
+const showImageAiSuggestions = ref(false)
+const imageAiProposals = ref<AiCardProposal[]>([])
+const imageGenerationError = ref<string | null>(null)
 const practiceOptions = ref({
   mostFailed: false,
   onlyDue: false,
@@ -345,14 +407,7 @@ async function handleGenerateAiCards() {
     ? JSON.parse(currentCollection.rejected_ai_cards)
     : []
 
-  const result = await generateCards(
-    [...cards.value],
-    locale.value,
-    currentCollection?.name ?? '',
-    userProfileStore.goal,
-    userProfileStore.situation,
-    rejectedQuestions
-  )
+  const result = await generateCards([...cards.value], locale.value, currentCollection?.name ?? '', rejectedQuestions)
 
   if (result.length === 0) {
     showAiSuggestions.value = false
@@ -373,6 +428,48 @@ async function handleAiCardAccepted(proposal: AiCardProposal) {
 
 function handleAiCardRejected(question: string) {
   addRejectedAiCard(collectionId, question)
+}
+
+function handleOpenImageSelection() {
+  if (isGeneratingFromImage.value) return
+
+  if (isFree.value) {
+    upgradeModalMessage.value = 'upgrade.aiCardsFeature'
+    showUpgradeModal.value = true
+    return
+  }
+
+  imageGenerationError.value = null
+  showImageSelection.value = true
+}
+
+function handleCloseImageSelection() {
+  showImageSelection.value = false
+  resetImageSelection()
+}
+
+async function handleGenerateFromImages() {
+  if (isGeneratingFromImage.value) return
+
+  const currentCollection = getCollection(collectionId)
+
+  const result = await generateFromImages(
+    locale.value,
+    currentCollection?.name ?? '',
+    cards.value.map((c) => ({ question: c.question, answer: c.answer }))
+  )
+
+  if (result.length === 0) {
+    imageGenerationError.value = imageFromError.value ?? t('aiCards.error')
+    showImageSelection.value = false
+    resetImageSelection()
+    return
+  }
+
+  imageAiProposals.value = result
+  showImageSelection.value = false
+  showImageAiSuggestions.value = true
+  resetImageSelection()
 }
 
 function editCard(cardId: string) {
@@ -494,11 +591,20 @@ onMounted(init)
   transform: translateY(0);
 }
 
+/* Section IA */
+.ai-section-title {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
 /* Bouton AI */
 .ai-button {
   padding: 12px 20px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: white;
+  background: var(--color-white);
+  color: var(--color-secondary);
   border: none;
   border-radius: 12px;
   font-size: 14px;
@@ -512,6 +618,7 @@ onMounted(init)
   align-items: center;
   justify-content: center;
   gap: 8px;
+  box-shadow: 0px 4px 32px #0000000a;
 }
 
 .ai-button:disabled {
@@ -538,7 +645,7 @@ onMounted(init)
   right: 8px;
   width: 11px;
   height: 11px;
-  color: white;
-  opacity: 0.85;
+  color: var(--color-secondary);
+  opacity: 0.9;
 }
 </style>
