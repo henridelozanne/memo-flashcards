@@ -131,6 +131,13 @@ export const useCards = () => {
       console.error('Failed to sync card creation to remote:', err)
     })
 
+    // Si la carte est immédiatement révisable, invalider le cache et recalculer le compteur
+    if (appConfig.immediateReviewForNewCards) {
+      const { invalidateCache, setCardsDueTotalCount } = useDailyReview()
+      await invalidateCache()
+      await setCardsDueTotalCount()
+    }
+
     // Track event
     const posthog = usePosthog()
     posthog.capture('card_created', {

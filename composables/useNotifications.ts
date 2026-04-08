@@ -2,11 +2,9 @@ import { computed } from 'vue'
 import { LocalNotifications } from '@capacitor/local-notifications'
 import { useI18n } from 'vue-i18n'
 import { useUserProfileStore } from '~/store/userProfile'
-import { useCards } from '~/composables/useCards'
 
 export const useNotifications = () => {
   const { t } = useI18n()
-  const { getCardsDueToday } = useCards()
   const userProfileStore = useUserProfileStore()
   const notificationHour = computed(() => userProfileStore.notificationHour)
 
@@ -20,7 +18,7 @@ export const useNotifications = () => {
   }
 
   /**
-   * Planifie la notification quotidienne
+   * Planifie la notification quotidienne récurrente
    */
   const scheduleDailyNotification = async () => {
     try {
@@ -40,15 +38,7 @@ export const useNotifications = () => {
         console.log('No pending notifications to cancel:', cancelError)
       }
 
-      // Récupérer les cartes à réviser aujourd'hui
-      const cardsToReview = await getCardsDueToday()
-
-      // Ne planifier que s'il y a des cartes à réviser
-      if (cardsToReview.length === 0) {
-        return
-      }
-
-      // Calculer la prochaine heure de notification
+      // Calculer la prochaine occurrence de l'heure choisie
       const [hours, minutes] = notificationHour.value.split(':').map(Number)
       const now = new Date()
       const scheduledTime = new Date()
@@ -59,7 +49,7 @@ export const useNotifications = () => {
         scheduledTime.setDate(scheduledTime.getDate() + 1)
       }
 
-      // Planifier la notification
+      // Planifier la notification récurrente quotidienne
       await LocalNotifications.schedule({
         notifications: [
           {
@@ -68,6 +58,8 @@ export const useNotifications = () => {
             body: getRandomNotificationMessage(),
             schedule: {
               at: scheduledTime,
+              repeats: true,
+              every: 'day',
               allowWhileIdle: true,
             },
             sound: undefined,
