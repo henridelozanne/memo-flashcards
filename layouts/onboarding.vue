@@ -40,12 +40,14 @@
 import { computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useOnboardingStore } from '~/store/onboarding'
+import { usePosthog } from '~/composables/usePosthog'
 import ProgressBar from '~/components/ProgressBar.vue'
 import BackButton from '~/components/BackButton.vue'
 
 const router = useRouter()
 const route = useRoute()
 const onboardingStore = useOnboardingStore()
+const posthog = usePosthog()
 
 // Vérifier si on est sur la page welcome
 const isWelcomePage = computed(() => route.path === '/onboarding/welcome')
@@ -95,6 +97,12 @@ watch(
     const targetRoute = stepRoutes[newStep]
     if (targetRoute && router.currentRoute.value.path !== targetRoute) {
       router.push(targetRoute)
+    }
+
+    if (newStep === 0) {
+      posthog.capture('onboarding_started')
+    } else {
+      posthog.capture('onboarding_step_viewed', { step: newStep })
     }
   }
 )
