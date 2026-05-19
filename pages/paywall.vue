@@ -124,6 +124,7 @@ import { useUserProfile } from '~/composables/useUserProfile'
 import { syncUserProfileToRemote } from '~/lib/sync'
 import { useSubscription } from '~/composables/useSubscription'
 import { useExternalLink } from '~/composables/useExternalLink'
+import { usePosthog } from '~/composables/usePosthog'
 
 const router = useRouter()
 const onboardingStore = useOnboardingStore()
@@ -133,6 +134,7 @@ const { initAuth, getCurrentUserId } = useSupabaseAuth()
 const { saveUserProfile: saveUserProfileLocal } = useUserProfile()
 const { getOfferings, purchasePackage } = useSubscription()
 const { openLink } = useExternalLink()
+const posthog = usePosthog()
 const monthlyPrice = ref('')
 const monthlyPackageRef = ref<PurchasesPackage | null>(null)
 const monthlyTrialPackageRef = ref<PurchasesPackage | null>(null)
@@ -143,6 +145,14 @@ const MONTHLY_FREE_TRIAL_PRODUCT_ID = 'memo_pro_monthly_free_trial'
 const LIFETIME_PRODUCT_ID = 'memo_pro_lifetime'
 
 onMounted(async () => {
+  posthog.capture('onboarding_completed', {
+    first_name: userProfileStore.firstName,
+    goal: userProfileStore.goal.join(','),
+    situation: userProfileStore.situation,
+    language: userProfileStore.language,
+    notification_hour: userProfileStore.notificationHour,
+  })
+
   try {
     const offerings = await getOfferings()
     const monthlyPackage = offerings?.current?.availablePackages?.find(
@@ -217,17 +227,9 @@ async function completeOnboarding(subscriptionSnapshot?: {
     // 3. Marquer l'onboarding comme terminé
     onboardingStore.completeOnboarding()
 
-    // Track event
-    const { usePosthog } = await import('~/composables/usePosthog')
-    const posthog = usePosthog()
-    posthog.capture('onboarding_completed', {
+    posthog.capture('paywall_completed', {
       subscription_status: subscriptionSnapshot?.status || 'free',
       subscription_product_id: subscriptionSnapshot?.productId || null,
-      first_name: userProfileStore.firstName,
-      goal: userProfileStore.goal.join(','),
-      situation: userProfileStore.situation,
-      language: userProfileStore.language,
-      notification_hour: userProfileStore.notificationHour,
     })
 
     // 4. Sync vers Supabase (non-bloquant)

@@ -225,6 +225,7 @@ import { useCards } from '~/composables/useCards'
 import { useSubscription } from '~/composables/useSubscription'
 import { useAiCards, type AiCardProposal } from '~/composables/useAiCards'
 import { useAiCardsFromImage } from '~/composables/useAiCardsFromImage'
+import { usePosthog } from '~/composables/usePosthog'
 import { useUserProfile } from '~/composables/useUserProfile'
 import useSupabaseAuth from '~/composables/useSupabaseAuth'
 import CardItem from '~/components/CardItem.vue'
@@ -266,6 +267,7 @@ const {
   createCard: createCardInCollection,
 } = useCards()
 const { isFree, FREE_LIMITS } = useSubscription()
+const posthog = usePosthog()
 const { userProfile, loadUserProfile } = useUserProfile()
 const { getCurrentUserId } = useSupabaseAuth()
 const { generateCards, isGenerating: isGeneratingAiCards } = useAiCards()
@@ -416,6 +418,11 @@ function handlePremiumRequired() {
 async function handleGenerateAiCards() {
   if (isGeneratingAiCards.value) return
 
+  posthog.capture('ai_cards_from_collection_started', {
+    collection_id: collectionId,
+    cards_count: cards.value.length,
+  })
+
   if (isFree.value) {
     const count = userProfile.value?.ai_generations_from_cards ?? 0
     if (count >= FREE_LIMITS.MAX_AI_GENERATIONS) {
@@ -444,6 +451,11 @@ async function handleGenerateAiCards() {
 
   aiProposals.value = result
 
+  posthog.capture('ai_cards_from_collection_completed', {
+    collection_id: collectionId,
+    proposals_count: result.length,
+  })
+
   if (isFree.value) {
     try {
       const userId = await getCurrentUserId()
@@ -469,6 +481,10 @@ function handleAiCardRejected(question: string) {
 
 function handleOpenImageSelection() {
   if (isGeneratingFromImage.value) return
+
+  posthog.capture('ai_cards_from_image_started', {
+    collection_id: collectionId,
+  })
 
   if (isFree.value) {
     const count = userProfile.value?.ai_generations_from_image ?? 0
@@ -510,6 +526,11 @@ async function handleGenerateFromImages() {
   showImageSelection.value = false
   showImageAiSuggestions.value = true
   resetImageSelection()
+
+  posthog.capture('ai_cards_from_image_completed', {
+    collection_id: collectionId,
+    proposals_count: result.length,
+  })
 
   if (isFree.value) {
     try {
