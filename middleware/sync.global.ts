@@ -9,7 +9,6 @@ import {
   syncCardsToRemote,
 } from '~/lib/sync'
 
-// @ts-expect-error - Auto-imported by Nuxt
 export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => {
   // Skip check if already on onboarding route or legal page
   if (to.path.startsWith('/onboarding') || to.path.startsWith('/paywall') || to.path === '/legal') {
@@ -49,6 +48,18 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
       await userProfileStore
         .loadUserData()
         .catch((e) => console.error('[MIDDLEWARE] Failed to load user data from SQLite:', e))
+
+      // Replanifier la notification si elle a été perdue (réinstall, remise à zéro iOS, etc.)
+      try {
+        const { useNotifications } = await import('~/composables/useNotifications')
+        const { ensureNotificationScheduled } = useNotifications()
+        // Non-bloquant — ne doit pas retarder la navigation
+        ensureNotificationScheduled().catch((e) =>
+          console.error('[MIDDLEWARE] Failed to ensure notification is scheduled:', e)
+        )
+      } catch (e) {
+        console.error('[MIDDLEWARE] Failed to import useNotifications:', e)
+      }
     } catch (globalError) {
       console.error('[MIDDLEWARE] Critical error during sync initialization:', globalError)
       await userProfileStore.loadUserData().catch((e) => console.error('[MIDDLEWARE] Could not load any user data:', e))
@@ -57,7 +68,6 @@ export default defineNuxtRouteMiddleware(async (to: RouteLocationNormalized) => 
 
   // Redirect to onboarding if not completed
   if (!userProfileStore.hasCompletedOnboarding) {
-    // @ts-expect-error - Auto-imported by Nuxt
     // eslint-disable-next-line consistent-return
     return navigateTo('/onboarding/welcome')
   }

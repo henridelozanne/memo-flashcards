@@ -14,15 +14,6 @@ vi.mock('@capacitor/local-notifications', () => ({
   },
 }))
 
-// Mock useCards
-const mockGetCardsDueToday = vi.fn()
-
-vi.mock('~/composables/useCards', () => ({
-  useCards: () => ({
-    getCardsDueToday: mockGetCardsDueToday,
-  }),
-}))
-
 // Mock i18n
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({
@@ -57,12 +48,6 @@ describe('useNotifications', () => {
       notifications: [{ id: 1 }],
     } as any)
 
-    // Mock getCardsDueToday
-    mockGetCardsDueToday.mockResolvedValue([
-      { id: '1', question: 'Q1', answer: 'A1' },
-      { id: '2', question: 'Q2', answer: 'A2' },
-    ])
-
     // Setup user profile store
     const userProfileStore = useUserProfileStore()
     userProfileStore.notificationHour = '20:00'
@@ -80,33 +65,22 @@ describe('useNotifications', () => {
       expect(LocalNotifications.schedule).not.toHaveBeenCalled()
     })
 
-    it('should not schedule notification if no cards are due', async () => {
-      mockGetCardsDueToday.mockResolvedValue([])
-
-      const { scheduleDailyNotification } = useNotifications()
-      await scheduleDailyNotification()
-
-      expect(LocalNotifications.schedule).not.toHaveBeenCalled()
-    })
-
-    it('should schedule notification for today if time has not passed', async () => {
-      const now = new Date()
-      const futureHour = now.getHours() + 1
+    it('should schedule notification with correct hour and minute', async () => {
       const userProfileStore = useUserProfileStore()
-      userProfileStore.notificationHour = `${futureHour.toString().padStart(2, '0')}:00`
+      userProfileStore.notificationHour = '20:30'
 
       const { scheduleDailyNotification } = useNotifications()
       await scheduleDailyNotification()
 
       expect(LocalNotifications.schedule).toHaveBeenCalledTimes(1)
       const scheduleCall = vi.mocked(LocalNotifications.schedule).mock.calls[0][0]
-      const scheduledDate = new Date(scheduleCall.notifications[0].schedule!.at!)
+      const scheduleOn = scheduleCall.notifications[0].schedule!.on!
 
-      expect(scheduledDate.getDate()).toBe(now.getDate())
-      expect(scheduledDate.getHours()).toBe(futureHour)
+      expect(scheduleOn.hour).toBe(20)
+      expect(scheduleOn.minute).toBe(30)
     })
 
-    it('should schedule notification for tomorrow if time has passed', async () => {
+    it('should schedule notification regardless of whether time has passed today', async () => {
       const now = new Date()
       const pastHour = now.getHours() - 1
       const userProfileStore = useUserProfileStore()
@@ -115,13 +89,12 @@ describe('useNotifications', () => {
       const { scheduleDailyNotification } = useNotifications()
       await scheduleDailyNotification()
 
+      // Avec schedule.on, iOS gère automatiquement le prochain déclenchement
       expect(LocalNotifications.schedule).toHaveBeenCalledTimes(1)
       const scheduleCall = vi.mocked(LocalNotifications.schedule).mock.calls[0][0]
-      const scheduledDate = new Date(scheduleCall.notifications[0].schedule!.at!)
-      const tomorrow = new Date(now)
-      tomorrow.setDate(tomorrow.getDate() + 1)
-
-      expect(scheduledDate.getDate()).toBe(tomorrow.getDate())
+      const scheduleOn = scheduleCall.notifications[0].schedule!.on!
+      expect(scheduleOn.hour).toBe(pastHour)
+      expect(scheduleOn.minute).toBe(0)
     })
 
     it('should use random notification message with firstName', async () => {

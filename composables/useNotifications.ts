@@ -38,18 +38,12 @@ export const useNotifications = () => {
         console.log('No pending notifications to cancel:', cancelError)
       }
 
-      // Calculer la prochaine occurrence de l'heure choisie
+      // Extraire l'heure choisie
       const [hours, minutes] = notificationHour.value.split(':').map(Number)
-      const now = new Date()
-      const scheduledTime = new Date()
-      scheduledTime.setHours(hours, minutes, 0, 0)
-
-      // Si l'heure est déjà passée aujourd'hui, planifier pour demain
-      if (scheduledTime <= now) {
-        scheduledTime.setDate(scheduledTime.getDate() + 1)
-      }
 
       // Planifier la notification récurrente quotidienne
+      // On utilise `on` (composants calendrier) qui est le pattern correct pour iOS :
+      // crée un UNCalendarNotificationTrigger qui se répète chaque jour à l'heure fixée.
       await LocalNotifications.schedule({
         notifications: [
           {
@@ -57,10 +51,10 @@ export const useNotifications = () => {
             title: 'Cortx',
             body: getRandomNotificationMessage(),
             schedule: {
-              at: scheduledTime,
-              repeats: true,
-              every: 'day',
-              allowWhileIdle: true,
+              on: {
+                hour: hours,
+                minute: minutes,
+              },
             },
             sound: undefined,
             attachments: undefined,
@@ -96,9 +90,32 @@ export const useNotifications = () => {
     await scheduleDailyNotification()
   }
 
+  /**
+   * Replanifie la notification quotidienne si elle n'est pas déjà en attente.
+   * À appeler au démarrage de l'app pour récupérer une notification supprimée
+   * (réinstall, remise à zéro iOS, etc.).
+   */
+  const ensureNotificationScheduled = async () => {
+    if (!notificationHour.value) return
+
+    try {
+      const permission = await LocalNotifications.checkPermissions()
+      if (permission.display !== 'granted') return
+
+      const pending = await LocalNotifications.getPending()
+      const hasNotification = pending.notifications.some((n) => n.id === 1)
+      if (!hasNotification) {
+        await scheduleDailyNotification()
+      }
+    } catch (error) {
+      console.error('Error ensuring notification is scheduled:', error)
+    }
+  }
+
   return {
     scheduleDailyNotification,
     cancelAllNotifications,
     updateDailyNotification,
+    ensureNotificationScheduled,
   }
 }
