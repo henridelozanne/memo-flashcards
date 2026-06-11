@@ -22,6 +22,8 @@
             :current-card="currentCard"
             :is-back-visible="isBackVisible"
             :card-background="cardBackground"
+            :collection-name="currentCollectionName"
+            :collection-color="currentCollectionColor"
             @show-back="isBackVisible = true"
             @answer="answer"
           />
@@ -81,6 +83,16 @@ const {
 const cardBackground = computed(() => {
   if (!currentCard.value) return null
   return getCollection(currentCard.value.collection_id)?.card_background ?? null
+})
+
+const currentCollectionName = computed(() => {
+  if (!currentCard.value) return null
+  return getCollection(currentCard.value.collection_id)?.name ?? null
+})
+
+const currentCollectionColor = computed(() => {
+  if (!currentCard.value) return null
+  return getCollection(currentCard.value.collection_id)?.color ?? null
 })
 
 onMounted(async () => {

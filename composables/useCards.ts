@@ -303,7 +303,7 @@ export const useCards = () => {
       AND DATE(next_review_at / 1000, 'unixepoch') <= DATE('now')
       AND compartment < 5
       AND archived = 0
-      ORDER BY next_review_at ASC, created_at ASC
+      ORDER BY collection_id ASC, next_review_at ASC, created_at ASC
     `,
         []
       )
