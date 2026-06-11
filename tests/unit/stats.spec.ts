@@ -9,7 +9,8 @@ import messages from '~/locales'
 vi.mock('nuxt/app', () => ({
   useRuntimeConfig: () => ({
     public: {
-      revenuecatApiKey: 'test-key',
+      revenuecatApiKeyIos: 'test-api-key-ios',
+      revenuecatApiKeyAndroid: 'test-api-key-android',
     },
   }),
 }))

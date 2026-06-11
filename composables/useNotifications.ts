@@ -3,6 +3,9 @@ import { LocalNotifications } from '@capacitor/local-notifications'
 import { useI18n } from 'vue-i18n'
 import { useUserProfileStore } from '~/store/userProfile'
 
+const NOTIFICATIONS_WINDOW = 30
+const RESCHEDULE_THRESHOLD = 7
+
 export const useNotifications = () => {
   const { t } = useI18n()
   const userProfileStore = useUserProfileStore()
@@ -18,64 +21,15 @@ export const useNotifications = () => {
   }
 
   /**
-   * Planifie la notification quotidienne récurrente
-   */
-  const scheduleDailyNotification = async () => {
-    try {
-      // Vérifier la permission
-      const permission = await LocalNotifications.checkPermissions()
-      if (permission.display !== 'granted') {
-        return
-      }
-
-      // Annuler toutes les notifications précédentes
-      try {
-        const pending = await LocalNotifications.getPending()
-        if (pending.notifications.length > 0) {
-          await LocalNotifications.cancel({ notifications: [{ id: 1 }] })
-        }
-      } catch (cancelError) {
-        console.log('No pending notifications to cancel:', cancelError)
-      }
-
-      // Extraire l'heure choisie
-      const [hours, minutes] = notificationHour.value.split(':').map(Number)
-
-      // Planifier la notification récurrente quotidienne
-      // On utilise `on` (composants calendrier) qui est le pattern correct pour iOS :
-      // crée un UNCalendarNotificationTrigger qui se répète chaque jour à l'heure fixée.
-      await LocalNotifications.schedule({
-        notifications: [
-          {
-            id: 1,
-            title: 'Cortx',
-            body: getRandomNotificationMessage(),
-            schedule: {
-              on: {
-                hour: hours,
-                minute: minutes,
-              },
-            },
-            sound: undefined,
-            attachments: undefined,
-            actionTypeId: '',
-            extra: null,
-          },
-        ],
-      })
-    } catch (error) {
-      console.error('Error scheduling notification:', error)
-    }
-  }
-
-  /**
-   * Annule toutes les notifications
+   * Annule toutes les notifications en attente
    */
   const cancelAllNotifications = async () => {
     try {
       const pending = await LocalNotifications.getPending()
       if (pending.notifications.length > 0) {
-        await LocalNotifications.cancel({ notifications: [{ id: 1 }] })
+        await LocalNotifications.cancel({
+          notifications: pending.notifications.map((n) => ({ id: n.id })),
+        })
       }
     } catch (error) {
       console.error('Error cancelling notifications:', error)
@@ -83,7 +37,55 @@ export const useNotifications = () => {
   }
 
   /**
-   * Met à jour la notification quotidienne (à appeler quand l'heure change)
+   * Planifie une notification par jour pour les N prochains jours,
+   * chacune avec un message aléatoire différent.
+   */
+  const scheduleDailyNotification = async () => {
+    try {
+      const permission = await LocalNotifications.checkPermissions()
+      if (permission.display !== 'granted') {
+        return
+      }
+
+      await cancelAllNotifications()
+
+      const [hours, minutes] = notificationHour.value.split(':').map(Number)
+      const now = new Date()
+      const notifications = []
+
+      // Si l'heure choisie est déjà passée aujourd'hui, commencer à demain
+      const firstOccurrence = new Date(now)
+      firstOccurrence.setHours(hours, minutes, 0, 0)
+      const startOffset = firstOccurrence <= now ? 1 : 0
+
+      for (let i = 0; i < NOTIFICATIONS_WINDOW; i += 1) {
+        const date = new Date(now)
+        date.setDate(date.getDate() + startOffset + i)
+        date.setHours(hours, minutes, 0, 0)
+
+        notifications.push({
+          id: i + 1,
+          title: 'Cortx',
+          body: getRandomNotificationMessage(),
+          schedule: {
+            at: date,
+            allowWhileIdle: true,
+          },
+          sound: undefined,
+          attachments: undefined,
+          actionTypeId: '',
+          extra: null,
+        })
+      }
+
+      await LocalNotifications.schedule({ notifications })
+    } catch (error) {
+      console.error('Error scheduling notifications:', error)
+    }
+  }
+
+  /**
+   * Met à jour les notifications (à appeler quand l'heure change)
    */
   const updateDailyNotification = async () => {
     await cancelAllNotifications()
@@ -91,9 +93,8 @@ export const useNotifications = () => {
   }
 
   /**
-   * Replanifie la notification quotidienne si elle n'est pas déjà en attente.
-   * À appeler au démarrage de l'app pour récupérer une notification supprimée
-   * (réinstall, remise à zéro iOS, etc.).
+   * Replanifie les notifications si la fenêtre est presque épuisée.
+   * À appeler au démarrage de l'app.
    */
   const ensureNotificationScheduled = async () => {
     if (!notificationHour.value) return
@@ -103,8 +104,7 @@ export const useNotifications = () => {
       if (permission.display !== 'granted') return
 
       const pending = await LocalNotifications.getPending()
-      const hasNotification = pending.notifications.some((n) => n.id === 1)
-      if (!hasNotification) {
+      if (pending.notifications.length < RESCHEDULE_THRESHOLD) {
         await scheduleDailyNotification()
       }
     } catch (error) {

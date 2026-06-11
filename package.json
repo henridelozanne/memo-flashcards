@@ -5,8 +5,10 @@
   "scripts": {
     "dev": "nuxi dev",
     "dev:ios": "CAP_DEV_URL=http://localhost:3000 npx cap run ios",
+    "dev:android": "CAP_DEV_URL=http://localhost:3000 npx cap run android",
     "build": "nuxi build",
-    "go": "npm run build && npx @capacitor/cli sync ios",
+    "go": "npm run build && npx @capacitor/cli sync",
+    "go:ios": "npm run go && npx cap open ios",
     "preview": "nuxi preview",
     "test": "vitest run",
     "verify": "eslint . && tsc --noEmit && vitest run",

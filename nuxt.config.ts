@@ -8,6 +8,7 @@ export default defineNuxtConfig({
   },
   srcDir: './',
   modules: ['@pinia/nuxt', '@nuxtjs/color-mode'],
+  // @ts-expect-error @nuxtjs/color-mode ne déclare pas ses types Nuxt correctement
   colorMode: {
     classSuffix: '',
     preference: 'system',
@@ -23,7 +24,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       web3formsKey: process.env.WEB3FORMS_KEY,
-      revenuecatApiKey: process.env.REVENUECAT_API_KEY_IOS,
+      revenuecatApiKeyIos: process.env.REVENUECAT_API_KEY_IOS,
+      revenuecatApiKeyAndroid: process.env.REVENUECAT_API_KEY_ANDROID,
       sentryDsn: process.env.NUXT_PUBLIC_SENTRY_DSN,
       sentryEnabled: process.env.NUXT_PUBLIC_SENTRY_ENABLED !== 'false',
       posthogKey: process.env.NUXT_PUBLIC_POSTHOG_KEY,

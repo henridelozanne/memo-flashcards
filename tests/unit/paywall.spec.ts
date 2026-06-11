@@ -8,7 +8,8 @@ import { createTestI18n } from '../helpers/i18n'
 vi.mock('nuxt/app', () => ({
   useRuntimeConfig: () => ({
     public: {
-      revenuecatApiKey: 'test-api-key',
+      revenuecatApiKeyIos: 'test-api-key-ios',
+      revenuecatApiKeyAndroid: 'test-api-key-android',
     },
   }),
   useRouter: () => ({

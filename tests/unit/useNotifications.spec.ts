@@ -74,10 +74,13 @@ describe('useNotifications', () => {
 
       expect(LocalNotifications.schedule).toHaveBeenCalledTimes(1)
       const scheduleCall = vi.mocked(LocalNotifications.schedule).mock.calls[0][0]
-      const scheduleOn = scheduleCall.notifications[0].schedule!.on!
 
-      expect(scheduleOn.hour).toBe(20)
-      expect(scheduleOn.minute).toBe(30)
+      expect(scheduleCall.notifications).toHaveLength(30)
+      scheduleCall.notifications.forEach((notif) => {
+        const date = notif.schedule!.at as Date
+        expect(date.getHours()).toBe(20)
+        expect(date.getMinutes()).toBe(30)
+      })
     })
 
     it('should schedule notification regardless of whether time has passed today', async () => {
@@ -89,12 +92,16 @@ describe('useNotifications', () => {
       const { scheduleDailyNotification } = useNotifications()
       await scheduleDailyNotification()
 
-      // Avec schedule.on, iOS gère automatiquement le prochain déclenchement
       expect(LocalNotifications.schedule).toHaveBeenCalledTimes(1)
       const scheduleCall = vi.mocked(LocalNotifications.schedule).mock.calls[0][0]
-      const scheduleOn = scheduleCall.notifications[0].schedule!.on!
-      expect(scheduleOn.hour).toBe(pastHour)
-      expect(scheduleOn.minute).toBe(0)
+
+      // L'heure est déjà passée aujourd'hui → la première notification est pour demain
+      const firstDate = scheduleCall.notifications[0].schedule!.at as Date
+      const tomorrow = new Date(now)
+      tomorrow.setDate(tomorrow.getDate() + 1)
+      expect(firstDate.getDate()).toBe(tomorrow.getDate())
+      expect(firstDate.getHours()).toBe(pastHour)
+      expect(firstDate.getMinutes()).toBe(0)
     })
 
     it('should use random notification message with firstName', async () => {

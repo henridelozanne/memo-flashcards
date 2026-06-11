@@ -8,7 +8,8 @@ import SettingsPage from '@/pages/settings.vue'
 vi.mock('nuxt/app', () => ({
   useRuntimeConfig: () => ({
     public: {
-      revenuecatApiKey: 'test-api-key',
+      revenuecatApiKeyIos: 'test-api-key-ios',
+      revenuecatApiKeyAndroid: 'test-api-key-android',
     },
   }),
 }))

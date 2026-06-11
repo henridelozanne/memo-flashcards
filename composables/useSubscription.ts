@@ -1,4 +1,5 @@
 import { Purchases, PurchasesOfferings, PurchasesPackage, CustomerInfo } from '@revenuecat/purchases-capacitor'
+import { Capacitor } from '@capacitor/core'
 import { computed, ref } from 'vue'
 import { useRuntimeConfig } from 'nuxt/app'
 import { useSubscriptionStore } from '~/store/subscription'
@@ -79,7 +80,8 @@ export const useSubscription = () => {
   const initRevenueCat = async () => {
     try {
       const config = useRuntimeConfig()
-      const apiKey = config.public.revenuecatApiKey as string
+      const isAndroid = Capacitor.getPlatform() === 'android'
+      const apiKey = (isAndroid ? config.public.revenuecatApiKeyAndroid : config.public.revenuecatApiKeyIos) as string
 
       if (!apiKey) {
         console.error('RevenueCat API key not found in environment variables')
