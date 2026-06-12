@@ -37,13 +37,6 @@
             class="flip-card-back absolute left-0 top-0 flex h-full w-full flex-col overflow-hidden rounded-[15px] p-8 text-center shadow-[0px_4px_32px_#0000000a]"
             :style="cardStyle"
           >
-            <span
-              v-if="props.collectionName"
-              class="absolute right-3 top-3 rounded-full bg-gray-500 px-3 py-1 text-xs font-semibold text-white"
-              :style="badgeStyle"
-            >
-              {{ props.collectionName }}
-            </span>
             <div class="flex flex-1 flex-col items-center justify-center gap-10 overflow-y-auto">
               <div
                 class="break-words font-medium text-gray-900"
@@ -100,7 +93,7 @@ const props = defineProps<{
 
 const badgeStyle = computed(() => {
   const hasColor = props.collectionColor && props.collectionColor !== '#ffffff'
-  return hasColor ? { backgroundColor: props.collectionColor } : {}
+  return hasColor ? { background: props.collectionColor } : {}
 })
 
 // --- Swipe logic ---
