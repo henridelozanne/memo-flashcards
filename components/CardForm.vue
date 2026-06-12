@@ -117,6 +117,8 @@ defineExpose({
     localBack.value = ''
     frontError.value = null
     backError.value = null
+    isRichTextFront.value = false
+    isRichTextBack.value = false
   },
 })
 
