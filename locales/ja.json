@@ -12,6 +12,8 @@
     "congrats": "おめでとうございます、復習が完了しました！",
     "cardsReviewed": "復習したカード：{count}",
     "successRate": "成功率：{percent}%",
+    "xpLabel": "XPスコア：",
+    "boostStreak": "{count}連続！",
     "backToCollections": "コレクションに戻る",
     "noCard": "復習するカードがありません。",
     "loadingCards": "カードを読み込み中...",

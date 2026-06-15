@@ -18,6 +18,11 @@
             @click="handleShowBack"
           >
             <span
+              class="absolute left-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-xs font-bold text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+            >
+              {{ currentCard.compartment }}
+            </span>
+            <span
               v-if="props.collectionName"
               class="absolute right-3 top-3 rounded-full bg-gray-500 px-3 py-1 text-xs font-semibold text-white"
               :style="badgeStyle"

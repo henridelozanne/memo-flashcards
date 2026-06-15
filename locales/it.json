@@ -12,6 +12,8 @@
     "congrats": "Congratulazioni, hai completato la tua revisione!",
     "cardsReviewed": "Carte riviste: {count}",
     "successRate": "Tasso di successo: {percent}%",
+    "xpLabel": "Punteggio XP:",
+    "boostStreak": "{count} di fila!",
     "backToCollections": "Torna alle collezioni",
     "noCard": "Nessuna carta da rivedere.",
     "loadingCards": "Caricamento carte...",

@@ -12,6 +12,8 @@
     "congrats": "Bravo pour cette session de révision !",
     "cardsReviewed": "Cartes révisées : {count}",
     "successRate": "% de bonnes réponses : {percent}%",
+    "xpLabel": "Score XP :",
+    "boostStreak": "{count} de suite !",
     "backToCollections": "Retour à mes collections",
     "noCard": "Aucune carte à réviser.",
     "loadingCards": "Chargement des cartes...",

@@ -1,12 +1,23 @@
 <template>
   <div class="flex flex-col items-center">
-    <img src="/cortx_yeah_transparent_background.png" alt="Cortx" class="brain-entrance mb-4 w-40" />
-    <div class="w-full max-w-md rounded-[15px] bg-[var(--color-white)] p-8 text-center shadow-[var(--shadow-light)]">
+    <!-- Mascotte posée sur la carte -->
+    <img
+      src="/cortx_yeah_transparent_background.png"
+      alt="Cortx"
+      class="brain-entrance relative z-10 w-28"
+      style="margin-bottom: -3.5rem"
+    />
+    <div
+      class="w-full max-w-md rounded-[15px] bg-[var(--color-white)] px-8 pb-8 pt-16 text-center shadow-[var(--shadow-light)]"
+    >
       <div class="mb-2 text-2xl font-bold text-[var(--color-black)]">
         {{ $t('review.sessionFinished') }}
       </div>
       <div class="mb-4 text-lg text-[var(--color-secondary)]">{{ $t('review.congrats') }}</div>
       <div class="my-4 text-5xl font-bold text-[var(--color-black)]">{{ goodCount }} / {{ cardsReviewedCount }}</div>
+      <div class="mb-1 text-xl font-bold text-[var(--color-black)]">
+        {{ $t('review.xpLabel') }} <span class="xp-score-text">{{ displayedXp }} pts</span>
+      </div>
       <div class="mb-2 text-[var(--color-secondary)]">
         {{ $t('review.successRate', { percent: successRate }) }}
       </div>
@@ -57,6 +68,7 @@ const props = defineProps({
   cardsReviewedCount: { type: Number, required: true },
   goodCount: { type: Number, required: true },
   successRate: { type: Number, required: true },
+  xpScore: { type: Number, default: 0 },
   answeredCards: { type: Array as () => AnsweredCard[], default: () => [] },
   returnLabel: { type: String, default: '' },
 })
@@ -71,19 +83,56 @@ async function handleBack() {
 
 const confettiCanvas = ref<HTMLCanvasElement | null>(null)
 let cleanup: (() => void) | null = null
+let animFrame: ReturnType<typeof requestAnimationFrame> | null = null
+
+const displayedXp = ref(0)
 
 onMounted(() => {
   if (props.successRate >= 50 && confettiCanvas.value) {
     cleanup = launchConfetti(confettiCanvas.value)
   }
+  // Compteur animé sur 3.5s
+  const target = props.xpScore
+  if (target === 0) {
+    displayedXp.value = 0
+    return
+  }
+  const DURATION = 3500
+  const startTime = performance.now()
+  function step(now: number) {
+    const elapsed = now - startTime
+    const progress = Math.min(elapsed / DURATION, 1)
+    const ease = 1 - (1 - progress) ** 3
+    displayedXp.value = Math.round(target * ease)
+    if (progress < 1) {
+      animFrame = requestAnimationFrame(step)
+    } else {
+      displayedXp.value = target
+      animFrame = null
+    }
+  }
+  animFrame = requestAnimationFrame(step)
 })
 
 onUnmounted(() => {
   cleanup?.()
+  if (animFrame) cancelAnimationFrame(animFrame)
 })
 </script>
 
 <style scoped>
+.xp-score-text {
+  background: linear-gradient(
+    180deg,
+    var(--color-flame-top) 0%,
+    var(--color-flame-mid) 60%,
+    var(--color-flame-bottom) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .brain-entrance {
   animation: brainEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }

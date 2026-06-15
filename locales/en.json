@@ -12,6 +12,8 @@
     "congrats": "Congrats on your review session!",
     "cardsReviewed": "Cards reviewed: {count}",
     "successRate": "Success rate: {percent}%",
+    "xpLabel": "XP score:",
+    "boostStreak": "{count} in a row!",
     "backToCollections": "Back to my collections",
     "noCard": "No card to review.",
     "loadingCards": "Loading cards...",

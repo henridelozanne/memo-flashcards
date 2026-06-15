@@ -12,6 +12,8 @@
     "congrats": "¡Enhorabuena por esta sesión de repaso!",
     "cardsReviewed": "Tarjetas repasadas: {count}",
     "successRate": "% de respuestas correctas: {percent}%",
+    "xpLabel": "Puntuación XP:",
+    "boostStreak": "\u00a1{count} seguidas!",
     "backToCollections": "Volver a mis colecciones",
     "noCard": "Ninguna tarjeta para repasar.",
     "loadingCards": "Cargando tarjetas...",

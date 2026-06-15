@@ -12,6 +12,8 @@
     "congrats": "Поздравляем с завершением сеанса повторения!",
     "cardsReviewed": "Карточек повторено: {count}",
     "successRate": "% правильных ответов: {percent}%",
+    "xpLabel": "Счёт XP:",
+    "boostStreak": "{count} подряд!",
     "backToCollections": "Вернуться к коллекциям",
     "noCard": "Нет карточек для повторения.",
     "loadingCards": "Загрузка карточек...",
