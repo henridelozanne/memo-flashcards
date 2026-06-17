@@ -17,7 +17,12 @@
     "backToCollections": "Volver a mis colecciones",
     "noCard": "Ninguna tarjeta para repasar.",
     "loadingCards": "Cargando tarjetas...",
-    "noCardsAvailable": "Ninguna tarjeta disponible por el momento."
+    "noCardsAvailable": "Ninguna tarjeta disponible por el momento.",
+    "shareText": "🔥 ¡{percent}% de aciertos en mi sesión de Cortx!",
+    "shareButton": "Compartir",
+    "shareInstagram": "Instagram",
+    "shareCardCardsReviewed": "tarjetas repasadas",
+    "shareCardSuccessRate": "de aciertos"
   },
   "dailyReview": {
     "title": "Tarjetas del día",

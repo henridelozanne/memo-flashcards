@@ -20,6 +20,7 @@
 		970C420A2F5F03B400716593 /* MemoWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 970C41F72F5F03B200716593 /* MemoWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		970C42222F5F143E00716593 /* WidgetDataPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C42212F5F143E00716593 /* WidgetDataPlugin.swift */; };
 		979AF7AF2F619340007A7E9F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979AF7AE2F619340007A7E9F /* ViewController.swift */; };
+		97C4FFEA2FE2F10800DDD1F6 /* InstagramSharePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C4FFE92FE2F10800DDD1F6 /* InstagramSharePlugin.swift */; };
 		97C9AF212F4E2132000B15D9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C9AF202F4E2132000B15D9 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,7 @@
 		970C42102F5F048300716593 /* MemoWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MemoWidgetExtension.entitlements; sourceTree = "<group>"; };
 		970C42212F5F143E00716593 /* WidgetDataPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDataPlugin.swift; sourceTree = "<group>"; };
 		979AF7AE2F619340007A7E9F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		97C4FFE92FE2F10800DDD1F6 /* InstagramSharePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramSharePlugin.swift; sourceTree = "<group>"; };
 		97C9AF202F4E2132000B15D9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B581CB4E9FEFEFE0FDA89CE2 /* Pods_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5828525242C027C6CCEB854 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 		504EC2FB1FED79650016851F = {
 			isa = PBXGroup;
 			children = (
+				97C4FFE92FE2F10800DDD1F6 /* InstagramSharePlugin.swift */,
 				970C42102F5F048300716593 /* MemoWidgetExtension.entitlements */,
 				504EC3061FED79650016851F /* App */,
 				970C41FC2F5F03B200716593 /* MemoWidget */,
@@ -318,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				979AF7AF2F619340007A7E9F /* ViewController.swift in Sources */,
+				97C4FFEA2FE2F10800DDD1F6 /* InstagramSharePlugin.swift in Sources */,
 				970C42222F5F143E00716593 /* WidgetDataPlugin.swift in Sources */,
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 			);
@@ -475,7 +479,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 8V487Y6BM2;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -483,7 +487,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.3.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.memoflashcards.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -500,7 +504,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 8V487Y6BM2;
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -508,7 +512,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.memoflashcards.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";

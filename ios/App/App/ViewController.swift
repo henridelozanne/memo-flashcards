@@ -5,5 +5,6 @@ class ViewController: CAPBridgeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bridge?.registerPluginInstance(WidgetDataPlugin())
+        bridge?.registerPluginInstance(InstagramSharePlugin())
     }
 }

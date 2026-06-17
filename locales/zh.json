@@ -17,7 +17,12 @@
     "backToCollections": "返回收藏",
     "noCard": "没有需要复习的卡片。",
     "loadingCards": "加载卡片中...",
-    "noCardsAvailable": "暂时没有可用的卡片。"
+    "noCardsAvailable": "暂时没有可用的卡片。",
+    "shareText": "🔥 我在Cortx学习中达到了{percent}%的正确率！",
+    "shareButton": "分享",
+    "shareInstagram": "Instagram",
+    "shareCardCardsReviewed": "张卡片已复习",
+    "shareCardSuccessRate": "的正确率"
   },
   "dailyReview": {
     "title": "今日卡片",

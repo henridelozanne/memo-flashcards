@@ -17,7 +17,12 @@
     "backToCollections": "Вернуться к коллекциям",
     "noCard": "Нет карточек для повторения.",
     "loadingCards": "Загрузка карточек...",
-    "noCardsAvailable": "Нет доступных карточек на данный момент."
+    "noCardsAvailable": "Нет доступных карточек на данный момент.",
+    "shareText": "🔥 {percent}% точности в моей сессии Cortx!",
+    "shareButton": "Поделиться",
+    "shareInstagram": "Instagram",
+    "shareCardCardsReviewed": "карточек повторено",
+    "shareCardSuccessRate": "точности"
   },
   "dailyReview": {
     "title": "Карточки дня",

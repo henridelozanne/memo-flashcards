@@ -17,7 +17,12 @@
     "backToCollections": "Back to my collections",
     "noCard": "No card to review.",
     "loadingCards": "Loading cards...",
-    "noCardsAvailable": "No cards available right now."
+    "noCardsAvailable": "No cards available right now.",
+    "shareText": "🔥 {percent}% accuracy on my Cortx session!",
+    "shareButton": "Share",
+    "shareInstagram": "Instagram",
+    "shareCardCardsReviewed": "cards reviewed",
+    "shareCardSuccessRate": "accuracy"
   },
   "dailyReview": {
     "title": "Today's Cards",

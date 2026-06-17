@@ -17,7 +17,12 @@
     "backToCollections": "コレクションに戻る",
     "noCard": "復習するカードがありません。",
     "loadingCards": "カードを読み込み中...",
-    "noCardsAvailable": "現在利用可能なカードはありません。"
+    "noCardsAvailable": "現在利用可能なカードはありません。",
+    "shareText": "🔥 Cortxで{percent}%の正解率！",
+    "shareButton": "シェア",
+    "shareInstagram": "Instagram",
+    "shareCardCardsReviewed": "枚のカードを復習",
+    "shareCardSuccessRate": "の正解率"
   },
   "dailyReview": {
     "title": "今日のカード",

@@ -8,7 +8,7 @@
       style="margin-bottom: -3.5rem"
     />
     <div
-      class="w-full max-w-md rounded-[15px] bg-[var(--color-white)] px-8 pb-8 pt-16 text-center shadow-[var(--shadow-light)]"
+      class="w-full max-w-md rounded-[15px] bg-[var(--color-white)] px-8 pb-6 pt-16 text-center shadow-[var(--shadow-light)]"
     >
       <div class="mb-2 text-2xl font-bold text-[var(--color-black)]">
         {{ $t('review.sessionFinished') }}
@@ -25,8 +25,8 @@
       <!-- Answered cards list -->
       <div
         v-if="answeredCards.length > 0"
-        class="mt-4 w-full text-sm"
-        :class="answeredCards.length >= 10 ? 'max-h-52 overflow-y-auto pr-1' : ''"
+        class="mt-4 w-full overflow-y-auto pr-1 text-sm"
+        :class="answeredCards.length >= 5 ? 'max-h-40' : ''"
       >
         <div
           v-for="(item, index) in answeredCards"
@@ -40,12 +40,21 @@
         </div>
       </div>
 
-      <button
-        class="mt-6 rounded-[15px] bg-[var(--color-primary)] px-6 py-2 text-base font-medium text-white shadow-sm transition hover:bg-[var(--color-dark-purple)]"
-        @click="handleBack"
-      >
-        {{ returnLabel || $t('review.backToCollections') }}
-      </button>
+      <div class="mt-6 flex w-full flex-col gap-3">
+        <button
+          class="w-full rounded-[15px] bg-[var(--color-primary)] px-6 py-2 text-base font-medium text-white shadow-sm transition hover:bg-[var(--color-dark-purple)]"
+          @click="handleBack"
+        >
+          {{ returnLabel || $t('review.backToCollections') }}
+        </button>
+
+        <ShareSessionButtons
+          :cards-reviewed-count="cardsReviewedCount"
+          :good-count="goodCount"
+          :success-rate="successRate"
+          :xp-score="xpScore"
+        />
+      </div>
     </div>
   </div>
 
