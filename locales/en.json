@@ -482,5 +482,11 @@
     "emptyHint": "Take or import a photo of your notes, a textbook, or any text you want to memorize.",
     "qualityWarning": "For best results, make sure the text is well-lit and in focus.",
     "error": "Could not analyse the photos. Check your connection and try again."
+  },
+  "appUpdate": {
+    "title": "New version available",
+    "message": "A new version ({version}) is available. Update now to enjoy the latest improvements",
+    "later": "Later",
+    "update": "Update"
   }
 }

@@ -482,5 +482,11 @@
     "emptyHint": "Scatta o importa una foto dei tuoi appunti, di un libro o di qualsiasi testo che vuoi memorizzare.",
     "qualityWarning": "Per risultati migliori, assicurati che il testo sia ben illuminato e a fuoco.",
     "error": "Impossibile analizzare le foto. Controlla la connessione e riprova."
+  },
+  "appUpdate": {
+    "title": "Nuova versione disponibile",
+    "message": "Una nuova versione ({version}) è disponibile. Aggiorna per godere degli ultimi miglioramenti",
+    "later": "Più tardi",
+    "update": "Aggiorna"
   }
 }

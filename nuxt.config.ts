@@ -1,5 +1,15 @@
 import { defineNuxtConfig } from 'nuxt/config'
-import packageJson from './package.json'
+import fs from 'fs'
+
+function getMarketingVersion(): string {
+  try {
+    const pbxproj = fs.readFileSync('./ios/App/App.xcodeproj/project.pbxproj', 'utf8')
+    const match = pbxproj.match(/MARKETING_VERSION\s*=\s*([\d.]+);/)
+    return match?.[1] ?? '1.0.0'
+  } catch {
+    return '1.0.0'
+  }
+}
 
 export default defineNuxtConfig({
   ssr: false,
@@ -30,7 +40,7 @@ export default defineNuxtConfig({
       sentryEnabled: process.env.NUXT_PUBLIC_SENTRY_ENABLED !== 'false',
       posthogKey: process.env.NUXT_PUBLIC_POSTHOG_KEY,
       posthogHost: process.env.NUXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com',
-      appVersion: packageJson.version,
+      appVersion: getMarketingVersion(),
     },
   },
   alias: {

@@ -482,5 +482,11 @@
     "emptyHint": "Prends ou importe une photo de tes cours, d'un livre ou de n'importe quel texte que tu souhaites mémoriser.",
     "qualityWarning": "Pour de meilleurs résultats, assure-toi que le texte est bien éclairé et net.",
     "error": "Impossible d'analyser les photos. Vérifie ta connexion et réessaie."
+  },
+  "appUpdate": {
+    "title": "Nouvelle version disponible",
+    "message": "Une nouvelle version ({version}) est disponible. Mets à jour pour profiter des dernières améliorations",
+    "later": "Plus tard",
+    "update": "Mettre à jour"
   }
 }

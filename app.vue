@@ -4,6 +4,7 @@
     <div class="app-content">
       <NuxtPage />
     </div>
+    <UpdateAvailableModal />
   </div>
 </template>
 
@@ -14,8 +15,11 @@ import { isDark } from '~/composables/useIsDark'
 import BackgroundEffects from '~/components/BackgroundEffects.vue'
 import { useWidgetData } from '~/composables/useWidgetData'
 import { useIosPhantomClickGuard } from '~/composables/useIosPhantomClickGuard'
+import { useAppUpdate } from '~/composables/useAppUpdate'
+import UpdateAvailableModal from '~/components/UpdateAvailableModal.vue'
 
 const { syncAllCardsToWidget } = useWidgetData()
+const { checkForUpdate } = useAppUpdate()
 
 useIosPhantomClickGuard()
 
@@ -25,6 +29,7 @@ const onVisibilityChange = () => {
 
 onMounted(() => {
   syncAllCardsToWidget()
+  checkForUpdate()
   document.addEventListener('visibilitychange', onVisibilityChange)
 })
 

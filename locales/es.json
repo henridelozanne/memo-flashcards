@@ -482,5 +482,11 @@
     "emptyHint": "Toma o importa una foto de tus apuntes, un libro o cualquier texto que quieras memorizar.",
     "qualityWarning": "Para mejores resultados, asegúrate de que el texto esté bien iluminado y enfocado.",
     "error": "No se pudieron analizar las fotos. Comprueba tu conexión e inténtalo de nuevo."
+  },
+  "appUpdate": {
+    "title": "Nueva versión disponible",
+    "message": "Una nueva versión ({version}) está disponible. ¡Actualiza para disfrutar de las últimas mejoras",
+    "later": "Más tarde",
+    "update": "Actualizar"
   }
 }
