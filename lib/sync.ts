@@ -323,44 +323,27 @@ export async function syncCardsToRemote(): Promise<void> {
     // 2. Get Supabase instance
     const { supabase } = await import('./supabase')
 
-    // 3. Load remote cards from Supabase
-    const { data: remoteCards, error: fetchError } = await supabase.from('cards').select('*').eq('user_id', userId)
+    // 3. Upsert all local cards directly — no remote GET needed.
+    // Local state is always authoritative on this device after a mutation.
+    // Removing the GET eliminates the main source of egress (was: one full table fetch per card action).
+    const toUpsert = localCards.map((local: any) => ({
+      id: local.id,
+      user_id: local.user_id,
+      collection_id: local.collection_id,
+      question: local.question,
+      answer: local.answer,
+      compartment: local.compartment,
+      next_review_at: new Date(local.next_review_at).toISOString(),
+      created_at: new Date(local.created_at).toISOString(),
+      updated_at: new Date(local.updated_at).toISOString(),
+      archived: local.archived || false,
+      deleted_at: local.deleted_at ? new Date(local.deleted_at).toISOString() : null,
+      correct_answers: local.correct_answers || 0,
+      total_reviews: local.total_reviews || 0,
+    }))
 
-    if (fetchError) throw fetchError
-
-    const remoteMap = new Map((remoteCards || []).map((c: any) => [c.id, c]))
-
-    // 4. Sync each local card to remote if newer or missing
-    const toUpsert: any[] = []
-
-    localCards.forEach((local) => {
-      const remote = remoteMap.get(local.id)
-      const localUpdatedAt = local.updated_at
-      const remoteUpdatedAt = remote ? new Date(remote.updated_at).getTime() : 0
-
-      if (!remote || localUpdatedAt > remoteUpdatedAt) {
-        toUpsert.push({
-          id: local.id,
-          user_id: local.user_id,
-          collection_id: local.collection_id,
-          question: local.question,
-          answer: local.answer,
-          compartment: local.compartment,
-          next_review_at: new Date(local.next_review_at).toISOString(),
-          created_at: new Date(local.created_at).toISOString(),
-          updated_at: new Date(local.updated_at).toISOString(),
-          archived: local.archived || false,
-          deleted_at: local.deleted_at ? new Date(local.deleted_at).toISOString() : null,
-          correct_answers: local.correct_answers || 0,
-          total_reviews: local.total_reviews || 0,
-        })
-      }
-    })
-
-    if (toUpsert.length > 0) {
-      const { error: upsertError } = await supabase.from('cards').upsert(toUpsert)
-      if (upsertError) throw upsertError
-    }
+    const { error: upsertError } = await supabase.from('cards').upsert(toUpsert)
+    if (upsertError) throw upsertError
   } catch (error) {
     console.error('Error syncing cards to remote (non-blocking):', error)
   }
